@@ -7,13 +7,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+// 샘플 뷰 컨트롤러
+class ViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
     }
-
-
 }
-
