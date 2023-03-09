@@ -27,13 +27,14 @@ class BaseTabBarController: UITabBarController {
         
         // 두번째 탭
         let secondVC = ViewController()
-        let nav2 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: secondVC)
+        let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
         let thirdVC = ViewController()
+        let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup
-        viewControllers = [nav1, nav2, thirdVC]
+        viewControllers = [nav1, nav2, nav3]
     }
     
     // 네비게이션 컨트롤러 만들기
@@ -54,7 +55,8 @@ class BaseTabBarController: UITabBarController {
     
     func tabBarSetting() {
         if #available(iOS 15.0, *){
-            tabBar.tintColor = .white
+            tabBar.tintColor = .pointerRed
+            tabBar.unselectedItemTintColor = .tabbarGray
             tabBar.backgroundColor = .tabBarBackground
             tabBar.barStyle = .default
             tabBar.layer.masksToBounds = false

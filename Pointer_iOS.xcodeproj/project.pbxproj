@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */; };
+		4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */; };
+		4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */; };
+		4749D47729B9B99400011E06 /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47129B9B99400011E06 /* NotoSansKR-Bold.otf */; };
+		4749D47829B9B99400011E06 /* NotoSansKR-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47229B9B99400011E06 /* NotoSansKR-Light.otf */; };
+		4749D47929B9B99400011E06 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47329B9B99400011E06 /* NotoSansKR-Regular.otf */; };
+		4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D47A29B9BB3300011E06 /* UIImage.swift */; };
 		CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207929B8C6EB003D0B84 /* AppDelegate.swift */; };
 		CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */; };
 		CD23207E29B8C6EB003D0B84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207D29B8C6EB003D0B84 /* ViewController.swift */; };
@@ -20,6 +27,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
+		4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
+		4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
+		4749D47129B9B99400011E06 /* NotoSansKR-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Bold.otf"; sourceTree = "<group>"; };
+		4749D47229B9B99400011E06 /* NotoSansKR-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Light.otf"; sourceTree = "<group>"; };
+		4749D47329B9B99400011E06 /* NotoSansKR-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Regular.otf"; sourceTree = "<group>"; };
+		4749D47A29B9BB3300011E06 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD23207929B8C6EB003D0B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +59,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4749D46D29B9B96800011E06 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */,
+				4749D47129B9B99400011E06 /* NotoSansKR-Bold.otf */,
+				4749D47229B9B99400011E06 /* NotoSansKR-Light.otf */,
+				4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */,
+				4749D47329B9B99400011E06 /* NotoSansKR-Regular.otf */,
+				4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		CD23206D29B8C6EB003D0B84 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +100,7 @@
 				CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */,
 				CD23208229B8C6EC003D0B84 /* Assets.xcassets */,
 				CD23208729B8C6EC003D0B84 /* Info.plist */,
+				4749D46D29B9B96800011E06 /* Font */,
 			);
 			path = Pointer_iOS;
 			sourceTree = "<group>";
@@ -123,6 +151,7 @@
 			children = (
 				CD23209729B8D2FB003D0B84 /* UIColor.swift */,
 				CD23209929B8D8F4003D0B84 /* UIView.swift */,
+				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -143,6 +172,8 @@
 			dependencies = (
 			);
 			name = Pointer_iOS;
+			packageProductDependencies = (
+			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -171,6 +202,8 @@
 				Base,
 			);
 			mainGroup = CD23206D29B8C6EB003D0B84;
+			packageReferences = (
+			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -185,7 +218,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4749D47829B9B99400011E06 /* NotoSansKR-Light.otf in Resources */,
+				4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */,
+				4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */,
 				CD23208329B8C6EC003D0B84 /* Assets.xcassets in Resources */,
+				4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */,
+				4749D47729B9B99400011E06 /* NotoSansKR-Bold.otf in Resources */,
+				4749D47929B9B99400011E06 /* NotoSansKR-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
+				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
 				CD23207E29B8C6EB003D0B84 /* ViewController.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
