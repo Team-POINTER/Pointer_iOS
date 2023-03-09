@@ -24,6 +24,11 @@
 		CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209929B8D8F4003D0B84 /* UIView.swift */; };
 		CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209B29B8D9C1003D0B84 /* BaseTabBarController.swift */; };
 		CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209D29B8DC0E003D0B84 /* BaseNavigationController.swift */; };
+		CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEDF29B9FE2600B03973 /* SnapKit */; };
+		CDD1DEE629B9FF9E00B03973 /* DuctTape in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEE529B9FF9E00B03973 /* DuctTape */; };
+		CDD1DEE929B9FFDA00B03973 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEE829B9FFDA00B03973 /* RxCocoa */; };
+		CDD1DEEB29B9FFDA00B03973 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEEA29B9FFDA00B03973 /* RxSwift */; };
+		CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEED29B9FFFE00B03973 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +58,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDD1DEE929B9FFDA00B03973 /* RxCocoa in Frameworks */,
+				CDD1DEE629B9FF9E00B03973 /* DuctTape in Frameworks */,
+				CDD1DEEB29B9FFDA00B03973 /* RxSwift in Frameworks */,
+				CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */,
+				CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +144,9 @@
 		CD23209029B8D253003D0B84 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				CD23207D29B8C6EB003D0B84 /* ViewController.swift */,
+				CDD1DEF529BA006700B03973 /* Models */,
+				CDD1DEEF29BA002400B03973 /* Home */,
+				CDD1DEF029BA004100B03973 /* Room */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -156,6 +168,60 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		CDD1DEEF29BA002400B03973 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				CDD1DEF129BA004A00B03973 /* View */,
+				CDD1DEF229BA005000B03973 /* ViewModel */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		CDD1DEF029BA004100B03973 /* Room */ = {
+			isa = PBXGroup;
+			children = (
+				CDD1DEF429BA005800B03973 /* View */,
+				CDD1DEF329BA005800B03973 /* ViewModel */,
+			);
+			path = Room;
+			sourceTree = "<group>";
+		};
+		CDD1DEF129BA004A00B03973 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CD23207D29B8C6EB003D0B84 /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CDD1DEF229BA005000B03973 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CDD1DEF329BA005800B03973 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CDD1DEF429BA005800B03973 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CDD1DEF529BA006700B03973 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -173,6 +239,11 @@
 			);
 			name = Pointer_iOS;
 			packageProductDependencies = (
+				CDD1DEDF29B9FE2600B03973 /* SnapKit */,
+				CDD1DEE529B9FF9E00B03973 /* DuctTape */,
+				CDD1DEE829B9FFDA00B03973 /* RxCocoa */,
+				CDD1DEEA29B9FFDA00B03973 /* RxSwift */,
+				CDD1DEED29B9FFFE00B03973 /* Kingfisher */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -203,6 +274,10 @@
 			);
 			mainGroup = CD23206D29B8C6EB003D0B84;
 			packageReferences = (
+				CDD1DEDE29B9FE2600B03973 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				CDD1DEE429B9FF9E00B03973 /* XCRemoteSwiftPackageReference "DuctTape" */,
+				CDD1DEE729B9FFDA00B03973 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				CDD1DEEC29B9FFFE00B03973 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -445,6 +520,69 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CDD1DEDE29B9FE2600B03973 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.6.0;
+			};
+		};
+		CDD1DEE429B9FF9E00B03973 /* XCRemoteSwiftPackageReference "DuctTape" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marty-suzuki/DuctTape.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+		CDD1DEE729B9FFDA00B03973 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		CDD1DEEC29B9FFFE00B03973 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 7.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CDD1DEDF29B9FE2600B03973 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDD1DEDE29B9FE2600B03973 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		CDD1DEE529B9FF9E00B03973 /* DuctTape */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDD1DEE429B9FF9E00B03973 /* XCRemoteSwiftPackageReference "DuctTape" */;
+			productName = DuctTape;
+		};
+		CDD1DEE829B9FFDA00B03973 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDD1DEE729B9FFDA00B03973 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		CDD1DEEA29B9FFDA00B03973 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDD1DEE729B9FFDA00B03973 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		CDD1DEED29B9FFFE00B03973 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDD1DEEC29B9FFFE00B03973 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CD23206E29B8C6EB003D0B84 /* Project object */;
 }
