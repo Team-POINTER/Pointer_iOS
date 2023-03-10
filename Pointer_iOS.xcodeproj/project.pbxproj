@@ -16,7 +16,6 @@
 		4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D47A29B9BB3300011E06 /* UIImage.swift */; };
 		CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207929B8C6EB003D0B84 /* AppDelegate.swift */; };
 		CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */; };
-		CD23207E29B8C6EB003D0B84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207D29B8C6EB003D0B84 /* ViewController.swift */; };
 		CD23208329B8C6EC003D0B84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD23208229B8C6EC003D0B84 /* Assets.xcassets */; };
 		CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209129B8D260003D0B84 /* BaseViewController.swift */; };
 		CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209429B8D2CC003D0B84 /* Constant.swift */; };
@@ -24,6 +23,9 @@
 		CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209929B8D8F4003D0B84 /* UIView.swift */; };
 		CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209B29B8D9C1003D0B84 /* BaseTabBarController.swift */; };
 		CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23209D29B8DC0E003D0B84 /* BaseNavigationController.swift */; };
+		CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDA529BB2D5B00DB024C /* HomeController.swift */; };
+		CD6BCDA829BB2D9F00DB024C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDA729BB2D9F00DB024C /* ViewController.swift */; };
+		CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDA929BB4B5E00DB024C /* UIBarButtonItem.swift */; };
 		CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEDF29B9FE2600B03973 /* SnapKit */; };
 		CDD1DEE629B9FF9E00B03973 /* DuctTape in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEE529B9FF9E00B03973 /* DuctTape */; };
 		CDD1DEE929B9FFDA00B03973 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEE829B9FFDA00B03973 /* RxCocoa */; };
@@ -42,7 +44,6 @@
 		CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD23207929B8C6EB003D0B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CD23207D29B8C6EB003D0B84 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CD23208229B8C6EC003D0B84 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD23208729B8C6EC003D0B84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD23209129B8D260003D0B84 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +52,9 @@
 		CD23209929B8D8F4003D0B84 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		CD23209B29B8D9C1003D0B84 /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 		CD23209D29B8DC0E003D0B84 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		CD6BCDA529BB2D5B00DB024C /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		CD6BCDA729BB2D9F00DB024C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CD6BCDA929BB4B5E00DB024C /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +165,7 @@
 		CD23209629B8D2ED003D0B84 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				CD6BCDA929BB4B5E00DB024C /* UIBarButtonItem.swift */,
 				CD23209729B8D2FB003D0B84 /* UIColor.swift */,
 				CD23209929B8D8F4003D0B84 /* UIView.swift */,
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
@@ -189,7 +194,7 @@
 		CDD1DEF129BA004A00B03973 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CD23207D29B8C6EB003D0B84 /* ViewController.swift */,
+				CD6BCDA529BB2D5B00DB024C /* HomeController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 		CDD1DEF429BA005800B03973 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CD6BCDA729BB2D9F00DB024C /* ViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -312,9 +318,11 @@
 			files = (
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
+				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
-				CD23207E29B8C6EB003D0B84 /* ViewController.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
+				CD6BCDA829BB2D9F00DB024C /* ViewController.swift in Sources */,
+				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
