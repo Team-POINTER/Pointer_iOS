@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "ducttape",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/marty-suzuki/DuctTape.git",
-      "state" : {
-        "revision" : "f5fc8a5af8efed6d8e07dfff591bbdb594880913",
-        "version" : "0.2.0"
-      }
-    },
-    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",

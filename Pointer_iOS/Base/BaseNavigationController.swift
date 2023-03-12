@@ -13,6 +13,6 @@ class BaseNavigationController: UINavigationController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
     }
 }

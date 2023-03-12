@@ -26,7 +26,7 @@ class BaseTabBarController: UITabBarController {
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
-        let secondVC = ViewController()
+        let secondVC = HomeController()
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
@@ -46,8 +46,10 @@ class BaseTabBarController: UITabBarController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .clear
+        appearance.shadowColor = nil
         nav.navigationBar.standardAppearance = appearance;
         nav.navigationBar.scrollEdgeAppearance = nav.navigationBar.standardAppearance
+        nav.navigationItem.largeTitleDisplayMode = .never
         
         nav.navigationBar.tintColor = .white
         return nav
@@ -58,9 +60,9 @@ class BaseTabBarController: UITabBarController {
             tabBar.tintColor = .pointerRed
             tabBar.unselectedItemTintColor = .tabbarGray
             tabBar.backgroundColor = .tabBarBackground
-            tabBar.barStyle = .default
+            tabBar.barStyle = .black
             tabBar.layer.masksToBounds = false
-            tabBar.isTranslucent = true
+            tabBar.isTranslucent = false
         }
     }
 }
