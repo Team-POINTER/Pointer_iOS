@@ -60,9 +60,9 @@ class BaseTabBarController: UITabBarController {
             tabBar.tintColor = .pointerRed
             tabBar.unselectedItemTintColor = .tabbarGray
             tabBar.backgroundColor = .tabBarBackground
-            tabBar.barStyle = .default
+            tabBar.barStyle = .black
             tabBar.layer.masksToBounds = false
-            tabBar.isTranslucent = true
+            tabBar.isTranslucent = false
         }
     }
 }
