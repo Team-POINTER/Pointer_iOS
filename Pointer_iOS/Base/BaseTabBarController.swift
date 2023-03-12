@@ -22,7 +22,7 @@ class BaseTabBarController: UITabBarController {
     private func configureViewControllers() {
         
         // 첫번째 탭
-        let firstVC = ViewController()
+        let firstVC = HomeController()
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
@@ -30,7 +30,7 @@ class BaseTabBarController: UITabBarController {
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
-        let thirdVC = ViewController()
+        let thirdVC = RoomViewController()
         let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup
