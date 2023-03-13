@@ -22,6 +22,15 @@ class HomeController: BaseViewController {
         return cv
     }()
     
+    lazy var actionButton: UIButton = {
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .thin, scale: .default)
+        button.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
+        button.backgroundColor = .pointerRed
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(handleActionButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -41,11 +50,37 @@ class HomeController: BaseViewController {
         print(#function)
     }
     
+    @objc private func something() {
+        print(#function)
+    }
+    
+    @objc private func handleActionButtonTapped() {
+        let modifyRoomName = PointerAlertConfig(title: "룸 이름 편집", color: .pointerAlertFontColor, selector: #selector(something)) {
+            print("DEBUG - 룸 이름 편집 눌림")
+        }
+        let inviteRoomWithLink = PointerAlertConfig(title: "링크로 룸 초대", color: .pointerAlertFontColor, selector: #selector(something)) {
+            print("DEBUG - 링크로 룸 초대 눌림")
+        }
+        let exitRoom = PointerAlertConfig(title: "룸 나가기", color: .pointerRed, font: .boldSystemFont(ofSize: 18), selector: #selector(something)) {
+            print("DEBUG - 룸 나가기 눌림")
+        }
+        let pointerActionSheet = PointerActionSheet(configs: [modifyRoomName, inviteRoomWithLink, exitRoom], delegate: self)
+        present(pointerActionSheet, animated: true)
+    }
+    
     //MARK: - Functions
     private func setupUI() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        view.addSubview(actionButton)
+        actionButton.snp.makeConstraints {
+            $0.width.height.equalTo(62)
+            $0.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(13)
+            actionButton.layer.cornerRadius = 62 / 2
+            actionButton.clipsToBounds = true
         }
     }
     
@@ -58,11 +93,9 @@ class HomeController: BaseViewController {
     private func setupNavigationController() {
         // 로고
         let logoImageView = UIImageView(image: UIImage(named: "pointer_logo_main"))
-        logoImageView.frame = CGRect(x: 0, y: 0, width: 120, height: 70)
         logoImageView.contentMode = .scaleAspectFit
         let imageItem = UIBarButtonItem.init(customView: logoImageView)
         logoImageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        logoImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         navigationItem.leftBarButtonItem = imageItem
         
         // 우측 바버튼
@@ -71,7 +104,7 @@ class HomeController: BaseViewController {
 
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, handler: #selector(handleNotiButtonTapped))
         let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, handler: #selector(handleSearchButtonTapped))
-        
+
         navigationItem.rightBarButtonItems = [notiButton, searchButton]
     }
 }
