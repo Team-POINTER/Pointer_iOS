@@ -55,17 +55,29 @@ class HomeController: BaseViewController {
     }
     
     @objc private func handleActionButtonTapped() {
-        let modifyRoomName = PointerAlertConfig(title: "룸 이름 편집", color: .pointerAlertFontColor, selector: #selector(something)) {
+        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .pointerAlertFontColor) {
             print("DEBUG - 룸 이름 편집 눌림")
         }
-        let inviteRoomWithLink = PointerAlertConfig(title: "링크로 룸 초대", color: .pointerAlertFontColor, selector: #selector(something)) {
+        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .pointerAlertFontColor) {
             print("DEBUG - 링크로 룸 초대 눌림")
         }
-        let exitRoom = PointerAlertConfig(title: "룸 나가기", color: .pointerRed, font: .boldSystemFont(ofSize: 18), selector: #selector(something)) {
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) {
             print("DEBUG - 룸 나가기 눌림")
         }
-        let pointerActionSheet = PointerActionSheet(configs: [modifyRoomName, inviteRoomWithLink, exitRoom], delegate: self)
-        present(pointerActionSheet, animated: true)
+        let actionSheet = PointerActionSheet(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
+        present(actionSheet, animated: true)
+        
+//        let confirmAction = PointerAlertActionConfig(title: "확인", textColor: .white, backgroundColor: .pointerRed, font: .notoSansBold(size: 18)) {
+//            print("확인 버튼 눌림")
+//        }
+//        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .pointerAlertFontColor, backgroundColor: .clear, font: .notoSansBold(size: 18)) {
+//            print("취소 버튼 눌림")
+//        }
+//        let customView = UIView()
+//        customView.backgroundColor = .red
+//        customView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        let alert = PointerActionSheet(alertType: .alert, configs: [confirmAction, cancelAction], title: "안녕하세요", description: "김지수입니다. 궁금한게 있으세요?", customView: customView)
+//        self.present(alert, animated: true)
     }
     
     //MARK: - Functions
