@@ -21,7 +21,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
     lazy var nameLabel : UILabel = {
         $0.text = "박현준(devjoonn)"
         $0.font = UIFont(name: "NotoSansKR-Bold", size: 16)
-        $0.textColor = UIColor.rgb(red: 146, green: 146, blue: 146)
+        $0.textColor = UIColor.black
         $0.textAlignment = .center
         return $0
     }(UILabel())
@@ -31,8 +31,11 @@ class RoomPeopleTableViewCell: UITableViewCell {
         return $0
     }(UIButton())
     
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .clear
+        clipsToBounds = false
         setUIandConstraints()
     }
     
@@ -47,9 +50,8 @@ class RoomPeopleTableViewCell: UITableViewCell {
         roundView.addSubview(pointkButton)
         
         roundView.snp.makeConstraints { make in
-            make.width.equalTo(UIScreen.main.bounds.width - 90)
-            make.height.equalTo(45)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalTo(42)
+            make.trailing.equalTo(-42)
             make.top.equalToSuperview().inset(5)
             make.bottom.equalToSuperview().inset(5)
         }
