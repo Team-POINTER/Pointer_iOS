@@ -14,6 +14,7 @@ extension UIColor {
     static let tabbarGray = UIColor.rgb(red: 197, green: 197, blue: 197)
     static let pointerGradientStart = UIColor.rgb(red: 50, green: 50, blue: 50)
     static let pointerGradientEnd = UIColor.rgb(red: 0, green: 0, blue: 0)
+    static let pointerAlertFontColor = UIColor.rgb(red: 96, green: 95, blue: 95)
 }
 
 // RGB값을 받아서 UIColor를 리턴하는 함수

@@ -27,7 +27,6 @@ extension UIBarButtonItem {
         icon.addTarget(target, action: handler, for: .touchUpInside)
         
         containerView.widthAnchor.constraint(equalToConstant: size).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: size).isActive = true
         containerView.backgroundColor = .darkGray
         containerView.layer.cornerRadius = size / 2
         containerView.clipsToBounds = true
