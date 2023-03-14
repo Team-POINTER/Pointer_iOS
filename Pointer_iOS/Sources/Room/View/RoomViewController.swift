@@ -103,7 +103,7 @@ class RoomViewController: BaseViewController {
             make.edges.width.equalToSuperview()
         }
         roomTopView.snp.makeConstraints { make in
-            make.height.equalTo(500)
+            make.height.equalTo(520)
         }
         peopleTableView.snp.makeConstraints { make in
             make.height.equalTo(600)

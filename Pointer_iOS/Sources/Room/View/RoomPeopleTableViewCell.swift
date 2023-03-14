@@ -20,14 +20,14 @@ class RoomPeopleTableViewCell: UITableViewCell {
     
     lazy var nameLabel : UILabel = {
         $0.text = "박현준(devjoonn)"
-        $0.font = UIFont(name: "NotoSansKR-Bold", size: 16)
+        $0.font = UIFont.notoSansBold(size: 16)
         $0.textColor = UIColor.black
         $0.textAlignment = .center
         return $0
     }(UILabel())
     
-    lazy var pointkButton : UIButton = {
-        $0.setImage(UIImage(named: "point"), for: .selected) // 버튼 이미지 변경해야함
+    lazy var pointStarButton : UIButton = {
+        $0.setImage(UIImage(named: "pointer_star"), for: .selected) // 버튼 이미지 변경해야함
         return $0
     }(UIButton())
     
@@ -47,7 +47,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
     func setUIandConstraints() {
         contentView.addSubview(roundView)
         roundView.addSubview(nameLabel)
-        roundView.addSubview(pointkButton)
+        roundView.addSubview(pointStarButton)
         
         roundView.snp.makeConstraints { make in
             make.leading.equalTo(42)
@@ -61,7 +61,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().inset(15)
         }
         
-        pointkButton.snp.makeConstraints { make in
+        pointStarButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(-15)
             make.width.height.equalTo(23)

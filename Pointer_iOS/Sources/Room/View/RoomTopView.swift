@@ -12,7 +12,7 @@ class RoomTopView: UIView {
 
     let hintAlertLabel : UILabel = {
         $0.text = "투표한 상대에게 보여지는 당신의 힌트를 작성해주세요."
-        $0.font = UIFont(name: "NotoSansKR-Regular", size: 8)
+        $0.font = UIFont.notoSansRegular(size: 12)
         $0.textColor = UIColor.rgb(red: 146, green: 146, blue: 146)
         $0.textAlignment = .center
         return $0
@@ -29,7 +29,7 @@ class RoomTopView: UIView {
         $0.attributedPlaceholder = NSAttributedString(
             string: "입력하세요.",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 197, green: 197, blue: 197)])
-        $0.font = UIFont(name: "NotoSansKR-Light", size: 15)
+        $0.font = UIFont.notoSans(font: .notoSansKrLight, size: 15)
         $0.backgroundColor = UIColor.clear
         $0.textColor = UIColor.white
         return $0
@@ -37,7 +37,7 @@ class RoomTopView: UIView {
     
     var hintTextCount : UILabel = {
         $0.text = "20/20"
-        $0.font = UIFont(name: "NotoSansKR-Regular", size: 13)
+        $0.font = UIFont.notoSansRegular(size: 13)
         $0.textColor = UIColor.rgb(red: 151, green: 151, blue: 151)
         $0.textAlignment = .center
         return $0
@@ -45,7 +45,7 @@ class RoomTopView: UIView {
     
     let questLabel : UILabel = {
         $0.text = "한 20년 뒤 미래에 가장 돈을 잘 벌 것 같은 사람은 누구인가?최대 공백포함45"
-        $0.font = UIFont(name: "NotoSansKR-Bold", size: 20)
+        $0.font = UIFont.notoSansBold(size: 20)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
         $0.textAlignment = .center
@@ -55,7 +55,7 @@ class RoomTopView: UIView {
     var selectPeople : UILabel = {
 //        $0.text = "선택하지 않았어요"
         $0.text = "Annette Black · Arlene McCoy \n Ronald Richards · Bessie Cooper \n Annette Black · Arlene McCoy \n"
-        $0.font = UIFont(name: "NotoSansKR-Bold", size: 18)
+        $0.font = UIFont.notoSansBold(size: 18)
         $0.textColor = UIColor.rgb(red: 96, green: 95, blue: 95)
         $0.numberOfLines = 0
         $0.textAlignment = .center
@@ -70,7 +70,7 @@ class RoomTopView: UIView {
     
     let selectAlertLabel : UILabel = {
         $0.text = "질문에 알맞는 사람을 한 명 이상 선택해주세요!"
-        $0.font = UIFont(name: "NotoSansKR-Regular", size: 12)
+        $0.font = UIFont.notoSansRegular(size: 12)
         $0.textColor = UIColor.rgb(red: 146, green: 146, blue: 146)
         $0.textAlignment = .center
         return $0
