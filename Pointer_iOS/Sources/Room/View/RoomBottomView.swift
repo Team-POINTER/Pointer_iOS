@@ -13,7 +13,7 @@ class RoomBottomView: UIView {
     private let inviteButton : UIButton = {
         $0.setTitle("링크로 초대하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont(name: "NotoSansKR-Bold", size: 16)
+        $0.titleLabel?.font = UIFont.notoSansBold(size: 16)
         $0.backgroundColor = .clear
         $0.layer.cornerRadius = 18
         $0.layer.borderWidth = 2
