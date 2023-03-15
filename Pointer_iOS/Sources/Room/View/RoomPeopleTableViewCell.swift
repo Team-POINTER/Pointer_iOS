@@ -11,7 +11,9 @@ import SnapKit
 class RoomPeopleTableViewCell: UITableViewCell {
     
     static let identifier = "RoomPeopleTableViewCell"
-
+    
+    var starHidden : Bool = true
+    
     lazy var roundView : UIView = {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 18
@@ -26,10 +28,11 @@ class RoomPeopleTableViewCell: UITableViewCell {
         return $0
     }(UILabel())
     
-    lazy var pointStarButton : UIButton = {
-        $0.setImage(UIImage(named: "pointer_star"), for: .selected) // 버튼 이미지 변경해야함
+    lazy var pointStar : UIImageView = {
+        $0.image = UIImage(named: "pointer_star")
+        $0.isHidden = starHidden
         return $0
-    }(UIButton())
+    }(UIImageView())
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -47,7 +50,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
     func setUIandConstraints() {
         contentView.addSubview(roundView)
         roundView.addSubview(nameLabel)
-        roundView.addSubview(pointStarButton)
+        roundView.addSubview(pointStar)
         
         roundView.snp.makeConstraints { make in
             make.leading.equalTo(42)
@@ -61,10 +64,14 @@ class RoomPeopleTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().inset(15)
         }
         
-        pointStarButton.snp.makeConstraints { make in
+        pointStar.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(-15)
+            make.trailing.equalToSuperview().inset(15)
             make.width.height.equalTo(23)
         }
+    }
+    
+    func configure() {
+        
     }
 }
