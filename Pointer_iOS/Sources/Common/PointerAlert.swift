@@ -13,10 +13,10 @@ struct PointerAlertActionConfig {
     let textColor: UIColor
     var backgroundColor: UIColor = .clear
     var font: UIFont = .notoSansRegular(size: 18)
-    let handler: (() -> Void)?
+    let handler: ((String?) -> Void)?
 }
 
-class PointerActionSheet: UIViewController {
+class PointerAlert: UIViewController {
     enum PointerAlertType {
         case actionSheet
         case alert
@@ -39,6 +39,8 @@ class PointerActionSheet: UIViewController {
     
     private var alertTitle: String?
     private var alertDescription: String?
+    
+    private var textfieldString: String?
     
     //MARK: - Lifecycle
     init(alertType: PointerAlertType, configs: [PointerAlertActionConfig], title: String? = nil, description: String? = nil, customView: UIView? = nil) {
@@ -99,7 +101,10 @@ class PointerActionSheet: UIViewController {
             self.topStack.addArrangedSubview(button)
         }
         // 취소버튼
-        let cancel = makeInnerView(title: "취소", font: .notoSansRegular(size: 18), textColor: .pointerAlertFontColor, backgroundColor: .clear, index: 0, height: 70) {}
+        let cancel = makeInnerView(title: "취소", font: .notoSansRegular(size: 18), textColor: .pointerAlertFontColor, backgroundColor: .clear, index: 0, height: 70) { _ in
+            
+        }
+
         bottomStack.addArrangedSubview(cancel)
         
         // TOP / BOTTOM Stack을 새로운 Stack으로 합침
@@ -158,6 +163,9 @@ class PointerActionSheet: UIViewController {
         
         // 커스텀 뷰가 있다면 추가, 없다면 생략
         if let customView = customView {
+            if let customTextfield = customView as? CustomTextfieldView {
+                customTextfield.delegate = self
+            }
             viewStacksArray = [titleLabel, descriptionLabel, customView, actionContainerView]
         } else {
             viewStacksArray = [titleLabel, descriptionLabel, actionContainerView]
@@ -184,7 +192,7 @@ class PointerActionSheet: UIViewController {
         return view
     }
     
-    private func makeInnerView(title: String, font: UIFont, textColor: UIColor, backgroundColor: UIColor, index: Int, height: CGFloat, handler: (() -> Void)?) -> UIView {
+    private func makeInnerView(title: String, font: UIFont, textColor: UIColor, backgroundColor: UIColor, index: Int, height: CGFloat, handler: ((String?) -> Void)?) -> UIView {
         let view = UIView()
         let button = UIButton(type: .system)
         
@@ -202,7 +210,9 @@ class PointerActionSheet: UIViewController {
         
         // dismiss 이후 handler
         button.addAction(for: .touchUpInside) { [weak self] _ in
-            self?.dismiss(animated: true, completion: handler)
+            self?.dismiss(animated: true) {
+                handler?(self?.textfieldString)
+            }
         }
         
         // 마지막 index가 아니라면 divider 추가 (ActionSheet의 경우)
@@ -268,6 +278,13 @@ class PointerActionSheet: UIViewController {
 }
 
 // MARK: - Extension
+
+extension PointerAlert: CustomTextfieldViewDelegate {
+    func textDidChanged(text: String) {
+        textfieldString = text
+    }
+}
+
 
 // UIControl + Closure
 extension UIControl {
