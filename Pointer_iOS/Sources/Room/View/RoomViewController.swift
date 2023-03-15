@@ -20,9 +20,9 @@ import RxRelay
 //MARK: 처리해야할 부분
 // 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [X]
 // 2. 룸에서 Point를 누른 사람들을 selectPeople에 담아서 fontColor변경 후 줄바꿈하여 출력[X]
-// 3. 글씨체 적용 [X]
+// 3. 글씨체 적용 [O]
 // 4. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [X]
-// 5. navigationBar titleColor, LeftBarItem 추가 [X]
+// 5. navigationBar titleColor [X], LeftBarItem 추가 [O]
 
 class RoomViewController: BaseViewController {
     
