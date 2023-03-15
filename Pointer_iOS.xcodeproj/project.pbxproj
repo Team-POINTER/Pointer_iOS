@@ -19,6 +19,7 @@
 		4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48829BEEE0D00011E06 /* RoomViewModel.swift */; };
 		4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48C29C06C7400011E06 /* RoomTopView.swift */; };
 		4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48E29C0707F00011E06 /* RoomBottomView.swift */; };
+		4749D49229C1D15900011E06 /* RoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D49129C1D15900011E06 /* RoomModel.swift */; };
 		CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207929B8C6EB003D0B84 /* AppDelegate.swift */; };
 		CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */; };
 		CD23208329B8C6EC003D0B84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD23208229B8C6EC003D0B84 /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 		4749D48829BEEE0D00011E06 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
 		4749D48C29C06C7400011E06 /* RoomTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTopView.swift; sourceTree = "<group>"; };
 		4749D48E29C0707F00011E06 /* RoomBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBottomView.swift; sourceTree = "<group>"; };
+		4749D49129C1D15900011E06 /* RoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomModel.swift; sourceTree = "<group>"; };
 		CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD23207929B8C6EB003D0B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,14 @@
 				4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		4749D49029C1D14A00011E06 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4749D49129C1D15900011E06 /* RoomModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		CD077F4B29BF8A61005A01A9 /* Common */ = {
@@ -209,6 +219,7 @@
 		CDD1DEF029BA004100B03973 /* Room */ = {
 			isa = PBXGroup;
 			children = (
+				4749D49029C1D14A00011E06 /* Model */,
 				CDD1DEF429BA005800B03973 /* View */,
 				CDD1DEF329BA005800B03973 /* ViewModel */,
 			);
@@ -356,6 +367,7 @@
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
+				4749D49229C1D15900011E06 /* RoomModel.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,

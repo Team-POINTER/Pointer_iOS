@@ -23,15 +23,19 @@ class BaseTabBarController: UITabBarController {
         
         // 첫번째 탭
         let firstVC = HomeController()
-        let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
+        let nav1 = templateNavigationController(UIImage(named: "tabbar_chat"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
         let secondVC = HomeController()
-        let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
+        let nav2 = templateNavigationController(UIImage(named: "tabbar_home"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
         let thirdVC = RoomViewController()
-        let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
+        let nav3 = templateNavigationController(UIImage(named: "tabbar_profile"), title: "프로필", viewController: thirdVC)
+        
+        nav1.tabBarItem.selectedImage = UIImage(named: "tabbar_chat_fill")
+        nav2.tabBarItem.selectedImage = UIImage(named: "tabbar_home_fill")
+        nav3.tabBarItem.selectedImage = UIImage(named: "tabbar_profile_fill")
         
         // 탭들 Setup
         viewControllers = [nav1, nav2, nav3]
