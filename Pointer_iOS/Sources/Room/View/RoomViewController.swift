@@ -1,4 +1,3 @@
-
 //
 //  RoomViewController.swift
 //  Pointer_iOS
@@ -24,17 +23,17 @@ import RxRelay
 // 4. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [X]
 // 5. navigationBar titleColor, LeftBarItem 추가 [X]
 
-
 class RoomViewController: BaseViewController {
     
 //MARK: - Components
+//    var viewModel = RoomViewModel?
     var tableViewHeight = 0 // 데이터의 개수 * 55 해서 tableView height 값 넣기[x] - 86번쨰 줄
     let disposeBag = DisposeBag()
     
-
-//MARK: - RX
-    // hintTextField 입력 값 20자 제한
-    func textBind(viewModel: RoomViewModel = RoomViewModel(maxNumber: 20)) {
+//    var cellChecked = [Int]()
+    
+    func bindViewModel(viewModel: RoomViewModel = RoomViewModel(maxNumber: 20)) {
+        // hintTextField 입력 값 20자 제한
         roomTopView.hintTextField.rx.text.orEmpty
             .bind(to: viewModel.hintTextObservable)
             .disposed(by: disposeBag)
@@ -53,8 +52,6 @@ class RoomViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
     }
-    
-    
     
 //MARK: - UIComponents
     private let scrollView : UIScrollView = {
@@ -97,7 +94,7 @@ class RoomViewController: BaseViewController {
     
     func setUIConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         stackView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
@@ -128,7 +125,7 @@ class RoomViewController: BaseViewController {
         setUI()
         setUIConstraints()
         didScrollFunc()
-        textBind()
+        bindViewModel()
     }
     
     
@@ -144,6 +141,8 @@ extension RoomViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RoomPeopleTableViewCell.identifier, for: indexPath) as? RoomPeopleTableViewCell else { return UITableViewCell() }
+        
+        cell.isSelected = false
         return cell
     }
     
@@ -155,6 +154,17 @@ extension RoomViewController : UITableViewDelegate, UITableViewDataSource {
         // 셀 선택시 회색화면 지우기
         print("cell indexPath = \(indexPath)")
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let cell = tableView.cellForRow(at: indexPath) as? RoomPeopleTableViewCell
+        // star 체크표시 만들
+        if cell?.pointStar.isHidden == true {
+            cell?.pointStar.isHidden = false
+//            cellChecked.append(indexPath.row)
+        } else {
+            cell?.pointStar.isHidden = true
+//            cellChecked.remove(at: indexPath.row)
+        }
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -165,4 +175,37 @@ extension RoomViewController : UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+}
+//MARK: - RX
+private extension RoomViewController {
+        
+//        let input = RoomViewModel.Input(
+//            hintTextDidEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable(),
+//            peopleDidTapEvent: roomTopView.peopleTableView.rx.cellForRow(at: IndexPath).asObservable(),
+//            pointButtonActive: roomTopView.pointerButton.rx.isEnabled.asObservable(),
+//            pointButtonTapEvent: roomTopView.pointerButton.rx.tap.asObservable(),
+//            inviteButtonTapEvent: roomBottomView.inviteButton.rx.tap.asObservable()
+//        )
+//
+//        let output = self.viewModel?.transform(input: input, output: <#T##V#>)
+//
+//
+//        roomTopView.hintTextField.rx.text.orEmpty
+//            .bind(to: viewModel.hintTextObservable)
+//            .disposed(by: disposeBag)
+//
+//        viewModel.currentLength
+//            .emit { [weak self] str in
+//                self?.roomTopView.hintTextCount.text = str
+//            }
+//            .disposed(by: disposeBag)
+//
+//        viewModel.isEditable
+//            .emit(onNext: { [weak self] isEditable in
+//                if !isEditable {
+//                    self?.roomTopView.hintTextField.text = String(self?.roomTopView.hintTextField.text?.dropLast() ?? "")
+//                }
+//            })
+//            .disposed(by: disposeBag)
+//    }
 }
