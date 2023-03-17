@@ -37,6 +37,7 @@
 		CD7A70FD29BDE7F3003E140C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD7A70FC29BDE7F3003E140C /* RxSwift */; };
 		CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A70FE29BE23D0003E140C /* UIFont.swift */; };
 		CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD90B48929BE327700772192 /* PointerAlert.swift */; };
+		CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */; };
 		CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEDF29B9FE2600B03973 /* SnapKit */; };
 		CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEED29B9FFFE00B03973 /* Kingfisher */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		CD6BCDAB29BB97B300DB024C /* RoomPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPreviewCell.swift; sourceTree = "<group>"; };
 		CD7A70FE29BE23D0003E140C /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		CD90B48929BE327700772192 /* PointerAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerAlert.swift; sourceTree = "<group>"; };
+		CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 				CDD1DEF529BA006700B03973 /* Models */,
 				CDD1DEEF29BA002400B03973 /* Home */,
 				CDD1DEF029BA004100B03973 /* Room */,
+				CDC51EC729C4EAF700E8BC58 /* Search */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -197,6 +200,14 @@
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		CDC51EC729C4EAF700E8BC58 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		CDD1DEEF29BA002400B03973 /* Home */ = {
@@ -357,6 +368,7 @@
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
+				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,

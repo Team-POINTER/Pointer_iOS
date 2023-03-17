@@ -43,7 +43,8 @@ class HomeController: BaseViewController {
     
     //MARK: - Selector
     @objc private func handleSearchButtonTapped() {
-        print(#function)
+        let vc = SearchController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func handleNotiButtonTapped() {
