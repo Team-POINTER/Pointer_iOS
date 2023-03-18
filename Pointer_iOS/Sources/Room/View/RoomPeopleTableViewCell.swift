@@ -12,7 +12,16 @@ class RoomPeopleTableViewCell: UITableViewCell {
     
     static let identifier = "RoomPeopleTableViewCell"
     
-    var starHidden : Bool = true
+    var clickCount: Int = 0 {
+        didSet {
+            if clickCount == 0 {
+                self.pointStar.isHidden = true
+            }
+            else {
+                self.pointStar.isHidden = false
+            }
+        }
+    }
     
     lazy var roundView : UIView = {
         $0.backgroundColor = .white
@@ -30,7 +39,6 @@ class RoomPeopleTableViewCell: UITableViewCell {
     
     lazy var pointStar : UIImageView = {
         $0.image = UIImage(named: "pointer_star")
-        $0.isHidden = starHidden
         return $0
     }(UIImageView())
     
@@ -69,6 +77,15 @@ class RoomPeopleTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().inset(15)
             make.width.height.equalTo(23)
         }
+    }
+    
+    func onSelected() {
+        self.pointStar.isHidden = false
+        self.clickCount = 1
+    }
+    func onDeselected() {
+        self.pointStar.isHidden = true
+        self.clickCount = 0
     }
     
     func configure() {

@@ -19,38 +19,100 @@ import RxRelay
 //MARK: 처리해야할 부분
 // 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [X]
 // 2. 룸에서 Point를 누른 사람들을 selectPeople에 담아서 fontColor변경 후 줄바꿈하여 출력[X]
-// 3. 글씨체 적용 [X]
+// 3. 글씨체 적용 [O]
 // 4. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [X]
 // 5. navigationBar titleColor, LeftBarItem 추가 [X]
 
 class RoomViewController: BaseViewController {
     
 //MARK: - Components
-//    var viewModel = RoomViewModel?
-    var tableViewHeight = 0 // 데이터의 개수 * 55 해서 tableView height 값 넣기[x] - 86번쨰 줄
+
+    var tableViewHeight = 0 // 데이터의 개수 * 55 해서 tableView height 값 넣기[x]
     let disposeBag = DisposeBag()
     
-//    var cellChecked = [Int]()
+    var viewModel = RoomViewModel()
     
-    func bindViewModel(viewModel: RoomViewModel = RoomViewModel(maxNumber: 20)) {
-        // hintTextField 입력 값 20자 제한
-        roomTopView.hintTextField.rx.text.orEmpty
-            .bind(to: viewModel.hintTextObservable)
+    var cellChecked = [0,0,0,0,0,0,0,0,0,0]
+    
+//MARK: - Rx
+    func bindViewModel() {
+        
+        // 사용자의 hint 입력값을 hintTextField에 바인딩
+        roomTopView.hintTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.hintTextFieldText)
             .disposed(by: disposeBag)
         
-        viewModel.currentLength
-            .emit { [weak self] str in
-                self?.roomTopView.hintTextCount.text = str
+        roomTopView.hintTextField.rx.text
+            .orEmpty
+            .map{ $0 != nil }
+            .bind(to: viewModel.hintTextEdit)
+            .disposed(by: disposeBag)
+        
+        roomTopView.hintTextField.rx.text
+            .orEmpty
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { text in
+                self.hintTextLimit(text)
+            })
+            .disposed(by: disposeBag)
+        
+        roomTopView.hintTextField.rx.text
+            .orEmpty
+            .map{ "\($0.count)" }
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { count in
+                self.roomTopView.hintTextCount.text = "\(count)/20"
+            })
+            .disposed(by: disposeBag)
+        
+// - tableView bind
+        viewModel.roomObservable
+            .observe(on: MainScheduler.instance)
+            .bind(to: peopleTableView.rx.items(cellIdentifier: "RoomPeopleTableViewCell", cellType: RoomPeopleTableViewCell.self)) { index, item, cell in
+                cell.nameLabel.text = item.name
+                cell.pointStar.isHidden = item.isHidden
+                
+            }.disposed(by: disposeBag)
+        
+        
+        
+        Observable
+            .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(RoomModel.self))
+            .bind { [weak self] indexPath, model in
+                self?.peopleTableView.deselectRow(at: indexPath, animated: false)
+                print("Selected \(model) at \(indexPath)")
+                let cell = self?.peopleTableView.cellForRow(at: indexPath) as? RoomPeopleTableViewCell
+                
+                // point 체크 이미지[O] & 배열 추가해야함 [O]
+                if cell?.clickCount == 1 {
+                    self?.cellChecked[indexPath.row] = 0
+                    cell?.clickCount = 0
+                    print("\(String(describing: self?.cellChecked))")
+                } else {
+                    cell?.clickCount += 1
+                    self?.cellChecked[indexPath.row] = 1
+                    print("\(String(describing: self?.cellChecked))")
+                }
             }
             .disposed(by: disposeBag)
         
-        viewModel.isEditable
-            .emit(onNext: { [weak self] isEditable in
-                if !isEditable {
-                    self?.roomTopView.hintTextField.text = String(self?.roomTopView.hintTextField.text?.dropLast() ?? "")
-                }
-            })
-            .disposed(by: disposeBag)
+        
+// - point button bind
+        // cellChecked 배열에 있는 Observer와 hintTextEdit을 combineLast로 묶어서 처리 [X]
+        // 배열 값이 변경되는 옵저버 선언해야함 [X]
+        
+        
+            
+    }
+    
+//MARK: - helper
+    // 텍스트 20자 제한
+    private func hintTextLimit(_ str: String) {
+        if str.count > 20 {
+            let index = str.index(str.startIndex, offsetBy: 20)
+            self.roomTopView.hintTextField.text = String(str[..<index])
+        }
     }
     
 //MARK: - UIComponents
@@ -113,7 +175,6 @@ class RoomViewController: BaseViewController {
     func didScrollFunc() {
         scrollView.delegate = self
         peopleTableView.delegate = self
-        peopleTableView.dataSource = self
     }
     
 //MARK: - Life Cycles
@@ -126,45 +187,20 @@ class RoomViewController: BaseViewController {
         setUIConstraints()
         didScrollFunc()
         bindViewModel()
+        self.hideKeyboardWhenTappedAround()
     }
     
     
     @objc func backButtonTap() {
         
     }
+    
 }
 //MARK: - TableView
-extension RoomViewController : UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RoomPeopleTableViewCell.identifier, for: indexPath) as? RoomPeopleTableViewCell else { return UITableViewCell() }
-        
-        cell.isSelected = false
-        return cell
-    }
+extension RoomViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 셀 선택시 회색화면 지우기
-        print("cell indexPath = \(indexPath)")
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let cell = tableView.cellForRow(at: indexPath) as? RoomPeopleTableViewCell
-        // star 체크표시 만들
-        if cell?.pointStar.isHidden == true {
-            cell?.pointStar.isHidden = false
-//            cellChecked.append(indexPath.row)
-        } else {
-            cell?.pointStar.isHidden = true
-//            cellChecked.remove(at: indexPath.row)
-        }
-        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -176,36 +212,4 @@ extension RoomViewController : UITableViewDelegate, UITableViewDataSource {
     }
 
 }
-//MARK: - RX
-private extension RoomViewController {
-        
-//        let input = RoomViewModel.Input(
-//            hintTextDidEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable(),
-//            peopleDidTapEvent: roomTopView.peopleTableView.rx.cellForRow(at: IndexPath).asObservable(),
-//            pointButtonActive: roomTopView.pointerButton.rx.isEnabled.asObservable(),
-//            pointButtonTapEvent: roomTopView.pointerButton.rx.tap.asObservable(),
-//            inviteButtonTapEvent: roomBottomView.inviteButton.rx.tap.asObservable()
-//        )
-//
-//        let output = self.viewModel?.transform(input: input, output: <#T##V#>)
-//
-//
-//        roomTopView.hintTextField.rx.text.orEmpty
-//            .bind(to: viewModel.hintTextObservable)
-//            .disposed(by: disposeBag)
-//
-//        viewModel.currentLength
-//            .emit { [weak self] str in
-//                self?.roomTopView.hintTextCount.text = str
-//            }
-//            .disposed(by: disposeBag)
-//
-//        viewModel.isEditable
-//            .emit(onNext: { [weak self] isEditable in
-//                if !isEditable {
-//                    self?.roomTopView.hintTextField.text = String(self?.roomTopView.hintTextField.text?.dropLast() ?? "")
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//    }
-}
+

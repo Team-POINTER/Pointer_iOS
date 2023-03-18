@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117C9E29C2F391001707C8 /* RoomModel.swift */; };
 		4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */; };
 		4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */; };
 		4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */; };
@@ -42,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		47117C9E29C2F391001707C8 /* RoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomModel.swift; sourceTree = "<group>"; };
 		4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
 		4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
 		4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
@@ -89,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		47117C9D29C2F385001707C8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				47117C9E29C2F391001707C8 /* RoomModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		4749D46D29B9B96800011E06 /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +221,7 @@
 		CDD1DEF029BA004100B03973 /* Room */ = {
 			isa = PBXGroup;
 			children = (
+				47117C9D29C2F385001707C8 /* Model */,
 				CDD1DEF429BA005800B03973 /* View */,
 				CDD1DEF329BA005800B03973 /* ViewModel */,
 			);
@@ -361,6 +372,7 @@
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
+				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
