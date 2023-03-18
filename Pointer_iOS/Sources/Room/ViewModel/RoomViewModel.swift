@@ -8,92 +8,48 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxRelay
 
-struct RoomViewModel {
+class RoomViewModel {
     
-    let hintTextObservable = BehaviorRelay<String>(value: "")
+    var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
     
-    let currentLength: Signal<String>
-    let isEditable: Signal<Bool>
     
-    // 글자제한
-    init(maxNumber: Int) {
-        let hintTextObservable = hintTextObservable.share()
+    lazy var hintTextFieldText = BehaviorRelay<String>(value: "")
+    lazy var hintTextEdit = BehaviorRelay<Bool>(value: false)
+    lazy var peopleCheck = BehaviorRelay<Bool>(value: false)
+    lazy var pointButtonEnable = BehaviorRelay<Bool>(value: false)
+    
+
+   
+ 
+    
+    
+    init() {
+        let people: [RoomModel] = [
+                    RoomModel(name: "박씨", isHidden: true),
+                    RoomModel(name: "김씨", isHidden: true),
+                    RoomModel(name: "냠남", isHidden: true),
+                    RoomModel(name: "최씨", isHidden: true),
+                    RoomModel(name: "언씨", isHidden: true),
+                    RoomModel(name: "오씨", isHidden: true)
+        ]
         
-        currentLength = hintTextObservable
-            .map{ $0.count }
-            .map({ number in
-                let currentNumber = number > 20 ? number - 1 : number
-                return "\(currentNumber)/20"
-            })
-            .asSignal(onErrorJustReturn: "0/20")
+        self.roomObservable.accept(people)
         
-        isEditable = hintTextObservable
-            .map { $0.count <= 20 }
-            .asSignal(onErrorJustReturn: false)
     }
-    
+
+
+    func binding() {
+
+        
+//        var isValid: Observable<Bool> {
+       //        return Observable.combineLatest(hintTextFieldText, buttonSelect)
+       //            .map{ text, buttonSelect in
+       //                print("\(text)")
+       //                return !text.isEmpty && tableViewCellTaped
+       //            }
+       //    }
+    }
     
 }
 
-//let hintTextOver = BehaviorRelay<Bool>(value: false)
-//let starCheck = BehaviorRelay<Bool>(value: false)
-
-
-//    init(hiddenCheck : Bool) {
-//        let hintTextObservable = hintTextOver.share()
-//        let starHiddenObservable = starHidden.share()
-//
-//        textCheck = hintTextObservable
-//            .map{ $0.count > 0 }
-//            .asSignal(onErrorJustReturn: false)
-//
-//
-//    }
-    
-    
-
-//private let roomModel = RoomModel
-//
-//struct Input {
-//    let hintTextDidEditEvent: Observable<String>
-//    let peopleDidTapEvent: Observable<Void>
-//    let pointButtonActive: Observable<Bool>
-//    let pointButtonTapEvent: Observable<Void>
-//    let inviteButtonTapEvent: Observable<Void>
-//}
-//
-//struct Output {
-//    let hintText = BehaviorRelay<String>(value: "")
-//    let pointButtonEnable = BehaviorRelay<Bool>(value: false)
-//}
-//
-//
-//init() {
-//}
-//
-//func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-//    self.configureInput(input, disposeBag: disposeBag)
-//    return ceateOutput(input, disposeBag: disposeBag)
-//}
-//
-//private func configureInput(_ input: Input, disposeBag: DisposeBag) {
-//    input.hintTextDidEditEvent
-//
-//        .subscribe(onNext: { [weak self] hintText in
-//            self?.roomModel.hintText
-//        })
-//        .disposed(by: disposeBag)
-//
-//
-//}
-//
-//private func ceateOutput(from input: Input, disposeBag: DisposeBag) -> Output {
-//    let output = Output()
-//
-//    self.roomModel.hintText
-//        .subscribe(onNext: { [weak self] hintText in
-//            output.hintText.accept(self?.roomModel.hintText)
-//        }).dispose()
-//}

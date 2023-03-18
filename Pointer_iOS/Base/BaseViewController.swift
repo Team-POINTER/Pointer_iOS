@@ -22,4 +22,14 @@ class BaseViewController: UIViewController {
     private func setupUI() {
         view.setGradient(color1: .pointerGradientStart, color2: .pointerGradientEnd)
     }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
