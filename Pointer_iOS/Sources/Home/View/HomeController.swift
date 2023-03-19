@@ -43,7 +43,8 @@ class HomeController: BaseViewController {
     
     //MARK: - Selector
     @objc private func handleSearchButtonTapped() {
-        print(#function)
+        let vc = SearchController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func handleNotiButtonTapped() {
@@ -55,18 +56,22 @@ class HomeController: BaseViewController {
     }
     
     @objc private func handleActionButtonTapped() {
-//        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .pointerAlertFontColor) {
-//            print("DEBUG - 룸 이름 편집 눌림")
-//        }
-//        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .pointerAlertFontColor) {
-//            print("DEBUG - 링크로 룸 초대 눌림")
-//        }
-//        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) {
-//            print("DEBUG - 룸 나가기 눌림")
-//        }
-//        let actionSheet = PointerActionSheet(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
-//        present(actionSheet, animated: true)
-        
+        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .pointerAlertFontColor) { [weak self] _ in
+            print("DEBUG - 룸 이름 편집 눌림")
+            self?.modifyRoomNameAction()
+        }
+        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .pointerAlertFontColor) { _ in
+            print("DEBUG - 링크로 룸 초대 눌림")
+        }
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { _ in
+            print("DEBUG - 룸 나가기 눌림")
+        }
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
+        present(actionSheet, animated: true)
+    }
+    
+    //MARK: - Functions
+    private func modifyRoomNameAction() {
         let confirmAction = PointerAlertActionConfig(title: "확인", textColor: .white, backgroundColor: .pointerRed, font: .notoSansBold(size: 18)) {
             if let text = $0 {
                 print("DEBUG - 방이름 : \(text)")
@@ -80,7 +85,6 @@ class HomeController: BaseViewController {
         self.present(alert, animated: true)
     }
     
-    //MARK: - Functions
     private func setupUI() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
