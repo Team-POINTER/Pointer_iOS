@@ -37,7 +37,6 @@ class RoomViewController: BaseViewController {
 //MARK: - Rx
     func bindViewModel() {
         
-        // 사용자의 hint 입력값을 hintTextField에 바인딩
         roomTopView.hintTextField.rx.text
             .orEmpty
             .bind(to: viewModel.hintTextFieldText)
@@ -45,13 +44,7 @@ class RoomViewController: BaseViewController {
         
         roomTopView.hintTextField.rx.text
             .orEmpty
-            .map{ $0 != nil }
-            .bind(to: viewModel.hintTextEdit)
-            .disposed(by: disposeBag)
-        
-        roomTopView.hintTextField.rx.text
-            .orEmpty
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { text in
                 self.hintTextLimit(text)
             })
@@ -60,7 +53,7 @@ class RoomViewController: BaseViewController {
         roomTopView.hintTextField.rx.text
             .orEmpty
             .map{ "\($0.count)" }
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { count in
                 self.roomTopView.hintTextCount.text = "\(count)/20"
             })
@@ -144,6 +137,9 @@ class RoomViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
+        
+        self.title = "룸 이름"
+        // - navigation bar title 색상 변경
     }
     
     func setUI() {
@@ -180,8 +176,6 @@ class RoomViewController: BaseViewController {
 //MARK: - Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "룸 이름"
-        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         configureBar()
         setUI()
         setUIConstraints()
@@ -195,7 +189,10 @@ class RoomViewController: BaseViewController {
         
     }
     
+    
 }
+
+
 //MARK: - TableView
 extension RoomViewController : UITableViewDelegate{
     

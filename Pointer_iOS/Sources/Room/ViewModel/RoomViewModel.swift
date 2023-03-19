@@ -11,6 +11,8 @@ import RxCocoa
 
 class RoomViewModel {
     
+    let disposeBag = DisposeBag()
+    
     var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
     
     
@@ -40,7 +42,13 @@ class RoomViewModel {
 
 
     func binding() {
-
+        
+        hintTextFieldText
+            .map { $0 != nil }
+            .subscribe(onNext: { bool in
+                self.hintTextEdit.accept(bool)
+            }).disposed(by: disposeBag)
+        
         
 //        var isValid: Observable<Bool> {
        //        return Observable.combineLatest(hintTextFieldText, buttonSelect)
