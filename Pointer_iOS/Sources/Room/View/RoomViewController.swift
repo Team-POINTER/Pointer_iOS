@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import RxCocoa
 import RxSwift
-import RxRelay
 
 //MARK: 비동기로 처리해야할 부분
 // 1. hint 입력했을 시 글자수 20자 제한 [O]
@@ -94,6 +93,9 @@ class RoomViewController: BaseViewController {
 // - point button bind
         // cellChecked 배열에 있는 Observer와 hintTextEdit을 combineLast로 묶어서 처리 [X]
         // 배열 값이 변경되는 옵저버 선언해야함 [X]
+//        roomTopView.pointerButton.rx.tap
+//            .bind(to: viewModel.pointButtonTap)
+//            .disposed(by: disposeBag)
         
         
             
@@ -161,7 +163,7 @@ class RoomViewController: BaseViewController {
             make.height.equalTo(520)
         }
         peopleTableView.snp.makeConstraints { make in
-            make.height.equalTo(600)
+            make.height.equalTo(400)
         }
         roomBottomView.snp.makeConstraints { make in
             make.height.equalTo(200)
