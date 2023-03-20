@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import RxCocoa
 import RxSwift
-import RxRelay
 
 //MARK: 비동기로 처리해야할 부분
 // 1. hint 입력했을 시 글자수 20자 제한 [O]
@@ -37,7 +36,6 @@ class RoomViewController: BaseViewController {
 //MARK: - Rx
     func bindViewModel() {
         
-        // 사용자의 hint 입력값을 hintTextField에 바인딩
         roomTopView.hintTextField.rx.text
             .orEmpty
             .bind(to: viewModel.hintTextFieldText)
@@ -45,13 +43,7 @@ class RoomViewController: BaseViewController {
         
         roomTopView.hintTextField.rx.text
             .orEmpty
-            .map{ $0 != nil }
-            .bind(to: viewModel.hintTextEdit)
-            .disposed(by: disposeBag)
-        
-        roomTopView.hintTextField.rx.text
-            .orEmpty
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { text in
                 self.hintTextLimit(text)
             })
@@ -60,7 +52,7 @@ class RoomViewController: BaseViewController {
         roomTopView.hintTextField.rx.text
             .orEmpty
             .map{ "\($0.count)" }
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { count in
                 self.roomTopView.hintTextCount.text = "\(count)/20"
             })
@@ -101,6 +93,9 @@ class RoomViewController: BaseViewController {
 // - point button bind
         // cellChecked 배열에 있는 Observer와 hintTextEdit을 combineLast로 묶어서 처리 [X]
         // 배열 값이 변경되는 옵저버 선언해야함 [X]
+//        roomTopView.pointerButton.rx.tap
+//            .bind(to: viewModel.pointButtonTap)
+//            .disposed(by: disposeBag)
         
         
             
@@ -144,6 +139,9 @@ class RoomViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
+        
+        self.title = "룸 이름"
+        // - navigation bar title 색상 변경
     }
     
     func setUI() {
@@ -165,7 +163,7 @@ class RoomViewController: BaseViewController {
             make.height.equalTo(520)
         }
         peopleTableView.snp.makeConstraints { make in
-            make.height.equalTo(600)
+            make.height.equalTo(400)
         }
         roomBottomView.snp.makeConstraints { make in
             make.height.equalTo(200)
@@ -180,8 +178,6 @@ class RoomViewController: BaseViewController {
 //MARK: - Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "룸 이름"
-        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         configureBar()
         setUI()
         setUIConstraints()
@@ -195,7 +191,10 @@ class RoomViewController: BaseViewController {
         
     }
     
+    
 }
+
+
 //MARK: - TableView
 extension RoomViewController : UITableViewDelegate{
     

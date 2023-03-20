@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117C9E29C2F391001707C8 /* RoomModel.swift */; };
+		47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA429C72EB3001707C8 /* ResultViewController.swift */; };
+		47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA629C72EC6001707C8 /* ResultViewModel.swift */; };
+		47117CA929C72FEB001707C8 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA829C72FEB001707C8 /* ResultView.swift */; };
+		47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAA29C74DCB001707C8 /* ResultChatView.swift */; };
 		4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */; };
 		4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */; };
 		4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */; };
@@ -49,6 +53,10 @@
 
 /* Begin PBXFileReference section */
 		47117C9E29C2F391001707C8 /* RoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomModel.swift; sourceTree = "<group>"; };
+		47117CA429C72EB3001707C8 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		47117CA629C72EC6001707C8 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
+		47117CA829C72FEB001707C8 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		47117CAA29C74DCB001707C8 /* ResultChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultChatView.swift; sourceTree = "<group>"; };
 		4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
 		4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
 		4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
@@ -107,6 +115,33 @@
 				47117C9E29C2F391001707C8 /* RoomModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		47117CA029C72E23001707C8 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				47117CA229C72E74001707C8 /* View */,
+				47117CA329C72E78001707C8 /* ViewModel */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
+		47117CA229C72E74001707C8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				47117CA429C72EB3001707C8 /* ResultViewController.swift */,
+				47117CA829C72FEB001707C8 /* ResultView.swift */,
+				47117CAA29C74DCB001707C8 /* ResultChatView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		47117CA329C72E78001707C8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				47117CA629C72EC6001707C8 /* ResultViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		4749D46D29B9B96800011E06 /* Font */ = {
@@ -198,6 +233,7 @@
 				CDD1DEF529BA006700B03973 /* Models */,
 				CDD1DEEF29BA002400B03973 /* Home */,
 				CDD1DEF029BA004100B03973 /* Room */,
+				47117CA029C72E23001707C8 /* Result */,
 				CDC51EC729C4EAF700E8BC58 /* Search */,
 			);
 			path = Sources;
@@ -403,6 +439,7 @@
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
+				47117CA929C72FEB001707C8 /* ResultView.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
@@ -411,16 +448,19 @@
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
+				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
+				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
+				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
 				CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */,
 			);
