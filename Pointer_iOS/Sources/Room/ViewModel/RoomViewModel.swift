@@ -15,66 +15,56 @@ protocol RoomViewModelType {
 
     func transform(input: Input) -> Output
 }
-
-
-class RoomViewModel {
     
-    struct Input {
-        
-    }
-    
-    struct Output {
-        
-    }
+
+final class RoomViewModel: RoomViewModelType {
     
     
     let disposeBag = DisposeBag()
-    
     var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
+    var totalClickCount = 0
+    var cellChecked = [0,0,0,0,0,0,0,0,0,0]
     
     
-    lazy var hintTextFieldText = BehaviorRelay<String>(value: "")
-    lazy var hintTextEdit = BehaviorRelay<Bool>(value: false)
-    lazy var peopleCheck = BehaviorRelay<Bool>(value: false)
-    lazy var pointButtonEnable = BehaviorRelay<Bool>(value: false)
-//    var pointButtonTap: BehaviorRelay<Void>
+    struct Input {
+        let hintTextEditEvent: Observable<String>
+//        let cellCheckedEvent: Observable<Int>
+        let pointButtonTapedEvent: Observable<Void>
+    }
     
+    struct Output {
+        let hintTextFieldCount: Observable<String>
+        let hintTextValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+        let cellTapValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+        let pointButtonTap: Observable<Void>
+    }
+    
+    
+    func transform(input: Input) -> Output {
+        
+        let hintText = input.hintTextEditEvent
+            .map{ "\($0.count)/20" }
+        
+        let hintValid = input.hintTextEditEvent
+            .map(hintTextCheck)
+        
+//         nameTapValid의 배열 중 1이 포함 될 시 true
+        let nameTapValid = Observable.just(totalClickCount)
+            .map(nameTapCheck)
+        
+        let pointTap = input.pointButtonTapedEvent
+        // 입력된 텍스트값, cellChekced 데이터 보내기
 
-   
- 
-    
-    
-    init() {
-        
-        let people: [RoomModel] = [
-                    RoomModel(name: "박씨", isHidden: true),
-                    RoomModel(name: "김씨", isHidden: true),
-                    RoomModel(name: "냠남", isHidden: true),
-                    RoomModel(name: "최씨", isHidden: true),
-                    RoomModel(name: "언씨", isHidden: true),
-                    RoomModel(name: "오씨", isHidden: true)
-        ]
-        
-        self.roomObservable.accept(people)
+        // 값이 (0,0,0,0) 에서 (0,0,0,1)이 변경되었을 때
+        return Output(hintTextFieldCount: hintText, pointButtonTap: pointTap, cellTapValid: nameTapValid, pointButtonTap: pointTap)
     }
 
-
-    func binding() {
-        
-        hintTextFieldText
-            .map { $0 != nil }
-            .subscribe(onNext: { bool in
-                self.hintTextEdit.accept(bool)
-            }).disposed(by: disposeBag)
-        
-        
-//        var isValid: Observable<Bool> {
-       //        return Observable.combineLatest(hintTextFieldText, buttonSelect)
-       //            .map{ text, buttonSelect in
-       //                print("\(text)")
-       //                return !text.isEmpty && tableViewCellTaped
-       //            }
-       //    }
+    private func hintTextCheck(_ text: String) -> Bool {
+        return text.count > 0
+    }
+    
+    private func nameTapCheck(_ num: Int) -> Bool {
+        return num > 0
     }
     
 }

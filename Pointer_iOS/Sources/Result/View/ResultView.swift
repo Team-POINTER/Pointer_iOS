@@ -75,16 +75,27 @@ class ResultView: UIView {
         return $0
     }(UIButton())
     
-    let koKButton : UIButton = {
-        $0.setTitle("지목하지 않은 사람에게 콕!", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.notoSansBold(size: 16)
+    let kokView: UIView = {
         $0.backgroundColor = .clear
         $0.layer.cornerRadius = 22
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.white.cgColor
         return $0
-    }(UIButton())
+    }(UIView())
+    
+    let kokLabel: UILabel = {
+        $0.text = "지목하지 않은 사람에게 콕!"
+        $0.font = UIFont.notoSansBold(size: 16)
+        $0.textColor = UIColor.white
+        return $0
+    }(UILabel())
+    
+    var kokNumberLabel: UILabel = {
+        $0.text = "4명"
+        $0.font = UIFont.notoSansBold(size: 16)
+        $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
+        return $0
+    }(UILabel())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -108,7 +119,9 @@ class ResultView: UIView {
         self.addSubview(myResultButton)
         self.addSubview(newQuestionTimerLabel)
         self.addSubview(newQuestionButton)
-        self.addSubview(koKButton)
+        self.addSubview(kokView)
+        kokView.addSubview(kokLabel)
+        kokView.addSubview(kokNumberLabel)
     }
     
     func setConstraints() {
@@ -148,11 +161,19 @@ class ResultView: UIView {
             make.bottom.equalTo(newQuestionButton.snp.top).inset(-5)
             make.centerX.equalTo(newQuestionButton.snp.centerX)
         }
-        koKButton.snp.makeConstraints { make in
+        kokView.snp.makeConstraints { make in
             make.top.equalTo(myResultButton.snp.bottom).inset(-20)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(34.5)
             make.height.equalTo(50)
+        }
+        kokLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(55)
+        }
+        kokNumberLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(kokLabel.snp.trailing).inset(-10)
         }
 
     }

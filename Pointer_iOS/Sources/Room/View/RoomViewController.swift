@@ -28,17 +28,30 @@ class RoomViewController: BaseViewController {
 
     var tableViewHeight = 0 // 데이터의 개수 * 55 해서 tableView height 값 넣기[x]
     let disposeBag = DisposeBag()
-    
     var viewModel = RoomViewModel()
     
-    var cellChecked = [0,0,0,0,0,0,0,0,0,0]
+    
+    
     
 //MARK: - Rx
     func bindViewModel() {
+        let people: [RoomModel] = [
+            RoomModel(name: "박씨", isHidden: true),
+            RoomModel(name: "김씨", isHidden: true),
+            RoomModel(name: "냠남", isHidden: true),
+            RoomModel(name: "최씨", isHidden: true),
+            RoomModel(name: "언씨", isHidden: true),
+            RoomModel(name: "오씨", isHidden: true)
+        ]
         
-        roomTopView.hintTextField.rx.text
-            .orEmpty
-            .bind(to: viewModel.hintTextFieldText)
+        viewModel.roomObservable.accept(people)
+        
+        let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable(),
+                                        pointButtonTapedEvent: roomTopView.pointerButton.rx.tap.asObservable())
+        let output = viewModel.transform(input: input)
+        
+        output.hintTextFieldCount
+            .bind(to: roomTopView.hintTextCount.rx.text)
             .disposed(by: disposeBag)
         
         roomTopView.hintTextField.rx.text
@@ -48,27 +61,17 @@ class RoomViewController: BaseViewController {
                 self.hintTextLimit(text)
             })
             .disposed(by: disposeBag)
-        
-        roomTopView.hintTextField.rx.text
-            .orEmpty
-            .map{ "\($0.count)" }
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { count in
-                self.roomTopView.hintTextCount.text = "\(count)/20"
-            })
-            .disposed(by: disposeBag)
-        
+            
 // - tableView bind
         viewModel.roomObservable
             .observe(on: MainScheduler.instance)
             .bind(to: peopleTableView.rx.items(cellIdentifier: "RoomPeopleTableViewCell", cellType: RoomPeopleTableViewCell.self)) { index, item, cell in
                 cell.nameLabel.text = item.name
                 cell.pointStar.isHidden = item.isHidden
-                
+
             }.disposed(by: disposeBag)
-        
-        
-        
+
+        // tableView cell tapped
         Observable
             .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(RoomModel.self))
             .bind { [weak self] indexPath, model in
@@ -78,25 +81,34 @@ class RoomViewController: BaseViewController {
                 
                 // point 체크 이미지[O] & 배열 추가해야함 [O]
                 if cell?.clickCount == 1 {
-                    self?.cellChecked[indexPath.row] = 0
                     cell?.clickCount = 0
-                    print("\(String(describing: self?.cellChecked))")
+                    self?.viewModel.cellChecked[indexPath.row] = 0
+                    self?.viewModel.totalClickCount -= 1
+                    print("\(String(describing: self?.viewModel.cellChecked))")
                 } else {
                     cell?.clickCount += 1
-                    self?.cellChecked[indexPath.row] = 1
-                    print("\(String(describing: self?.cellChecked))")
+                    self?.viewModel.cellChecked[indexPath.row] = 1
+                    self?.viewModel.totalClickCount += 1
+                    print("\(String(describing: self?.viewModel.cellChecked))")
                 }
             }
             .disposed(by: disposeBag)
         
         
 // - point button bind
-        // cellChecked 배열에 있는 Observer와 hintTextEdit을 combineLast로 묶어서 처리 [X]
-        // 배열 값이 변경되는 옵저버 선언해야함 [X]
-//        roomTopView.pointerButton.rx.tap
-//            .bind(to: viewModel.pointButtonTap)
-//            .disposed(by: disposeBag)
+        // cellChecked 배열에 있는 Observer와 hintTextEdit을 combineLast로 묶어서 처리 [O]
+        // 배열 값이 변경되는 옵저버 선언해야함 [O]
         
+        Observable.combineLatest(output.hintTextValid, output.cellTapValid, resultSelector: { $0 && $1 })
+            .subscribe(onNext: { [weak self] b in // b = true
+                if b {
+                    self?.roomTopView.pointerButton.isEnabled = true
+                    self?.roomTopView.pointerButton.setImage(UIImage(named:"select_point"), for: .normal)
+                } else {
+                    self?.roomTopView.pointerButton.isEnabled = false
+                    self?.roomTopView.pointerButton.setImage(UIImage(named:"unselect_point"), for: .normal)
+                }
+            }).disposed(by: disposeBag)
         
             
     }
@@ -116,7 +128,7 @@ class RoomViewController: BaseViewController {
         return $0
     }(UIScrollView())
     
-    let roomTopView = RoomTopView()
+    var roomTopView = RoomTopView()
     
     private let stackView: UIStackView = {
         $0.axis = .vertical
@@ -184,12 +196,16 @@ class RoomViewController: BaseViewController {
         didScrollFunc()
         bindViewModel()
         self.hideKeyboardWhenTappedAround()
+        
+        
     }
     
     
     @objc func backButtonTap() {
         
     }
+    
+    
     
     
 }
@@ -209,6 +225,4 @@ extension RoomViewController : UITableViewDelegate{
             peopleTableView.isScrollEnabled = isBottomReached
         }
     }
-
 }
-
