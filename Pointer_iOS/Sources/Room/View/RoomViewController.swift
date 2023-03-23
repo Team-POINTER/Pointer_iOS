@@ -12,15 +12,14 @@ import RxSwift
 
 //MARK: 비동기로 처리해야할 부분
 // 1. hint 입력했을 시 글자수 20자 제한 [O]
-// 2. 테이블 뷰에서 셀들 선택 후 point 하는 부분 [X]
+// 2. 테이블 뷰에서 셀들 선택 후 point 하는 부분 [O]
 // 3. 링크로 초대하기 부분 [X]
 
 //MARK: 처리해야할 부분
 // 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [X]
-// 2. 룸에서 Point를 누른 사람들을 selectPeople에 담아서 fontColor변경 후 줄바꿈하여 출력[X]
-// 3. 글씨체 적용 [O]
-// 4. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [X]
-// 5. navigationBar titleColor, LeftBarItem 추가 [X]
+// 2. 글씨체 적용 [O]
+// 3. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [O]
+// 4. navigationBar titleColor, LeftBarItem 추가 [O]
 
 class RoomViewController: BaseViewController {
     
@@ -46,9 +45,10 @@ class RoomViewController: BaseViewController {
         
         viewModel.roomObservable.accept(people)
         
-        let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable(),
-                                        pointButtonTapedEvent: roomTopView.pointerButton.rx.tap.asObservable())
+        let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable())
+        
         let output = viewModel.transform(input: input)
+        
 // - TextField bind
         output.hintTextFieldCount
             .bind(to: roomTopView.hintTextCount.rx.text)
@@ -67,7 +67,7 @@ class RoomViewController: BaseViewController {
 
             }.disposed(by: disposeBag)
 
-        // tableView cell tapped
+//- tableView cell tapped
         Observable
             .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(RoomModel.self))
             .bind { [weak self] indexPath, model in
@@ -78,35 +78,36 @@ class RoomViewController: BaseViewController {
                 // point 체크 이미지[O] & 배열 추가해야함 [O]
                 if cell?.clickCount == 1 {
                     cell?.clickCount = 0
-                    self?.viewModel.cellChecked[indexPath.row] = 0
-                    self?.viewModel.totalClickCount -= 1
-                    print("\(String(describing: self?.viewModel.cellChecked))")
+                    self?.viewModel.deleteIndex(indexPath.row)
                 } else {
                     cell?.clickCount += 1
-                    self?.viewModel.cellChecked[indexPath.row] = 1
-                    self?.viewModel.totalClickCount += 1
-                    print("\(String(describing: self?.viewModel.cellChecked))")
+                    self?.viewModel.addIndex(indexPath.row)
                 }
             }
             .disposed(by: disposeBag)
         
         
 // - point button bind
-        // cellChecked 배열에 있는 Observer와 hintTextEdit을 combineLast로 묶어서 처리 [O]
-        // 배열 값이 변경되는 옵저버 선언해야함 [O]
+        output.pointButtonValid
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] b in
+                if b {
+                    self?.roomTopView.pointerButton.isEnabled = true
+                    self?.roomTopView.pointerButton.setImage(UIImage(named: "select_point"), for: .normal)
+                } else {
+                    self?.roomTopView.pointerButton.isEnabled = false
+                    self?.roomTopView.pointerButton.setImage(UIImage(named: "unselect_point"), for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
         
-//        Observable.combineLatest(output.hintTextValid, output.cellTapValid, resultSelector: { $0 && $1 })
-//            .subscribe(onNext: { [weak self] b in // b = true
-//                if b {
-//                    self?.roomTopView.pointerButton.isEnabled = true
-//                    self?.roomTopView.pointerButton.setImage(UIImage(named:"select_point"), for: .normal)
-//                } else {
-//                    self?.roomTopView.pointerButton.isEnabled = false
-//                    self?.roomTopView.pointerButton.setImage(UIImage(named:"unselect_point"), for: .normal)
-//                }
-//            }).disposed(by: disposeBag)
-//
-            
+        roomTopView.pointerButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.pointButtonTaped()
+            })
+            .disposed(by: disposeBag)
+        
     }
     
 //MARK: - UIComponents

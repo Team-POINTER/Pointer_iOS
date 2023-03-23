@@ -22,21 +22,18 @@ final class RoomViewModel: RoomViewModelType {
     
     let disposeBag = DisposeBag()
     var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
-    var totalClickCount = 0
-    var cellChecked = [0,0,0,0,0,0,0,0,0,0]
+    var cellIndexs = BehaviorRelay<[Int]>(value: [])
+    
     
     
     struct Input {
         let hintTextEditEvent: Observable<String>
-//        let cellCheckedEvent: Observable<Int>
-        let pointButtonTapedEvent: Observable<Void>
     }
     
     struct Output {
         let hintTextFieldCount: Observable<String>
         let hintTextValid: Observable<String>
-//        let cellTapValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
-//        let pointButtonTap: Observable<Void>
+        let pointButtonValid: Observable<Bool>
     }
     
     
@@ -54,24 +51,42 @@ final class RoomViewModel: RoomViewModelType {
                 }
             }
         
-//         nameTapValid의 배열 중 1이 포함 될 시 true
-        let nameTapValid = Observable.just(totalClickCount)
-            .map(nameTapCheck)
-        
-        let pointTap = input.pointButtonTapedEvent
-        // 입력된 텍스트값, cellChekced 데이터 보내기
+        let textBool = input.hintTextEditEvent
+            .map(textValid)
 
-        // 값이 (0,0,0,0) 에서 (0,0,0,1)이 변경되었을 때
-        return Output(hintTextFieldCount: hintText, hintTextValid: hintValid)//, pointButtonTap: pointTap, cellTapValid: nameTapValid, pointButtonTap: pointTap)
+        let arrBool = cellIndexs.map(arrayValid)
+        
+        let pointButtonValid = Observable.combineLatest(textBool, arrBool, resultSelector: { $0 && $1 })
+
+        return Output(hintTextFieldCount: hintText, hintTextValid: hintValid, pointButtonValid: pointButtonValid)
     }
 
-    private func hintTextCheck(_ text: String) -> Bool {
+    func addIndex(_ index: Int) {
+        var value = self.cellIndexs.value
+        value.append(index)
+        value.sort()
+        self.cellIndexs.accept(value)
+        print("index = \(value)")
+    }
+    
+    func deleteIndex(_ index: Int) {
+        var value = self.cellIndexs.value
+        if let selectIndex = value.lastIndex(of: index) {
+            value.remove(at: selectIndex)
+        }
+        self.cellIndexs.accept(value)
+        print("index = \(value)")
+    }
+ 
+    private func textValid(_ text: String) -> Bool {
         return text.count > 0
     }
     
-    private func nameTapCheck(_ num: Int) -> Bool {
-        return num > 0
+    private func arrayValid(_ arr: [Int]) -> Bool {
+        return arr.count > 0
     }
-    
+ 
+    func pointButtonTaped() {
+        print("point버튼 Tap")
+    }
 }
-
