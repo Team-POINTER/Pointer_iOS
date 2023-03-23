@@ -34,9 +34,9 @@ final class RoomViewModel: RoomViewModelType {
     
     struct Output {
         let hintTextFieldCount: Observable<String>
-        let hintTextValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
-        let cellTapValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
-        let pointButtonTap: Observable<Void>
+        let hintTextValid: Observable<String>
+//        let cellTapValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+//        let pointButtonTap: Observable<Void>
     }
     
     
@@ -46,7 +46,13 @@ final class RoomViewModel: RoomViewModelType {
             .map{ "\($0.count)/20" }
         
         let hintValid = input.hintTextEditEvent
-            .map(hintTextCheck)
+            .map{ str -> String in
+                if str.count > 20 {
+                    return String(str.prefix(20))
+                } else {
+                    return str
+                }
+            }
         
 //         nameTapValid의 배열 중 1이 포함 될 시 true
         let nameTapValid = Observable.just(totalClickCount)
@@ -56,7 +62,7 @@ final class RoomViewModel: RoomViewModelType {
         // 입력된 텍스트값, cellChekced 데이터 보내기
 
         // 값이 (0,0,0,0) 에서 (0,0,0,1)이 변경되었을 때
-        return Output(hintTextFieldCount: hintText, pointButtonTap: pointTap, cellTapValid: nameTapValid, pointButtonTap: pointTap)
+        return Output(hintTextFieldCount: hintText, hintTextValid: hintValid)//, pointButtonTap: pointTap, cellTapValid: nameTapValid, pointButtonTap: pointTap)
     }
 
     private func hintTextCheck(_ text: String) -> Bool {

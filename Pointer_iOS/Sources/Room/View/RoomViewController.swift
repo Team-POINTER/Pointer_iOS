@@ -49,17 +49,13 @@ class RoomViewController: BaseViewController {
         let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable(),
                                         pointButtonTapedEvent: roomTopView.pointerButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
-        
+// - TextField bind
         output.hintTextFieldCount
             .bind(to: roomTopView.hintTextCount.rx.text)
             .disposed(by: disposeBag)
         
-        roomTopView.hintTextField.rx.text
-            .orEmpty
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { text in
-                self.hintTextLimit(text)
-            })
+        output.hintTextValid
+            .bind(to: roomTopView.hintTextField.rx.text)
             .disposed(by: disposeBag)
             
 // - tableView bind
@@ -99,27 +95,18 @@ class RoomViewController: BaseViewController {
         // cellChecked 배열에 있는 Observer와 hintTextEdit을 combineLast로 묶어서 처리 [O]
         // 배열 값이 변경되는 옵저버 선언해야함 [O]
         
-        Observable.combineLatest(output.hintTextValid, output.cellTapValid, resultSelector: { $0 && $1 })
-            .subscribe(onNext: { [weak self] b in // b = true
-                if b {
-                    self?.roomTopView.pointerButton.isEnabled = true
-                    self?.roomTopView.pointerButton.setImage(UIImage(named:"select_point"), for: .normal)
-                } else {
-                    self?.roomTopView.pointerButton.isEnabled = false
-                    self?.roomTopView.pointerButton.setImage(UIImage(named:"unselect_point"), for: .normal)
-                }
-            }).disposed(by: disposeBag)
-        
+//        Observable.combineLatest(output.hintTextValid, output.cellTapValid, resultSelector: { $0 && $1 })
+//            .subscribe(onNext: { [weak self] b in // b = true
+//                if b {
+//                    self?.roomTopView.pointerButton.isEnabled = true
+//                    self?.roomTopView.pointerButton.setImage(UIImage(named:"select_point"), for: .normal)
+//                } else {
+//                    self?.roomTopView.pointerButton.isEnabled = false
+//                    self?.roomTopView.pointerButton.setImage(UIImage(named:"unselect_point"), for: .normal)
+//                }
+//            }).disposed(by: disposeBag)
+//
             
-    }
-    
-//MARK: - helper
-    // 텍스트 20자 제한
-    private func hintTextLimit(_ str: String) {
-        if str.count > 20 {
-            let index = str.index(str.startIndex, offsetBy: 20)
-            self.roomTopView.hintTextField.text = String(str[..<index])
-        }
     }
     
 //MARK: - UIComponents
