@@ -40,6 +40,11 @@ class RoomViewController: BaseViewController {
             RoomModel(name: "냠남", isHidden: true),
             RoomModel(name: "최씨", isHidden: true),
             RoomModel(name: "언씨", isHidden: true),
+            RoomModel(name: "오씨", isHidden: true),
+            RoomModel(name: "김씨", isHidden: true),
+            RoomModel(name: "냠남", isHidden: true),
+            RoomModel(name: "최씨", isHidden: true),
+            RoomModel(name: "언씨", isHidden: true),
             RoomModel(name: "오씨", isHidden: true)
         ]
         
@@ -58,6 +63,21 @@ class RoomViewController: BaseViewController {
             .bind(to: roomTopView.hintTextField.rx.text)
             .disposed(by: disposeBag)
             
+// - hintText bind
+        output.selectPeople
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] text in
+                if text == "" {
+                    self?.roomTopView.selectPeople.text = "선택하지 않았어요"
+                    self?.roomTopView.selectPeople.textColor = UIColor.rgb(red: 87, green: 90, blue: 107)
+                } else {
+                    self?.roomTopView.selectPeople.text = text
+                    self?.roomTopView.selectPeople.textColor = UIColor.white
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
 // - tableView bind
         viewModel.roomObservable
             .observe(on: MainScheduler.instance)
@@ -79,9 +99,11 @@ class RoomViewController: BaseViewController {
                 if cell?.clickCount == 1 {
                     cell?.clickCount = 0
                     self?.viewModel.deleteIndex(indexPath.row)
+                    self?.viewModel.deleteName(model.name)
                 } else {
                     cell?.clickCount += 1
                     self?.viewModel.addIndex(indexPath.row)
+                    self?.viewModel.addName(model.name)
                 }
             }
             .disposed(by: disposeBag)
@@ -108,6 +130,12 @@ class RoomViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        roomBottomView.inviteButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.inviteButtonTaped()
+            })
+            .disposed(by: disposeBag)
     }
     
 //MARK: - UIComponents
@@ -120,6 +148,9 @@ class RoomViewController: BaseViewController {
     
     private let stackView: UIStackView = {
         $0.axis = .vertical
+        $0.spacing = 15
+        $0.alignment = .fill
+        $0.distribution = .fill
         return $0
     }(UIStackView())
     
@@ -154,20 +185,23 @@ class RoomViewController: BaseViewController {
     
     func setUIConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         stackView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
         }
+        
         roomTopView.snp.makeConstraints { make in
-            make.height.equalTo(520)
+            make.height.equalTo(Device.height * 0.5)
         }
         peopleTableView.snp.makeConstraints { make in
-            make.height.equalTo(400)
+            make.height.equalTo(Device.height * 0.8)
         }
         roomBottomView.snp.makeConstraints { make in
-            make.height.equalTo(200)
+            make.height.equalTo(Device.height * 0.15)
         }
+            
     }
     
     func didScrollFunc() {

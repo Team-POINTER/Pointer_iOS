@@ -125,7 +125,7 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		47117CA029C72E23001707C8 /* Result */ = {
+		47117CA029C72E23001707C8 /* ResultScene */ = {
 			isa = PBXGroup;
 			children = (
 				47117CA229C72E74001707C8 /* View */,
@@ -133,7 +133,7 @@
 				47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */,
 				47117CA329C72E78001707C8 /* ViewModel */,
 			);
-			path = Result;
+			path = ResultScene;
 			sourceTree = "<group>";
 		};
 		47117CA229C72E74001707C8 /* View */ = {
@@ -171,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				CD2DBEC829C631CC005E377C /* Cell */,
+				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 				CD90B48929BE327700772192 /* PointerAlert.swift */,
 			);
 			path = Common;
@@ -242,8 +243,8 @@
 				CD077F4B29BF8A61005A01A9 /* Common */,
 				CDD1DEF529BA006700B03973 /* Models */,
 				CDD1DEEF29BA002400B03973 /* Home */,
-				CDD1DEF029BA004100B03973 /* Room */,
-				47117CA029C72E23001707C8 /* Result */,
+				CDD1DEF029BA004100B03973 /* RoomScene */,
+				47117CA029C72E23001707C8 /* ResultScene */,
 				CDC51EC729C4EAF700E8BC58 /* Search */,
 			);
 			path = Sources;
@@ -264,7 +265,6 @@
 				CD23209929B8D8F4003D0B84 /* UIView.swift */,
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
-				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -304,14 +304,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		CDD1DEF029BA004100B03973 /* Room */ = {
+		CDD1DEF029BA004100B03973 /* RoomScene */ = {
 			isa = PBXGroup;
 			children = (
 				47117C9D29C2F385001707C8 /* Model */,
 				CDD1DEF429BA005800B03973 /* View */,
 				CDD1DEF329BA005800B03973 /* ViewModel */,
 			);
-			path = Room;
+			path = RoomScene;
 			sourceTree = "<group>";
 		};
 		CDD1DEF129BA004A00B03973 /* View */ = {

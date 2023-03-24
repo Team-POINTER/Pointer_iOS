@@ -23,6 +23,7 @@ final class RoomViewModel: RoomViewModelType {
     let disposeBag = DisposeBag()
     var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
     var cellIndexs = BehaviorRelay<[Int]>(value: [])
+    var cellNames = BehaviorRelay<[String]>(value: [])
     
     
     
@@ -33,6 +34,7 @@ final class RoomViewModel: RoomViewModelType {
     struct Output {
         let hintTextFieldCount: Observable<String>
         let hintTextValid: Observable<String>
+        let selectPeople: Observable<String>
         let pointButtonValid: Observable<Bool>
     }
     
@@ -56,9 +58,12 @@ final class RoomViewModel: RoomViewModelType {
 
         let arrBool = cellIndexs.map(arrayValid)
         
+        let people = cellNames.map{ $0.joined(separator: " \n") }
+        
+        
         let pointButtonValid = Observable.combineLatest(textBool, arrBool, resultSelector: { $0 && $1 })
 
-        return Output(hintTextFieldCount: hintText, hintTextValid: hintValid, pointButtonValid: pointButtonValid)
+        return Output(hintTextFieldCount: hintText, hintTextValid: hintValid, selectPeople: people, pointButtonValid: pointButtonValid)
     }
 
     func addIndex(_ index: Int) {
@@ -77,6 +82,22 @@ final class RoomViewModel: RoomViewModelType {
         self.cellIndexs.accept(value)
         print("index = \(value)")
     }
+    
+    func addName(_ name: String) {
+        var value = self.cellNames.value
+        value.append(name)
+        self.cellNames.accept(value)
+        print("name = \(value)")
+    }
+    
+    func deleteName(_ name: String) {
+        var value = self.cellNames.value
+        if let selectIndex = value.lastIndex(of: name) {
+            value.remove(at: selectIndex)
+        }
+        self.cellNames.accept(value)
+        print("name = \(value)")
+    }
  
     private func textValid(_ text: String) -> Bool {
         return text.count > 0
@@ -85,8 +106,16 @@ final class RoomViewModel: RoomViewModelType {
     private func arrayValid(_ arr: [Int]) -> Bool {
         return arr.count > 0
     }
+    
+    private func peopleArrayValid(_ arr: [String]) -> Bool {
+        return arr.count > 0
+    }
  
     func pointButtonTaped() {
         print("point버튼 Tap")
+    }
+    
+    func inviteButtonTaped() {
+        print("링크로 초대 버튼 Tap")
     }
 }
