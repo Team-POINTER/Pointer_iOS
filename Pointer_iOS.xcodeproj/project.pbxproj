@@ -12,6 +12,10 @@
 		47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA629C72EC6001707C8 /* ResultViewModel.swift */; };
 		47117CA929C72FEB001707C8 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA829C72FEB001707C8 /* ResultView.swift */; };
 		47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAA29C74DCB001707C8 /* ResultChatView.swift */; };
+		47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CAD29CB0367001707C8 /* FloatingPanel */; };
+		47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */; };
+		47117CB229CB1E83001707C8 /* FloatChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */; };
+		47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */; };
 		4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */; };
 		4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */; };
 		4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */; };
@@ -57,6 +61,9 @@
 		47117CA629C72EC6001707C8 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
 		47117CA829C72FEB001707C8 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		47117CAA29C74DCB001707C8 /* ResultChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultChatView.swift; sourceTree = "<group>"; };
+		47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingChatViewController.swift; sourceTree = "<group>"; };
+		47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatChatTableViewCell.swift; sourceTree = "<group>"; };
+		47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
 		4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
 		4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
@@ -102,6 +109,7 @@
 				CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */,
 				CD7A70F929BDE7F3003E140C /* RxCocoa in Frameworks */,
 				CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */,
+				47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */,
 				CD2DBEBE29C61D28005E377C /* BetterSegmentedControl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +129,8 @@
 			isa = PBXGroup;
 			children = (
 				47117CA229C72E74001707C8 /* View */,
+				47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */,
+				47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */,
 				47117CA329C72E78001707C8 /* ViewModel */,
 			);
 			path = Result;
@@ -254,6 +264,7 @@
 				CD23209929B8D8F4003D0B84 /* UIView.swift */,
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
+				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -368,6 +379,7 @@
 				CD7A70FA29BDE7F3003E140C /* RxRelay */,
 				CD7A70FC29BDE7F3003E140C /* RxSwift */,
 				CD2DBEBD29C61D28005E377C /* BetterSegmentedControl */,
+				47117CAD29CB0367001707C8 /* FloatingPanel */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -402,6 +414,7 @@
 				CDD1DEEC29B9FFFE00B03973 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				CD7A70F729BDE7F3003E140C /* XCRemoteSwiftPackageReference "RxSwift" */,
 				CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
+				47117CAC29CB0366001707C8 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -436,6 +449,7 @@
 			files = (
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
+				47117CB229CB1E83001707C8 /* FloatChatTableViewCell.swift in Sources */,
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
@@ -446,6 +460,7 @@
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
+				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,
@@ -453,6 +468,7 @@
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
+				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
@@ -663,6 +679,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		47117CAC29CB0366001707C8 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scenee/FloatingPanel.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gmarm/BetterSegmentedControl.git";
@@ -698,6 +722,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		47117CAD29CB0367001707C8 /* FloatingPanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47117CAC29CB0366001707C8 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
+			productName = FloatingPanel;
+		};
 		CD2DBEBD29C61D28005E377C /* BetterSegmentedControl */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;

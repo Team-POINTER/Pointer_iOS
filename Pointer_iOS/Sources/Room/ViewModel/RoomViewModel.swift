@@ -15,67 +15,78 @@ protocol RoomViewModelType {
 
     func transform(input: Input) -> Output
 }
-
-
-class RoomViewModel {
     
-    struct Input {
-        
-    }
-    
-    struct Output {
-        
-    }
+
+final class RoomViewModel: RoomViewModelType {
     
     
     let disposeBag = DisposeBag()
-    
     var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
+    var cellIndexs = BehaviorRelay<[Int]>(value: [])
     
     
-    lazy var hintTextFieldText = BehaviorRelay<String>(value: "")
-    lazy var hintTextEdit = BehaviorRelay<Bool>(value: false)
-    lazy var peopleCheck = BehaviorRelay<Bool>(value: false)
-    lazy var pointButtonEnable = BehaviorRelay<Bool>(value: false)
-//    var pointButtonTap: BehaviorRelay<Void>
     
+    struct Input {
+        let hintTextEditEvent: Observable<String>
+    }
+    
+    struct Output {
+        let hintTextFieldCount: Observable<String>
+        let hintTextValid: Observable<String>
+        let pointButtonValid: Observable<Bool>
+    }
+    
+    
+    func transform(input: Input) -> Output {
+        
+        let hintText = input.hintTextEditEvent
+            .map{ "\($0.count)/20" }
+        
+        let hintValid = input.hintTextEditEvent
+            .map{ str -> String in
+                if str.count > 20 {
+                    return String(str.prefix(20))
+                } else {
+                    return str
+                }
+            }
+        
+        let textBool = input.hintTextEditEvent
+            .map(textValid)
 
-   
+        let arrBool = cellIndexs.map(arrayValid)
+        
+        let pointButtonValid = Observable.combineLatest(textBool, arrBool, resultSelector: { $0 && $1 })
+
+        return Output(hintTextFieldCount: hintText, hintTextValid: hintValid, pointButtonValid: pointButtonValid)
+    }
+
+    func addIndex(_ index: Int) {
+        var value = self.cellIndexs.value
+        value.append(index)
+        value.sort()
+        self.cellIndexs.accept(value)
+        print("index = \(value)")
+    }
+    
+    func deleteIndex(_ index: Int) {
+        var value = self.cellIndexs.value
+        if let selectIndex = value.lastIndex(of: index) {
+            value.remove(at: selectIndex)
+        }
+        self.cellIndexs.accept(value)
+        print("index = \(value)")
+    }
  
-    
-    
-    init() {
-        
-        let people: [RoomModel] = [
-                    RoomModel(name: "박씨", isHidden: true),
-                    RoomModel(name: "김씨", isHidden: true),
-                    RoomModel(name: "냠남", isHidden: true),
-                    RoomModel(name: "최씨", isHidden: true),
-                    RoomModel(name: "언씨", isHidden: true),
-                    RoomModel(name: "오씨", isHidden: true)
-        ]
-        
-        self.roomObservable.accept(people)
-    }
-
-
-    func binding() {
-        
-        hintTextFieldText
-            .map { $0 != nil }
-            .subscribe(onNext: { bool in
-                self.hintTextEdit.accept(bool)
-            }).disposed(by: disposeBag)
-        
-        
-//        var isValid: Observable<Bool> {
-       //        return Observable.combineLatest(hintTextFieldText, buttonSelect)
-       //            .map{ text, buttonSelect in
-       //                print("\(text)")
-       //                return !text.isEmpty && tableViewCellTaped
-       //            }
-       //    }
+    private func textValid(_ text: String) -> Bool {
+        return text.count > 0
     }
     
+    private func arrayValid(_ arr: [Int]) -> Bool {
+        return arr.count > 0
+    }
+ 
+    func pointButtonTaped() {
+        print("point버튼 Tap")
+    }
 }
-

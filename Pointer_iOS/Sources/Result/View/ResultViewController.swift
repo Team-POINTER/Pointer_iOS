@@ -9,9 +9,10 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import FloatingPanel
 
 class ResultViewController: BaseViewController {
-
+    
     var scrollView: UIScrollView = {
         $0.bounces = false
         return $0
@@ -26,6 +27,10 @@ class ResultViewController: BaseViewController {
         configureBar()
         setUI()
         setUIConstraints()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
+        resultChatView.view.addGestureRecognizer(tapGesture)
+        resultChatView.view.isUserInteractionEnabled = true
     }
     
     func configureBar() {
@@ -53,7 +58,7 @@ class ResultViewController: BaseViewController {
             make.width.equalToSuperview()
         }
         resultChatView.snp.makeConstraints { make in
-            make.top.equalTo(resultView.koKButton.snp.bottom).inset(-30)
+            make.top.equalTo(resultView.kokView.snp.bottom).inset(-30)
             make.leading.trailing.equalToSuperview().inset(16)
             make.width.equalTo(UIScreen.main.bounds.width - 32)
             make.height.equalTo(135)
@@ -64,5 +69,60 @@ class ResultViewController: BaseViewController {
         
     }
     
+    @objc func chatTaped() {
+        let resultChatViewController = FloatingChatViewController(contentViewController: MyViewController())
+        present(resultChatViewController, animated: true)
+    }
+    
+    
 }
 
+//MARK: - ScrollableViewController: 클라이언트 코드에서 해당 프로토콜에 명시된 인터페이스에 접근
+final class MyViewController: UIViewController, ScrollableViewController {
+    
+    private let tableView: SelfSizingTableView = {
+        $0.allowsSelection = false
+        $0.backgroundColor = UIColor.clear
+        $0.separatorStyle = .none
+        $0.bounces = true
+        $0.showsVerticalScrollIndicator = true
+        $0.contentInset = .zero
+        $0.indicatorStyle = .black
+        $0.estimatedRowHeight = 34.0
+        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return $0
+    }(SelfSizingTableView(maxHeight: UIScreen.main.bounds.height * 0.7))
+    
+    var scrollView: UIScrollView {
+        tableView
+    }
+        
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        setUpView()
+    }
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    private func setUpView() {
+        view.addSubview(tableView)
+        
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        tableView.dataSource = self
+    }
+}
+
+extension MyViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        20
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = "cell\(indexPath.row)"
+        return cell
+    }
+}

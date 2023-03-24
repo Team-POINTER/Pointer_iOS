@@ -62,9 +62,9 @@ class RoomTopView: UIView {
         return $0
     }(UILabel())
     
-    let pointerButton : UIButton = {
+    var pointerButton : UIButton = {
         $0.setImage(UIImage(named: "unselect_point"), for: .normal)
-        $0.isEnabled = true
+        $0.isEnabled = false
         return $0
     }(UIButton())
     
