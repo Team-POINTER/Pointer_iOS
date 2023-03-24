@@ -171,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				CD2DBEC829C631CC005E377C /* Cell */,
+				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 				CD90B48929BE327700772192 /* PointerAlert.swift */,
 			);
 			path = Common;
@@ -264,7 +265,6 @@
 				CD23209929B8D8F4003D0B84 /* UIView.swift */,
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
-				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
