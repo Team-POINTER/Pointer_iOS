@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117C9E29C2F391001707C8 /* RoomModel.swift */; };
+		47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA429C72EB3001707C8 /* ResultViewController.swift */; };
+		47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA629C72EC6001707C8 /* ResultViewModel.swift */; };
+		47117CA929C72FEB001707C8 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA829C72FEB001707C8 /* ResultView.swift */; };
+		47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAA29C74DCB001707C8 /* ResultChatView.swift */; };
+		47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CAD29CB0367001707C8 /* FloatingPanel */; };
+		47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */; };
+		47117CB229CB1E83001707C8 /* FloatChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */; };
+		47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */; };
+		47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE329CD92C9001707C8 /* LoginViewController.swift */; };
+		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
+		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
+		473B738E29CD9FAA00B33C77 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B738D29CD9FA900B33C77 /* Secret.swift */; };
 		4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */; };
 		4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */; };
 		4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */; };
@@ -47,6 +60,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		47117C9E29C2F391001707C8 /* RoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomModel.swift; sourceTree = "<group>"; };
+		47117CA429C72EB3001707C8 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		47117CA629C72EC6001707C8 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
+		47117CA829C72FEB001707C8 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		47117CAA29C74DCB001707C8 /* ResultChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultChatView.swift; sourceTree = "<group>"; };
+		47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingChatViewController.swift; sourceTree = "<group>"; };
+		47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatChatTableViewCell.swift; sourceTree = "<group>"; };
+		47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
+		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		473B738D29CD9FA900B33C77 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secret.swift; path = Pointer_iOS/Secret.swift; sourceTree = SOURCE_ROOT; };
 		4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
 		4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
 		4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
@@ -88,10 +112,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD7A70FD29BDE7F3003E140C /* RxSwift in Frameworks */,
+				47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */,
 				CD7A70FB29BDE7F3003E140C /* RxRelay in Frameworks */,
 				CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */,
 				CD7A70F929BDE7F3003E140C /* RxCocoa in Frameworks */,
 				CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */,
+				47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */,
 				CD2DBEBE29C61D28005E377C /* BetterSegmentedControl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +125,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		47117C9D29C2F385001707C8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				47117C9E29C2F391001707C8 /* RoomModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		47117CA029C72E23001707C8 /* ResultScene */ = {
+			isa = PBXGroup;
+			children = (
+				47117CA229C72E74001707C8 /* View */,
+				47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */,
+				47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */,
+				47117CA329C72E78001707C8 /* ViewModel */,
+			);
+			path = ResultScene;
+			sourceTree = "<group>";
+		};
+		47117CA229C72E74001707C8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				47117CA429C72EB3001707C8 /* ResultViewController.swift */,
+				47117CA829C72FEB001707C8 /* ResultView.swift */,
+				47117CAA29C74DCB001707C8 /* ResultChatView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		47117CA329C72E78001707C8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				47117CA629C72EC6001707C8 /* ResultViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		47117CE029CD92A1001707C8 /* LoginScene */ = {
+			isa = PBXGroup;
+			children = (
+				47117CE129CD92AC001707C8 /* View */,
+				47117CE229CD92B1001707C8 /* ViewModel */,
+			);
+			path = LoginScene;
+			sourceTree = "<group>";
+		};
+		47117CE129CD92AC001707C8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				47117CE329CD92C9001707C8 /* LoginViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		47117CE229CD92B1001707C8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				47117CE529CD92D5001707C8 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		4749D46D29B9B96800011E06 /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				CD2DBEC829C631CC005E377C /* Cell */,
+				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 				CD90B48929BE327700772192 /* PointerAlert.swift */,
 			);
 			path = Common;
@@ -167,6 +256,7 @@
 		CD23208E29B8CFC8003D0B84 /* Secret */ = {
 			isa = PBXGroup;
 			children = (
+				473B738D29CD9FA900B33C77 /* Secret.swift */,
 			);
 			path = Secret;
 			sourceTree = "<group>";
@@ -184,10 +274,12 @@
 		CD23209029B8D253003D0B84 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				47117CE029CD92A1001707C8 /* LoginScene */,
 				CD077F4B29BF8A61005A01A9 /* Common */,
 				CDD1DEF529BA006700B03973 /* Models */,
 				CDD1DEEF29BA002400B03973 /* Home */,
-				CDD1DEF029BA004100B03973 /* Room */,
+				CDD1DEF029BA004100B03973 /* RoomScene */,
+				47117CA029C72E23001707C8 /* ResultScene */,
 				CDC51EC729C4EAF700E8BC58 /* Search */,
 			);
 			path = Sources;
@@ -247,13 +339,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		CDD1DEF029BA004100B03973 /* Room */ = {
+		CDD1DEF029BA004100B03973 /* RoomScene */ = {
 			isa = PBXGroup;
 			children = (
+				47117C9D29C2F385001707C8 /* Model */,
 				CDD1DEF429BA005800B03973 /* View */,
 				CDD1DEF329BA005800B03973 /* ViewModel */,
 			);
-			path = Room;
+			path = RoomScene;
 			sourceTree = "<group>";
 		};
 		CDD1DEF129BA004A00B03973 /* View */ = {
@@ -321,6 +414,8 @@
 				CD7A70FA29BDE7F3003E140C /* RxRelay */,
 				CD7A70FC29BDE7F3003E140C /* RxSwift */,
 				CD2DBEBD29C61D28005E377C /* BetterSegmentedControl */,
+				47117CAD29CB0367001707C8 /* FloatingPanel */,
+				47117CF029CD9A1C001707C8 /* KakaoSDK */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -355,6 +450,8 @@
 				CDD1DEEC29B9FFFE00B03973 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				CD7A70F729BDE7F3003E140C /* XCRemoteSwiftPackageReference "RxSwift" */,
 				CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
+				47117CAC29CB0366001707C8 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+				47117CEF29CD9A1C001707C8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -388,27 +485,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
+				473B738E29CD9FAA00B33C77 /* Secret.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
+				47117CB229CB1E83001707C8 /* FloatChatTableViewCell.swift in Sources */,
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
+				47117CA929C72FEB001707C8 /* ResultView.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
+				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
+				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
+				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
+				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
+				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
+				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
+				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
+				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
 				CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */,
 			);
@@ -611,6 +719,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		47117CAC29CB0366001707C8 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scenee/FloatingPanel.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		47117CEF29CD9A1C001707C8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gmarm/BetterSegmentedControl.git";
@@ -646,6 +770,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		47117CAD29CB0367001707C8 /* FloatingPanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47117CAC29CB0366001707C8 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
+			productName = FloatingPanel;
+		};
+		47117CF029CD9A1C001707C8 /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47117CEF29CD9A1C001707C8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
 		CD2DBEBD29C61D28005E377C /* BetterSegmentedControl */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;

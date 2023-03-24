@@ -54,15 +54,15 @@ class RoomTopView: UIView {
     
     var selectPeople : UILabel = {
 //        $0.text = "선택하지 않았어요"
-        $0.text = "Annette Black · Arlene McCoy \n Ronald Richards · Bessie Cooper \n Annette Black · Arlene McCoy \n"
+        $0.text = "선택하지 않았어요"
         $0.font = UIFont.notoSansBold(size: 18)
-        $0.textColor = UIColor.rgb(red: 96, green: 95, blue: 95)
+        $0.textColor = UIColor.rgb(red: 87, green: 90, blue: 107)
         $0.numberOfLines = 0
         $0.textAlignment = .center
         return $0
     }(UILabel())
     
-    let pointerButton : UIButton = {
+    var pointerButton : UIButton = {
         $0.setImage(UIImage(named: "unselect_point"), for: .normal)
         $0.isEnabled = false
         return $0
