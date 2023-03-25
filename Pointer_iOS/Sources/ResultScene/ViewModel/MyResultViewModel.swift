@@ -1,15 +1,18 @@
 //
-//  ResultViewModel.swift
+//  MyResultViewModel.swift
 //  Pointer_iOS
 //
-//  Created by 박현준 on 2023/03/19.
+//  Created by 박현준 on 2023/03/25.
 //
 
 import UIKit
 import RxSwift
 import RxCocoa
 
-class ResultViewModel: ViewModelType{
+class MyResultViewModel: ViewModelType{
+    
+    let disposeBag = DisposeBag()
+    var myResultObservable = BehaviorRelay<[MyResultModel]>(value: [])
     
     struct Input {
         
@@ -23,5 +26,4 @@ class ResultViewModel: ViewModelType{
         
         return Output()
     }
-    
 }

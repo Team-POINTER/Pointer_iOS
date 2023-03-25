@@ -10,7 +10,7 @@ import SnapKit
 
 class RoomTopView: UIView {
 
-    let hintAlertLabel : UILabel = {
+    private let hintAlertLabel : UILabel = {
         $0.text = "투표한 상대에게 보여지는 당신의 힌트를 작성해주세요."
         $0.font = UIFont.notoSansRegular(size: 12)
         $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
@@ -78,7 +78,6 @@ class RoomTopView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setUI()
         setConstraints()
     }
@@ -128,6 +127,7 @@ class RoomTopView: UIView {
         }
         selectPeople.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(43.5)
             make.top.equalTo(questLabel.snp.bottom).inset(-45)
         }
         pointerButton.snp.makeConstraints { make in

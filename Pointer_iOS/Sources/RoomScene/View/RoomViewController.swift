@@ -13,39 +13,37 @@ import RxSwift
 //MARK: 비동기로 처리해야할 부분
 // 1. hint 입력했을 시 글자수 20자 제한 [O]
 // 2. 테이블 뷰에서 셀들 선택 후 point 하는 부분 [O]
-// 3. 링크로 초대하기 부분 [X]
+// 3. 링크로 초대하기 부분 [O] -> API 연동 [X]
+// 4. Point 버튼 클릭 부분 [O] -> API 연동 [X]
 
 //MARK: 처리해야할 부분
 // 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [X]
 // 2. 글씨체 적용 [O]
 // 3. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [O]
 // 4. navigationBar titleColor, LeftBarItem 추가 [O]
+// 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[X])
 
 class RoomViewController: BaseViewController {
     
 //MARK: - Components
 
-    var tableViewHeight = 0 // 데이터의 개수 * 55 해서 tableView height 값 넣기[x]
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     var viewModel = RoomViewModel()
-    
-    
-    
     
 //MARK: - Rx
     func bindViewModel() {
         let people: [RoomModel] = [
-            RoomModel(name: "박씨", isHidden: true),
+            RoomModel(name: "로미오미오", isHidden: true),
             RoomModel(name: "김씨", isHidden: true),
             RoomModel(name: "냠남", isHidden: true),
-            RoomModel(name: "최씨", isHidden: true),
+            RoomModel(name: "김지수지수", isHidden: true),
             RoomModel(name: "언씨", isHidden: true),
-            RoomModel(name: "오씨", isHidden: true),
+            RoomModel(name: "박현준현준", isHidden: true),
             RoomModel(name: "김씨", isHidden: true),
             RoomModel(name: "냠남", isHidden: true),
-            RoomModel(name: "최씨", isHidden: true),
+            RoomModel(name: "곽민섭민섭", isHidden: true),
             RoomModel(name: "언씨", isHidden: true),
-            RoomModel(name: "오씨", isHidden: true)
+            RoomModel(name: "최성현성현", isHidden: true)
         ]
         
         viewModel.roomObservable.accept(people)
@@ -74,7 +72,6 @@ class RoomViewController: BaseViewController {
                     self?.roomTopView.selectPeople.text = text
                     self?.roomTopView.selectPeople.textColor = UIColor.white
                 }
-                
             })
             .disposed(by: disposeBag)
         
@@ -86,7 +83,7 @@ class RoomViewController: BaseViewController {
                 cell.pointStar.isHidden = item.isHidden
 
             }.disposed(by: disposeBag)
-
+        
 //- tableView cell tapped
         Observable
             .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(RoomModel.self))
@@ -107,7 +104,7 @@ class RoomViewController: BaseViewController {
                 }
             }
             .disposed(by: disposeBag)
-        
+    
         
 // - point button bind
         output.pointButtonValid
@@ -126,43 +123,31 @@ class RoomViewController: BaseViewController {
         roomTopView.pointerButton.rx.tap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                self?.viewModel.pointButtonTaped()
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(ResultViewController(), animated: true)
             })
             .disposed(by: disposeBag)
         
         roomBottomView.inviteButton.rx.tap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                self?.viewModel.inviteButtonTaped()
+                print("invite 버튼 click")
             })
             .disposed(by: disposeBag)
     }
     
 //MARK: - UIComponents
-    private let scrollView : UIScrollView = {
-        $0.bounces = false
-        return $0
-    }(UIScrollView())
-    
-    var roomTopView = RoomTopView()
-    
-    private let stackView: UIStackView = {
-        $0.axis = .vertical
-        $0.spacing = 15
-        $0.alignment = .fill
-        $0.distribution = .fill
-        return $0
-    }(UIStackView())
+
+    var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 550))
     
     private let peopleTableView : UITableView = {
         $0.backgroundColor = .clear
         $0.register(RoomPeopleTableViewCell.self, forCellReuseIdentifier: RoomPeopleTableViewCell.identifier)
         $0.bounces = false
-        $0.isScrollEnabled = false
         return $0
     }(UITableView())
     
-    private let roomBottomView = RoomBottomView()
+    private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 220))
     
 //MARK: - set UI
     
@@ -170,61 +155,45 @@ class RoomViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        
         self.title = "룸 이름"
-        // - navigation bar title 색상 변경
     }
     
     func setUI() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(roomTopView)
-        stackView.addArrangedSubview(peopleTableView)
-        stackView.addArrangedSubview(roomBottomView)
+        view.addSubview(peopleTableView)
     }
+
     
     func setUIConstraints() {
-        scrollView.snp.makeConstraints { make in
+        peopleTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.bottom.equalToSuperview()
         }
-        stackView.snp.makeConstraints { make in
-            make.edges.width.equalToSuperview()
-        }
-        
-        roomTopView.snp.makeConstraints { make in
-            make.height.equalTo(Device.height * 0.5)
-        }
-        peopleTableView.snp.makeConstraints { make in
-            make.height.equalTo(Device.height * 0.8)
-        }
-        roomBottomView.snp.makeConstraints { make in
-            make.height.equalTo(Device.height * 0.15)
-        }
-            
     }
     
-    func didScrollFunc() {
-        scrollView.delegate = self
+    func tableViewSetting() {
         peopleTableView.delegate = self
+        peopleTableView.tableHeaderView = roomTopView
+        peopleTableView.tableFooterView = roomBottomView
     }
     
+
 //MARK: - Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBar()
         setUI()
         setUIConstraints()
-        didScrollFunc()
+        tableViewSetting()
         bindViewModel()
         self.hideKeyboardWhenTappedAround()
-        
-        
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+//        disposeBag = DisposeBag()
     }
     
-    
     @objc func backButtonTap() {
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -235,16 +204,13 @@ class RoomViewController: BaseViewController {
 
 //MARK: - TableView
 extension RoomViewController : UITableViewDelegate{
-    
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return roomBottomView.frame.size.height
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView == self.scrollView {
-            let remainingScrollHeight = scrollView.contentSize.height - scrollView.frame.size.height
-            let isBottomReached = scrollView.contentOffset.y >= remainingScrollHeight
-            peopleTableView.isScrollEnabled = isBottomReached
-        }
-    }
 }
