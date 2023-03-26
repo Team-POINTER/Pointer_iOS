@@ -10,17 +10,17 @@ import SnapKit
 
 class RoomTopView: UIView {
 
-    let hintAlertLabel : UILabel = {
+    private let hintAlertLabel : UILabel = {
         $0.text = "투표한 상대에게 보여지는 당신의 힌트를 작성해주세요."
         $0.font = UIFont.notoSansRegular(size: 12)
-        $0.textColor = UIColor.rgb(red: 146, green: 146, blue: 146)
+        $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
         $0.textAlignment = .center
         return $0
     }(UILabel())
         
 
     let hintView : UIView = {
-        $0.backgroundColor = UIColor.rgb(red: 105, green: 105, blue: 105)
+        $0.backgroundColor = UIColor.rgb(red: 87, green: 90, blue: 107)
         $0.layer.cornerRadius = 10
         return $0
     }(UIView())
@@ -28,9 +28,9 @@ class RoomTopView: UIView {
     let hintTextField : UITextField = {
         $0.attributedPlaceholder = NSAttributedString(
             string: "입력하세요.",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 197, green: 197, blue: 197)])
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 179, green: 183, blue: 205)])
         $0.font = UIFont.notoSans(font: .notoSansKrLight, size: 15)
-        $0.backgroundColor = UIColor.clear
+        $0.backgroundColor = .clear
         $0.textColor = UIColor.white
         return $0
     }(UITextField())
@@ -38,7 +38,7 @@ class RoomTopView: UIView {
     var hintTextCount : UILabel = {
         $0.text = "20/20"
         $0.font = UIFont.notoSansRegular(size: 13)
-        $0.textColor = UIColor.rgb(red: 151, green: 151, blue: 151)
+        $0.textColor = UIColor.rgb(red: 133, green: 136, blue: 157)
         $0.textAlignment = .center
         return $0
     }(UILabel())
@@ -71,14 +71,13 @@ class RoomTopView: UIView {
     let selectAlertLabel : UILabel = {
         $0.text = "질문에 알맞는 사람을 한 명 이상 선택해주세요!"
         $0.font = UIFont.notoSansRegular(size: 12)
-        $0.textColor = UIColor.rgb(red: 146, green: 146, blue: 146)
+        $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
         $0.textAlignment = .center
         return $0
     }(UILabel())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setUI()
         setConstraints()
     }
@@ -128,6 +127,7 @@ class RoomTopView: UIView {
         }
         selectPeople.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(43.5)
             make.top.equalTo(questLabel.snp.bottom).inset(-45)
         }
         pointerButton.snp.makeConstraints { make in

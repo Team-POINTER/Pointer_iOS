@@ -11,7 +11,7 @@ import SnapKit
 class ResultChatView: UIView{
     
     let view: UIView = {
-        $0.backgroundColor = UIColor.rgb(red: 102, green: 102, blue: 102)
+        $0.backgroundColor = UIColor.rgb(red: 87, green: 90, blue: 107)
         $0.layer.cornerRadius = 18
         return $0
     }(UIView())
@@ -19,19 +19,19 @@ class ResultChatView: UIView{
     let chatLabel: UILabel = {
         $0.text = "채팅"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
-        $0.textColor = UIColor.pointerGray
+        $0.textColor = UIColor.rgb(red: 205, green: 208, blue: 224)
         return $0
     }(UILabel())
     
     var chatCountLabel: UILabel = {
         $0.text = "7"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
-        $0.textColor = UIColor.tabbarGray
+        $0.textColor = UIColor.rgb(red: 179, green: 183, blue: 205)
         return $0
     }(UILabel())
     
     let lineView: UIView = {
-        $0.backgroundColor = .tabbarGray
+        $0.backgroundColor = UIColor.rgb(red: 179, green: 183, blue: 205)
         return $0
     }(UIView())
     
@@ -50,7 +50,7 @@ class ResultChatView: UIView{
     }(UILabel())
     
     let textFieldView: UIView = {
-        $0.backgroundColor = UIColor.rgb(red: 239, green: 239, blue: 239)
+        $0.backgroundColor = UIColor.rgb(red: 225, green: 227, blue: 236)
         $0.layer.cornerRadius = 20
         return $0
     }(UIView())

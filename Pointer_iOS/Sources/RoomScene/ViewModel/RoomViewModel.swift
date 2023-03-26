@@ -9,15 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol RoomViewModelType {
-    associatedtype Input
-    associatedtype Output
-
-    func transform(input: Input) -> Output
-}
-    
-
-final class RoomViewModel: RoomViewModelType {
+final class RoomViewModel: ViewModelType {
     
     
     let disposeBag = DisposeBag()
@@ -58,7 +50,7 @@ final class RoomViewModel: RoomViewModelType {
 
         let arrBool = cellIndexs.map(arrayValid)
         
-        let people = cellNames.map{ $0.joined(separator: " \n") }
+        let people = cellNames.map{ $0.joined(separator: " · ") }
         
         
         let pointButtonValid = Observable.combineLatest(textBool, arrBool, resultSelector: { $0 && $1 })
@@ -92,8 +84,8 @@ final class RoomViewModel: RoomViewModelType {
     
     func deleteName(_ name: String) {
         var value = self.cellNames.value
-        if let selectIndex = value.lastIndex(of: name) {
-            value.remove(at: selectIndex)
+        if let selectName = value.lastIndex(of: name) {
+            value.remove(at: selectName)
         }
         self.cellNames.accept(value)
         print("name = \(value)")
@@ -109,13 +101,5 @@ final class RoomViewModel: RoomViewModelType {
     
     private func peopleArrayValid(_ arr: [String]) -> Bool {
         return arr.count > 0
-    }
- 
-    func pointButtonTaped() {
-        print("point버튼 Tap")
-    }
-    
-    func inviteButtonTaped() {
-        print("링크로 초대 버튼 Tap")
     }
 }
