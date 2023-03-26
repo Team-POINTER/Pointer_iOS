@@ -25,7 +25,8 @@ class NotificationViewController: BaseViewController {
     
     // 뷰컨트롤러s
     lazy var allNotiVC = NotificationDetailViewController(withNotificationType: .all)
-    lazy var friendsNotiVC = SearchResultController(withResultType: .account)
+    lazy var friendsNotiVC = NotificationDetailViewController(withNotificationType: .friends)
+    
     lazy var viewControllers = [allNotiVC, friendsNotiVC]
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -113,7 +114,7 @@ class NotificationViewController: BaseViewController {
 
 extension NotificationViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let vc = viewController as? SearchResultController,
+        guard let vc = viewController as? NotificationDetailViewController,
               let index = viewControllers.firstIndex(of: vc) else { return nil }
         let previousIndex = index - 1
         if previousIndex < 0 {
@@ -123,7 +124,7 @@ extension NotificationViewController: UIPageViewControllerDelegate, UIPageViewCo
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let vc = viewController as? SearchResultController,
+        guard let vc = viewController as? NotificationDetailViewController,
               let index = viewControllers.firstIndex(of: vc) else { return nil }
         let nextIndex = index + 1
         if nextIndex == viewControllers.count {
@@ -133,7 +134,7 @@ extension NotificationViewController: UIPageViewControllerDelegate, UIPageViewCo
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard let currentVC = pageViewController.viewControllers?.first as? SearchResultController,
+        guard let currentVC = pageViewController.viewControllers?.first as? NotificationDetailViewController,
               let currentIndex = viewControllers.firstIndex(of: currentVC) else { return }
         currentPage = currentIndex
     }
