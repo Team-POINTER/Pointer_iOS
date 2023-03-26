@@ -15,15 +15,13 @@ class NotificationViewController: BaseViewController {
     var disposeBag = DisposeBag()
     
     private lazy var notiTypeSegmentControl: BetterSegmentedControl = {
-        let labelSeg = LabelSegment.segments(withTitles: ["A", "B"],
-                                             normalFont: .notoSans(font: .notoSansKrMedium, size: 13),
-                                             normalTextColor: .pointerGray,
-                                             selectedFont: .notoSans(font: .notoSansKrMedium, size: 13),
-                                             selectedTextColor: .black)
-        let seg = BetterSegmentedControl(frame: .zero,
-                                         segments: labelSeg,
-                                         options: [.cornerRadius(21), .backgroundColor(.clear), .indicatorViewBackgroundColor(.white), .indicatorViewInset(0)])
-        return seg
+        
+        let notiIcon = UIImage(named: "notiIcon") ?? UIImage()
+        let personIcon = UIImage(named: "personIcon") ?? UIImage()
+        let segment = IconSegment.segments(withIcons: [notiIcon, personIcon], iconSize: CGSize(width: 17, height: 17), normalBackgroundColor: .clear, normalIconTintColor: .gray, selectedBackgroundColor: .white, selectedIconTintColor: .black)
+        let control = BetterSegmentedControl(frame: .zero, segments: segment, options: [.cornerRadius(21), .backgroundColor(.clear), .indicatorViewBackgroundColor(.white), .indicatorViewInset(0)])
+        
+        return control
     }()
     
     //MARK: - Lifecycle
