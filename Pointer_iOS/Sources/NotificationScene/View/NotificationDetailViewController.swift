@@ -92,7 +92,7 @@ extension NotificationDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch notiType {
         case .all:
-            return CGSize(width: collectionView.frame.width - 32, height: 160)
+            return CGSize(width: collectionView.frame.width - 32, height: 91)
         case .friends:
             return CGSize(width: collectionView.frame.width - 32, height: 54)
         }
@@ -101,7 +101,7 @@ extension NotificationDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         switch notiType {
         case .all:
-            return 18
+            return 0
         case .friends:
             return 0
         }
