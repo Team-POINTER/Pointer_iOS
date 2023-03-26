@@ -1,28 +1,28 @@
 //
-//  RoomResultController.swift
+//  NotificationDetailViewController.swift
 //  Pointer_iOS
 //
-//  Created by 김지수 on 2023/03/19.
+//  Created by 김지수 on 2023/03/26.
 //
 
 import UIKit
 import SnapKit
 
-private let roomCellReuseIdentifier = "RoomPreviewCell"
-private let accountCellReuseIdentifier = "AccountInfoCell"
+private let allNotiCellReuseIdentifier = "allNotiCell"
+private let friendsNotiCellReuseIdentifier = "friendsNotiCell"
 
-class SearchResultController: UIViewController {
+class NotificationDetailViewController: UIViewController {
     
     // Result Type 에 따라서 컨트롤러 내부 뷰가 달라짐
-    // room: 룸 검색 결과
-    // accout: 계정 검색 결과
-    enum ResultType {
-        case room
-        case account
+    // all: 전체 알림
+    // friends: 친구 신청 관련
+    enum NotiType {
+        case all
+        case friends
     }
     
     //MARK: - Properties
-    private let resultType: ResultType
+    let notiType: NotiType
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -31,11 +31,10 @@ class SearchResultController: UIViewController {
         cv.backgroundColor = .clear
         return cv
     }()
-
     
     //MARK: - Lifecycle
-    init(withResultType type: ResultType) {
-        self.resultType = type
+    init(withNotificationType type: NotiType) {
+        self.notiType = type
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,16 +44,16 @@ class SearchResultController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
         setupCollectionView()
+        setupUI()
     }
     
     //MARK: - Selector
     
     //MARK: - Functions
     private func setupCollectionView() {
-        collectionView.register(RoomPreviewCell.self, forCellWithReuseIdentifier: roomCellReuseIdentifier)
-        collectionView.register(AccountInfoCell.self, forCellWithReuseIdentifier: accountCellReuseIdentifier)
+        collectionView.register(AllNotiCell.self, forCellWithReuseIdentifier: allNotiCellReuseIdentifier)
+        collectionView.register(FriendsNotiCell.self, forCellWithReuseIdentifier: friendsNotiCellReuseIdentifier)
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -67,43 +66,43 @@ class SearchResultController: UIViewController {
     }
 }
 
-extension SearchResultController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension NotificationDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch resultType {
-        case .room:
+        switch notiType {
+        case .all:
             return 10
-        case .account:
+        case .friends:
             return 5
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch resultType {
-        case .room:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: roomCellReuseIdentifier, for: indexPath) as? RoomPreviewCell else { return UICollectionViewCell() }
+        switch notiType {
+        case .all:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allNotiCellReuseIdentifier, for: indexPath) as? AllNotiCell else { return UICollectionViewCell() }
             return cell
-        case .account:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: accountCellReuseIdentifier, for: indexPath) as? AccountInfoCell else { return UICollectionViewCell() }
+        case .friends:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendsNotiCellReuseIdentifier, for: indexPath) as? FriendsNotiCell else { return UICollectionViewCell() }
             return cell
         }
     }
 }
 
-extension SearchResultController: UICollectionViewDelegateFlowLayout {
+extension NotificationDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch resultType {
-        case .room:
+        switch notiType {
+        case .all:
             return CGSize(width: collectionView.frame.width - 32, height: 160)
-        case .account:
+        case .friends:
             return CGSize(width: collectionView.frame.width - 32, height: 54)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        switch resultType {
-        case .room:
+        switch notiType {
+        case .all:
             return 18
-        case .account:
+        case .friends:
             return 0
         }
     }
