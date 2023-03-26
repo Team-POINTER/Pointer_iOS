@@ -13,6 +13,23 @@ import FloatingPanel
 
 class ResultViewController: BaseViewController {
     
+    var viewModel = ResultViewModel()
+    let disposeBag = DisposeBag()
+    
+//MARK: - Rx
+    func bindViewModel() {
+        
+        resultView.myResultButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(MyResultViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
+    
+    }
+    
+//MARK: - UIComponents
     var scrollView: UIScrollView = {
         $0.bounces = false
         return $0
@@ -21,12 +38,13 @@ class ResultViewController: BaseViewController {
     var resultView = ResultView()
     var resultChatView = ResultChatView()
     
-    
+//MARK: - Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBar()
         setUI()
         setUIConstraints()
+        bindViewModel()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
         resultChatView.view.addGestureRecognizer(tapGesture)
@@ -42,6 +60,7 @@ class ResultViewController: BaseViewController {
         // - navigation bar title 색상 변경
     }
     
+//MARK: - Set UI
     func setUI() {
         view.addSubview(scrollView)
         scrollView.addSubview(resultView)
@@ -66,7 +85,7 @@ class ResultViewController: BaseViewController {
     }
     
     @objc func backButtonTap() {
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func chatTaped() {
@@ -77,7 +96,7 @@ class ResultViewController: BaseViewController {
     
 }
 
-//MARK: - ScrollableViewController: 클라이언트 코드에서 해당 프로토콜에 명시된 인터페이스에 접근
+//MARK: - ScrollableViewController: 클라이언트 코드에서 해당 프로토콜에 명시된 인터페이스에 접근 - 여기서 바꿔야 함!!
 final class MyViewController: UIViewController, ScrollableViewController {
     
     private let tableView: SelfSizingTableView = {
