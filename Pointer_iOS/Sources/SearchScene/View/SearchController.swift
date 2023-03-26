@@ -32,12 +32,12 @@ class SearchController: BaseViewController {
     private lazy var resultTypeSegmentControl: BetterSegmentedControl = {
         let labelSeg = LabelSegment.segments(withTitles: ["룸", "계정"],
                                              normalFont: .notoSans(font: .notoSansKrMedium, size: 13),
-                                             normalTextColor: .white,
+                                             normalTextColor: .pointerGray,
                                              selectedFont: .notoSans(font: .notoSansKrMedium, size: 13),
-                                             selectedTextColor: .white)
+                                             selectedTextColor: .black)
         let seg = BetterSegmentedControl(frame: .zero,
                                          segments: labelSeg,
-                                         options: [.cornerRadius(21), .backgroundColor(.darkGray), .indicatorViewBackgroundColor(.pointerRed), .indicatorViewInset(3)])
+                                         options: [.cornerRadius(21), .backgroundColor(.clear), .indicatorViewBackgroundColor(.white), .indicatorViewInset(0)])
         return seg
     }()
     
@@ -147,7 +147,7 @@ class SearchController: BaseViewController {
         resultTypeSegmentControl.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(10.6)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(102)
+            $0.width.equalTo(84)
             $0.height.equalTo(42)
         }
 
