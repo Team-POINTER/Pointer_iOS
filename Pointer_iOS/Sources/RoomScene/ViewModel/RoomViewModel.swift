@@ -14,7 +14,6 @@ final class RoomViewModel: ViewModelType {
     
     let disposeBag = DisposeBag()
     var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
-    var cellIndexs = BehaviorRelay<[Int]>(value: [])
     var cellNames = BehaviorRelay<[String]>(value: [])
     
     
@@ -48,7 +47,7 @@ final class RoomViewModel: ViewModelType {
         let textBool = input.hintTextEditEvent
             .map(textValid)
 
-        let arrBool = cellIndexs.map(arrayValid)
+        let arrBool = cellNames.map(arrayValid)
         
         let people = cellNames.map{ $0.joined(separator: " · ") }
         
@@ -56,23 +55,6 @@ final class RoomViewModel: ViewModelType {
         let pointButtonValid = Observable.combineLatest(textBool, arrBool, resultSelector: { $0 && $1 })
 
         return Output(hintTextFieldCount: hintText, hintTextValid: hintValid, selectPeople: people, pointButtonValid: pointButtonValid)
-    }
-
-    func addIndex(_ index: Int) {
-        var value = self.cellIndexs.value
-        value.append(index)
-        value.sort()
-        self.cellIndexs.accept(value)
-        print("index = \(value)")
-    }
-    
-    func deleteIndex(_ index: Int) {
-        var value = self.cellIndexs.value
-        if let selectIndex = value.lastIndex(of: index) {
-            value.remove(at: selectIndex)
-        }
-        self.cellIndexs.accept(value)
-        print("index = \(value)")
     }
     
     func addName(_ name: String) {
@@ -95,7 +77,7 @@ final class RoomViewModel: ViewModelType {
         return text.count > 0
     }
     
-    private func arrayValid(_ arr: [Int]) -> Bool {
+    private func arrayValid(_ arr: [String]) -> Bool {
         return arr.count > 0
     }
     

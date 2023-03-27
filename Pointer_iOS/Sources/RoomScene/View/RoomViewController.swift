@@ -95,11 +95,9 @@ class RoomViewController: BaseViewController {
                 // point 체크 이미지[O] & 배열 추가해야함 [O]
                 if cell?.clickCount == 1 {
                     cell?.clickCount = 0
-                    self?.viewModel.deleteIndex(indexPath.row)
                     self?.viewModel.deleteName(model.name)
                 } else {
                     cell?.clickCount += 1
-                    self?.viewModel.addIndex(indexPath.row)
                     self?.viewModel.addName(model.name)
                 }
             }
@@ -147,7 +145,7 @@ class RoomViewController: BaseViewController {
         return $0
     }(UITableView())
     
-    private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 220))
+    private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 200))
     
 //MARK: - set UI
     

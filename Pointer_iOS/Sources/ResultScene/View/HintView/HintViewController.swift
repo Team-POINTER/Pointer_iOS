@@ -117,7 +117,7 @@ class HintViewController: BaseViewController {
     }
     
     @objc func backButtonTap() {
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
 
