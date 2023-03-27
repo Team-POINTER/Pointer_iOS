@@ -128,16 +128,16 @@ class RoomTopView: UIView {
         selectPeople.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(43.5)
-            make.top.equalTo(questLabel.snp.bottom).inset(-45)
+            make.top.equalTo(questLabel.snp.bottom).inset(-35)
         }
         pointerButton.snp.makeConstraints { make in
-            make.top.equalTo(selectPeople.snp.bottom).inset(-45)
+            make.bottom.equalTo(selectAlertLabel.snp.top).inset(-35)
             make.centerX.equalToSuperview()
             make.width.equalTo(125)
             make.height.equalTo(40)
         }
         selectAlertLabel.snp.makeConstraints { make in
-            make.top.equalTo(pointerButton.snp.bottom).inset(-40)
+            make.bottom.equalToSuperview().inset(10)
             make.centerX.equalToSuperview()
         }
     }

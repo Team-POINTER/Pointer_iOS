@@ -81,7 +81,7 @@ class RoomViewController: BaseViewController {
             .bind(to: peopleTableView.rx.items(cellIdentifier: "RoomPeopleTableViewCell", cellType: RoomPeopleTableViewCell.self)) { index, item, cell in
                 cell.nameLabel.text = item.name
                 cell.pointStar.isHidden = item.isHidden
-
+                
             }.disposed(by: disposeBag)
         
 //- tableView cell tapped
@@ -138,7 +138,7 @@ class RoomViewController: BaseViewController {
     
 //MARK: - UIComponents
 
-    var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 550))
+    var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 500))
     
     private let peopleTableView : UITableView = {
         $0.backgroundColor = .clear
@@ -204,10 +204,6 @@ class RoomViewController: BaseViewController {
 
 //MARK: - TableView
 extension RoomViewController : UITableViewDelegate{
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return roomBottomView.frame.size.height
-    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55

@@ -18,10 +18,12 @@ class ResultViewController: BaseViewController {
     
 //MARK: - Rx
     func bindViewModel() {
+        print("bindViewModel called")
         
         resultView.myResultButton.rx.tap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
+                print("ssdasdas")
                 guard let self = self else { return }
                 self.navigationController?.pushViewController(MyResultViewController(), animated: true)
             })
@@ -36,7 +38,7 @@ class ResultViewController: BaseViewController {
     }(UIScrollView())
     
     var resultView = ResultView()
-    var resultChatView = ResultChatView()
+//    var resultChatView = ResultChatView()
     
 //MARK: - Life Cycles
     override func viewDidLoad() {
@@ -46,9 +48,10 @@ class ResultViewController: BaseViewController {
         setUIConstraints()
         bindViewModel()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
-        resultChatView.view.addGestureRecognizer(tapGesture)
-        resultChatView.view.isUserInteractionEnabled = true
+        
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
+//        resultChatView.view.addGestureRecognizer(tapGesture)
+//        resultChatView.view.isUserInteractionEnabled = true
     }
     
     func configureBar() {
@@ -64,7 +67,7 @@ class ResultViewController: BaseViewController {
     func setUI() {
         view.addSubview(scrollView)
         scrollView.addSubview(resultView)
-        scrollView.addSubview(resultChatView)
+//        view.addSubview(resultChatView)
     }
     
     func setUIConstraints() {
@@ -76,12 +79,12 @@ class ResultViewController: BaseViewController {
             make.leading.trailing.equalToSuperview()
             make.width.equalToSuperview()
         }
-        resultChatView.snp.makeConstraints { make in
-            make.top.equalTo(resultView.kokView.snp.bottom).inset(-30)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.width.equalTo(UIScreen.main.bounds.width - 32)
-            make.height.equalTo(135)
-        }
+//        resultChatView.snp.makeConstraints { make in
+//            make.top.equalTo(resultView.kokView.snp.bottom).inset(-30)
+//            make.leading.trailing.equalToSuperview().inset(16)
+//            make.width.equalTo(UIScreen.main.bounds.width - 32)
+//            make.height.equalTo(135)
+//        }
     }
     
     @objc func backButtonTap() {
@@ -89,13 +92,12 @@ class ResultViewController: BaseViewController {
     }
     
     @objc func chatTaped() {
-        let resultChatViewController = FloatingChatViewController(contentViewController: MyViewController())
-        present(resultChatViewController, animated: true)
+//        let resultChatViewController = FloatingChatViewController(contentViewController: MyViewController())
+//        present(resultChatViewController, animated: true)
     }
     
     
 }
-
 //MARK: - ScrollableViewController: 클라이언트 코드에서 해당 프로토콜에 명시된 인터페이스에 접근 - 여기서 바꿔야 함!!
 final class MyViewController: UIViewController, ScrollableViewController {
     
@@ -110,7 +112,7 @@ final class MyViewController: UIViewController, ScrollableViewController {
         $0.estimatedRowHeight = 34.0
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return $0
-    }(SelfSizingTableView(maxHeight: UIScreen.main.bounds.height * 0.7))
+    }(SelfSizingTableView(maxHeight: UIScreen.main.bounds.height * 0.62))
     
     var scrollView: UIScrollView {
         tableView

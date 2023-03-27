@@ -32,10 +32,9 @@ class LoginViewModel {
         UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
             if let error = error {
                 print(error)
-            }
-            else {
+            } else {
                 print("loginWithKakaoAccount() success.")
-            
+                
                 // 유저 정보
                 UserApi.shared.me() {(user, error) in
                     if let error = error {
@@ -45,28 +44,36 @@ class LoginViewModel {
                         print("user.kakaoAccout = \(String(describing: user?.kakaoAccount))")
                         
                         // Token & User
+                        guard let authToken = oauthToken else {return}
                         guard let accessToken = oauthToken?.accessToken else { return }
                         guard let refreshToken = oauthToken?.refreshToken else {return}
                         guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
+                        print("auth Token 전체 : \(authToken)")
                         print("access Token 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
                         print("refresh Token 정보입니다 @@@@@@@@@@@@@@\(String(describing: refreshToken))")
                         print("Web으로 로그인")
                         print("userNickname = \(String(describing: userNickname))")
                         
-                        let kakaoData = KakaoInput(nickname: userNickname, accessToken: accessToken)
-//                        LoginDataManager.posts(kakaoData) { model in
-//                            let nickname = model.nickname
-//                            let accessToken = model.accessToken
-//                            let vc = TermsViewController()
-//                            vc.loginNickname = nickname
-//                            vc.loginAccessToken = accessToken
-//                            LoginViewController().navigationController?.pushViewController(vc, animated: true)
-//                        }
+                        let kakaoData = KakaoInput(accessToken: accessToken)
+                        LoginDataManager.posts(kakaoData) { model in
+                            let accessToken = model.accessToken
+                            let vc = TermsViewController()
+                            vc.loginAccessToken = accessToken
+                        }
+                        
+                        //                        let kakaoData = KakaoInput(nickname: userNickname, accessToken: accessToken)
+                        //                        LoginDataManager.posts(kakaoData) { model in
+                        //                            let nickname = model.nickname
+                        //                            let accessToken = model.accessToken
+                        //                            let vc = TermsViewController()
+                        //                            vc.loginNickname = nickname
+                        //                            vc.loginAccessToken = accessToken
+                        //                            LoginViewController().navigationController?.pushViewController(vc, animated: true)
+                        
                     }
                 }
             }
         }
-
     }
 
 
@@ -95,14 +102,14 @@ class LoginViewModel {
                         print("Web으로 로그인")
                         print("userNickname = \(String(describing: userNickname))")
                         
-                        let kakaoData = KakaoInput(nickname: userNickname, accessToken: accessToken ?? "")
-                        LoginDataManager.posts(kakaoData) { model in
-                            let nickname = model.nickname
-                            let accessToken = model.accessToken
-                            let vc = TermsViewController()
-                            vc.loginNickname = nickname
-                            vc.loginAccessToken = accessToken
-                            LoginViewController().navigationController?.pushViewController(vc, animated: true)
+//                        let kakaoData = KakaoInput(nickname: userNickname, accessToken: accessToken ?? "")
+//                        LoginDataManager.posts(kakaoData) { model in
+//                            let nickname = model.nickname
+//                            let accessToken = model.accessToken
+//                            let vc = TermsViewController()
+//                            vc.loginNickname = nickname
+//                            vc.loginAccessToken = accessToken
+//                            LoginViewController().navigationController?.pushViewController(vc, animated: true)
                         }
                     }
                 }
@@ -137,5 +144,4 @@ class LoginViewModel {
 //        }
 //    }
 
-}
 

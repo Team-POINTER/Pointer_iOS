@@ -91,6 +91,11 @@ class LoginViewController: BaseViewController {
         loginViewModel.kakaoInstallCheck()
     }
     
+    func moveTermViewController() {
+        let vc = TermsViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @objc func appleButtonTapped() {
         
     }

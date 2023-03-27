@@ -102,4 +102,5 @@ final class RoomViewModel: ViewModelType {
     private func peopleArrayValid(_ arr: [String]) -> Bool {
         return arr.count > 0
     }
+    
 }
