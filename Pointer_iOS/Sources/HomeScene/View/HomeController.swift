@@ -48,7 +48,8 @@ class HomeController: BaseViewController {
     }
     
     @objc private func handleNotiButtonTapped() {
-        print(#function)
+        let vc = NotificationViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func something() {

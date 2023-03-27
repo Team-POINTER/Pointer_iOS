@@ -7,10 +7,13 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 import BetterSegmentedControl
 
 class SearchController: BaseViewController {
     //MARK: - Properties
+    var disposeBag = DisposeBag()
     
     let searchBar: UITextField = {
         let tf = UITextField()
@@ -29,13 +32,12 @@ class SearchController: BaseViewController {
     private lazy var resultTypeSegmentControl: BetterSegmentedControl = {
         let labelSeg = LabelSegment.segments(withTitles: ["룸", "계정"],
                                              normalFont: .notoSans(font: .notoSansKrMedium, size: 13),
-                                             normalTextColor: .white,
+                                             normalTextColor: .pointerGray,
                                              selectedFont: .notoSans(font: .notoSansKrMedium, size: 13),
-                                             selectedTextColor: .white)
+                                             selectedTextColor: .black)
         let seg = BetterSegmentedControl(frame: .zero,
                                          segments: labelSeg,
-                                         options: [.cornerRadius(21), .backgroundColor(.darkGray), .indicatorViewBackgroundColor(.pointerRed), .indicatorViewInset(3)])
-        seg.addTarget(self, action: #selector(keepTypeChanged(_:)), for: .valueChanged)
+                                         options: [.cornerRadius(21), .backgroundColor(.clear), .indicatorViewBackgroundColor(.white), .indicatorViewInset(0)])
         return seg
     }()
     
@@ -76,16 +78,25 @@ class SearchController: BaseViewController {
         super.viewDidLoad()
         setupNavi()
         setupUI()
+        bind()
         setupPageViewController()
+    }
+    
+    //MARK: - Bind
+    private func bind() {
+        resultTypeSegmentControl.rx
+            .controlEvent(.valueChanged)
+            .map { [weak self] in return self?.resultTypeSegmentControl.index }
+            .subscribe { [weak self] event in
+                if let index = event.element?.flatMap({ $0 }) {
+                    self?.currentPage = index
+                }
+            }.disposed(by: disposeBag)
     }
     
     //MARK: - Selector
     @objc func backButtonTapped() {
         navigationController?.popViewController(animated: true)
-    }
-    
-    @objc func keepTypeChanged(_ sender: BetterSegmentedControl) {
-        currentPage = sender.index
     }
     
     // 액션 버튼 핸들러 (임시)
@@ -136,7 +147,7 @@ class SearchController: BaseViewController {
         resultTypeSegmentControl.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(10.6)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(102)
+            $0.width.equalTo(84)
             $0.height.equalTo(42)
         }
 

@@ -40,6 +40,11 @@
 		4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48C29C06C7400011E06 /* RoomTopView.swift */; };
 		4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48E29C0707F00011E06 /* RoomBottomView.swift */; };
 		CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06C77B29C0C68600A88ACD /* TextfieldCustomView.swift */; };
+		CD07E59A29CE1E6500B52885 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E59929CE1E6500B52885 /* Secret.swift */; };
+		CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E59E29CE1EEE00B52885 /* NotificationViewController.swift */; };
+		CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */; };
+		CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AC29D0008300B52885 /* AllNotiCell.swift */; };
+		CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */; };
 		CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207929B8C6EB003D0B84 /* AppDelegate.swift */; };
 		CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */; };
 		CD23208329B8C6EC003D0B84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD23208229B8C6EC003D0B84 /* Assets.xcassets */; };
@@ -98,6 +103,11 @@
 		4749D48C29C06C7400011E06 /* RoomTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTopView.swift; sourceTree = "<group>"; };
 		4749D48E29C0707F00011E06 /* RoomBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBottomView.swift; sourceTree = "<group>"; };
 		CD06C77B29C0C68600A88ACD /* TextfieldCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldCustomView.swift; sourceTree = "<group>"; };
+		CD07E59929CE1E6500B52885 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		CD07E59E29CE1EEE00B52885 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailViewController.swift; sourceTree = "<group>"; };
+		CD07E5AC29D0008300B52885 /* AllNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNotiCell.swift; sourceTree = "<group>"; };
+		CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsNotiCell.swift; sourceTree = "<group>"; };
 		CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD23207929B8C6EB003D0B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -278,6 +288,41 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		CD07E59B29CE1ECC00B52885 /* NotificationScene */ = {
+			isa = PBXGroup;
+			children = (
+				CD07E59D29CE1EE400B52885 /* View */,
+				CD07E59C29CE1EE200B52885 /* ViewModel */,
+			);
+			path = NotificationScene;
+			sourceTree = "<group>";
+		};
+		CD07E59C29CE1EE200B52885 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CD07E59D29CE1EE400B52885 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CD07E59E29CE1EEE00B52885 /* NotificationViewController.swift */,
+				CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */,
+				CD07E5AB29D0007500B52885 /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CD07E5AB29D0007500B52885 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CD07E5AC29D0008300B52885 /* AllNotiCell.swift */,
+				CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		CD23206D29B8C6EB003D0B84 = {
 			isa = PBXGroup;
 			children = (
@@ -324,7 +369,7 @@
 		CD23208E29B8CFC8003D0B84 /* Secret */ = {
 			isa = PBXGroup;
 			children = (
-				473B738D29CD9FA900B33C77 /* Secret.swift */,
+				CD07E59929CE1E6500B52885 /* Secret.swift */,
 			);
 			path = Secret;
 			sourceTree = "<group>";
@@ -342,13 +387,14 @@
 		CD23209029B8D253003D0B84 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				47117CE029CD92A1001707C8 /* LoginScene */,
 				CD077F4B29BF8A61005A01A9 /* Common */,
+				47117CE029CD92A1001707C8 /* LoginScene */,
 				CDD1DEF529BA006700B03973 /* Models */,
-				CDD1DEEF29BA002400B03973 /* Home */,
+				CDD1DEEF29BA002400B03973 /* HomeScene */,
 				CDD1DEF029BA004100B03973 /* RoomScene */,
 				47117CA029C72E23001707C8 /* ResultScene */,
-				CDC51EC729C4EAF700E8BC58 /* Search */,
+				CDC51EC729C4EAF700E8BC58 /* SearchScene */,
+				CD07E59B29CE1ECC00B52885 /* NotificationScene */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -391,21 +437,21 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		CDC51EC729C4EAF700E8BC58 /* Search */ = {
+		CDC51EC729C4EAF700E8BC58 /* SearchScene */ = {
 			isa = PBXGroup;
 			children = (
 				CD2DBEC729C631B4005E377C /* View */,
 			);
-			path = Search;
+			path = SearchScene;
 			sourceTree = "<group>";
 		};
-		CDD1DEEF29BA002400B03973 /* Home */ = {
+		CDD1DEEF29BA002400B03973 /* HomeScene */ = {
 			isa = PBXGroup;
 			children = (
 				CDD1DEF129BA004A00B03973 /* View */,
 				CDD1DEF229BA005000B03973 /* ViewModel */,
 			);
-			path = Home;
+			path = HomeScene;
 			sourceTree = "<group>";
 		};
 		CDD1DEF029BA004100B03973 /* RoomScene */ = {
@@ -554,7 +600,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
-				473B738E29CD9FAA00B33C77 /* Secret.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
 				473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */,
 				47117CB229CB1E83001707C8 /* FloatChatTableViewCell.swift in Sources */,
@@ -571,6 +616,7 @@
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
 				473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
+				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
@@ -578,6 +624,12 @@
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
+				CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */,
+				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
+				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
+				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
+				CD07E59A29CE1E6500B52885 /* Secret.swift in Sources */,
+				CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
@@ -591,6 +643,7 @@
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
+				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
