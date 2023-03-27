@@ -11,8 +11,6 @@ import Alamofire
 class LoginDataManager {
     static var Headers : HTTPHeaders = ["Content-Type" : "application/json"]
     
-    private let url = "\(Secret.baseURL)"
-    
     static func posts(_ parameter: KakaoInput,_ completion: @escaping (KakaoInput) -> Void){
         AF.request("http://211.176.69.65:8080/auth/login", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers).validate(statusCode: 200..<500).responseDecodable(of: KakaoModel.self) { response in
             switch response.result {

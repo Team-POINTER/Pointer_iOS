@@ -28,16 +28,7 @@ class ResultViewController: BaseViewController {
                 self.navigationController?.pushViewController(MyResultViewController(), animated: true)
             })
             .disposed(by: disposeBag)
-        
-        newQuestionButton.rx.tap
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                print("ssdasdas")
-                guard let self = self else { return }
-                self.navigationController?.pushViewController(HintViewController(), animated: true)
-            })
-            .disposed(by: disposeBag)
-    
+
     }
     
 //MARK: - UIComponents

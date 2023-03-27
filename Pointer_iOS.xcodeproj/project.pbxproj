@@ -18,7 +18,6 @@
 		47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE329CD92C9001707C8 /* LoginViewController.swift */; };
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
 		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
-		473B738E29CD9FAA00B33C77 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B738D29CD9FA900B33C77 /* Secret.swift */; };
 		473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739329CEDC0F00B33C77 /* MyResultViewController.swift */; };
 		473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */; };
 		473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */; };
@@ -27,6 +26,7 @@
 		473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A029CEF15D00B33C77 /* HintViewController.swift */; };
 		473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A229D029A200B33C77 /* TermsViewController.swift */; };
 		473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A529D0364000B33C77 /* LoginDataManger.swift */; };
+		473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A729D18A1700B33C77 /* TermsViewModel.swift */; };
 		4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */; };
 		4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */; };
 		4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */; };
@@ -81,7 +81,6 @@
 		47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		473B738D29CD9FA900B33C77 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secret.swift; path = Pointer_iOS/Secret.swift; sourceTree = SOURCE_ROOT; };
 		473B739329CEDC0F00B33C77 /* MyResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewController.swift; sourceTree = "<group>"; };
 		473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultTableViewCell.swift; sourceTree = "<group>"; };
 		473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewModel.swift; sourceTree = "<group>"; };
@@ -90,6 +89,7 @@
 		473B73A029CEF15D00B33C77 /* HintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintViewController.swift; sourceTree = "<group>"; };
 		473B73A229D029A200B33C77 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		473B73A529D0364000B33C77 /* LoginDataManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataManger.swift; sourceTree = "<group>"; };
+		473B73A729D18A1700B33C77 /* TermsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewModel.swift; sourceTree = "<group>"; };
 		4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
 		4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
 		4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
@@ -209,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				47117CE529CD92D5001707C8 /* LoginViewModel.swift */,
+				473B73A729D18A1700B33C77 /* TermsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -388,8 +389,8 @@
 			isa = PBXGroup;
 			children = (
 				CD077F4B29BF8A61005A01A9 /* Common */,
-				47117CE029CD92A1001707C8 /* LoginScene */,
 				CDD1DEF529BA006700B03973 /* Models */,
+				47117CE029CD92A1001707C8 /* LoginScene */,
 				CDD1DEEF29BA002400B03973 /* HomeScene */,
 				CDD1DEF029BA004100B03973 /* RoomScene */,
 				47117CA029C72E23001707C8 /* ResultScene */,
@@ -619,6 +620,7 @@
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
+				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,

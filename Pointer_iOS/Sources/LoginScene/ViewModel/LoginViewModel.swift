@@ -57,8 +57,8 @@ class LoginViewModel {
                         let kakaoData = KakaoInput(accessToken: accessToken)
                         LoginDataManager.posts(kakaoData) { model in
                             let accessToken = model.accessToken
-                            let vc = TermsViewController()
-                            vc.loginAccessToken = accessToken
+                            let vm = TermsViewModel()
+                            vm.loginAccessToken = accessToken
                         }
                         
                         //                        let kakaoData = KakaoInput(nickname: userNickname, accessToken: accessToken)
