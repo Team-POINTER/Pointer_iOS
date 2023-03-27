@@ -26,7 +26,6 @@ class SearchResultController: UIViewController {
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-//        layout.minimumLineSpacing = 18
         layout.sectionInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
