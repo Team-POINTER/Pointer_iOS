@@ -30,7 +30,7 @@ class BaseTabBarController: UITabBarController {
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
-        let thirdVC = TermsViewController()
+        let thirdVC = RoomViewController()
         let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup

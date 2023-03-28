@@ -9,4 +9,6 @@ import Foundation
 
 struct Secret {
     static let kakaoNativeKey = "96c598921c281722bca7c018eed53133"
+    
+    static let loginURL = "http://211.176.69.65:8080/auth/login"
 }

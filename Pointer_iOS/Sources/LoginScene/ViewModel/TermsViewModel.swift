@@ -14,6 +14,7 @@ class TermsViewModel: ViewModelType {
     var loginNickname = ""
     var loginAccessToken = ""
     
+    
     struct Input {
         let allAllowTapEvent: Observable<Void>
         let overAgeAllowTapEvent: Observable<Void>
@@ -60,6 +61,9 @@ class TermsViewModel: ViewModelType {
             .scan(false) { lastValue, _ in
                 return !lastValue
             }
+        
+//        let allAllowValid = Observable.combineLatest(allAllow, overAllow, serviceAllow, privateInfoAllow, marketingInfoAllow, resultSelector: {$0})
+        
         
         let nextButtonValid = Observable.combineLatest(serviceAllow, privateInfoAllow, resultSelector: { $0 && $1 })
         

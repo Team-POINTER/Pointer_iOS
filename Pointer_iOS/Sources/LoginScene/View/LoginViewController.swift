@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import KakaoSDKAuth
+import KakaoSDKUser
 
 class LoginViewController: BaseViewController {
 
@@ -88,16 +90,31 @@ class LoginViewController: BaseViewController {
     }
 
     @objc func kakaoButtonTapped() {
-        loginViewModel.kakaoInstallCheck()
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            // 카카오톡 로그인. api 호출 결과를 클로저로 전달.
+            loginViewModel.loginWithApp() { loginInfo in
+                if loginInfo == "서비스이용동의 이동" {
+                    self.navigationController?.pushViewController(TermsViewController(), animated: true)
+                } else {
+                    self.navigationController?.pushViewController(BaseTabBarController(), animated: true)
+                }
+            }
+        } else {
+            // 만약, 카카오톡이 깔려있지 않을 경우에는 웹 브라우저로 카카오 로그인함.
+            loginViewModel.loginWithWeb() { loginInfo in
+                if loginInfo == "서비스이용동의 이동" {
+                    self.navigationController?.pushViewController(TermsViewController(), animated: true)
+                } else {
+                    self.navigationController?.pushViewController(BaseTabBarController(), animated: true)
+                }
+            }
+        }
     }
     
-    func moveTermViewController() {
-        let vc = TermsViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
     
     @objc func appleButtonTapped() {
         
     }
     
 }
+
