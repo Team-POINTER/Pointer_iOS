@@ -10,7 +10,6 @@
 		47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117C9E29C2F391001707C8 /* RoomModel.swift */; };
 		47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA429C72EB3001707C8 /* ResultViewController.swift */; };
 		47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA629C72EC6001707C8 /* ResultViewModel.swift */; };
-		47117CA929C72FEB001707C8 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA829C72FEB001707C8 /* ResultView.swift */; };
 		47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAA29C74DCB001707C8 /* ResultChatView.swift */; };
 		47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CAD29CB0367001707C8 /* FloatingPanel */; };
 		47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */; };
@@ -19,13 +18,15 @@
 		47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE329CD92C9001707C8 /* LoginViewController.swift */; };
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
 		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
-		473B738E29CD9FAA00B33C77 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B738D29CD9FA900B33C77 /* Secret.swift */; };
 		473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739329CEDC0F00B33C77 /* MyResultViewController.swift */; };
 		473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */; };
 		473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */; };
 		473B739A29CEE41100B33C77 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739929CEE41100B33C77 /* ViewModelType.swift */; };
 		473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739C29CEE52500B33C77 /* MyResultModel.swift */; };
 		473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A029CEF15D00B33C77 /* HintViewController.swift */; };
+		473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A229D029A200B33C77 /* TermsViewController.swift */; };
+		473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A529D0364000B33C77 /* LoginDataManger.swift */; };
+		473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B73A729D18A1700B33C77 /* TermsViewModel.swift */; };
 		4749D47429B9B99400011E06 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */; };
 		4749D47529B9B99400011E06 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */; };
 		4749D47629B9B99400011E06 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */; };
@@ -74,20 +75,21 @@
 		47117C9E29C2F391001707C8 /* RoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomModel.swift; sourceTree = "<group>"; };
 		47117CA429C72EB3001707C8 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		47117CA629C72EC6001707C8 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
-		47117CA829C72FEB001707C8 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		47117CAA29C74DCB001707C8 /* ResultChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultChatView.swift; sourceTree = "<group>"; };
 		47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingChatViewController.swift; sourceTree = "<group>"; };
 		47117CB129CB1E83001707C8 /* FloatChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatChatTableViewCell.swift; sourceTree = "<group>"; };
 		47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		473B738D29CD9FA900B33C77 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secret.swift; path = Pointer_iOS/Secret.swift; sourceTree = SOURCE_ROOT; };
 		473B739329CEDC0F00B33C77 /* MyResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewController.swift; sourceTree = "<group>"; };
 		473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultTableViewCell.swift; sourceTree = "<group>"; };
 		473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewModel.swift; sourceTree = "<group>"; };
 		473B739929CEE41100B33C77 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		473B739C29CEE52500B33C77 /* MyResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultModel.swift; sourceTree = "<group>"; };
 		473B73A029CEF15D00B33C77 /* HintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintViewController.swift; sourceTree = "<group>"; };
+		473B73A229D029A200B33C77 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		473B73A529D0364000B33C77 /* LoginDataManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataManger.swift; sourceTree = "<group>"; };
+		473B73A729D18A1700B33C77 /* TermsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewModel.swift; sourceTree = "<group>"; };
 		4749D46E29B9B99300011E06 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
 		4749D46F29B9B99400011E06 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
 		4749D47029B9B99400011E06 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				47117CE329CD92C9001707C8 /* LoginViewController.swift */,
+				473B73A229D029A200B33C77 /* TermsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				47117CE529CD92D5001707C8 /* LoginViewModel.swift */,
+				473B73A729D18A1700B33C77 /* TermsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -214,7 +218,6 @@
 			isa = PBXGroup;
 			children = (
 				47117CA429C72EB3001707C8 /* ResultViewController.swift */,
-				47117CA829C72FEB001707C8 /* ResultView.swift */,
 				47117CAA29C74DCB001707C8 /* ResultChatView.swift */,
 			);
 			path = ResultView;
@@ -252,6 +255,14 @@
 				473B739C29CEE52500B33C77 /* MyResultModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		473B73A429D0361800B33C77 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				473B73A529D0364000B33C77 /* LoginDataManger.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		4749D46D29B9B96800011E06 /* Font */ = {
@@ -378,8 +389,8 @@
 			isa = PBXGroup;
 			children = (
 				CD077F4B29BF8A61005A01A9 /* Common */,
-				47117CE029CD92A1001707C8 /* LoginScene */,
 				CDD1DEF529BA006700B03973 /* Models */,
+				47117CE029CD92A1001707C8 /* LoginScene */,
 				CDD1DEEF29BA002400B03973 /* HomeScene */,
 				CDD1DEF029BA004100B03973 /* RoomScene */,
 				47117CA029C72E23001707C8 /* ResultScene */,
@@ -392,6 +403,7 @@
 		CD23209329B8D2AF003D0B84 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				473B73A429D0361800B33C77 /* Login */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -596,7 +608,6 @@
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */,
-				47117CA929C72FEB001707C8 /* ResultView.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
 				473B739A29CEE41100B33C77 /* ViewModelType.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
@@ -604,10 +615,12 @@
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
+				473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
+				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,
@@ -628,6 +641,7 @@
 				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
+				473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,

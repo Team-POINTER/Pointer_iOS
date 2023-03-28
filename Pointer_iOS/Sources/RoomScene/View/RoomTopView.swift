@@ -45,7 +45,7 @@ class RoomTopView: UIView {
     
     let questLabel : UILabel = {
         $0.text = "한 20년 뒤 미래에 가장 돈을 잘 벌 것 같은 사람은 누구인가?최대 공백포함45"
-        $0.font = UIFont.notoSansBold(size: 20)
+        $0.font = UIFont.notoSansBold(size: 18.5)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
         $0.textAlignment = .center
@@ -53,7 +53,6 @@ class RoomTopView: UIView {
     }(UILabel())
     
     var selectPeople : UILabel = {
-//        $0.text = "선택하지 않았어요"
         $0.text = "선택하지 않았어요"
         $0.font = UIFont.notoSansBold(size: 18)
         $0.textColor = UIColor.rgb(red: 87, green: 90, blue: 107)
@@ -106,9 +105,8 @@ class RoomTopView: UIView {
         }
         hintView.snp.makeConstraints { make in
             make.top.equalTo(hintAlertLabel.snp.bottom).inset(-15)
-            make.leading.equalToSuperview().inset(18)
-            make.trailing.equalToSuperview().inset(18)
-            make.width.equalTo(UIScreen.main.bounds.width - 36)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(Device.width - 36)
             make.height.equalTo(45)
         }
         hintTextCount.snp.makeConstraints { make in
@@ -121,23 +119,23 @@ class RoomTopView: UIView {
             make.width.equalTo(hintView.snp.width).inset(38)
         }
         questLabel.snp.makeConstraints { make in
-            make.top.equalTo(hintView.snp.bottom).inset(-30)
+            make.top.equalTo(hintView.snp.bottom).inset(-26)
             make.leading.equalToSuperview().inset(45)
             make.trailing.equalToSuperview().inset(45)
         }
         selectPeople.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(43.5)
-            make.top.equalTo(questLabel.snp.bottom).inset(-45)
+            make.leading.trailing.equalToSuperview().inset(43)
+            make.top.equalTo(questLabel.snp.bottom).inset(-55)
         }
         pointerButton.snp.makeConstraints { make in
-            make.top.equalTo(selectPeople.snp.bottom).inset(-45)
+            make.bottom.equalTo(selectAlertLabel.snp.top).inset(-45)
             make.centerX.equalToSuperview()
             make.width.equalTo(125)
             make.height.equalTo(40)
         }
         selectAlertLabel.snp.makeConstraints { make in
-            make.top.equalTo(pointerButton.snp.bottom).inset(-40)
+            make.bottom.equalToSuperview().inset(10)
             make.centerX.equalToSuperview()
         }
     }

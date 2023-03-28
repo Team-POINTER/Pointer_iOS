@@ -81,7 +81,7 @@ class RoomViewController: BaseViewController {
             .bind(to: peopleTableView.rx.items(cellIdentifier: "RoomPeopleTableViewCell", cellType: RoomPeopleTableViewCell.self)) { index, item, cell in
                 cell.nameLabel.text = item.name
                 cell.pointStar.isHidden = item.isHidden
-
+                
             }.disposed(by: disposeBag)
         
 //- tableView cell tapped
@@ -95,11 +95,9 @@ class RoomViewController: BaseViewController {
                 // point 체크 이미지[O] & 배열 추가해야함 [O]
                 if cell?.clickCount == 1 {
                     cell?.clickCount = 0
-                    self?.viewModel.deleteIndex(indexPath.row)
                     self?.viewModel.deleteName(model.name)
                 } else {
                     cell?.clickCount += 1
-                    self?.viewModel.addIndex(indexPath.row)
                     self?.viewModel.addName(model.name)
                 }
             }
@@ -138,7 +136,7 @@ class RoomViewController: BaseViewController {
     
 //MARK: - UIComponents
 
-    var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 550))
+    var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 500))
     
     private let peopleTableView : UITableView = {
         $0.backgroundColor = .clear
@@ -147,7 +145,7 @@ class RoomViewController: BaseViewController {
         return $0
     }(UITableView())
     
-    private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 220))
+    private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 200))
     
 //MARK: - set UI
     
@@ -204,10 +202,6 @@ class RoomViewController: BaseViewController {
 
 //MARK: - TableView
 extension RoomViewController : UITableViewDelegate{
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return roomBottomView.frame.size.height
-    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55

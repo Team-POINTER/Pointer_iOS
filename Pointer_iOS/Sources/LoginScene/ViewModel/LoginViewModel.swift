@@ -11,108 +11,109 @@ import KakaoSDKAuth
 import KakaoSDKUser
 
 class LoginViewModel {
-
+    
     init() {
         print("LoginViewModel Called")
     }
-
-    // 카카오 로그인 버튼 addTarget에 kakaoLoginButtonClicked() 추가 - []
-    func kakaoInstallCheck() {
-        // 카카오톡 설치 여부 확인
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            // 카카오톡 로그인. api 호출 결과를 클로저로 전달.
-            loginWithApp()
-        } else {
-            // 만약, 카카오톡이 깔려있지 않을 경우에는 웹 브라우저로 카카오 로그인함.
-            loginWithWeb()
-        }
-    }
-
-    func loginWithWeb() {
-        UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-            if let error = error {
-                print(error)
+    
+    
+    func loginWithWeb(completion: @escaping (String) -> Void) {
+            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("loginWithKakaoAccount() success.")
+                    
+                    // 유저 정보
+                    UserApi.shared.me() {(user, error) in
+                        if let error = error {
+                            print(error)
+                        }
+                        else {
+                            print("user.kakaoAccout = \(String(describing: user?.kakaoAccount))")
+                            
+                            // Token & User
+                            guard let accessToken = oauthToken?.accessToken else { return }
+                            guard let refreshToken = oauthToken?.refreshToken else {return}
+                            guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
+                            print("access Token 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
+                            print("refresh Token 정보입니다 @@@@@@@@@@@@@@\(String(describing: refreshToken))")
+                            print("Web으로 로그인")
+                            print("userNickname = \(String(describing: userNickname))")
+                            
+                            let kakaoData = KakaoInput(accessToken: accessToken)
+                            LoginDataManager.posts(kakaoData) { model, userInfo in
+                                let accessToken = model.accessToken
+                                let vm = TermsViewModel()
+                                vm.loginAccessToken = accessToken
+                                if userInfo == "회원가입 완료" {
+                                    completion("서비스이용동의 이동")
+                                } else {
+                                    completion("존재하는 회원")
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            else {
-                print("loginWithKakaoAccount() success.")
-
-                //do something
-                _ = oauthToken
-
-                // 어세스토큰
-                let accessToken = oauthToken?.accessToken
-                print("어세스 토큰 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
-
-                //카카오 로그인을 통해 사용자 토큰을 발급 받은 후 사용자 관리 API 호출
-                self.setUserInfo()
-
-                // 뷰컨 이동 함수 추가 []
-            }
-        }
-
     }
-
-
-    func loginWithApp() {
+    
+    
+    func loginWithApp(completion: @escaping (String) -> Void) {
+        
         UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
             if let error = error {
                 print(error)
             }
             else {
                 print("loginWithKakaoTalk() success.")
-
-                //do something
-                _ = oauthToken
-
-                // 어세스토큰
-                let accessToken = oauthToken?.accessToken
-                print("어세스 토큰 정보입니다 @@@@@@@@@@@@@@\(String(describing: accessToken))")
-
-                //카카오 로그인을 통해 사용자 토큰을 발급 받은 후 사용자 관리 API 호출
-                self.setUserInfo()
+                
+                // 유저 정보
+                UserApi.shared.me() {(user, error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    else {
+                        print("user.kakaoAccout = \(String(describing: user?.kakaoAccount))")
+                        
+                        // Token & User
+                        guard let accessToken = oauthToken?.accessToken else { return }
+                        guard let refreshToken = oauthToken?.refreshToken else {return}
+                        guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
+                        print("access Token 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
+                        print("refresh Token 정보입니다 @@@@@@@@@@@@@@\(String(describing: refreshToken))")
+                        print("Web으로 로그인")
+                        print("userNickname = \(String(describing: userNickname))")
+                        
+                        let kakaoData = KakaoInput(accessToken: accessToken)
+                        LoginDataManager.posts(kakaoData) { model, userInfo in
+                            let accessToken = model.accessToken
+                            let vm = TermsViewModel()
+                            vm.loginAccessToken = accessToken
+                            if userInfo == "회원가입 완료" {
+                                completion("서비스이용동의 이동")
+                            } else {
+                                completion("존재하는 회원")
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
-    func setUserInfo() {
-        UserApi.shared.me() {(user, error) in
-            if let error = error {
-                print(error)
-            }
-            else {
-                print("me() success.")
-                //do something
-                _ = user
-            }
-        }
-    }
-
-    func setUserToken() {
-        // 사용자 액세스 토큰 정보 조회
-        UserApi.shared.accessTokenInfo {(accessTokenInfo, error) in
-            if let error = error {
-                print(error)
-            }
-            else {
-                print("accessTokenInfo() success.")
-
-                //do something
-                _ = accessTokenInfo
-                print("accessToken 정보 : \(accessTokenInfo!)")
-            }
-        }
-    }
-
-    // 로그아웃
-    func kakaoLogOut() {
-        UserApi.shared.logout { (error) in
-            if let error = error {
-                print(error)
-            } else {
-                print("로그아웃 완료")
-            }
-        }
-    }
-
+    
 }
+
+
+// 로그아웃
+//    func kakaoLogOut() {
+//        UserApi.shared.logout { (error) in
+//            if let error = error {
+//                print(error)
+//            } else {
+//                print("로그아웃 완료")
+//            }
+//        }
+//    }
+
 

@@ -10,4 +10,5 @@ import UIKit
 struct RoomModel {
     var name: String
     var isHidden: Bool
+//    var uid = UUID().uuidString
 }
