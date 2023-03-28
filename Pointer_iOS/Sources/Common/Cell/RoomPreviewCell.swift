@@ -8,8 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol RoomPreviewCellDelegate: AnyObject {
+    func roomCellActionImageTapped()
+}
+
 class RoomPreviewCell: UICollectionViewCell {
     //MARK: - Properties
+    weak var delegate: RoomPreviewCellDelegate?
+    
     let roomNameLabel: UILabel = {
         let label = UILabel()
         label.text = "우리 반"
@@ -48,6 +54,17 @@ class RoomPreviewCell: UICollectionViewCell {
         label.textColor = .black
         return label
     }()
+    
+    lazy var actionImageView: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(systemName: "ellipsis")
+        image.transform = image.transform.rotated(by: .pi/2)
+        image.tintColor = .black
+        image.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(actionImageTapped))
+        image.addGestureRecognizer(tap)
+        return image
+    }()
 
     
     //MARK: - Lifecycle
@@ -61,6 +78,11 @@ class RoomPreviewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Selector
+    @objc func actionImageTapped() {
+        delegate?.roomCellActionImageTapped()
+    }
+    
     //MARK: - Functions
     private func setupUI() {
         backgroundColor = .white
@@ -72,6 +94,7 @@ class RoomPreviewCell: UICollectionViewCell {
         addSubview(memberCountLabel)
         addSubview(starIcon)
         addSubview(leaderNameLabel)
+        addSubview(actionImageView)
         
         roomNameLabel.snp.makeConstraints {
             $0.leading.top.equalToSuperview().inset(21.5)
@@ -83,7 +106,7 @@ class RoomPreviewCell: UICollectionViewCell {
         }
         memberCountLabel.snp.makeConstraints {
             $0.leading.equalTo(roomBodyLabel.snp.leading)
-            $0.bottom.equalToSuperview().inset(21.5)
+            $0.bottom.equalToSuperview().inset(16)
             $0.width.greaterThanOrEqualTo(23)
         }
         starIcon.snp.makeConstraints {
@@ -96,6 +119,11 @@ class RoomPreviewCell: UICollectionViewCell {
             $0.leading.equalTo(starIcon.snp.trailing).inset(-3)
             $0.top.equalTo(starIcon)
             $0.bottom.equalTo(starIcon)
+        }
+        
+        actionImageView.snp.makeConstraints {
+            $0.trailing.bottom.equalToSuperview().inset(16)
+            $0.width.height.equalTo(20)
         }
     }
 }
