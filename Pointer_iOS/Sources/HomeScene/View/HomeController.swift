@@ -57,32 +57,21 @@ class HomeController: BaseViewController {
     }
     
     @objc private func handleActionButtonTapped() {
-        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .pointerAlertFontColor) { [weak self] _ in
-            print("DEBUG - 룸 이름 편집 눌림")
-            self?.modifyRoomNameAction()
-        }
-        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .pointerAlertFontColor) { _ in
-            print("DEBUG - 링크로 룸 초대 눌림")
-        }
-        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { _ in
-            print("DEBUG - 룸 나가기 눌림")
-        }
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
-        present(actionSheet, animated: true)
+
     }
     
     //MARK: - Functions
     private func modifyRoomNameAction() {
-        let confirmAction = PointerAlertActionConfig(title: "확인", textColor: .white, backgroundColor: .pointerRed, font: .notoSansBold(size: 18)) {
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 18), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 18)) {
             if let text = $0 {
                 print("DEBUG - 방이름 : \(text)")
             } else {
                 print("변경 내역 없음")
             }
         }
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .pointerAlertFontColor, backgroundColor: .clear, font: .notoSansBold(size: 18), handler: nil)
         let customView = CustomTextfieldView(roomName: "임시 방 이름", withViewHeight: 50)
-        let alert = PointerAlert(alertType: .alert, configs: [confirmAction, cancelAction], title: "방 이름 변경", description: "변경할 이름을 입력해주세요", customView: customView)
+        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "방 이름 변경", description: "변경할 이름을 입력해주세요", customView: customView)
         self.present(alert, animated: true)
     }
     
@@ -126,6 +115,7 @@ class HomeController: BaseViewController {
     }
 }
 
+//MARK: - UICollectionView
 extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
@@ -133,6 +123,7 @@ extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? RoomPreviewCell else { return UICollectionViewCell() }
+        cell.delegate = self
         return cell
     }
 }
@@ -140,5 +131,23 @@ extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource {
 extension HomeController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width - 32, height: 160)
+    }
+}
+
+//MARK: - RoomCellDelegate
+extension HomeController: RoomPreviewCellDelegate {
+    func roomCellActionImageTapped() {
+        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
+            print("DEBUG - 룸 이름 편집 눌림")
+            self?.modifyRoomNameAction()
+        }
+        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
+            print("DEBUG - 링크로 룸 초대 눌림")
+        }
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { _ in
+            print("DEBUG - 룸 나가기 눌림")
+        }
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
+        present(actionSheet, animated: true)
     }
 }

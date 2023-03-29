@@ -101,7 +101,7 @@ class PointerAlert: UIViewController {
             self.topStack.addArrangedSubview(button)
         }
         // 취소버튼
-        let cancel = makeInnerView(title: "취소", font: .notoSansRegular(size: 18), textColor: .pointerAlertFontColor, backgroundColor: .clear, index: 0, height: 70) { _ in
+        let cancel = makeInnerView(title: "취소", font: .notoSansRegular(size: 18), textColor: .black, backgroundColor: .clear, index: 0, height: 70) { _ in
             
         }
 
@@ -149,7 +149,7 @@ class PointerAlert: UIViewController {
         }
         divider.snp.makeConstraints {
             $0.leading.trailing.top.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.height.equalTo(0.5)
         }
         
         // Title / Description
@@ -184,7 +184,7 @@ class PointerAlert: UIViewController {
     //MARK: - Common
     private func makeButtonStack(addSubViews: [UIView]) -> UIStackView {
         let view = UIStackView(arrangedSubviews: addSubViews)
-        view.backgroundColor = .white
+        view.backgroundColor = .pointerGray
         view.layer.cornerRadius = 25
         view.isLayoutMarginsRelativeArrangement = true
         view.layoutMargins = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 19)
@@ -241,7 +241,7 @@ class PointerAlert: UIViewController {
     
     private func makeDivider() -> UIView {
         let view = UIView()
-        view.backgroundColor = .pointerGray
+        view.backgroundColor = .lightGray
         return view
     }
     
@@ -256,7 +256,7 @@ class PointerAlert: UIViewController {
     
     private func makeAlertStackView(views: [UIView]) -> UIStackView {
         let alertStack = UIStackView(arrangedSubviews: views)
-        alertStack.backgroundColor = .white
+        alertStack.backgroundColor = .pointerGray
         alertStack.axis = .vertical
         alertStack.spacing = 15
         alertStack.layer.cornerRadius = 25
