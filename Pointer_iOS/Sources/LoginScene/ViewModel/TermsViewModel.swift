@@ -11,9 +11,14 @@ import RxCocoa
 
 class TermsViewModel: ViewModelType {
     
-    var loginNickname = ""
+//    var loginNickname = ""
     var loginAccessToken = ""
     
+    
+    init(loginAccessToken: String = "") {
+        self.loginAccessToken = loginAccessToken
+        print(loginAccessToken)
+    }
     
     struct Input {
         let allAllowTapEvent: Observable<Void>
@@ -26,10 +31,12 @@ class TermsViewModel: ViewModelType {
     
     struct Output {
         var allAllow: Observable<Bool>
+        var allAllowButtonValid: Observable<Void>
         var overAgeAllow: Observable<Bool>
         var serviceAllow: Observable<Bool>
         var privateInfoAllow: Observable<Bool>
         var marketingInfoAllow: Observable<Bool>
+        var exceptAllAllowValid: Observable<Bool>
         var nextButtonValid: Observable<Bool>
         var nextButtonTap: Observable<Void>
 
@@ -62,15 +69,17 @@ class TermsViewModel: ViewModelType {
                 return !lastValue
             }
         
-//        let allAllowValid = Observable.combineLatest(allAllow, overAllow, serviceAllow, privateInfoAllow, marketingInfoAllow, resultSelector: {$0})
+        let allAllowValid = input.allAllowTapEvent
+            
         
+        let exceptAllAllow = Observable.combineLatest(overAllow, serviceAllow, privateInfoAllow, marketingInfoAllow, resultSelector: { $0 && $1 && $2 && $3})
         
         let nextButtonValid = Observable.combineLatest(serviceAllow, privateInfoAllow, resultSelector: { $0 && $1 })
         
         let nextButtonTap = input.nextButtonTapEvent
             .map(nextBtnTap)
        
-        return Output(allAllow: allAllow, overAgeAllow: overAllow, serviceAllow: serviceAllow, privateInfoAllow: privateInfoAllow, marketingInfoAllow: marketingInfoAllow, nextButtonValid: nextButtonValid, nextButtonTap: nextButtonTap)
+        return Output(allAllow: allAllow, allAllowButtonValid: allAllowValid, overAgeAllow: overAllow, serviceAllow: serviceAllow, privateInfoAllow: privateInfoAllow, marketingInfoAllow: marketingInfoAllow,exceptAllAllowValid: exceptAllAllow ,nextButtonValid: nextButtonValid, nextButtonTap: nextButtonTap)
     }
 
 
