@@ -23,12 +23,18 @@ class ResultViewController: BaseViewController {
         myResultButton.rx.tap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                print("ssdasdas")
                 guard let self = self else { return }
                 self.navigationController?.pushViewController(MyResultViewController(), animated: true)
             })
             .disposed(by: disposeBag)
-
+        
+        newQuestionButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(NewQuestViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
 //MARK: - UIComponents
@@ -102,27 +108,19 @@ class ResultViewController: BaseViewController {
         return $0
     }(UIButton())
     
-    let kokView: UIView = {
+    var kokButton: UIButton = {
+        var attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!  4명")
+        attributedString.addAttribute(.font, value: UIFont.notoSansBold(size: 16), range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 15))
+        attributedString.addAttribute(.foregroundColor, value: UIColor.rgb(red: 121, green: 125, blue: 148), range: NSRange(location: 16, length: 3))
+        $0.setAttributedTitle(attributedString, for: .normal)
         $0.backgroundColor = .clear
         $0.layer.cornerRadius = 22
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.white.cgColor
         return $0
-    }(UIView())
-    
-    let kokLabel: UILabel = {
-        $0.text = "지목하지 않은 사람에게 콕!"
-        $0.font = UIFont.notoSansBold(size: 16)
-        $0.textColor = UIColor.white
-        return $0
-    }(UILabel())
-    
-    var kokNumberLabel: UILabel = {
-        $0.text = "4명"
-        $0.font = UIFont.notoSansBold(size: 16)
-        $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
-        return $0
-    }(UILabel())
+    }(UIButton())
+
     
     var resultChatView = ResultChatView()
     
@@ -138,6 +136,10 @@ class ResultViewController: BaseViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
         resultChatView.view.addGestureRecognizer(tapGesture)
         resultChatView.view.isUserInteractionEnabled = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     func configureBar() {
@@ -160,9 +162,7 @@ class ResultViewController: BaseViewController {
         scrollView.addSubview(myResultButton)
         scrollView.addSubview(newQuestionTimerLabel)
         scrollView.addSubview(newQuestionButton)
-        scrollView.addSubview(kokView)
-        kokView.addSubview(kokLabel)
-        kokView.addSubview(kokNumberLabel)
+        scrollView.addSubview(kokButton)
         view.addSubview(resultChatView)
     }
     
@@ -206,23 +206,15 @@ class ResultViewController: BaseViewController {
             make.bottom.equalTo(newQuestionButton.snp.top).inset(-5)
             make.centerX.equalTo(newQuestionButton.snp.centerX)
         }
-        kokView.snp.makeConstraints { make in
+        kokButton.snp.makeConstraints { make in
             make.top.equalTo(myResultButton.snp.bottom).inset(-20)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(34.5)
             make.height.equalTo(50)
         }
-        kokLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(55)
-        }
-        kokNumberLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(kokLabel.snp.trailing).inset(-10)
-        }
 
         resultChatView.snp.makeConstraints { make in
-            make.top.equalTo(kokView.snp.bottom).inset(-30)
+            make.top.equalTo(kokButton.snp.bottom).inset(-30)
             make.leading.trailing.equalToSuperview().inset(16)
             make.width.equalTo(UIScreen.main.bounds.width - 32)
             make.height.equalTo(135)
