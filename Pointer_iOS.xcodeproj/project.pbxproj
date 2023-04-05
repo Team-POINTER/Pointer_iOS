@@ -18,6 +18,7 @@
 		47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE329CD92C9001707C8 /* LoginViewController.swift */; };
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
 		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
+		47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47194E7C29D94DA900671360 /* NewQuestViewController.swift */; };
 		473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739329CEDC0F00B33C77 /* MyResultViewController.swift */; };
 		473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */; };
 		473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */; };
@@ -81,6 +82,7 @@
 		47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		47194E7C29D94DA900671360 /* NewQuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestViewController.swift; sourceTree = "<group>"; };
 		473B739329CEDC0F00B33C77 /* MyResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewController.swift; sourceTree = "<group>"; };
 		473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultTableViewCell.swift; sourceTree = "<group>"; };
 		473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewModel.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				473B739029CEDB9B00B33C77 /* FloatChatView */,
 				473B739129CEDBB100B33C77 /* MyResultView */,
 				473B739229CEDBCC00B33C77 /* HintView */,
+				47194E7B29D94D6200671360 /* NewQuestView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -212,6 +215,14 @@
 				473B73A729D18A1700B33C77 /* TermsViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		47194E7B29D94D6200671360 /* NewQuestView */ = {
+			isa = PBXGroup;
+			children = (
+				47194E7C29D94DA900671360 /* NewQuestViewController.swift */,
+			);
+			name = NewQuestView;
 			sourceTree = "<group>";
 		};
 		473B738F29CEDB7E00B33C77 /* ResultView */ = {
@@ -647,6 +658,7 @@
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
 				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
+				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
 				CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */,

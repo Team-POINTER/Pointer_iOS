@@ -10,12 +10,54 @@ import UIKit
 import SnapKit
 import KakaoSDKAuth
 import KakaoSDKUser
+import RxSwift
+import RxCocoa
 
 class LoginViewController: BaseViewController {
-
+    
+    var disposeBag = DisposeBag()
     lazy var loginViewModel: LoginViewModel = { LoginViewModel() }()
     
+//MARK: - RX
+    func bindViewModel() {
+        let input = LoginViewModel.Input(kakaoLoginTap: kakaoButton.rx.tap.asObservable(), appleLoginTap: appleButton.rx.tap.asObservable())
+        let output = loginViewModel.transform(input: input)
+        
+        output.kakaoLogin
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] b in
+                if (UserApi.isKakaoTalkLoginAvailable()) {
+                    // 카카오톡 로그인. api 호출 결과를 클로저로 전달.
+                    self?.loginViewModel.loginWithApp() { LoginResultTypeMessage in
+                        if LoginResultTypeMessage == "존재하는 유저" {
+                            self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+                        } else {
+                            self?.navigationController?.pushViewController(BaseTabBarController(), animated: true)
+                        }
+                    }
+                } else {
+                    // 만약, 카카오톡이 깔려있지 않을 경우에는 웹 브라우저로 카카오 로그인함.
+                    self?.loginViewModel.loginWithWeb() { LoginResultTypeMessage in
+                        if LoginResultTypeMessage == "존재하는 유저" {
+                            self?.navigationController?.pushViewController(TermsViewController(), animated: true)
+                        } else {
+                            self?.navigationController?.pushViewController(BaseTabBarController(), animated: true)
+                        }
+                    }
+                }
+            }
+            ).disposed(by: disposeBag)
+        
+        output.appleLogin
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                
+            }
+            ).disposed(by: disposeBag)
+    }
     
+    
+//MARK: - UIComponents
     private let mainImage: UIImageView = {
         $0.image = UIImage(named: "pointer_login")
         return $0
@@ -45,16 +87,10 @@ class LoginViewController: BaseViewController {
         return $0
     }(UIButton())
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setUI()
-        setUIConstraints()
-        
-        kakaoButton.addTarget(self, action: #selector(kakaoButtonTapped), for: .touchUpInside)
-        appleButton.addTarget(self, action: #selector(appleButtonTapped), for: .touchUpInside)
-    }
+    
     
 
+//MARK: - set UI
     func setUI() {
         view.addSubview(mainImage)
         view.addSubview(startLabel)
@@ -88,32 +124,13 @@ class LoginViewController: BaseViewController {
             make.width.height.equalTo(60)
         }
     }
-
-    @objc func kakaoButtonTapped() {
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            // 카카오톡 로그인. api 호출 결과를 클로저로 전달.
-            loginViewModel.loginWithApp() { loginInfo in
-                if loginInfo == "서비스이용동의 이동" {
-                    self.navigationController?.pushViewController(TermsViewController(), animated: true)
-                } else {
-                    self.navigationController?.pushViewController(BaseTabBarController(), animated: true)
-                }
-            }
-        } else {
-            // 만약, 카카오톡이 깔려있지 않을 경우에는 웹 브라우저로 카카오 로그인함.
-            loginViewModel.loginWithWeb() { loginInfo in
-                if loginInfo == "서비스이용동의 이동" {
-                    self.navigationController?.pushViewController(TermsViewController(), animated: true)
-                } else {
-                    self.navigationController?.pushViewController(BaseTabBarController(), animated: true)
-                }
-            }
-        }
-    }
     
-    
-    @objc func appleButtonTapped() {
-        
+//MARK: - Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setUI()
+        setUIConstraints()
+        bindViewModel()
     }
     
 }

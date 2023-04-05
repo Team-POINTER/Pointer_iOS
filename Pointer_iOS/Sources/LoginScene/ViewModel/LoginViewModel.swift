@@ -9,13 +9,44 @@
 import Foundation
 import KakaoSDKAuth
 import KakaoSDKUser
+import RxSwift
+import RxCocoa
 
-class LoginViewModel {
+class LoginViewModel: ViewModelType {
+    
+    var disposeBag = DisposeBag()
     
     init() {
         print("LoginViewModel Called")
     }
     
+    struct Input {
+        let kakaoLoginTap: Observable<Void>
+        let appleLoginTap: Observable<Void>
+    }
+    
+    struct Output {
+        var kakaoLogin: Observable<Void>
+        var appleLogin: Observable<Void>
+    }
+    
+    func transform(input: Input) -> Output {
+        
+        let kakao = input.kakaoLoginTap
+        
+        let apple = input.appleLoginTap
+            .map(appleLoginTap)
+       
+        return Output(kakaoLogin: kakao, appleLogin: apple)
+    }
+
+//MARK: - APPLE
+    func appleLoginTap() {
+        print("애플로그인 버튼 Tap")
+    }
+    
+    
+//MARK: - KAKAO
     
     func loginWithWeb(completion: @escaping (String) -> Void) {
             UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
@@ -42,14 +73,13 @@ class LoginViewModel {
                             print("userNickname = \(String(describing: userNickname))")
                             
                             let kakaoData = KakaoInput(accessToken: accessToken)
-                            LoginDataManager.posts(kakaoData) { model, userInfo in
+                            LoginDataManager.posts(kakaoData) { model, loginResultType in
                                 let accessToken = model.accessToken
-                                let vm = TermsViewModel()
-                                vm.loginAccessToken = accessToken
-                                if userInfo == "회원가입 완료" {
-                                    completion("서비스이용동의 이동")
+                                _ = TermsViewModel(loginAccessToken: accessToken)
+                                if loginResultType == .success {
+                                    completion(loginResultType.message)
                                 } else {
-                                    completion("존재하는 회원")
+                                    completion(loginResultType.message)
                                 }
                             }
                         }
@@ -86,14 +116,13 @@ class LoginViewModel {
                         print("userNickname = \(String(describing: userNickname))")
                         
                         let kakaoData = KakaoInput(accessToken: accessToken)
-                        LoginDataManager.posts(kakaoData) { model, userInfo in
+                        LoginDataManager.posts(kakaoData) { model, loginResultType in
                             let accessToken = model.accessToken
-                            let vm = TermsViewModel()
-                            vm.loginAccessToken = accessToken
-                            if userInfo == "회원가입 완료" {
-                                completion("서비스이용동의 이동")
+                            _ = TermsViewModel(loginAccessToken: accessToken)
+                            if loginResultType == .success {
+                                completion(loginResultType.message)
                             } else {
-                                completion("존재하는 회원")
+                                completion(loginResultType.message)
                             }
                         }
                     }

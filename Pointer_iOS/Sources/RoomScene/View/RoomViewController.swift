@@ -123,6 +123,7 @@ class RoomViewController: BaseViewController {
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.navigationController?.pushViewController(ResultViewController(), animated: true)
+                self.tabBarController?.tabBar.isHidden = true
             })
             .disposed(by: disposeBag)
         
@@ -184,6 +185,10 @@ class RoomViewController: BaseViewController {
         tableViewSetting()
         bindViewModel()
         self.hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
     }
 
     override func viewWillDisappear(_ animated: Bool) {
