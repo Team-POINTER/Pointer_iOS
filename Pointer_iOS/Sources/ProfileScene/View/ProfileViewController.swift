@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: BaseViewController {
     //MARK: - Properties
     let viewModel = ProfileViewModel()
     
@@ -43,22 +43,20 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Functions
     private func setupUI() {
-        view.addSubview(backgroundImageView)
         view.addSubview(profileInfoView)
-        view.addSubview(profileImageView)
-        
-        backgroundImageView.snp.makeConstraints {
-            $0.leading.top.trailing.equalToSuperview()
-            let height = (view.frame.height - view.safeAreaInsets.top) / 2
-            $0.height.equalTo(height)
-        }
-        
         profileInfoView.snp.makeConstraints {
             $0.leading.bottom.trailing.equalToSuperview()
-            $0.top.equalTo(backgroundImageView.snp.bottom)
+            $0.height.equalTo(360 - Device.tabBarHeight)
             profileInfoView.setGradient(color1: .pointerGradientStart, color2: .pointerGradientEnd)
         }
         
+        view.addSubview(backgroundImageView)
+        backgroundImageView.snp.makeConstraints {
+            $0.leading.top.trailing.equalToSuperview()
+            $0.bottom.equalTo(profileInfoView.snp.top)
+        }
+        
+        view.addSubview(profileImageView)
         profileImageView.snp.makeConstraints {
             $0.width.height.equalTo(106)
             $0.bottom.equalTo(backgroundImageView.snp.bottom).inset(-106 / 2)

@@ -28,7 +28,6 @@ class UserFriendCell: UICollectionViewCell {
     //MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .red
         setupUI()
     }
     
@@ -48,7 +47,7 @@ class UserFriendCell: UICollectionViewCell {
         
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints {
-            $0.top.equalTo(profileImageView.snp.bottom).inset(-8)
+            $0.top.equalTo(profileImageView.snp.bottom).inset(-5)
             $0.leading.trailing.equalToSuperview()
         }
     }

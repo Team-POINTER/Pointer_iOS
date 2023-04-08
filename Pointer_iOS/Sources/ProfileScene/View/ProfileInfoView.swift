@@ -64,8 +64,8 @@ class ProfileInfoView: UIView {
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = viewModel.cellItemSpacing
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .systemIndigo
         cv.showsHorizontalScrollIndicator = false
+        cv.backgroundColor = .clear
         return cv
     }()
     
@@ -140,7 +140,7 @@ class ProfileInfoView: UIView {
 
 extension ProfileInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return user.friendsCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

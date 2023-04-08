@@ -16,6 +16,6 @@ class ProfileViewModel {
     //MARK: - Functions
     func getCellSize() -> CGSize {
         let width = (Device.width - (cellItemSpacing * CGFloat(horizonItemCount))) / 5
-        return CGSize(width: width, height: width + 30)
+        return CGSize(width: width + 5, height: width + 30)
     }
 }
