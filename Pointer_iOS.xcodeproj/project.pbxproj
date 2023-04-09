@@ -71,6 +71,7 @@
 		CD9C92CE29E1735C00ABEA4C /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9C92CD29E1735C00ABEA4C /* ProfileViewModel.swift */; };
 		CD9C92D029E1808B00ABEA4C /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9C92CF29E1808B00ABEA4C /* ProfileInfoView.swift */; };
 		CD9C92D229E18B8300ABEA4C /* UserFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9C92D129E18B8300ABEA4C /* UserFriendCell.swift */; };
+		CD9C92D429E2B25700ABEA4C /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9C92D329E2B25700ABEA4C /* UserModel.swift */; };
 		CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */; };
 		CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEDF29B9FE2600B03973 /* SnapKit */; };
 		CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEED29B9FFFE00B03973 /* Kingfisher */; };
@@ -137,6 +138,7 @@
 		CD9C92CD29E1735C00ABEA4C /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD9C92CF29E1808B00ABEA4C /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		CD9C92D129E18B8300ABEA4C /* UserFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriendCell.swift; sourceTree = "<group>"; };
+		CD9C92D329E2B25700ABEA4C /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -550,6 +552,7 @@
 		CDD1DEF529BA006700B03973 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CD9C92D329E2B25700ABEA4C /* UserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -697,6 +700,7 @@
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
 				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
+				CD9C92D429E2B25700ABEA4C /* UserModel.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,

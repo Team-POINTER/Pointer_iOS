@@ -6,22 +6,16 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 import SnapKit
-
-struct User {
-    let isSelf: Bool
-    let userName: String
-    let userID: String
-    let friendsCount: Int
-    
-}
 
 private let cellIdentifier = "UserFriendCell"
 
 class ProfileInfoView: UIView {
     //MARK: - Properties
-    let user: User
     let viewModel: ProfileViewModel
+    var disposeBag = DisposeBag()
     
     let nameLabel: UILabel = {
         let label = UILabel()
@@ -69,11 +63,38 @@ class ProfileInfoView: UIView {
         return cv
     }()
     
+    let editMyProfileButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.setAttributedTitle(NSAttributedString(string: "프로필 편집",
+                                                     attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
+        return button
+    }()
+    
+    let friendsActionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .pointerRed
+        button.tintColor = .white
+        button.setAttributedTitle(NSAttributedString(string: "읽는중",
+                                                     attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
+        return button
+    }()
+    
+    let messageButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.setAttributedTitle(NSAttributedString(string: "메시지",
+                                                     attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
+        return button
+    }()
+    
     //MARK: - Lifecycle
-    init(user: User, viewModel: ProfileViewModel) {
-        self.user = user
+    init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
+        bind()
         setupCollectionView()
         setupUI()
         configure()
@@ -81,6 +102,27 @@ class ProfileInfoView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Bind
+    private func bind() {
+        // 프로필 편집 버튼
+        editMyProfileButton.rx.tap
+            .subscribe { _ in
+                print("DEBUG - 프로필 수정 버튼 눌림")
+            }.disposed(by: disposeBag)
+        
+        // 친구 액션 버튼
+        friendsActionButton.rx.tap
+            .subscribe { _ in
+                print("DEBUG - 친구 액션 버튼 눌림")
+            }.disposed(by: disposeBag)
+        
+        // 메시지 버튼
+        messageButton.rx.tap
+            .subscribe { _ in
+                print("DEBUG - 메시지 버튼 눌림")
+            }.disposed(by: disposeBag)
     }
     
     //MARK: - Functions
@@ -129,18 +171,62 @@ class ProfileInfoView: UIView {
             $0.top.equalTo(moreFriendsLabel.snp.bottom).inset(-12)
             $0.bottom.equalToSuperview().inset(5)
         }
+        
+        setupActionButtonUI()
+    }
+    
+    private func setupActionButtonUI() {
+        // 버튼을 담을 StackView 생성
+        let stack = UIStackView(arrangedSubviews: [])
+        stack.spacing = 10
+        stack.axis = .horizontal
+        
+        // 버튼 Layout
+        addSubview(stack)
+        stack.snp.makeConstraints {
+            $0.trailing.equalTo(seperator.snp.trailing)
+            $0.bottom.equalTo(idLabel.snp.bottom)
+            $0.height.equalTo(28)
+        }
+        
+        // 유저 타입별 버튼 분기처리
+        switch viewModel.user.memberType {
+        case .myAccount:
+            stack.addArrangedSubview(editMyProfileButton)
+        case .following:
+            stack.addArrangedSubview(friendsActionButton)
+            stack.addArrangedSubview(messageButton)
+            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
+            friendsActionButton.tintColor = .white
+            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 ✓",
+                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
+        case .notFollowing:
+            stack.addArrangedSubview(friendsActionButton)
+            stack.addArrangedSubview(messageButton)
+            friendsActionButton.backgroundColor = .pointerRed
+            friendsActionButton.tintColor = .white
+            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 신청",
+                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
+        }
+        
+        // 버튼 Corner Radius
+        stack.subviews.forEach {
+            $0.layer.cornerRadius = 28 / 2
+            $0.clipsToBounds = true
+            $0.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        }
     }
     
     private func configure() {
-        nameLabel.text = user.userName
-        idLabel.text = "@\(user.userID)"
-        friendsCountLabel.text = "친구 \(user.friendsCount)"
+        nameLabel.text = viewModel.user.userName
+        idLabel.text = viewModel.userIdText
+        friendsCountLabel.text = viewModel.friendsCountText
     }
 }
 
 extension ProfileInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return user.friendsCount
+        return viewModel.numberOfFriendsCellCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

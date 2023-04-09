@@ -11,7 +11,8 @@ import RxSwift
 
 class ProfileViewController: BaseViewController {
     //MARK: - Properties
-    let viewModel = ProfileViewModel()
+    //더미!
+    let viewModel = ProfileViewModel(user: User(memberType: .notFollowing, userName: "김지수", userID: "jisu.kim", friendsCount: 10))
     
     let backgroundImageView: UIImageView = {
         let iv = UIImageView()
@@ -28,8 +29,7 @@ class ProfileViewController: BaseViewController {
     }()
     
     lazy var profileInfoView: ProfileInfoView = {
-        let dummyUser = User(isSelf: true, userName: "김지수", userID: "jisu.kim", friendsCount: 10)
-        let view = ProfileInfoView(user: dummyUser, viewModel: viewModel)
+        let view = ProfileInfoView(viewModel: viewModel)
         return view
     }()
     
@@ -42,6 +42,10 @@ class ProfileViewController: BaseViewController {
     //MARK: - Selector
     
     //MARK: - Functions
+    private func setupNavigationBar() {
+        
+    }
+    
     private func setupUI() {
         view.addSubview(profileInfoView)
         profileInfoView.snp.makeConstraints {

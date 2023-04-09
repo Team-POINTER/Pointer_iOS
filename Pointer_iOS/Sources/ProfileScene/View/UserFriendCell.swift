@@ -12,8 +12,8 @@ class UserFriendCell: UICollectionViewCell {
     //MARK: - Properties
     let profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "personIcon")
-        iv.backgroundColor = .blue
+        iv.image = UIImage(named: "defaultProfile")
+        iv.contentMode = .scaleAspectFill
         return iv
     }()
     
