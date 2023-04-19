@@ -12,8 +12,15 @@ import SnapKit
 
 private let cellIdentifier = "UserFriendCell"
 
+protocol ProfileInfoViewDelegate: AnyObject {
+    func editMyProfileButtonTapped()
+    func friendsActionButtonTapped()
+    func messageButtonTapped()
+}
+
 class ProfileInfoView: UIView {
     //MARK: - Properties
+    var delegate: ProfileInfoViewDelegate?
     let viewModel: ProfileViewModel
     var disposeBag = DisposeBag()
     
@@ -108,20 +115,20 @@ class ProfileInfoView: UIView {
     private func bind() {
         // 프로필 편집 버튼
         editMyProfileButton.rx.tap
-            .subscribe { _ in
-                print("DEBUG - 프로필 수정 버튼 눌림")
+            .subscribe { [weak self] _ in
+                self?.delegate?.editMyProfileButtonTapped()
             }.disposed(by: disposeBag)
         
         // 친구 액션 버튼
         friendsActionButton.rx.tap
-            .subscribe { _ in
-                print("DEBUG - 친구 액션 버튼 눌림")
+            .subscribe { [weak self] _ in
+                self?.delegate?.friendsActionButtonTapped()
             }.disposed(by: disposeBag)
         
         // 메시지 버튼
         messageButton.rx.tap
-            .subscribe { _ in
-                print("DEBUG - 메시지 버튼 눌림")
+            .subscribe { [weak self] _ in
+                self?.delegate?.messageButtonTapped()
             }.disposed(by: disposeBag)
     }
     

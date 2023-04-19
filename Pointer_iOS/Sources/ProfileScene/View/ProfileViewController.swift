@@ -12,7 +12,7 @@ import RxSwift
 class ProfileViewController: BaseViewController {
     //MARK: - Properties
     //더미!
-    let viewModel = ProfileViewModel(user: User(memberType: .notFollowing, userName: "김지수", userID: "jisu.kim", friendsCount: 10))
+    let viewModel = ProfileViewModel(user: User(memberType: .myAccount, userName: "김지수", userID: "jisu.kim", friendsCount: 10))
     
     let backgroundImageView: UIImageView = {
         let iv = UIImageView()
@@ -23,13 +23,14 @@ class ProfileViewController: BaseViewController {
     
     let profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .red
+        iv.image = UIImage.defaultProfile
         iv.contentMode = .scaleAspectFill
         return iv
     }()
     
     lazy var profileInfoView: ProfileInfoView = {
         let view = ProfileInfoView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
     
@@ -68,5 +69,19 @@ class ProfileViewController: BaseViewController {
             profileImageView.layer.cornerRadius = 106 / 2
             profileImageView.clipsToBounds = true
         }
+    }
+}
+
+extension ProfileViewController: ProfileInfoViewDelegate {
+    func editMyProfileButtonTapped() {
+        print("DEBUG - 프로필 수정 버튼 눌림")
+    }
+    
+    func friendsActionButtonTapped() {
+        print("DEBUG - 친구 액션 버튼 눌림")
+    }
+    
+    func messageButtonTapped() {
+        print("DEBUG - 메시지 버튼 눌림")
     }
 }

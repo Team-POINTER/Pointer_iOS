@@ -20,6 +20,7 @@ class UserFriendCell: UICollectionViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "김지수"
+        label.textColor = .white
         label.font = .notoSans(font: .notoSansKrMedium, size: 13)
         label.textAlignment = .center
         return label
