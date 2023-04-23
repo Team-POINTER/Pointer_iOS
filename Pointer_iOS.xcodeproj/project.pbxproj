@@ -63,6 +63,7 @@
 		CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BCC5929F53B5E00DD44F7 /* PreferenceModel.swift */; };
 		CD5BCC5D29F53B8500DD44F7 /* PreferenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BCC5C29F53B8500DD44F7 /* PreferenceViewModel.swift */; };
 		CD5BCC5F29F5423700DD44F7 /* PreferenceItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BCC5E29F5423700DD44F7 /* PreferenceItemCell.swift */; };
+		CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BCC6029F546A500DD44F7 /* PreferenceItemHeader.swift */; };
 		CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDA529BB2D5B00DB024C /* HomeController.swift */; };
 		CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDA929BB4B5E00DB024C /* UIBarButtonItem.swift */; };
 		CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDAB29BB97B300DB024C /* RoomPreviewCell.swift */; };
@@ -132,6 +133,7 @@
 		CD5BCC5929F53B5E00DD44F7 /* PreferenceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceModel.swift; sourceTree = "<group>"; };
 		CD5BCC5C29F53B8500DD44F7 /* PreferenceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewModel.swift; sourceTree = "<group>"; };
 		CD5BCC5E29F5423700DD44F7 /* PreferenceItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceItemCell.swift; sourceTree = "<group>"; };
+		CD5BCC6029F546A500DD44F7 /* PreferenceItemHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceItemHeader.swift; sourceTree = "<group>"; };
 		CD6BCDA529BB2D5B00DB024C /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		CD6BCDA929BB4B5E00DB024C /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		CD6BCDAB29BB97B300DB024C /* RoomPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPreviewCell.swift; sourceTree = "<group>"; };
@@ -473,6 +475,7 @@
 			children = (
 				CD5BCC5529F5384300DD44F7 /* PreferenceController.swift */,
 				CD5BCC5E29F5423700DD44F7 /* PreferenceItemCell.swift */,
+				CD5BCC6029F546A500DD44F7 /* PreferenceItemHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -675,6 +678,7 @@
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
 				473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
+				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
