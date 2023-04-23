@@ -29,6 +29,11 @@ class PreferenceController: BaseViewController {
         setupCollectionView()
     }
     
+    //MARK: - Selector
+    @objc private func backButtonTapped() {
+        print(#function)
+    }
+    
     //MARK: - Functions
     func setupCollectionView() {
         collectionView.register(PreferenceItemCell.self, forCellWithReuseIdentifier: cellIdentifier)
@@ -45,28 +50,40 @@ class PreferenceController: BaseViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(250)), subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 16, bottom: 40, trailing: 16)
         
+        // Background - 테두리 뷰
         let sectionBackgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: background)
-        
         sectionBackgroundDecoration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 25, trailing: 16)
         section.decorationItems = [sectionBackgroundDecoration]
         
-        let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(60))
+        // Header - 카테고리 구분 헤더
+        let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(60))
         let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerItemSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
         section.boundarySupplementaryItems = [headerItem]
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 16, bottom: 40, trailing: 16)
         
         let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        // Background: DecorationView Register
         layout.register(PreferenceSectionBackgroundView.self, forDecorationViewOfKind: background)
         return layout
     }
     
-    func setupUI() {
-        navigationItem.title = "설정"
+    private func setupUI() {
+        setupNaviBar()
+        
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    private func setupNaviBar() {
+        navigationItem.title = "설정"
+        let backButtonImage = UIImage(systemName: "chevron.backward")
+        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, size: Device.navigationBarHeight, target: self, handler: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
     }
 }
 
