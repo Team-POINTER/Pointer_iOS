@@ -54,6 +54,7 @@ class PreferenceController: BaseViewController {
     }
     
     func setupUI() {
+        navigationItem.title = "설정"
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -76,10 +77,7 @@ extension PreferenceController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? PreferenceItemCell else { return UICollectionViewCell() }
-        let section = PreferenceModel.SectionType.allCases[indexPath.section]
-        let typeModels = PreferenceModel.allCases.filter { $0.type == section }
-        let type = typeModels[indexPath.row]
-        cell.item = type
+        cell.item = viewModel.indexPathToType(indexPath)
         return cell
     }
     
@@ -88,5 +86,10 @@ extension PreferenceController: UICollectionViewDataSource, UICollectionViewDele
         let type = PreferenceModel.SectionType.allCases[indexPath.section]
         view.headerType = type
         return view
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let type = viewModel.indexPathToType(indexPath)
+        type.tapHandler()
     }
 }

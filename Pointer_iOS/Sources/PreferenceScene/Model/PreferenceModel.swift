@@ -52,7 +52,11 @@ enum PreferenceModel: String, CaseIterable {
     var handler: (() -> Void)? {
         switch self {
         default:
-            return nil
+            return tapHandler
         }
+    }
+    
+    func tapHandler() {
+        print("\(self.rawValue)가 눌림")
     }
 }
