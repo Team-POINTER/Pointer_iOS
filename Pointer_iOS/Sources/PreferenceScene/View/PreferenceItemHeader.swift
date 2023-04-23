@@ -27,7 +27,7 @@ class PreferenceItemHeader: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupUI()
-        backgroundColor = .brown
+//        backgroundColor = .brown
     }
     
     required init?(coder: NSCoder) {

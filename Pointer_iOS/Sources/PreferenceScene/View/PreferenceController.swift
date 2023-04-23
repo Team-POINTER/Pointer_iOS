@@ -10,6 +10,7 @@ import SnapKit
 
 let cellIdentifier = "PreferenceItemCell"
 let headerIdentifier = "PreferenceItemHeader"
+let background = "backgroundViewIdentifier"
 
 class PreferenceController: BaseViewController {
     //MARK: - Properties
@@ -39,17 +40,24 @@ class PreferenceController: BaseViewController {
     func generateLayout() -> UICollectionViewLayout {
         
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(40)))
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0)
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(250)), subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 16, bottom: 40, trailing: 16)
         
-        let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(40))
+        let sectionBackgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: background)
+        
+        sectionBackgroundDecoration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 25, trailing: 16)
+        section.decorationItems = [sectionBackgroundDecoration]
+        
+        let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(60))
         let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerItemSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         section.boundarySupplementaryItems = [headerItem]
         
         let layout = UICollectionViewCompositionalLayout(section: section)
+        layout.register(PreferenceSectionBackgroundView.self, forDecorationViewOfKind: background)
         return layout
     }
     
@@ -71,7 +79,6 @@ extension PreferenceController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let type = PreferenceModel.SectionType.allCases[section]
         let typeModel = PreferenceModel.allCases.filter { $0.type == type }
-        print("Section: \(type.rawValue), Count: \(typeModel.count)")
         return typeModel.count
     }
     
