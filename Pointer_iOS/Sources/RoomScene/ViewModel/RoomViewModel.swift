@@ -18,8 +18,10 @@ final class RoomViewModel: ViewModelType {
     
     
     
+    
     struct Input {
         let hintTextEditEvent: Observable<String>
+        
     }
     
     struct Output {
@@ -69,9 +71,11 @@ final class RoomViewModel: ViewModelType {
         if let selectName = value.lastIndex(of: name) {
             value.remove(at: selectName)
         }
-        self.cellNames.accept(value)
+        self.cellNames.accept (value)
         print("name = \(value)")
     }
+    
+    
  
     private func textValid(_ text: String) -> Bool {
         return text.count > 0

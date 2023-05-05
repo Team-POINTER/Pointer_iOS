@@ -31,6 +31,8 @@ class RoomViewController: BaseViewController {
     var viewModel = RoomViewModel()
     
 //MARK: - Rx
+    
+    
     func bindViewModel() {
         let people: [RoomModel] = [
             RoomModel(name: "로미오미오", isHidden: true),
