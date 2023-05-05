@@ -9,6 +9,8 @@ import UIKit
 
 extension UIImage {
     
+    static let defaultProfile: UIImage? = UIImage(named: "defaultProfile")
+    
     func resize(newWidth: CGFloat) -> UIImage {
         let scale = newWidth / self.size.width
         let newHeight = self.size.height * scale

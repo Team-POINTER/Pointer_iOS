@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-let cellIdentifier = "PreferenceItemCell"
-let headerIdentifier = "PreferenceItemHeader"
-let background = "backgroundViewIdentifier"
+private let cellIdentifier = "PreferenceItemCell"
+private let headerIdentifier = "PreferenceItemHeader"
+private let background = "backgroundViewIdentifier"
 
 class PreferenceController: BaseViewController {
     //MARK: - Properties
