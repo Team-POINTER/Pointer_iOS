@@ -12,6 +12,20 @@ class RoomPeopleTableViewCell: UITableViewCell {
     
     static let identifier = "RoomPeopleTableViewCell"
     
+    //MARK: - Properties
+    var user: User? {
+        didSet {
+            configure()
+        }
+    }
+    
+    var isSelectedUser: Bool = false {
+        didSet {
+            // 선택 UI 전환
+            pointStar.isHidden = !isSelectedUser
+        }
+    }
+    
     var clickCount: Int = 0 {
         didSet {
             if clickCount == 0 {
@@ -42,7 +56,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
         return $0
     }(UIImageView())
     
-    
+    //MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
@@ -55,6 +69,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
         fatalError()
     }
     
+    //MARK: - Functions
     func setUIandConstraints() {
         contentView.addSubview(roundView)
         roundView.addSubview(nameLabel)
@@ -78,17 +93,20 @@ class RoomPeopleTableViewCell: UITableViewCell {
             make.width.height.equalTo(23)
         }
     }
+//
+//    func onSelected() {
+//        self.pointStar.isHidden = false
+//        self.clickCount = 1
+//    }
+//
+//    func onDeselected() {
+//        self.pointStar.isHidden = true
+//        self.clickCount = 0
+//    }
     
-    func onSelected() {
-        self.pointStar.isHidden = false
-        self.clickCount = 1
-    }
-    func onDeselected() {
-        self.pointStar.isHidden = true
-        self.clickCount = 0
-    }
-    
+    // 선택시 UI 전환
     func configure() {
-        
+        guard let user = user else { return }
+        nameLabel.text = "\(user.userName)"
     }
 }
