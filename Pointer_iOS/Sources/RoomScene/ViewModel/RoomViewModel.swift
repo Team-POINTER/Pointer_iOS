@@ -14,6 +14,7 @@ final class RoomViewModel: ViewModelType {
     
     let disposeBag = DisposeBag()
     var roomObservable = BehaviorRelay<[RoomModel]>(value: [])
+    var isSelectedCell = [Int]()
     var cellNames = BehaviorRelay<[String]>(value: [])
     
     
@@ -58,6 +59,20 @@ final class RoomViewModel: ViewModelType {
 
         return Output(hintTextFieldCount: hintText, hintTextValid: hintValid, selectPeople: people, pointButtonValid: pointButtonValid)
     }
+    
+    func addIndex(_ index: Int) {
+        self.isSelectedCell.append(index)
+        print(self.isSelectedCell)
+    }
+    
+    func deleteIndex(_ index: Int) {
+        if let delIndex = self.isSelectedCell.firstIndex(of: index) {
+            self.isSelectedCell.remove(at: delIndex)
+            print(self.isSelectedCell)
+        }
+        
+    }
+    
     
     func addName(_ name: String) {
         var value = self.cellNames.value

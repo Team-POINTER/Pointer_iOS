@@ -32,21 +32,22 @@ class RoomViewController: BaseViewController {
     
 //MARK: - Rx
     
+    var people: [RoomModel] = [
+        RoomModel(name: "로미오미오", isHidden: true),
+        RoomModel(name: "김씨", isHidden: true),
+        RoomModel(name: "냠남", isHidden: true),
+        RoomModel(name: "김지수지수", isHidden: true),
+        RoomModel(name: "언씨", isHidden: true),
+        RoomModel(name: "박현준현준", isHidden: true),
+        RoomModel(name: "김씨", isHidden: true),
+        RoomModel(name: "냠남", isHidden: true),
+        RoomModel(name: "곽민섭민섭", isHidden: true),
+        RoomModel(name: "언씨", isHidden: true),
+        RoomModel(name: "최성현성현", isHidden: true)
+    ]
     
     func bindViewModel() {
-        let people: [RoomModel] = [
-            RoomModel(name: "로미오미오", isHidden: true),
-            RoomModel(name: "김씨", isHidden: true),
-            RoomModel(name: "냠남", isHidden: true),
-            RoomModel(name: "김지수지수", isHidden: true),
-            RoomModel(name: "언씨", isHidden: true),
-            RoomModel(name: "박현준현준", isHidden: true),
-            RoomModel(name: "김씨", isHidden: true),
-            RoomModel(name: "냠남", isHidden: true),
-            RoomModel(name: "곽민섭민섭", isHidden: true),
-            RoomModel(name: "언씨", isHidden: true),
-            RoomModel(name: "최성현성현", isHidden: true)
-        ]
+        
         
         viewModel.roomObservable.accept(people)
         
@@ -80,9 +81,13 @@ class RoomViewController: BaseViewController {
 // - tableView bind
         viewModel.roomObservable
             .observe(on: MainScheduler.instance)
-            .bind(to: peopleTableView.rx.items(cellIdentifier: "RoomPeopleTableViewCell", cellType: RoomPeopleTableViewCell.self)) { index, item, cell in
+            .bind(to: peopleTableView.rx.items) { tableView, index, item in
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: RoomPeopleTableViewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPeopleTableViewCell else { return UITableViewCell() }
+                
                 cell.nameLabel.text = item.name
                 cell.pointStar.isHidden = item.isHidden
+                
+                return cell
                 
             }.disposed(by: disposeBag)
         
@@ -92,14 +97,16 @@ class RoomViewController: BaseViewController {
             .bind { [weak self] indexPath, model in
                 self?.peopleTableView.deselectRow(at: indexPath, animated: false)
                 print("Selected \(model) at \(indexPath)")
-                let cell = self?.peopleTableView.cellForRow(at: indexPath) as? RoomPeopleTableViewCell
+                guard let cell = self?.peopleTableView.cellForRow(at: indexPath) as? RoomPeopleTableViewCell else { return }
                 
                 // point 체크 이미지[O] & 배열 추가해야함 [O]
-                if cell?.clickCount == 1 {
-                    cell?.clickCount = 0
+                if cell.clickCount == 1 {
+                    cell.clickCount = 0
+                    self?.viewModel.deleteIndex(indexPath.row)
                     self?.viewModel.deleteName(model.name)
                 } else {
-                    cell?.clickCount += 1
+                    cell.clickCount += 1
+                    self?.viewModel.addIndex(indexPath.row)
                     self?.viewModel.addName(model.name)
                 }
             }
@@ -208,7 +215,7 @@ class RoomViewController: BaseViewController {
 
 
 //MARK: - TableView
-extension RoomViewController : UITableViewDelegate{
+extension RoomViewController : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55

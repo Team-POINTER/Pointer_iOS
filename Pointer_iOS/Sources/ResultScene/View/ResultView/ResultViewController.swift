@@ -16,6 +16,9 @@ class ResultViewController: BaseViewController {
     var viewModel = ResultViewModel()
     let disposeBag = DisposeBag()
     
+    var timeString = "2023-05-06 16:11:10"
+    private var remainedTime = ""
+    
 //MARK: - Rx
     func bindViewModel() {
         print("bindViewModel called")
@@ -32,7 +35,9 @@ class ResultViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(NewQuestViewController(), animated: true)
+                let vc = NewQuestViewController()
+                vc.timeString = self.timeString
+                self.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -131,6 +136,7 @@ class ResultViewController: BaseViewController {
         setUI()
         setUIConstraints()
         bindViewModel()
+        buttonTimer()
         
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
@@ -219,6 +225,39 @@ class ResultViewController: BaseViewController {
             make.width.equalTo(UIScreen.main.bounds.width - 32)
             make.height.equalTo(135)
         }
+    }
+    
+    func buttonTimer() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        guard let endDate = formatter.date(from: self.timeString) else { return }
+        print(endDate)
+        var remainingTime = Int(endDate.timeIntervalSinceNow)
+        
+        if remainingTime < 0 {
+            self.newQuestionTimerLabel.isHidden = true
+        } else {
+            self.newQuestionTimerLabel.isHidden = false
+            let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                remainingTime -= 1
+                let hours = remainingTime / 3600
+                let minutes = (remainingTime % 3600) / 60
+                let seconds = remainingTime % 60
+                self.remainedTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+                
+                // 타이머 Label 갱신
+                print(self.remainedTime)
+                self.newQuestionTimerLabel.text = "\(self.remainedTime)"
+                
+                // 남은 시간이 0이 되면 타이머 종료
+                if self.remainedTime == "00:00:00" {
+                    timer.invalidate()
+                    self.newQuestionTimerLabel.isHidden = true
+                }
+            }
+        }
+        
+        
     }
     
     @objc func backButtonTap() {

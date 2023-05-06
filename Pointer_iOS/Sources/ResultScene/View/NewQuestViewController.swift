@@ -13,8 +13,8 @@ import SnapKit
 
 class NewQuestViewController: BaseViewController {
 
-    var timeString = "2023-05-05 22:39:05"
-    var remainedTime = ""
+    var timeString = ""
+    private var remainedTime = ""
 //    var newQuestionButtonEnabled = true
     
 //MARK: - UI Components
@@ -41,8 +41,8 @@ class NewQuestViewController: BaseViewController {
         let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
         $0.setAttributedTitle(attributedQuestionString, for: .normal)
         $0.layer.cornerRadius = 25
-        $0.backgroundColor = UIColor.gray
-        $0.titleLabel?.textColor = UIColor.white
+        $0.backgroundColor = UIColor.pointerRed.withAlphaComponent(0.6)
+        $0.titleLabel?.textColor = UIColor.white.withAlphaComponent(0.6)
 //        self.newQuestButton.isEnabled = newQuestionButtonEnabled
         return $0
     }(UIButton())
@@ -109,25 +109,34 @@ class NewQuestViewController: BaseViewController {
         print(endDate)
         var remainingTime = Int(endDate.timeIntervalSinceNow)
         
-        let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            remainingTime -= 1
-            let hours = remainingTime / 3600
-            let minutes = (remainingTime % 3600) / 60
-            let seconds = remainingTime % 60
-            self.remainedTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-            
-            // 버튼 타이틀 갱신
-            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-            attributedQuestionString.append(NSMutableAttributedString(string: "\(self.remainedTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
+        if remainingTime < 0 {
+            self.newQuestButton.isEnabled = true
+            self.newQuestButton.backgroundColor = .pointerRed
+            self.newQuestButton.titleLabel?.textColor = UIColor.white
+            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
             self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
-            
-            // 남은 시간이 0이 되면 타이머 종료
-            if self.remainedTime == "00:00:00" {
-                timer.invalidate()
-                self.newQuestButton.isEnabled = true
-                self.newQuestButton.backgroundColor = .pointerRed
-                let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+        } else {
+            let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                remainingTime -= 1
+                let hours = remainingTime / 3600
+                let minutes = (remainingTime % 3600) / 60
+                let seconds = remainingTime % 60
+                self.remainedTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+                
+                // 버튼 타이틀 갱신
+                let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+                attributedQuestionString.append(NSMutableAttributedString(string: "\(self.remainedTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
                 self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
+                
+                // 남은 시간이 0이 되면 타이머 종료
+                if self.remainedTime == "00:00:00" {
+                    timer.invalidate()
+                    self.newQuestButton.isEnabled = true
+                    self.newQuestButton.backgroundColor = .pointerRed
+                    self.newQuestButton.titleLabel?.textColor = UIColor.white
+                    let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+                    self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
+                }
             }
         }
     }
