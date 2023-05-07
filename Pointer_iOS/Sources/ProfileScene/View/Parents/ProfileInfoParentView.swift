@@ -10,15 +10,10 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-protocol ProfileInfoViewDelegate: AnyObject {
-    func editMyProfileButtonTapped()
-    func friendsActionButtonTapped()
-    func messageButtonTapped()
-}
+
 
 class ProfileInfoParentView: UIView {
     //MARK: - Properties
-    var delegate: ProfileInfoViewDelegate?
     let viewModel: ProfileViewModel
     var disposeBag = DisposeBag()
     

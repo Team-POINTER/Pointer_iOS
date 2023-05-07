@@ -6,10 +6,20 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import RxGesture
 import SnapKit
+
+protocol EditProfileInfoViewDelegate: AnyObject {
+    func editBackgroundButtonTapped()
+    func editUserIDViewTapped()
+}
 
 class EditProfileInfoView: ProfileInfoParentView {
     //MARK: - Properties
+    var delegate: EditProfileInfoViewDelegate?
+    
     lazy var nameTextFieldView: UIView = {
         let tf = UITextField()
         tf.text = viewModel.user.userName
@@ -82,6 +92,7 @@ class EditProfileInfoView: ProfileInfoParentView {
     override init(viewModel: ProfileViewModel) {
         super.init(viewModel: viewModel)
         setupUI()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -89,6 +100,18 @@ class EditProfileInfoView: ProfileInfoParentView {
     }
     
     //MARK: - Functions
+    func bind() {
+        editBackgroundImageButton.rx.tap
+            .bind { [weak self] _ in
+                self?.delegate?.editBackgroundButtonTapped()
+            }.disposed(by: disposeBag)
+        
+        userIDView.rx.tapGesture().when(.recognized)
+            .bind { [weak self] _ in
+                self?.delegate?.editUserIDViewTapped()
+            }.disposed(by: disposeBag)
+    }
+    
     override func setupUI() {
         super.nameView = nameTextFieldView
         super.setupUI()

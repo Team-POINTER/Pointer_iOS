@@ -12,8 +12,16 @@ import SnapKit
 
 private let cellIdentifier = "UserFriendCell"
 
+protocol ProfileInfoViewDelegate: AnyObject {
+    func editMyProfileButtonTapped()
+    func friendsActionButtonTapped()
+    func messageButtonTapped()
+}
+
 class ProfileInfoView: ProfileInfoParentView {
     //MARK: - Properties
+    var delegate: ProfileInfoViewDelegate?
+
     let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .notoSans(font: .notoSansKrMedium, size: 25)

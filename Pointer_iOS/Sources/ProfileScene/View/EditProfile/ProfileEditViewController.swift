@@ -6,13 +6,24 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import RxGesture
 import SnapKit
 
 class ProfileEditViewController: ProfileParentViewController {
     //MARK: - Properties
+    var disposeBag = DisposeBag()
     let viewModel: ProfileViewModel
     let editProfileInfoView: EditProfileInfoView
-    let editableProfileImageView: UIView = {
+    let cameraImageView: UIImageView = {
+        let cameraImageView = UIImageView()
+        cameraImageView.image = UIImage(named: "camera")
+        cameraImageView.contentMode = .scaleAspectFill
+        return cameraImageView
+    }()
+    
+    lazy var editableProfileImageView: UIView = {
         let view = UIView()
         
         let imageView = UIImageView()
@@ -20,10 +31,6 @@ class ProfileEditViewController: ProfileParentViewController {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 106 / 2
         imageView.clipsToBounds = true
-        
-        let cameraImageView = UIImageView()
-        cameraImageView.image = UIImage(named: "camera")
-        cameraImageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
         view.addSubview(cameraImageView)
@@ -38,7 +45,7 @@ class ProfileEditViewController: ProfileParentViewController {
     
     //MARK: - Selector
     @objc private func saveButtonTapped() {
-        
+        print(#function)
     }
     
     //MARK: - Lifecycle
@@ -46,6 +53,7 @@ class ProfileEditViewController: ProfileParentViewController {
         self.viewModel = viewModel
         self.editProfileInfoView = EditProfileInfoView(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
+        editProfileInfoView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -57,9 +65,17 @@ class ProfileEditViewController: ProfileParentViewController {
         setNavigationBarPointerBackButton()
         setupNavigationBar()
         setupUI()
+        bind()
     }
     
     //MARK: - Functions
+    func bind() {
+        cameraImageView.rx.tapGesture().when(.recognized)
+            .bind { _ in
+                print("프로필 이미지 변경 뷰 눌림")
+            }.disposed(by: disposeBag)
+    }
+    
     func setupNavigationBar() {
         let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(saveButtonTapped))
         saveButton.tintColor = .red
@@ -71,5 +87,15 @@ class ProfileEditViewController: ProfileParentViewController {
         super.profileInfoView = editProfileInfoView
         super.backgroundImageView.backgroundColor = .systemIndigo
         super.setupUI()
+    }
+}
+
+extension ProfileEditViewController: EditProfileInfoViewDelegate {
+    func editBackgroundButtonTapped() {
+        print(#function)
+    }
+    
+    func editUserIDViewTapped() {
+        print(#function)
     }
 }
