@@ -67,6 +67,17 @@ class EditProfileInfoView: ProfileInfoParentView {
         return container
     }()
     
+    let editBackgroundImageButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .pointerRed
+        let attribute = NSAttributedString(string: "배경 이미지 변경",
+                                           attributes: [NSAttributedString.Key.font: UIFont.notoSansBold(size: 13)])
+        button.setAttributedTitle(attribute, for: .normal)
+        button.setTitle("배경 이미지 변경", for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
     //MARK: - Lifecycle
     override init(viewModel: ProfileViewModel) {
         super.init(viewModel: viewModel)
@@ -85,16 +96,29 @@ class EditProfileInfoView: ProfileInfoParentView {
             $0.height.equalTo(60)
         }
         
+        addSubview(editBackgroundImageButton)
+        editBackgroundImageButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(nameTextFieldView.snp.bottom)
+            $0.width.equalTo(116)
+            $0.height.equalTo(35)
+            editBackgroundImageButton.layer.cornerRadius = 35 / 2
+            editBackgroundImageButton.clipsToBounds = true
+        }
+        
         let stack = UIStackView(arrangedSubviews: [userIDGuideLabel, userIDView])
         stack.axis = .horizontal
         stack.alignment = .fill
-        stack.distribution = .fillEqually
         
         addSubview(stack)
         stack.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(nameTextFieldView.snp.bottom).inset(-28)
             $0.height.equalTo(60)
+        }
+        
+        userIDGuideLabel.snp.makeConstraints {
+            $0.width.equalTo(self.snp.width).multipliedBy(0.45)
         }
     }
 }

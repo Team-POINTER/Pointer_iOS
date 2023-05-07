@@ -11,6 +11,12 @@ import SnapKit
 //MARK: - HomeView의 BarButtonItem
 extension UIBarButtonItem {
     
+    static func getPointerBackBarButton(target: UIViewController, handler: Selector) -> UIBarButtonItem {
+        let backButtonImage = UIImage(systemName: "chevron.backward")
+        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, size: Device.navigationBarHeight, target: target, handler: handler)
+        return backButton
+    }
+    
     static func getPointerBarButton(withIconimage image: UIImage?, size: CGFloat, target: UIViewController, handler: Selector) -> UIBarButtonItem {
         
         let containerView = UIView()
@@ -34,5 +40,8 @@ extension UIBarButtonItem {
         let iconBarButton = UIBarButtonItem(customView: containerView)
         
         return iconBarButton
+        
+        //백버튼 두가지 색 조합 필요함
+        //containerView.backgroundColor = UIColor(red: 0.961, green: 0.961, blue: 0.961, alpha: 1)
     }
 }

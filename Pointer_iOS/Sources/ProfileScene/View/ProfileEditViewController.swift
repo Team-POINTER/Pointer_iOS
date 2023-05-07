@@ -36,6 +36,11 @@ class ProfileEditViewController: ProfileParentViewController {
         return view
     }()
     
+    //MARK: - Selector
+    @objc private func saveButtonTapped() {
+        
+    }
+    
     //MARK: - Lifecycle
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
@@ -49,10 +54,18 @@ class ProfileEditViewController: ProfileParentViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNavigationBarPointerBackButton()
+        setupNavigationBar()
         setupUI()
     }
     
     //MARK: - Functions
+    func setupNavigationBar() {
+        let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(saveButtonTapped))
+        saveButton.tintColor = .red
+        navigationItem.rightBarButtonItem = saveButton
+    }
+    
     override func setupUI() {
         super.profileImageView = editableProfileImageView
         super.profileInfoView = editProfileInfoView
