@@ -9,26 +9,19 @@ import UIKit
 import SnapKit
 import RxSwift
 
-class ProfileViewController: BaseViewController {
+class ProfileViewController: ProfileParentViewController {
     //MARK: - Properties
     //더미!
     let viewModel = ProfileViewModel(user: User(memberType: .myAccount, userName: "김지수", userID: "jisu.kim", friendsCount: 10))
     
-    let backgroundImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.backgroundColor = UIColor.rgb(red: 26, green: 26, blue: 28)
-        iv.contentMode = .scaleAspectFill
-        return iv
+    lazy var profileImageViewChild: UIView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "defaultProfile")
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
     
-    let profileImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage.defaultProfile
-        iv.contentMode = .scaleAspectFill
-        return iv
-    }()
-    
-    lazy var profileInfoView: ProfileInfoView = {
+    lazy var profileInfoViewChild: ProfileInfoView = {
         let view = ProfileInfoView(viewModel: viewModel)
         view.delegate = self
         return view
@@ -37,7 +30,6 @@ class ProfileViewController: BaseViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
     }
     //MARK: - Selector
@@ -47,28 +39,10 @@ class ProfileViewController: BaseViewController {
         
     }
     
-    private func setupUI() {
-        view.addSubview(profileInfoView)
-        profileInfoView.snp.makeConstraints {
-            $0.leading.bottom.trailing.equalToSuperview()
-            $0.height.equalTo(360 - Device.tabBarHeight)
-            profileInfoView.setGradient(color1: .pointerGradientStart, color2: .pointerGradientEnd)
-        }
-        
-        view.addSubview(backgroundImageView)
-        backgroundImageView.snp.makeConstraints {
-            $0.leading.top.trailing.equalToSuperview()
-            $0.bottom.equalTo(profileInfoView.snp.top)
-        }
-        
-        view.addSubview(profileImageView)
-        profileImageView.snp.makeConstraints {
-            $0.width.height.equalTo(106)
-            $0.bottom.equalTo(backgroundImageView.snp.bottom).inset(-106 / 2)
-            $0.leading.equalToSuperview().inset(20)
-            profileImageView.layer.cornerRadius = 106 / 2
-            profileImageView.clipsToBounds = true
-        }
+    override func setupUI() {
+        super.profileImageView = profileImageViewChild
+        super.profileInfoView = profileInfoViewChild
+        super.setupUI()
     }
 }
 

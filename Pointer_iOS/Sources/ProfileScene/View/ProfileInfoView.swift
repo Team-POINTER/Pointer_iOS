@@ -12,11 +12,11 @@ import SnapKit
 
 private let cellIdentifier = "UserFriendCell"
 
-protocol ProfileInfoViewDelegate: AnyObject {
-    func editMyProfileButtonTapped()
-    func friendsActionButtonTapped()
-    func messageButtonTapped()
-}
+//protocol ProfileInfoViewDelegate: AnyObject {
+//    func editMyProfileButtonTapped()
+//    func friendsActionButtonTapped()
+//    func messageButtonTapped()
+//}
 
 class ProfileInfoView: UIView {
     //MARK: - Properties
