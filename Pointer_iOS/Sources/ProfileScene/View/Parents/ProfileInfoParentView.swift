@@ -46,7 +46,8 @@ class ProfileInfoParentView: UIView {
     func setupUI() {
         addSubview(_nameView)
         _nameView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(36.7)
+            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalTo(106)
             $0.top.equalToSuperview().inset(67)
         }
     }

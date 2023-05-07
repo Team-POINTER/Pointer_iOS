@@ -30,7 +30,7 @@ class EditProfileInfoView: ProfileInfoParentView {
         
         line.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.height.equalTo(2)
         }
         return containerView
     }()
@@ -51,7 +51,7 @@ class EditProfileInfoView: ProfileInfoParentView {
         super.setupUI()
         nameTextFieldView.snp.makeConstraints {
             $0.height.equalTo(60)
-            $0.width.equalTo(100)
+//            $0.width.equalTo(106)
         }
     }
 }
