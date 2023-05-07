@@ -46,10 +46,6 @@ class ProfileParentViewController: BaseViewController {
     //MARK: - Selector
     
     //MARK: - Functions
-    private func setupNavigationBar() {
-        
-    }
-    
     func setupUI() {
         print(#function)
 

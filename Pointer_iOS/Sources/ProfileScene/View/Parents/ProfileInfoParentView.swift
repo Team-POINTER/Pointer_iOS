@@ -10,8 +10,6 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-private let cellIdentifier = "UserFriendCell"
-
 protocol ProfileInfoViewDelegate: AnyObject {
     func editMyProfileButtonTapped()
     func friendsActionButtonTapped()
@@ -30,18 +28,11 @@ class ProfileInfoParentView: UIView {
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
-        bind()
         setupUI()
-        configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Bind
-    private func bind() {
-        
     }
     
     //MARK: - Functions
@@ -52,9 +43,5 @@ class ProfileInfoParentView: UIView {
             $0.leading.equalToSuperview().inset(36.7)
             $0.top.equalToSuperview().inset(67)
         }
-    }
-    
-    private func configure() {
-
     }
 }

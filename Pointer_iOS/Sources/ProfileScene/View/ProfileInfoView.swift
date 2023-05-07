@@ -12,18 +12,8 @@ import SnapKit
 
 private let cellIdentifier = "UserFriendCell"
 
-//protocol ProfileInfoViewDelegate: AnyObject {
-//    func editMyProfileButtonTapped()
-//    func friendsActionButtonTapped()
-//    func messageButtonTapped()
-//}
-
-class ProfileInfoView: UIView {
+class ProfileInfoView: ProfileInfoParentView {
     //MARK: - Properties
-    var delegate: ProfileInfoViewDelegate?
-    let viewModel: ProfileViewModel
-    var disposeBag = DisposeBag()
-    
     let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .notoSans(font: .notoSansKrMedium, size: 25)
@@ -98,9 +88,8 @@ class ProfileInfoView: UIView {
     }()
     
     //MARK: - Lifecycle
-    init(viewModel: ProfileViewModel) {
-        self.viewModel = viewModel
-        super.init(frame: .zero)
+    override init(viewModel: ProfileViewModel) {
+        super.init(viewModel: viewModel)
         bind()
         setupCollectionView()
         setupUI()

@@ -335,11 +335,10 @@
 		CD06677A2A04E8870003C7B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */,
-				CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */,
+				CD0EE9252A0787320090BF48 /* Cell */,
+				CD0EE9242A0786E40090BF48 /* Parents */,
 				CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */,
 				CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */,
-				CD06677D2A04E8870003C7B4 /* UserFriendCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -394,6 +393,23 @@
 			children = (
 				CD07E5AC29D0008300B52885 /* AllNotiCell.swift */,
 				CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		CD0EE9242A0786E40090BF48 /* Parents */ = {
+			isa = PBXGroup;
+			children = (
+				CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */,
+				CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */,
+			);
+			path = Parents;
+			sourceTree = "<group>";
+		};
+		CD0EE9252A0787320090BF48 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CD06677D2A04E8870003C7B4 /* UserFriendCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
