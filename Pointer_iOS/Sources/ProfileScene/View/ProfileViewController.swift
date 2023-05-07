@@ -18,6 +18,8 @@ class ProfileViewController: ProfileParentViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "defaultProfile")
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 106 / 2
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -49,6 +51,8 @@ class ProfileViewController: ProfileParentViewController {
 extension ProfileViewController: ProfileInfoViewDelegate {
     func editMyProfileButtonTapped() {
         print("DEBUG - 프로필 수정 버튼 눌림")
+        let vc = ProfileEditViewController(viewModel: viewModel)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func friendsActionButtonTapped() {

@@ -47,8 +47,6 @@ class ProfileParentViewController: BaseViewController {
     
     //MARK: - Functions
     func setupUI() {
-        print(#function)
-
         view.addSubview(_profileInfoView)
         _profileInfoView.snp.makeConstraints {
             $0.leading.bottom.trailing.equalToSuperview()
@@ -66,10 +64,6 @@ class ProfileParentViewController: BaseViewController {
             $0.width.height.equalTo(106)
             $0.bottom.equalTo(backgroundImageView.snp.bottom).inset(-106 / 2)
             $0.leading.equalToSuperview().inset(20)
-            _profileImageView.layer.cornerRadius = 106 / 2
-            _profileImageView.clipsToBounds = true
         }
-        print(_profileInfoView)
-        print(_profileImageView)
     }
 }

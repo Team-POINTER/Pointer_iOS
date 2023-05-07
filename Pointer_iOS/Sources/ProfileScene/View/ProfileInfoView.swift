@@ -128,7 +128,7 @@ class ProfileInfoView: ProfileInfoParentView {
         collectionView.delegate = self
     }
     
-    private func setupUI() {
+    override func setupUI() {
         
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints {

@@ -22,7 +22,14 @@ class ProfileInfoParentView: UIView {
     let viewModel: ProfileViewModel
     var disposeBag = DisposeBag()
     
-    let nameView = UIView()
+    var _nameView = UIView()
+    var nameView: UIView {
+        get {
+            return _nameView
+        } set {
+            return _nameView = newValue
+        }
+    }
     
     //MARK: - Lifecycle
     init(viewModel: ProfileViewModel) {
@@ -36,10 +43,9 @@ class ProfileInfoParentView: UIView {
     }
     
     //MARK: - Functions
-    private func setupUI() {
-        
-        addSubview(nameView)
-        nameView.snp.makeConstraints {
+    func setupUI() {
+        addSubview(_nameView)
+        _nameView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(36.7)
             $0.top.equalToSuperview().inset(67)
         }

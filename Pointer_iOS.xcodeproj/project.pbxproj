@@ -53,6 +53,8 @@
 		CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */; };
 		CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */; };
 		CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */; };
+		CD0EE9272A0788510090BF48 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9262A0788510090BF48 /* ProfileEditViewController.swift */; };
+		CD0EE9292A0797660090BF48 /* EditProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9282A0797660090BF48 /* EditProfileInfoView.swift */; };
 		CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207929B8C6EB003D0B84 /* AppDelegate.swift */; };
 		CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */; };
 		CD23208329B8C6EC003D0B84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD23208229B8C6EC003D0B84 /* Assets.xcassets */; };
@@ -130,6 +132,8 @@
 		CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsNotiCell.swift; sourceTree = "<group>"; };
 		CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileParentViewController.swift; sourceTree = "<group>"; };
 		CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoParentView.swift; sourceTree = "<group>"; };
+		CD0EE9262A0788510090BF48 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
+		CD0EE9282A0797660090BF48 /* EditProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInfoView.swift; sourceTree = "<group>"; };
 		CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD23207929B8C6EB003D0B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -339,6 +343,8 @@
 				CD0EE9242A0786E40090BF48 /* Parents */,
 				CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */,
 				CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */,
+				CD0EE9262A0788510090BF48 /* ProfileEditViewController.swift */,
+				CD0EE9282A0797660090BF48 /* EditProfileInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -733,6 +739,7 @@
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */,
+				CD0EE9272A0788510090BF48 /* ProfileEditViewController.swift in Sources */,
 				473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
 				473B739A29CEE41100B33C77 /* ViewModelType.swift in Sources */,
@@ -743,6 +750,7 @@
 				CD5BCC5F29F5423700DD44F7 /* PreferenceItemCell.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
+				CD0EE9292A0797660090BF48 /* EditProfileInfoView.swift in Sources */,
 				CD0667842A04E8A60003C7B4 /* UserModel.swift in Sources */,
 				473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
