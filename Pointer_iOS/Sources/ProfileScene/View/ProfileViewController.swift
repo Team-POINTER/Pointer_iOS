@@ -44,6 +44,7 @@ class ProfileViewController: ProfileParentViewController {
     override func setupUI() {
         super.profileImageView = profileImageViewChild
         super.profileInfoView = profileInfoViewChild
+        super.backgroundImageView.backgroundColor = .systemIndigo
         super.setupUI()
     }
 }

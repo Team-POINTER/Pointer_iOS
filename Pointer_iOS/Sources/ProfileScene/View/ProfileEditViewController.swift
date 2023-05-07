@@ -56,6 +56,7 @@ class ProfileEditViewController: ProfileParentViewController {
     override func setupUI() {
         super.profileImageView = editableProfileImageView
         super.profileInfoView = editProfileInfoView
+        super.backgroundImageView.backgroundColor = .systemIndigo
         super.setupUI()
     }
 }
