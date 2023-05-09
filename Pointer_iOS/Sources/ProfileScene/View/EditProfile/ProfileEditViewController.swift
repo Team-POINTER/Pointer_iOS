@@ -66,6 +66,7 @@ class ProfileEditViewController: ProfileParentViewController {
         setupNavigationBar()
         setupUI()
         bind()
+        hideKeyboardWhenTappedAround()
     }
     
     //MARK: - Functions

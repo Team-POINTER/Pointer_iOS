@@ -20,21 +20,24 @@ class EditProfileInfoView: ProfileInfoParentView {
     //MARK: - Properties
     var delegate: EditProfileInfoViewDelegate?
     
-    lazy var nameTextFieldView: UIView = {
+    lazy var nameTextField: UITextField = {
         let tf = UITextField()
         tf.text = viewModel.user.userName
         tf.font = .notoSans(font: .notoSansKrMedium, size: 25)
         tf.textColor = .inactiveGray
         tf.textAlignment = .center
-        
+        return tf
+    }()
+    
+    lazy var nameTextFieldView: UIView = {
         let line = UIView()
         line.backgroundColor = .inactiveGray
 
         let containerView = UIView()
-        containerView.addSubview(tf)
+        containerView.addSubview(nameTextField)
         containerView.addSubview(line)
         
-        tf.snp.makeConstraints {
+        nameTextField.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
@@ -109,6 +112,18 @@ class EditProfileInfoView: ProfileInfoParentView {
         userIDView.rx.tapGesture().when(.recognized)
             .bind { [weak self] _ in
                 self?.delegate?.editUserIDViewTapped()
+            }.disposed(by: disposeBag)
+        
+        nameTextField.rx.controlEvent(.editingDidBegin)
+            .asObservable()
+            .bind { _ in
+                print("키보드 활성화")
+            }.disposed(by: disposeBag)
+        
+        nameTextField.rx.controlEvent(.editingDidEnd)
+            .asObservable()
+            .bind { _ in
+                print("키보드 비활성화")
             }.disposed(by: disposeBag)
     }
     
