@@ -87,6 +87,7 @@
 		CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEDF29B9FE2600B03973 /* SnapKit */; };
 		CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEED29B9FFFE00B03973 /* Kingfisher */; };
 		CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */; };
+		CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,6 +163,7 @@
 		CD7A70FE29BE23D0003E140C /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		CD90B48929BE327700772192 /* PointerAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerAlert.swift; sourceTree = "<group>"; };
 		CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -343,6 +345,7 @@
 		CD06677A2A04E8870003C7B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CDEC90522A0A81A800EA437D /* EditUserID */,
 				CD0EE9242A0786E40090BF48 /* Parents */,
 				CD0EE92B2A0803550090BF48 /* EditProfile */,
 				CD0EE92A2A0803510090BF48 /* Profile */,
@@ -655,6 +658,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		CDEC90522A0A81A800EA437D /* EditUserID */ = {
+			isa = PBXGroup;
+			children = (
+				CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */,
+			);
+			path = EditUserID;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -777,6 +788,7 @@
 				CD0EE9292A0797660090BF48 /* EditProfileInfoView.swift in Sources */,
 				CD0667842A04E8A60003C7B4 /* UserModel.swift in Sources */,
 				473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */,
+				CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
 				CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */,
 				CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */,

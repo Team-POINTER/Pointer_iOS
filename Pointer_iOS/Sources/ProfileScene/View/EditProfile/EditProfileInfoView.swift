@@ -29,19 +29,22 @@ class EditProfileInfoView: ProfileInfoParentView {
         return tf
     }()
     
-    lazy var nameTextFieldView: UIView = {
+    let nameTextFieldUnderLine: UIView = {
         let line = UIView()
         line.backgroundColor = .inactiveGray
-
+        return line
+    }()
+    
+    lazy var nameTextFieldView: UIView = {
         let containerView = UIView()
         containerView.addSubview(nameTextField)
-        containerView.addSubview(line)
+        containerView.addSubview(nameTextFieldUnderLine)
         
         nameTextField.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        line.snp.makeConstraints {
+        nameTextFieldUnderLine.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(2)
         }
@@ -116,14 +119,16 @@ class EditProfileInfoView: ProfileInfoParentView {
         
         nameTextField.rx.controlEvent(.editingDidBegin)
             .asObservable()
-            .bind { _ in
-                print("키보드 활성화")
+            .bind { [weak self] _ in
+                self?.nameTextField.textColor = .white
+                self?.nameTextFieldUnderLine.backgroundColor = .white
             }.disposed(by: disposeBag)
         
         nameTextField.rx.controlEvent(.editingDidEnd)
             .asObservable()
-            .bind { _ in
-                print("키보드 비활성화")
+            .bind { [weak self] _ in
+                self?.nameTextField.textColor = .inactiveGray
+                self?.nameTextFieldUnderLine.backgroundColor = .inactiveGray
             }.disposed(by: disposeBag)
     }
     
