@@ -97,6 +97,7 @@ extension ProfileEditViewController: EditProfileInfoViewDelegate {
     }
     
     func editUserIDViewTapped() {
-        print(#function)
+        let vc = EditUserIDViewController(viewModel: viewModel)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
