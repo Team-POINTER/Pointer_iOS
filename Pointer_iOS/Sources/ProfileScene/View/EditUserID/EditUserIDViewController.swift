@@ -54,7 +54,7 @@ class EditUserIDViewController: UIViewController {
         let label = UILabel()
         label.textColor = .inactiveGray
         label.font = .notoSansRegular(size: 11)
-        label.text = "10/30"
+//        label.text = "10/30"
         return label
     }()
     

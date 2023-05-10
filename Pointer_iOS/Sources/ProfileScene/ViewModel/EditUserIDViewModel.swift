@@ -41,7 +41,7 @@ class EditUserIDViewModel: ViewModelType {
     
     struct Output {
         let checkValidateResult = PublishRelay<CheckValidateResult>()
-        let checkIdStringCountString = PublishRelay<String>()
+        let checkIdStringCountString: BehaviorRelay<String>
     }
     
     //MARK: - Properties
@@ -54,7 +54,7 @@ class EditUserIDViewModel: ViewModelType {
     
     //MARK: - Functions
     func transform(input: Input) -> Output {
-        let output = Output()
+        let output = Output(checkIdStringCountString: BehaviorRelay(value: getIdStringCount(text: user.userID)))
         
         input.idTextFieldEvent
             .subscribe { [weak self] string in
