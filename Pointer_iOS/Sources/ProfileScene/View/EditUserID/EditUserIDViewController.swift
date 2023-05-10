@@ -20,7 +20,7 @@ class EditUserIDViewController: UIViewController {
     
     //MARK: - Properties
     var disposeBag = DisposeBag()
-    let viewModel: ProfileViewModel
+    let viewModel: EditUserIDViewModel
     
     let userIDTextField: UITextField = {
         let tf = UITextField()
@@ -50,7 +50,7 @@ class EditUserIDViewController: UIViewController {
         return label
     }()
     
-    let checkIDCountLabel: UILabel = {
+    let checkIdStringCountLabel: UILabel = {
         let label = UILabel()
         label.textColor = .inactiveGray
         label.font = .notoSansRegular(size: 11)
@@ -58,17 +58,18 @@ class EditUserIDViewController: UIViewController {
         return label
     }()
     
-    let idPolicyLabel: UILabel = {
+    lazy var idPolicyLabel: UILabel = {
         let label = UILabel()
         label.textColor = .inactiveGray
         label.font = .notoSansRegular(size: 11)
         label.numberOfLines = 0
+        label.text = getPolicyString()
         return label
     }()
     
     //MARK: - Lifecycle
     init(viewModel: ProfileViewModel) {
-        self.viewModel = viewModel
+        self.viewModel = EditUserIDViewModel(user: viewModel.user)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,7 +82,7 @@ class EditUserIDViewController: UIViewController {
         setupNavigationBar()
         setupUI()
         configure()
-        bind()
+        bindAndTransform()
     }
     
     //MARK: - Selector
@@ -94,10 +95,38 @@ class EditUserIDViewController: UIViewController {
     }
     
     //MARK: - Bind
-    private func bind() {
+    private func bindAndTransform() {
         checkValidateButton.rx.tap
             .subscribe { _ in
                 print("중복확인 버튼이 눌림")
+            }.disposed(by: disposeBag)
+        
+        let input = bindInput()
+        let output = viewModel.transform(input: input)
+        bindOutput(output: output)
+    }
+    
+    // Input 바인딩 및 Transform
+    private func bindInput() -> EditUserIDViewModel.Input {
+        let input = EditUserIDViewModel.Input()
+        userIDTextField.rx.text
+            .orEmpty
+            .asObservable()
+            .subscribe { string in
+                if let text = string.element {
+                    input.idTextFieldEvent.accept(text)
+                }
+            }.disposed(by: disposeBag)
+        return input
+    }
+    
+    // Output 바인딩
+    private func bindOutput(output: EditUserIDViewModel.Output) {
+        output.checkIdStringCountString
+            .subscribe { [weak self] string in
+                if let text = string.element {
+                    self?.checkIdStringCountLabel.text = text
+                }
             }.disposed(by: disposeBag)
     }
     
@@ -146,7 +175,7 @@ class EditUserIDViewController: UIViewController {
             $0.height.equalTo(2)
         }
         
-        let validateStack = UIStackView(arrangedSubviews: [checkValidateResultLabel, checkIDCountLabel])
+        let validateStack = UIStackView(arrangedSubviews: [checkValidateResultLabel, checkIdStringCountLabel])
         validateStack.axis = .horizontal
         validateStack.alignment = .fill
         
@@ -167,7 +196,6 @@ class EditUserIDViewController: UIViewController {
     
     private func configure() {
         userIDTextField.text = viewModel.user.userID
-        idPolicyLabel.text = getPolicyString()
     }
     
     private func getPolicyString() -> String {
