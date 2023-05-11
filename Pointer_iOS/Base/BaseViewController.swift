@@ -18,6 +18,10 @@ class BaseViewController: UIViewController {
         
     }
     
+    @objc private func navigationBarBackButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     //MARK: - Function
     private func setupUI() {
         view.setGradient(color1: .pointerGradientStart, color2: .pointerGradientEnd)
@@ -29,6 +33,11 @@ class BaseViewController: UIViewController {
         } else {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         }
+    }
+    
+    func setNavigationBarPointerBackButton() {
+        let backButton = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(navigationBarBackButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
     }
     
     func hideKeyboardWhenTappedAround() {

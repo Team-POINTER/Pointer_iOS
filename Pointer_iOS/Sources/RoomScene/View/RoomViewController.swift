@@ -129,7 +129,7 @@ class RoomViewController: BaseViewController {
         
         roomBottomView.inviteButton.rx.tap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .subscribe(onNext: { _ in
                 print("invite 버튼 click")
             })
             .disposed(by: disposeBag)
