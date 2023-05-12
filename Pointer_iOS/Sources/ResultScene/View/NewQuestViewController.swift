@@ -137,6 +137,10 @@ class NewQuestViewController: BaseViewController {
                     let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
                     self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
                 }
+                
+                // 1. 시간 활성화 비활성화에 따른 enum
+                // 2. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
+                // 3. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
             }
         }
     }

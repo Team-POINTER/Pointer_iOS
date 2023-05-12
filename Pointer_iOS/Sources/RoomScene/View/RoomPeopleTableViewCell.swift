@@ -26,17 +26,6 @@ class RoomPeopleTableViewCell: UITableViewCell {
         }
     }
     
-    var clickCount: Int = 0 {
-        didSet {
-            if clickCount == 0 {
-                self.pointStar.isHidden = true
-            }
-            else {
-                self.pointStar.isHidden = false
-            }
-        }
-    }
-    
     lazy var roundView : UIView = {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 18
@@ -93,20 +82,11 @@ class RoomPeopleTableViewCell: UITableViewCell {
             make.width.height.equalTo(23)
         }
     }
-//
-//    func onSelected() {
-//        self.pointStar.isHidden = false
-//        self.clickCount = 1
-//    }
-//
-//    func onDeselected() {
-//        self.pointStar.isHidden = true
-//        self.clickCount = 0
-//    }
     
     // 선택시 UI 전환
     func configure() {
         guard let user = user else { return }
         nameLabel.text = "\(user.userName)"
     }
+
 }

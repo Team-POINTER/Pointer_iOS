@@ -52,7 +52,6 @@ class RoomViewController: BaseViewController {
         
         output.hintTextFieldLimitedString
             .bind(to: roomTopView.hintTextField.rx.text)
-//            .bind(onNext: roomTopView.hintTextField.rx.text)
             .disposed(by: disposeBag)
             
 // - hintText bind
@@ -84,8 +83,6 @@ class RoomViewController: BaseViewController {
                 
                 /// 아래 코드는 Cell 안으로 이동 - cell.user -> didset - configure()
                 /// 클래스의 단일 책임 원칙 (Cell 안에서 일어나는 일은 Cell이 책임지도록)
-//                cell.nameLabel.text = item.name
-//                cell.pointStar.isHidden = item.isHidden
                 
                 return cell
                 
@@ -95,9 +92,6 @@ class RoomViewController: BaseViewController {
         Observable
             .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(User.self))
             .bind { [weak self] indexPath, model in
-                
-//                self?.peopleTableView.deselectRow(at: indexPath, animated: false)
-//                print("Selected \(model) at \(indexPath)")
                 
                 // 셀 타입캐스팅, 셀 안에 있는 User 언래핑
                 guard let cell = self?.peopleTableView.cellForRow(at: indexPath) as? RoomPeopleTableViewCell,
@@ -113,16 +107,6 @@ class RoomViewController: BaseViewController {
                 // cell의 isSelectedUser 토글 - 이미지 UI 전환
                 cell.isSelectedUser.toggle()
                 
-//                // point 체크 이미지[O] & 배열 추가해야함 [O]
-//                if cell.clickCount == 1 {
-//                    cell.clickCount = 0
-//                    self?.viewModel.deleteIndex(indexPath.row)
-//                    self?.viewModel.deleteName(model.name)
-//                } else {
-//                    cell.clickCount += 1
-//                    self?.viewModel.addIndex(indexPath.row)
-//                    self?.viewModel.addName(model.name)
-//                }
             }
             .disposed(by: disposeBag)
     
