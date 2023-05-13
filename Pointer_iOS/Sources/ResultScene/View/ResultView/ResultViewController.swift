@@ -11,17 +11,18 @@ import RxSwift
 import RxCocoa
 import FloatingPanel
 
+// 1. 현재 타이머 시간을 viewModel에 있는 timeString으로 시작
+
 class ResultViewController: BaseViewController {
     
     var viewModel = ResultViewModel()
     let disposeBag = DisposeBag()
     
-    var timeString = "2023-05-11 22:30:20"
-    private var remainedTime = ""
-    
 //MARK: - Rx
     func bindViewModel() {
-        print("bindViewModel called")
+        
+        let input = ResultViewModel.Input()
+        let output = viewModel.transform(input: input)
         
         myResultButton.rx.tap
             .observe(on: MainScheduler.instance)
@@ -36,10 +37,22 @@ class ResultViewController: BaseViewController {
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 let vc = NewQuestViewController()
-                vc.timeString = self.timeString
                 self.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.remainingTime
+            .map { String(format: "%02d:%02d:%02d", $0 / 3600, ($0 % 3600) / 60, $0 % 60) }
+            .bind(to: newQuestionTimerLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.remainingTime
+            .map { $0 <= 0 }
+            .bind(to: newQuestionTimerLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        viewModel.startTimer(withEndTime: viewModel.timeString)
+        
     }
     
 //MARK: - UIComponents
@@ -101,6 +114,7 @@ class ResultViewController: BaseViewController {
         $0.font = UIFont.notoSansRegular(size: 14)
         $0.textColor = UIColor.white
         $0.textAlignment = .center
+        $0.isHidden = true
         return $0
     }(UILabel())
     
@@ -136,7 +150,6 @@ class ResultViewController: BaseViewController {
         setUI()
         setUIConstraints()
         bindViewModel()
-        buttonTimer()
         
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
@@ -227,38 +240,7 @@ class ResultViewController: BaseViewController {
         }
     }
     
-    func buttonTimer() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        guard let endDate = formatter.date(from: self.timeString) else { return }
-        print(endDate)
-        var remainingTime = Int(endDate.timeIntervalSinceNow)
         
-        if remainingTime < 0 {
-            self.newQuestionTimerLabel.isHidden = true
-        } else {
-            self.newQuestionTimerLabel.isHidden = false
-            let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                remainingTime -= 1
-                let hours = remainingTime / 3600
-                let minutes = (remainingTime % 3600) / 60
-                let seconds = remainingTime % 60
-                self.remainedTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-                
-                // 타이머 Label 갱신
-                print(self.remainedTime)
-                self.newQuestionTimerLabel.text = "\(self.remainedTime)"
-                
-                // 남은 시간이 0이 되면 타이머 종료
-                if self.remainedTime == "00:00:00" {
-                    timer.invalidate()
-                    self.newQuestionTimerLabel.isHidden = true
-                }
-            }
-        }
-        
-        
-    }
     
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)

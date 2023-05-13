@@ -7,18 +7,55 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 // 1. timeString값으로 남은 시간을 받아오고 카운트 다운 버튼 활성화 [O]
 // 2. 초기에 서버에게 질문 등록하기 버튼 활성화의 유무를 받아서 바로 적용 [X]
+// 3. 시간 활성화 비활성화에 따른 enum
+// 4. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
+// 5. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
 
 class NewQuestViewController: BaseViewController {
+    
+    let viewModel = NewQuestViewModel()
+    let disposeBag = DisposeBag()
+    
+//MARK: - RX
+    func bindViewModel() {
+        
+        let input = NewQuestViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
+        viewModel.remainingTime
+            .subscribe(onNext: { remainingTime in
+                if remainingTime <= 0 {
+                    self.newQuestButton.isEnabled = true
+                    self.newQuestButton.backgroundColor = .pointerRed
+                    self.newQuestButton.titleLabel?.textColor = UIColor.white
+                    let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+                    self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
+                } else {
+                    self.newQuestButton.isEnabled = false
+                    self.newQuestButton.backgroundColor = .pointerRed.withAlphaComponent(0.5)
+                    self.newQuestButton.titleLabel?.textColor = UIColor.white.withAlphaComponent(0.5)
+                    let hours = remainingTime / 3600
+                    let minutes = (remainingTime % 3600) / 60
+                    let seconds = remainingTime % 60
+                    let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
 
-    var timeString = ""
-    private var remainedTime = ""
-//    var newQuestionButtonEnabled = true
+                    // 버튼 타이틀 갱신
+                    let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+                    attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
+                    self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
+                }
+            }).disposed(by: disposeBag)
+        
+        viewModel.startTimer(withEndTime: viewModel.timeString)
+
+    }
     
 //MARK: - UI Components
-    
     private let questAlertLabel : UILabel = {
         $0.text = "해당 룸에 하고 싶은 질문을 작성해주세요!\n24시간마다 선착순 1명이 질문할 수 있습니다."
         $0.font = UIFont.notoSansRegular(size: 12)
@@ -97,54 +134,12 @@ class NewQuestViewController: BaseViewController {
         configureBar()
         setUI()
         setConstraints()
-        buttonTimer()
+        bindViewModel()
         
     }
     
     
-    func buttonTimer() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        guard let endDate = formatter.date(from: self.timeString) else { return }
-        print(endDate)
-        var remainingTime = Int(endDate.timeIntervalSinceNow)
-        
-        if remainingTime < 0 {
-            self.newQuestButton.isEnabled = true
-            self.newQuestButton.backgroundColor = .pointerRed
-            self.newQuestButton.titleLabel?.textColor = UIColor.white
-            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-            self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
-        } else {
-            let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                remainingTime -= 1
-                let hours = remainingTime / 3600
-                let minutes = (remainingTime % 3600) / 60
-                let seconds = remainingTime % 60
-                self.remainedTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-                
-                // 버튼 타이틀 갱신
-                let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-                attributedQuestionString.append(NSMutableAttributedString(string: "\(self.remainedTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
-                self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
-                
-                // 남은 시간이 0이 되면 타이머 종료
-                if self.remainedTime == "00:00:00" {
-                    timer.invalidate()
-                    self.newQuestButton.isEnabled = true
-                    self.newQuestButton.backgroundColor = .pointerRed
-                    self.newQuestButton.titleLabel?.textColor = UIColor.white
-                    let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-                    self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
-                }
-                
-                // 1. 시간 활성화 비활성화에 따른 enum
-                // 2. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
-                // 3. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
-            }
-        }
-    }
-    
+   
 
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")

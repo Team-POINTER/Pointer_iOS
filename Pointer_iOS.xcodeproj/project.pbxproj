@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		471145CE2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471145CD2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift */; };
+		471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471145CF2A0E321800AED0DC /* NewQuestViewModel.swift */; };
 		47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117C9E29C2F391001707C8 /* RoomModel.swift */; };
 		47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA429C72EB3001707C8 /* ResultViewController.swift */; };
 		47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA629C72EC6001707C8 /* ResultViewModel.swift */; };
@@ -86,6 +87,7 @@
 
 /* Begin PBXFileReference section */
 		471145CD2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomFloatingChatViewController.swift; sourceTree = "<group>"; };
+		471145CF2A0E321800AED0DC /* NewQuestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestViewModel.swift; sourceTree = "<group>"; };
 		47117C9E29C2F391001707C8 /* RoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomModel.swift; sourceTree = "<group>"; };
 		47117CA429C72EB3001707C8 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		47117CA629C72EC6001707C8 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			children = (
 				47117CA629C72EC6001707C8 /* ResultViewModel.swift */,
 				473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */,
+				471145CF2A0E321800AED0DC /* NewQuestViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -761,6 +764,7 @@
 				471145CE2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift in Sources */,
 				CD5BCC6329F571D700DD44F7 /* PreferenceSectionBackgroundView.swift in Sources */,
 				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
+				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
