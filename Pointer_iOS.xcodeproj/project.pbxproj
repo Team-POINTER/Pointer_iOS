@@ -53,6 +53,14 @@
 		CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */; };
 		CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AC29D0008300B52885 /* AllNotiCell.swift */; };
 		CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */; };
+		CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */; };
+		CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */; };
+		CD0EE9272A0788510090BF48 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9262A0788510090BF48 /* ProfileEditViewController.swift */; };
+		CD0EE9292A0797660090BF48 /* EditProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9282A0797660090BF48 /* EditProfileInfoView.swift */; };
+		CD0EE92E2A0804C00090BF48 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CD0EE92D2A0804C00090BF48 /* RxCocoa */; };
+		CD0EE9302A0804C00090BF48 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CD0EE92F2A0804C00090BF48 /* RxRelay */; };
+		CD0EE9322A0804C00090BF48 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD0EE9312A0804C00090BF48 /* RxSwift */; };
+		CD0EE9352A08050B0090BF48 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = CD0EE9342A08050B0090BF48 /* RxGesture */; };
 		CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207929B8C6EB003D0B84 /* AppDelegate.swift */; };
 		CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */; };
 		CD23208329B8C6EC003D0B84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD23208229B8C6EC003D0B84 /* Assets.xcassets */; };
@@ -75,14 +83,14 @@
 		CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDA529BB2D5B00DB024C /* HomeController.swift */; };
 		CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDA929BB4B5E00DB024C /* UIBarButtonItem.swift */; };
 		CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6BCDAB29BB97B300DB024C /* RoomPreviewCell.swift */; };
-		CD7A70F929BDE7F3003E140C /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CD7A70F829BDE7F3003E140C /* RxCocoa */; };
-		CD7A70FB29BDE7F3003E140C /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CD7A70FA29BDE7F3003E140C /* RxRelay */; };
-		CD7A70FD29BDE7F3003E140C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD7A70FC29BDE7F3003E140C /* RxSwift */; };
 		CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A70FE29BE23D0003E140C /* UIFont.swift */; };
 		CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD90B48929BE327700772192 /* PointerAlert.swift */; };
+		CD94B8C92A0BEF4300D0BC7F /* EditUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD94B8C82A0BEF4300D0BC7F /* EditUserIDViewModel.swift */; };
 		CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */; };
 		CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEDF29B9FE2600B03973 /* SnapKit */; };
 		CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEED29B9FFFE00B03973 /* Kingfisher */; };
+		CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */; };
+		CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -130,6 +138,10 @@
 		CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailViewController.swift; sourceTree = "<group>"; };
 		CD07E5AC29D0008300B52885 /* AllNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNotiCell.swift; sourceTree = "<group>"; };
 		CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsNotiCell.swift; sourceTree = "<group>"; };
+		CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileParentViewController.swift; sourceTree = "<group>"; };
+		CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoParentView.swift; sourceTree = "<group>"; };
+		CD0EE9262A0788510090BF48 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
+		CD0EE9282A0797660090BF48 /* EditProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInfoView.swift; sourceTree = "<group>"; };
 		CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD23207929B8C6EB003D0B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -155,7 +167,9 @@
 		CD6BCDAB29BB97B300DB024C /* RoomPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPreviewCell.swift; sourceTree = "<group>"; };
 		CD7A70FE29BE23D0003E140C /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		CD90B48929BE327700772192 /* PointerAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerAlert.swift; sourceTree = "<group>"; };
+		CD94B8C82A0BEF4300D0BC7F /* EditUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewModel.swift; sourceTree = "<group>"; };
 		CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,13 +177,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD7A70FD29BDE7F3003E140C /* RxSwift in Frameworks */,
+				CD0EE92E2A0804C00090BF48 /* RxCocoa in Frameworks */,
+				CD0EE9352A08050B0090BF48 /* RxGesture in Frameworks */,
 				47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */,
-				CD7A70FB29BDE7F3003E140C /* RxRelay in Frameworks */,
+				CD0EE9302A0804C00090BF48 /* RxRelay in Frameworks */,
 				CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */,
-				CD7A70F929BDE7F3003E140C /* RxCocoa in Frameworks */,
+				CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */,
 				CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */,
 				47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */,
+				CD0EE9322A0804C00090BF48 /* RxSwift in Frameworks */,
 				CD2DBEBE29C61D28005E377C /* BetterSegmentedControl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,6 +345,7 @@
 			isa = PBXGroup;
 			children = (
 				CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */,
+				CD94B8C82A0BEF4300D0BC7F /* EditUserIDViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -336,9 +353,11 @@
 		CD06677A2A04E8870003C7B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */,
-				CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */,
-				CD06677D2A04E8870003C7B4 /* UserFriendCell.swift */,
+				CDEC90522A0A81A800EA437D /* EditUserID */,
+				CD0EE9242A0786E40090BF48 /* Parents */,
+				CD0EE92B2A0803550090BF48 /* EditProfile */,
+				CD0EE92A2A0803510090BF48 /* Profile */,
+				CD0EE9252A0787320090BF48 /* Cell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -396,6 +415,41 @@
 				CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		CD0EE9242A0786E40090BF48 /* Parents */ = {
+			isa = PBXGroup;
+			children = (
+				CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */,
+				CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */,
+			);
+			path = Parents;
+			sourceTree = "<group>";
+		};
+		CD0EE9252A0787320090BF48 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CD06677D2A04E8870003C7B4 /* UserFriendCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		CD0EE92A2A0803510090BF48 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */,
+				CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		CD0EE92B2A0803550090BF48 /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				CD0EE9262A0788510090BF48 /* ProfileEditViewController.swift */,
+				CD0EE9282A0797660090BF48 /* EditProfileInfoView.swift */,
+			);
+			path = EditProfile;
 			sourceTree = "<group>";
 		};
 		CD23206D29B8C6EB003D0B84 = {
@@ -613,6 +667,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		CDEC90522A0A81A800EA437D /* EditUserID */ = {
+			isa = PBXGroup;
+			children = (
+				CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */,
+			);
+			path = EditUserID;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -632,12 +694,14 @@
 			packageProductDependencies = (
 				CDD1DEDF29B9FE2600B03973 /* SnapKit */,
 				CDD1DEED29B9FFFE00B03973 /* Kingfisher */,
-				CD7A70F829BDE7F3003E140C /* RxCocoa */,
-				CD7A70FA29BDE7F3003E140C /* RxRelay */,
-				CD7A70FC29BDE7F3003E140C /* RxSwift */,
 				CD2DBEBD29C61D28005E377C /* BetterSegmentedControl */,
 				47117CAD29CB0367001707C8 /* FloatingPanel */,
 				47117CF029CD9A1C001707C8 /* KakaoSDK */,
+				CD0EE92D2A0804C00090BF48 /* RxCocoa */,
+				CD0EE92F2A0804C00090BF48 /* RxRelay */,
+				CD0EE9312A0804C00090BF48 /* RxSwift */,
+				CD0EE9342A08050B0090BF48 /* RxGesture */,
+				CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -670,10 +734,12 @@
 			packageReferences = (
 				CDD1DEDE29B9FE2600B03973 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				CDD1DEEC29B9FFFE00B03973 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				CD7A70F729BDE7F3003E140C /* XCRemoteSwiftPackageReference "RxSwift" */,
 				CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
 				47117CAC29CB0366001707C8 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 				47117CEF29CD9A1C001707C8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				CD0EE92C2A0804C00090BF48 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				CD0EE9332A08050B0090BF48 /* XCRemoteSwiftPackageReference "RxGesture" */,
+				CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -717,18 +783,23 @@
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */,
+				CD0EE9272A0788510090BF48 /* ProfileEditViewController.swift in Sources */,
 				473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
 				473B739A29CEE41100B33C77 /* ViewModelType.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
+				CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */,
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
 				CD5BCC5F29F5423700DD44F7 /* PreferenceItemCell.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
+				CD0EE9292A0797660090BF48 /* EditProfileInfoView.swift in Sources */,
 				CD0667842A04E8A60003C7B4 /* UserModel.swift in Sources */,
 				473B73A629D0364000B33C77 /* LoginDataManger.swift in Sources */,
+				CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
+				CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */,
 				CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */,
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
@@ -769,6 +840,7 @@
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
+				CD94B8C92A0BEF4300D0BC7F /* EditUserIDViewModel.swift in Sources */,
 				CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -986,20 +1058,28 @@
 				kind = branch;
 			};
 		};
+		CD0EE92C2A0804C00090BF48 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		CD0EE9332A08050B0090BF48 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gmarm/BetterSegmentedControl.git";
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 2.0.0;
-			};
-		};
-		CD7A70F729BDE7F3003E140C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 6.5.0;
 			};
 		};
 		CDD1DEDE29B9FE2600B03973 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
@@ -1018,6 +1098,14 @@
 				minimumVersion = 7.6.0;
 			};
 		};
+		CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1031,25 +1119,30 @@
 			package = 47117CEF29CD9A1C001707C8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDK;
 		};
+		CD0EE92D2A0804C00090BF48 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD0EE92C2A0804C00090BF48 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		CD0EE92F2A0804C00090BF48 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD0EE92C2A0804C00090BF48 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		CD0EE9312A0804C00090BF48 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD0EE92C2A0804C00090BF48 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		CD0EE9342A08050B0090BF48 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD0EE9332A08050B0090BF48 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
+		};
 		CD2DBEBD29C61D28005E377C /* BetterSegmentedControl */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
 			productName = BetterSegmentedControl;
-		};
-		CD7A70F829BDE7F3003E140C /* RxCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD7A70F729BDE7F3003E140C /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
-		};
-		CD7A70FA29BDE7F3003E140C /* RxRelay */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD7A70F729BDE7F3003E140C /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxRelay;
-		};
-		CD7A70FC29BDE7F3003E140C /* RxSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD7A70F729BDE7F3003E140C /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
 		};
 		CDD1DEDF29B9FE2600B03973 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1060,6 +1153,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CDD1DEEC29B9FFFE00B03973 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
