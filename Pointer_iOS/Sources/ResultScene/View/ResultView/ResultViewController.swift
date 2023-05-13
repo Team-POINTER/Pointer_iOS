@@ -11,6 +11,8 @@ import RxSwift
 import RxCocoa
 import FloatingPanel
 
+// 1. 현재 타이머 시간을 viewModel에 있는 timeString으로 시작
+
 class ResultViewController: BaseViewController {
     
     var viewModel = ResultViewModel()
@@ -18,7 +20,9 @@ class ResultViewController: BaseViewController {
     
 //MARK: - Rx
     func bindViewModel() {
-        print("bindViewModel called")
+        
+        let input = ResultViewModel.Input()
+        let output = viewModel.transform(input: input)
         
         myResultButton.rx.tap
             .observe(on: MainScheduler.instance)
@@ -32,9 +36,23 @@ class ResultViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(NewQuestViewController(), animated: true)
+                let vc = NewQuestViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.remainingTime
+            .map { String(format: "%02d:%02d:%02d", $0 / 3600, ($0 % 3600) / 60, $0 % 60) }
+            .bind(to: newQuestionTimerLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.remainingTime
+            .map { $0 <= 0 }
+            .bind(to: newQuestionTimerLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        viewModel.startTimer(withEndTime: viewModel.timeString)
+        
     }
     
 //MARK: - UIComponents
@@ -96,6 +114,7 @@ class ResultViewController: BaseViewController {
         $0.font = UIFont.notoSansRegular(size: 14)
         $0.textColor = UIColor.white
         $0.textAlignment = .center
+        $0.isHidden = true
         return $0
     }(UILabel())
     
@@ -221,63 +240,16 @@ class ResultViewController: BaseViewController {
         }
     }
     
+        
+    
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func chatTaped() {
-        let resultChatViewController = FloatingChatViewController(contentViewController: MyViewController())
+        let resultChatViewController = FloatingChatViewController(contentViewController: RoomFloatingChatViewController())
         present(resultChatViewController, animated: true)
     }
     
     
-}
-//MARK: - ScrollableViewController: 클라이언트 코드에서 해당 프로토콜에 명시된 인터페이스에 접근 - 여기서 바꿔야 함!!
-final class MyViewController: UIViewController, ScrollableViewController {
-    
-    private let tableView: SelfSizingTableView = {
-        $0.allowsSelection = false
-        $0.backgroundColor = UIColor.clear
-        $0.separatorStyle = .none
-        $0.bounces = true
-        $0.showsVerticalScrollIndicator = true
-        $0.contentInset = .zero
-        $0.indicatorStyle = .black
-        $0.estimatedRowHeight = 34.0
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        return $0
-    }(SelfSizingTableView(maxHeight: UIScreen.main.bounds.height * 0.62))
-    
-    var scrollView: UIScrollView {
-        tableView
-    }
-        
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        setUpView()
-    }
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    private func setUpView() {
-        view.addSubview(tableView)
-        
-        tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        tableView.dataSource = self
-    }
-}
-
-extension MyViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        20
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "cell\(indexPath.row)"
-        return cell
-    }
 }

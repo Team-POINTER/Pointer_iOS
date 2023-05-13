@@ -22,7 +22,7 @@ class BaseTabBarController: UITabBarController {
     private func configureViewControllers() {
         
         // 첫번째 탭
-        let firstVC = ProfileViewController()
+        let firstVC = RoomViewController()
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
