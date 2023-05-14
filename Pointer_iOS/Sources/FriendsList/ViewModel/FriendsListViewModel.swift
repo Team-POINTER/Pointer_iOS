@@ -51,7 +51,8 @@ class FriendsListViewModel: ViewModelType {
     func makeDataSource() -> RxCollectionViewSectionedReloadDataSource<SectionModel> {
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel>(configureCell: { datasource, collectionView, indexPath, item in
             // Cell
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FriendsListCell.cellIdentifier, for: indexPath)
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FriendsListCell.cellIdentifier, for: indexPath) as? FriendsListCell else { return UICollectionViewCell() }
+            cell.user = item
             return cell
         }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
             // Header

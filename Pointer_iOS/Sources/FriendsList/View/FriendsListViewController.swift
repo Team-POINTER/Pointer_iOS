@@ -70,10 +70,10 @@ class FriendsListViewController: BaseViewController {
 //MARK: - UIcollectionViewDelegate
 extension FriendsListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 50)
+        CGSize(width: collectionView.frame.width, height: 55)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 60)
+        CGSize(width: collectionView.frame.width, height: 40)
     }
 }
