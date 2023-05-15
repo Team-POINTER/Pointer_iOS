@@ -20,6 +20,7 @@ class FriendsListViewModel: ViewModelType {
     //MARK: - Properties
     let listType: ListType
     let friendsList = BehaviorRelay<[SectionModel]>(value: [SectionModel(header: "header", items: User.getDummyUsers())])
+    let selectedUser = PublishRelay<[User]>()
     
     //MARK: - Rx
     struct Input {

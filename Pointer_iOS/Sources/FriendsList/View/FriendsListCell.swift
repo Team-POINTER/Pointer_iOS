@@ -7,10 +7,19 @@
 
 import UIKit
 import SnapKit
+import RxGesture
+import RxSwift
 
 class FriendsListCell: UICollectionViewCell {
     //MARK: - Properties
     static let cellIdentifier = "FriendsListCell"
+    var disposeBag = DisposeBag()
+    
+    var isSelectedCell: Bool = false {
+        didSet {
+            configureSelected()
+        }
+    }
     
     var user: User? {
         didSet {
@@ -36,15 +45,32 @@ class FriendsListCell: UICollectionViewCell {
         return label
     }()
     
+    private let selectImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage.unselectedCheck
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
+    
     //MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
+        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Bind
+    private func bind() {
+        selectImageView.rx.tapGesture().when(.recognized)
+            .subscribe { [weak self] _ in
+                self?.isSelectedCell.toggle()
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Functions
@@ -66,6 +92,13 @@ class FriendsListCell: UICollectionViewCell {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(profileImageView.snp.trailing).inset(-11)
         }
+        
+        addSubview(selectImageView)
+        selectImageView.snp.makeConstraints {
+            $0.width.height.equalTo(self.snp.height).dividedBy(1.8)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.centerY.equalToSuperview()
+        }
     }
     
     private func configure() {
@@ -73,5 +106,9 @@ class FriendsListCell: UICollectionViewCell {
         profileImageView.image = .defaultProfile
         userIdLabel.text = user.userID
         userNameLabel.text = user.userName
+    }
+    
+    private func configureSelected() {
+        selectImageView.image = isSelectedCell ? .selectedCheck: .unselectedCheck
     }
 }

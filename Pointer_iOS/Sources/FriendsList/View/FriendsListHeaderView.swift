@@ -10,6 +10,7 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
+//MARK: - Delegate
 protocol FriendsListHeaderSearchBarDelegate: AnyObject {
     func textFieldDidChange(text: String)
 }

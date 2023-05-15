@@ -10,6 +10,8 @@ import UIKit
 extension UIImage {
     
     static let defaultProfile: UIImage? = UIImage(named: "defaultProfile")
+    static let selectedCheck: UIImage? = UIImage(named: "selectedCheck")
+    static let unselectedCheck: UIImage? = UIImage(named: "unselectedCheck")
     
     func resize(newWidth: CGFloat) -> UIImage {
         let scale = newWidth / self.size.width
