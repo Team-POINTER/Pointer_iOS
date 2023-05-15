@@ -58,7 +58,8 @@ class FriendsListViewModel: ViewModelType {
             // Header
             switch kind {
             case UICollectionView.elementKindSectionHeader:
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FriendsListHeaderView.headerIdentifier, for: indexPath)
+                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FriendsListHeaderView.headerIdentifier, for: indexPath) as? FriendsListHeaderView else { return UICollectionReusableView() }
+                header.delegate = self
                 return header
             default:
                 fatalError()
@@ -69,12 +70,19 @@ class FriendsListViewModel: ViewModelType {
     }
 }
 
-
+//MARK: - FriendsListViewModel.SectionModel
 extension FriendsListViewModel.SectionModel: SectionModelType {
     typealias Item = User
     
     init(original: FriendsListViewModel.SectionModel, items: [User]) {
         self = original
         self.items = items
+    }
+}
+
+//MARK: - FriendsListHeaderSearchBarDelegate
+extension FriendsListViewModel: FriendsListHeaderSearchBarDelegate {
+    func textFieldDidChange(text: String) {
+        print(text)
     }
 }
