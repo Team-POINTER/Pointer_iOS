@@ -18,6 +18,7 @@ class FriendsListViewModel: ViewModelType {
     }
     
     //MARK: - Properties
+    var disposeBag = DisposeBag()
     let listType: ListType
     let friendsList = BehaviorRelay<[SectionModel]>(value: [SectionModel(header: "header", items: User.getDummyUsers())])
     let selectedUser = BehaviorRelay<[User]>(value: [])
@@ -28,12 +29,21 @@ class FriendsListViewModel: ViewModelType {
     }
     
     struct Output {
-        
+        let buttonAttributeString = PublishRelay<NSAttributedString>()
     }
     
     //MARK: - Transform
     func transform(input: Input) -> Output {
         let output = Output()
+        
+        selectedUser
+            .subscribe { [weak self] users in
+                guard let self = self,
+                      let users = users.element else { return }
+                let buttonAttributeString = self.makeButtonAttributeString(count: users.count)
+                output.buttonAttributeString.accept(buttonAttributeString)
+            }
+            .disposed(by: disposeBag)
         return output
     }
     
@@ -101,6 +111,16 @@ class FriendsListViewModel: ViewModelType {
             currentSelectedUser.append(selectedUser)
             self.selectedUser.accept(currentSelectedUser)
         }
+    }
+    
+    private func makeButtonAttributeString(count: Int) -> NSAttributedString {
+        let attribute = NSAttributedString(string: "\(count) 확인", attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 18)])
+        return attribute
+    }
+    
+    func getInitialButtonAttributeString() -> NSAttributedString {
+        let attribute = makeButtonAttributeString(count: selectedUser.value.count)
+        return attribute
     }
 }
 

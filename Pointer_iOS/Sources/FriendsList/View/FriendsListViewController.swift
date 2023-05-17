@@ -28,6 +28,13 @@ class FriendsListViewController: BaseViewController {
         return cv
     }()
     
+    let confirmButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .pointerRed
+        button.tintColor = .white
+        return button
+    }()
+    
     //MARK: - Lifecycle
     init(type: FriendsListViewModel.ListType) {
         self.viewModel = FriendsListViewModel(listType: type)
@@ -53,7 +60,16 @@ class FriendsListViewController: BaseViewController {
         viewModel.friendsList
             .bind(to: collectionView.rx.items(dataSource: viewModel.makeDataSource()))
             .disposed(by: disposeBag)
-
+        
+        confirmButton.setAttributedTitle(viewModel.getInitialButtonAttributeString(), for: .normal)
+        
+        output.buttonAttributeString
+            .bind { [weak self] attribute in
+                self?.confirmButton.setAttributedTitle(attribute, for: .normal)
+            }
+            .disposed(by: disposeBag)
+        
+        
 //        Observable
 //            .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(User.self))
 //            .subscribe { [weak self] indexPath, item in
@@ -70,6 +86,23 @@ class FriendsListViewController: BaseViewController {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        switch viewModel.listType {
+        // 타입이 Select일 경우
+        case .select:
+            // 버튼 추가
+            view.addSubview(confirmButton)
+            confirmButton.snp.makeConstraints {
+                $0.width.equalToSuperview()
+                $0.height.equalTo(60)
+                $0.bottom.equalTo(view.safeAreaLayoutGuide)
+                confirmButton.layer.cornerRadius = 60 / 2
+                confirmButton.clipsToBounds = true
+            }
+        // 타입이 Normal일 경우
+        case .normal:
+            break
         }
     }
 }
