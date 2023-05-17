@@ -48,13 +48,19 @@ class FriendsListViewController: BaseViewController {
     func bind() {
         let input = FriendsListViewModel.Input()
         let output = viewModel.transform(input: input)
-        
-        print("bind")
-        
+
         // CollectionView 바인딩
         viewModel.friendsList
             .bind(to: collectionView.rx.items(dataSource: viewModel.makeDataSource()))
             .disposed(by: disposeBag)
+
+//        Observable
+//            .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(User.self))
+//            .subscribe { [weak self] indexPath, item in
+//                guard let cell = self?.collectionView.cellForItem(at: indexPath) as? FriendsListCell else { return }
+
+//            }
+//            .disposed(by: disposeBag)
     }
 
     

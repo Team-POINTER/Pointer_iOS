@@ -10,9 +10,14 @@ import SnapKit
 import RxGesture
 import RxSwift
 
+protocol FriendsListCellDelegate: AnyObject {
+    func userSelected(user: User)
+}
+
 class FriendsListCell: UICollectionViewCell {
     //MARK: - Properties
     static let cellIdentifier = "FriendsListCell"
+    var delegate: FriendsListCellDelegate?
     var disposeBag = DisposeBag()
     
     var isSelectedCell: Bool = false {
@@ -68,7 +73,10 @@ class FriendsListCell: UICollectionViewCell {
     private func bind() {
         selectImageView.rx.tapGesture().when(.recognized)
             .subscribe { [weak self] _ in
-                self?.isSelectedCell.toggle()
+                guard let self = self,
+                      let user = user else { return }
+                self.isSelectedCell.toggle()
+                self.delegate?.userSelected(user: user)
             }
             .disposed(by: disposeBag)
     }
