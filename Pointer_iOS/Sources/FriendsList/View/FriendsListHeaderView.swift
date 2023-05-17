@@ -51,6 +51,8 @@ class FriendsListHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
     //MARK: - Bind
     func bind() {
         searchTextField.rx.text
@@ -71,7 +73,7 @@ class FriendsListHeaderView: UICollectionReusableView {
         addSubview(searchView)
         searchView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(15)
-            $0.top.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(10)
             searchView.layer.cornerRadius = 20
         }
     }

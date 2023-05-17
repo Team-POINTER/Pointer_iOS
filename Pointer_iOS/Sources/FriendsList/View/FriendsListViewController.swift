@@ -19,7 +19,6 @@ class FriendsListViewController: BaseViewController {
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.sectionHeadersPinToVisibleBounds = true
-        layout.sectionInset = UIEdgeInsets(top: 17.5, left: 0, bottom: 17.5, right: 0)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
         cv.delegate = self
@@ -48,6 +47,7 @@ class FriendsListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNavigationBar()
         bind()
     }
     
@@ -78,15 +78,24 @@ class FriendsListViewController: BaseViewController {
 //            }
 //            .disposed(by: disposeBag)
     }
-
+    
+    //MARK: - Selector
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func linkButtonTapped() {
+        print("Link Button Tapped")
+    }
+    
+    @objc private func plusButtonTapped() {
+        print("plus Button Tapped")
+    }
     
     //MARK: - Functions
     func setupUI() {
         view.backgroundColor = .clear
         view.addSubview(collectionView)
-        collectionView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
-        }
         
         switch viewModel.listType {
         // 타입이 Select일 경우
@@ -100,9 +109,35 @@ class FriendsListViewController: BaseViewController {
                 confirmButton.layer.cornerRadius = 60 / 2
                 confirmButton.clipsToBounds = true
             }
+            
+            collectionView.snp.makeConstraints {
+                $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+                $0.bottom.equalTo(confirmButton.snp.top)
+            }
         // 타입이 Normal일 경우
         case .normal:
-            break
+            collectionView.snp.makeConstraints {
+                $0.edges.equalTo(view.safeAreaLayoutGuide)
+            }
+        }
+    }
+    
+    func setupNavigationBar() {
+        switch viewModel.listType {
+        case .select:
+            navigationItem.title = "룸 이름"
+            navigationItem.leftBarButtonItem = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(backButtonTapped))
+            
+            let linkImage = UIImage(systemName: "link")
+            let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: linkImage, target: self, handler: #selector(linkButtonTapped))
+            navigationItem.rightBarButtonItem = rightBarButton
+        case .normal:
+            navigationItem.title = "OOO님의 친구"
+            navigationItem.leftBarButtonItem = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(backButtonTapped))
+            
+            let plusImage = UIImage(systemName: "plus")
+            let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: plusImage, target: self, handler: #selector(plusButtonTapped))
+            navigationItem.rightBarButtonItem = rightBarButton
         }
     }
 }
@@ -114,6 +149,6 @@ extension FriendsListViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 40)
+        CGSize(width: collectionView.frame.width, height: 60)
     }
 }
