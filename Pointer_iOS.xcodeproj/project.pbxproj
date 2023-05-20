@@ -74,6 +74,11 @@
 		CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2DBEC129C62234005E377C /* SearchResultController.swift */; };
 		CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2DBEC529C62BDE005E377C /* AccountInfoCell.swift */; };
 		CD2DBECA29C63317005E377C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2DBEC929C63317005E377C /* Device.swift */; };
+		CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2F79BD2A0FC7910094F81F /* FriendsListViewController.swift */; };
+		CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2F79C12A0FC7C80094F81F /* FriendsListViewModel.swift */; };
+		CD2F79C42A0FCB860094F81F /* FriendsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2F79C32A0FCB860094F81F /* FriendsListCell.swift */; };
+		CD2F79C72A0FD34B0094F81F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = CD2F79C62A0FD34B0094F81F /* RxDataSources */; };
+		CD2F79C92A0FDFC30094F81F /* FriendsListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2F79C82A0FDFC30094F81F /* FriendsListHeaderView.swift */; };
 		CD5BCC5629F5384300DD44F7 /* PreferenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BCC5529F5384300DD44F7 /* PreferenceController.swift */; };
 		CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BCC5929F53B5E00DD44F7 /* PreferenceModel.swift */; };
 		CD5BCC5D29F53B8500DD44F7 /* PreferenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BCC5C29F53B8500DD44F7 /* PreferenceViewModel.swift */; };
@@ -156,6 +161,10 @@
 		CD2DBEC129C62234005E377C /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		CD2DBEC529C62BDE005E377C /* AccountInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoCell.swift; sourceTree = "<group>"; };
 		CD2DBEC929C63317005E377C /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		CD2F79BD2A0FC7910094F81F /* FriendsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
+		CD2F79C12A0FC7C80094F81F /* FriendsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewModel.swift; sourceTree = "<group>"; };
+		CD2F79C32A0FCB860094F81F /* FriendsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListCell.swift; sourceTree = "<group>"; };
+		CD2F79C82A0FDFC30094F81F /* FriendsListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListHeaderView.swift; sourceTree = "<group>"; };
 		CD5BCC5529F5384300DD44F7 /* PreferenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceController.swift; sourceTree = "<group>"; };
 		CD5BCC5929F53B5E00DD44F7 /* PreferenceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceModel.swift; sourceTree = "<group>"; };
 		CD5BCC5C29F53B8500DD44F7 /* PreferenceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewModel.swift; sourceTree = "<group>"; };
@@ -182,6 +191,7 @@
 				47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */,
 				CD0EE9302A0804C00090BF48 /* RxRelay in Frameworks */,
 				CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */,
+				CD2F79C72A0FD34B0094F81F /* RxDataSources in Frameworks */,
 				CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */,
 				CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */,
 				47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */,
@@ -526,6 +536,7 @@
 				CD07E59B29CE1ECC00B52885 /* NotificationScene */,
 				CD5BCC5429F5382B00DD44F7 /* PreferenceScene */,
 				CD0667772A04E8870003C7B4 /* ProfileScene */,
+				CD2F79BC2A0FC7700094F81F /* FriendsList */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -566,6 +577,33 @@
 				CD2DBEC529C62BDE005E377C /* AccountInfoCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		CD2F79BC2A0FC7700094F81F /* FriendsList */ = {
+			isa = PBXGroup;
+			children = (
+				CD2F79C02A0FC7BD0094F81F /* ViewModel */,
+				CD2F79BF2A0FC7B70094F81F /* View */,
+			);
+			path = FriendsList;
+			sourceTree = "<group>";
+		};
+		CD2F79BF2A0FC7B70094F81F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CD2F79BD2A0FC7910094F81F /* FriendsListViewController.swift */,
+				CD2F79C32A0FCB860094F81F /* FriendsListCell.swift */,
+				CD2F79C82A0FDFC30094F81F /* FriendsListHeaderView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CD2F79C02A0FC7BD0094F81F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CD2F79C12A0FC7C80094F81F /* FriendsListViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CD5BCC5429F5382B00DD44F7 /* PreferenceScene */ = {
@@ -702,6 +740,7 @@
 				CD0EE9312A0804C00090BF48 /* RxSwift */,
 				CD0EE9342A08050B0090BF48 /* RxGesture */,
 				CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */,
+				CD2F79C62A0FD34B0094F81F /* RxDataSources */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -740,6 +779,7 @@
 				CD0EE92C2A0804C00090BF48 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				CD0EE9332A08050B0090BF48 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				CD2F79C52A0FD34B0094F81F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -804,6 +844,7 @@
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
+				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
@@ -819,6 +860,7 @@
 				CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
+				CD2F79C42A0FCB860094F81F /* FriendsListCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
 				CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */,
@@ -835,11 +877,13 @@
 				471145CE2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift in Sources */,
 				CD5BCC6329F571D700DD44F7 /* PreferenceSectionBackgroundView.swift in Sources */,
 				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
+				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,
 				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
+				CD2F79C92A0FDFC30094F81F /* FriendsListHeaderView.swift in Sources */,
 				CD94B8C92A0BEF4300D0BC7F /* EditUserIDViewModel.swift in Sources */,
 				CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */,
 			);
@@ -1082,6 +1126,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		CD2F79C52A0FD34B0094F81F /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		CDD1DEDE29B9FE2600B03973 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1143,6 +1195,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
 			productName = BetterSegmentedControl;
+		};
+		CD2F79C62A0FD34B0094F81F /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD2F79C52A0FD34B0094F81F /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		CDD1DEDF29B9FE2600B03973 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

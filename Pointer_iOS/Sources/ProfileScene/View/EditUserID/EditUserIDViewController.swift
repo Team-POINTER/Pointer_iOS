@@ -128,6 +128,12 @@ class EditUserIDViewController: UIViewController {
                     self?.checkIdStringCountLabel.text = text
                 }
             }.disposed(by: disposeBag)
+        
+        output.checkValidateResult
+            .bind { [weak self] result in
+                self?.checkValidateResultLabel.text = result.resultString
+                self?.checkValidateResultLabel.textColor = result.textColor
+            }.disposed(by: disposeBag)
     }
     
     //MARK: - Functions
