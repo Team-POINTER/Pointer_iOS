@@ -16,7 +16,7 @@ class ResultViewModel: ViewModelType{
 //MARK: - Properties
     // resultView에 맞는 모델 [X] -> API 연결 시
     
-    var timeString = "2023-05-13 12:15:57"
+    var timeString = "2023-05-20 23:20:20"
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     let timerExpired = PublishSubject<Bool>()
