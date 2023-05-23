@@ -5,8 +5,6 @@
 //  Created by 박현준 on 2023/05/12.
 //
 
-// enum으로 관리할 부분과 output 바인딩을 어떻게 가져갈지?
-
 import UIKit
 import RxSwift
 import RxCocoa
@@ -17,7 +15,7 @@ class NewQuestViewModel: ViewModelType{
         case isEnable
         case disable
         
-        var isEnable: Bool {
+        var isEnable: Bool {   
             switch self {
             case .isEnable: return true
             case .disable: return false
@@ -51,11 +49,11 @@ class NewQuestViewModel: ViewModelType{
         }
     }
     
-    var timeString = "2023-05-20 23:20:20"
-    
 //MARK: - Properties
+    
+    var timeString = "2023-05-23 14:25:15"
+    
     let remainingTime = BehaviorSubject<Int>(value: 0)
-    let timerExpired = PublishSubject<Bool>()
     private var timer: Timer?
     
     let disposeBag = DisposeBag()
@@ -77,7 +75,7 @@ class NewQuestViewModel: ViewModelType{
         
         remainingTime
             .subscribe { time in
-                print("function called \(time)")
+                print("NewQuestViewModel function called \(time)")
                 guard let time = time.element else { return }
                 if time <= 0 {
                     output.buttonIsEnable.onNext(.isEnable)
@@ -97,8 +95,7 @@ class NewQuestViewModel: ViewModelType{
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         guard let endDate = formatter.date(from: timeString) else { return }
         self.remainingTime.onNext(Int(endDate.timeIntervalSinceNow))
-        guard let remainingTimeValue = try? self.remainingTime.value(), remainingTimeValue > 0 else {
-            self.timerExpired.onNext(false)
+        guard let remainingTimeValue = try? self.remainingTime.value() else {
             return
         }
         self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
@@ -107,7 +104,6 @@ class NewQuestViewModel: ViewModelType{
     
             self.remainingTime.onNext(remainingTimeValue - 1)
             if remainingTimeValue == 0 {
-                self.timerExpired.onNext(true)
                 self.stopTimer()
             }
         }

@@ -74,7 +74,7 @@ class FriendsListCell: UICollectionViewCell {
         selectImageView.rx.tapGesture().when(.recognized)
             .subscribe { [weak self] _ in
                 guard let self = self,
-                      let user = user else { return }
+                      let user = self.user else { return }
                 self.isSelectedCell.toggle()
                 self.delegate?.userSelected(user: user)
             }
