@@ -27,32 +27,19 @@ class NewQuestViewController: BaseViewController {
         let input = NewQuestViewModel.Input()
         let output = viewModel.transform(input: input)
         
-        viewModel.remainingTime
-            .subscribe(onNext: { remainingTime in
-                if remainingTime <= 0 {
-                    self.newQuestButton.isEnabled = true
-                    self.newQuestButton.backgroundColor = .pointerRed
-                    self.newQuestButton.titleLabel?.textColor = UIColor.white
-                    let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-                    self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
-                } else {
-                    self.newQuestButton.isEnabled = false
-                    self.newQuestButton.backgroundColor = .pointerRed.withAlphaComponent(0.5)
-                    self.newQuestButton.titleLabel?.textColor = UIColor.white.withAlphaComponent(0.5)
-                    let hours = remainingTime / 3600
-                    let minutes = (remainingTime % 3600) / 60
-                    let seconds = remainingTime % 60
-                    let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-
-                    // 버튼 타이틀 갱신
-                    let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-                    attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
-                    self.newQuestButton.setAttributedTitle(attributedQuestionString, for: .normal)
-                }
-            }).disposed(by: disposeBag)
+        Observable
+            .combineLatest(output.buttonIsEnable, viewModel.remainingTime)
+            .bind { [weak self] style, time in
+                guard let self = self else { return }
+                print("DEBUG: Button Status - \(style)")
+                print("DEBUG: time - \(time)")
+                self.newQuestButton.isEnabled = style.isEnable
+                self.newQuestButton.backgroundColor = style.backgroundColor
+                self.newQuestButton.setAttributedTitle(style.getAttributedString(time), for: .normal)
+            }
+            .disposed(by: disposeBag)
         
-        viewModel.startTimer(withEndTime: viewModel.timeString)
-
+        viewModel.startTimer()
     }
     
 //MARK: - UI Components
@@ -135,7 +122,6 @@ class NewQuestViewController: BaseViewController {
         setUI()
         setConstraints()
         bindViewModel()
-        
     }
     
     

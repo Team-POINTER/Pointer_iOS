@@ -41,17 +41,20 @@ class ResultViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.remainingTime
-            .map { String(format: "%02d:%02d:%02d", $0 / 3600, ($0 % 3600) / 60, $0 % 60) }
-            .bind(to: newQuestionTimerLabel.rx.text)
+        Observable
+            .combineLatest(output.timeLabelIsHidden, viewModel.remainingTime)
+            .bind { [weak self] style, time in
+                guard let self = self else { return }
+                print("DEBUG: label Status - \(style)")
+                print("DEBUG: time - \(time)")
+                self.newQuestionTimerLabel.text = style.getTimeString(time)
+                self.newQuestionTimerLabel.isHidden = false
+            }
             .disposed(by: disposeBag)
         
-        viewModel.remainingTime
-            .map { $0 <= 0 }
-            .bind(to: newQuestionTimerLabel.rx.isHidden)
-            .disposed(by: disposeBag)
         
-        viewModel.startTimer(withEndTime: viewModel.timeString)
+        
+        viewModel.startTimer()
         
     }
     
@@ -114,7 +117,6 @@ class ResultViewController: BaseViewController {
         $0.font = UIFont.notoSansRegular(size: 14)
         $0.textColor = UIColor.white
         $0.textAlignment = .center
-        $0.isHidden = true
         return $0
     }(UILabel())
     

@@ -65,7 +65,7 @@ class FriendsListViewModel: ViewModelType {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FriendsListCell.cellIdentifier, for: indexPath) as? FriendsListCell,
                   let self = self else { return UICollectionViewCell() }
             cell.user = item
-            cell.isSelectedCell = detectSelectedUser(item)
+            cell.isSelectedCell = self.detectSelectedUser(item)
             cell.delegate = self
             return cell
         }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
