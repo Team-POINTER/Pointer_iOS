@@ -25,8 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         KakaoSDK.initSDK(appKey: Secret.kakaoNativeKey)
         
-        let sendBirdAppId = Bundle.main.infoDictionary?[Secret.sendbird_App] ?? ""
-        SendbirdUI.initialize(applicationId: sendBirdAppId as! String) {
+        SendbirdUI.initialize(applicationId: Secret.sendbird_App) {
             // Do something to display the start of the SendbirdUIKit initialization.
         } migrationHandler: {
             // Do something to display the progress of the DB migration.
@@ -35,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // set current user
-        SBUGlobals.currentUser = SBUUser(userId: "userId")
+        SBUGlobals.currentUser = SBUUser(userId: "jason")
         
         
         return true
