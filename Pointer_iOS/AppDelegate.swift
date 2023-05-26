@@ -10,6 +10,7 @@ import IQKeyboardManagerSwift
 import KakaoSDKCommon
 import KakaoSDKUser
 import KakaoSDKAuth
+import SendbirdUIKit
 
 
 @main
@@ -23,6 +24,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         KakaoSDK.initSDK(appKey: Secret.kakaoNativeKey)
+        
+        let sendBirdAppId = Bundle.main.infoDictionary?[Secret.sendbird_App] ?? ""
+        SendbirdUI.initialize(applicationId: sendBirdAppId as! String) {
+            // Do something to display the start of the SendbirdUIKit initialization.
+        } migrationHandler: {
+            // Do something to display the progress of the DB migration.
+        } completionHandler: { error in
+            // Do something to display the completion of the SendbirdChat initialization.
+        }
+        
+        // set current user
+        SBUGlobals.currentUser = SBUUser(userId: "userId")
+        
+        
         return true
     }
 
