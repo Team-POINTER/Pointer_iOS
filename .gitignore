@@ -8,6 +8,8 @@
 .LSOverride
 Secret.swift
 
+Pointer_iOS/Secret/
+
 # Icon must end with two \r
 Icon
 
