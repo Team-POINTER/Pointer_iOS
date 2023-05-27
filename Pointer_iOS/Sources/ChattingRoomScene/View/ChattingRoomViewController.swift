@@ -23,6 +23,7 @@ class ChattingRoomViewController: BaseViewController {
         setupNavigationController()
         
         
+        
     }
 
     
