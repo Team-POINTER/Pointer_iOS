@@ -22,7 +22,6 @@ class ChattingRoomViewController: BaseViewController {
         super.viewDidLoad()
         setupNavigationController()
         
-        
     }
 
     

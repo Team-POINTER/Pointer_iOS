@@ -21,6 +21,7 @@
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
 		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
 		47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47194E7C29D94DA900671360 /* NewQuestViewController.swift */; };
+		471FCFDD2A2268B40061CF44 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471FCFDC2A2268B40061CF44 /* Secret.swift */; };
 		473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739329CEDC0F00B33C77 /* MyResultViewController.swift */; };
 		473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */; };
 		473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */; };
@@ -50,7 +51,6 @@
 		CD0667812A04E8870003C7B4 /* UserFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677D2A04E8870003C7B4 /* UserFriendCell.swift */; };
 		CD0667842A04E8A60003C7B4 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0667832A04E8A60003C7B4 /* UserModel.swift */; };
 		CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06C77B29C0C68600A88ACD /* TextfieldCustomView.swift */; };
-		CD07E59A29CE1E6500B52885 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E59929CE1E6500B52885 /* Secret.swift */; };
 		CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E59E29CE1EEE00B52885 /* NotificationViewController.swift */; };
 		CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */; };
 		CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AC29D0008300B52885 /* AllNotiCell.swift */; };
@@ -114,6 +114,7 @@
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		47194E7C29D94DA900671360 /* NewQuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestViewController.swift; sourceTree = "<group>"; };
+		471FCFDC2A2268B40061CF44 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		473B739329CEDC0F00B33C77 /* MyResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewController.swift; sourceTree = "<group>"; };
 		473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultTableViewCell.swift; sourceTree = "<group>"; };
 		473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewModel.swift; sourceTree = "<group>"; };
@@ -143,7 +144,6 @@
 		CD06677D2A04E8870003C7B4 /* UserFriendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFriendCell.swift; sourceTree = "<group>"; };
 		CD0667832A04E8A60003C7B4 /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		CD06C77B29C0C68600A88ACD /* TextfieldCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldCustomView.swift; sourceTree = "<group>"; };
-		CD07E59929CE1E6500B52885 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		CD07E59E29CE1EEE00B52885 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailViewController.swift; sourceTree = "<group>"; };
 		CD07E5AC29D0008300B52885 /* AllNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNotiCell.swift; sourceTree = "<group>"; };
@@ -539,7 +539,7 @@
 		CD23208E29B8CFC8003D0B84 /* Secret */ = {
 			isa = PBXGroup;
 			children = (
-				CD07E59929CE1E6500B52885 /* Secret.swift */,
+				471FCFDC2A2268B40061CF44 /* Secret.swift */,
 			);
 			path = Secret;
 			sourceTree = "<group>";
@@ -855,6 +855,7 @@
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,
 				CD5BCC5D29F53B8500DD44F7 /* PreferenceViewModel.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
+				471FCFDD2A2268B40061CF44 /* Secret.swift in Sources */,
 				47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */,
@@ -892,7 +893,6 @@
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
-				CD07E59A29CE1E6500B52885 /* Secret.swift in Sources */,
 				CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
