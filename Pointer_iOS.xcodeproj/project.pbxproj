@@ -21,7 +21,6 @@
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
 		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
 		47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47194E7C29D94DA900671360 /* NewQuestViewController.swift */; };
-		471FCFDD2A2268B40061CF44 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471FCFDC2A2268B40061CF44 /* Secret.swift */; };
 		473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739329CEDC0F00B33C77 /* MyResultViewController.swift */; };
 		473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */; };
 		473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */; };
@@ -99,6 +98,10 @@
 		CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEED29B9FFFE00B03973 /* Kingfisher */; };
 		CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */; };
 		CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */; };
+		F98BFC5F2A2272EB00C077C8 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98BFC5E2A2272EB00C077C8 /* Secret.swift */; };
+		F98BFC622A2277E400C077C8 /* ChattingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98BFC612A2277E400C077C8 /* ChattingListViewController.swift */; };
+		F9C808DC2A234314002924E3 /* CustomDemoChattingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C808DB2A234314002924E3 /* CustomDemoChattingListCell.swift */; };
+		F9C808E02A236A7A002924E3 /* CustomPointerChattingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C808DF2A236A7A002924E3 /* CustomPointerChattingListCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,7 +117,6 @@
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		47194E7C29D94DA900671360 /* NewQuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestViewController.swift; sourceTree = "<group>"; };
-		471FCFDC2A2268B40061CF44 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		473B739329CEDC0F00B33C77 /* MyResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewController.swift; sourceTree = "<group>"; };
 		473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultTableViewCell.swift; sourceTree = "<group>"; };
 		473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewModel.swift; sourceTree = "<group>"; };
@@ -184,6 +186,10 @@
 		CD94B8C82A0BEF4300D0BC7F /* EditUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewModel.swift; sourceTree = "<group>"; };
 		CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewController.swift; sourceTree = "<group>"; };
+		F98BFC5E2A2272EB00C077C8 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		F98BFC612A2277E400C077C8 /* ChattingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListViewController.swift; sourceTree = "<group>"; };
+		F9C808DB2A234314002924E3 /* CustomDemoChattingListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDemoChattingListCell.swift; sourceTree = "<group>"; };
+		F9C808DF2A236A7A002924E3 /* CustomPointerChattingListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointerChattingListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -512,10 +518,10 @@
 		CD23207829B8C6EB003D0B84 /* Pointer_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				F98BFC5D2A2272E400C077C8 /* Secret */,
 				CD23208F29B8CFCB003D0B84 /* Util */,
 				CD23208D29B8CFC5003D0B84 /* Base */,
 				CD23209329B8D2AF003D0B84 /* API */,
-				CD23208E29B8CFC8003D0B84 /* Secret */,
 				CD23209029B8D253003D0B84 /* Sources */,
 				CD23207929B8C6EB003D0B84 /* AppDelegate.swift */,
 				CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */,
@@ -534,14 +540,6 @@
 				CD23209D29B8DC0E003D0B84 /* BaseNavigationController.swift */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		CD23208E29B8CFC8003D0B84 /* Secret */ = {
-			isa = PBXGroup;
-			children = (
-				471FCFDC2A2268B40061CF44 /* Secret.swift */,
-			);
-			path = Secret;
 			sourceTree = "<group>";
 		};
 		CD23208F29B8CFCB003D0B84 /* Util */ = {
@@ -564,6 +562,7 @@
 				CDD1DEF029BA004100B03973 /* RoomScene */,
 				47117CA029C72E23001707C8 /* ResultScene */,
 				CDC51EC729C4EAF700E8BC58 /* SearchScene */,
+				F98BFC602A2277D000C077C8 /* ChattingListScene */,
 				47665AD42A1C884C00A95154 /* ChattingRoomScene */,
 				CD07E59B29CE1ECC00B52885 /* NotificationScene */,
 				CD5BCC5429F5382B00DD44F7 /* PreferenceScene */,
@@ -745,6 +744,24 @@
 			path = EditUserID;
 			sourceTree = "<group>";
 		};
+		F98BFC5D2A2272E400C077C8 /* Secret */ = {
+			isa = PBXGroup;
+			children = (
+				F98BFC5E2A2272EB00C077C8 /* Secret.swift */,
+			);
+			path = Secret;
+			sourceTree = "<group>";
+		};
+		F98BFC602A2277D000C077C8 /* ChattingListScene */ = {
+			isa = PBXGroup;
+			children = (
+				F98BFC612A2277E400C077C8 /* ChattingListViewController.swift */,
+				F9C808DB2A234314002924E3 /* CustomDemoChattingListCell.swift */,
+				F9C808DF2A236A7A002924E3 /* CustomPointerChattingListCell.swift */,
+			);
+			path = ChattingListScene;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -855,10 +872,12 @@
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,
 				CD5BCC5D29F53B8500DD44F7 /* PreferenceViewModel.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
-				471FCFDD2A2268B40061CF44 /* Secret.swift in Sources */,
+				F98BFC622A2277E400C077C8 /* ChattingListViewController.swift in Sources */,
+				F98BFC5F2A2272EB00C077C8 /* Secret.swift in Sources */,
 				47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */,
+				F9C808E02A236A7A002924E3 /* CustomPointerChattingListCell.swift in Sources */,
 				CD0EE9272A0788510090BF48 /* ProfileEditViewController.swift in Sources */,
 				473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
@@ -916,6 +935,7 @@
 				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,
 				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
+				F9C808DC2A234314002924E3 /* CustomDemoChattingListCell.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
