@@ -21,9 +21,9 @@ class ChattingListViewController: SBUGroupChannelListViewController {
     //MARK: - Lifecycle
     override init() {
         super.init()
-//        listComponent?.register(channelCell: CustomPointerChattingListCell())
+        listComponent?.register(channelCell: CustomPointerChattingListCell())
 
-        setupUI()
+        configurationTheme()
         setupNavigationBar()
         bind()
     }
@@ -54,8 +54,29 @@ class ChattingListViewController: SBUGroupChannelListViewController {
     }
     
     //MARK: - Functions
-    func setupUI() {
-        theme = .dark
+    func configurationTheme() {
+        SBUTheme.set(theme: .dark)
+        
+        SBUFontSet.h1 = .notoSans(font: .notoSansKrMedium, size: 18)
+        SBUFontSet.h2 = .notoSans(font: .notoSansKrBold, size: 16)
+        SBUFontSet.h3 = .notoSans(font: .notoSansKrRegular, size: 16)
+        SBUFontSet.subtitle1 = .notoSans(font: .notoSansKrRegular, size: 14)
+        SBUFontSet.subtitle2 = .notoSans(font: .notoSansKrMedium, size: 14)
+        SBUFontSet.subtitle3 = .notoSans(font: .notoSansKrMedium, size: 14)
+        SBUFontSet.body1 = .notoSans(font: .notoSansKrRegular, size: 14)
+        SBUFontSet.body2 = .notoSans(font: .notoSansKrRegular, size: 14)
+        SBUFontSet.body3 = .notoSans(font: .notoSansKrRegular, size: 14)
+        SBUFontSet.body4 = .notoSans(font: .notoSansKrRegular, size: 14)
+        SBUFontSet.button1 = .notoSans(font: .notoSansKrBold, size: 20)
+        SBUFontSet.button2 = .notoSans(font: .notoSansKrMedium, size: 16)
+        SBUFontSet.button3 = .notoSans(font: .notoSansKrMedium, size: 14)
+        SBUFontSet.button4 = .notoSans(font: .notoSansKrMedium, size: 14)
+        SBUFontSet.caption1 = .notoSans(font: .notoSansKrBold, size: 12)
+        SBUFontSet.caption2 = .notoSans(font: .notoSansKrRegular, size: 12)
+        SBUFontSet.caption3 = .notoSans(font: .notoSansKrRegular, size: 12)
+        SBUFontSet.caption4 = .notoSans(font: .notoSansKrRegular, size: 11)
+        
+        SBUIconSet.iconCreate = UIImage(systemName: "plus")!
     }
     
     func setupNavigationBar() {
@@ -69,12 +90,13 @@ class ChattingListViewController: SBUGroupChannelListViewController {
         
         headerComponent?.leftBarButton = chattingTitle
         
-        let rightButtonStack = UIStackView(arrangedSubviews: [plusButton, searchButton])
-        rightButtonStack.spacing = 10
         
-        let rightBarButton = UIBarButtonItem(customView: rightButtonStack)
-        
-        headerComponent?.rightBarButton = rightBarButton
+//        let rightButtonStack = UIStackView(arrangedSubviews: [plusButton, searchButton])
+//        rightButtonStack.spacing = 10
+//
+//        let rightBarButton = UIBarButtonItem(customView: rightButtonStack)
+//
+//        headerComponent?.rightBarButton = rightBarButton
     }
     
     
@@ -84,8 +106,8 @@ class ChattingListViewController: SBUGroupChannelListViewController {
         button.backgroundColor = .backgroundGray
         button.contentMode = .scaleAspectFill
         button.snp.makeConstraints {
-            $0.width.height.equalTo(Device.navigationBarHeight - 15)
-            button.layer.cornerRadius = (Device.navigationBarHeight - 15) / 2
+            $0.width.height.equalTo(Device.navigationBarHeight - 10)
+            button.layer.cornerRadius = (Device.navigationBarHeight - 10) / 2
             button.clipsToBounds = true
         }
         return button

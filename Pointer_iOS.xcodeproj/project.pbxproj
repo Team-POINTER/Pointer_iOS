@@ -98,9 +98,11 @@
 		CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CDD1DEED29B9FFFE00B03973 /* Kingfisher */; };
 		CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */; };
 		CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */; };
+		F94A8F382A3334FE009F7E03 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94A8F372A3334FE009F7E03 /* Formatter.swift */; };
+		F94A8F3A2A33358E009F7E03 /* CGSize+SBUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94A8F392A33358E009F7E03 /* CGSize+SBUIKit.swift */; };
+		F94A8F3C2A3335DD009F7E03 /* UIImage+SBUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94A8F3B2A3335DD009F7E03 /* UIImage+SBUIKit.swift */; };
 		F98BFC5F2A2272EB00C077C8 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98BFC5E2A2272EB00C077C8 /* Secret.swift */; };
 		F98BFC622A2277E400C077C8 /* ChattingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98BFC612A2277E400C077C8 /* ChattingListViewController.swift */; };
-		F9C808DC2A234314002924E3 /* CustomDemoChattingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C808DB2A234314002924E3 /* CustomDemoChattingListCell.swift */; };
 		F9C808E02A236A7A002924E3 /* CustomPointerChattingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C808DF2A236A7A002924E3 /* CustomPointerChattingListCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -186,9 +188,11 @@
 		CD94B8C82A0BEF4300D0BC7F /* EditUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewModel.swift; sourceTree = "<group>"; };
 		CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewController.swift; sourceTree = "<group>"; };
+		F94A8F372A3334FE009F7E03 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
+		F94A8F392A33358E009F7E03 /* CGSize+SBUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+SBUIKit.swift"; sourceTree = "<group>"; };
+		F94A8F3B2A3335DD009F7E03 /* UIImage+SBUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+SBUIKit.swift"; sourceTree = "<group>"; };
 		F98BFC5E2A2272EB00C077C8 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		F98BFC612A2277E400C077C8 /* ChattingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListViewController.swift; sourceTree = "<group>"; };
-		F9C808DB2A234314002924E3 /* CustomDemoChattingListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDemoChattingListCell.swift; sourceTree = "<group>"; };
 		F9C808DF2A236A7A002924E3 /* CustomPointerChattingListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointerChattingListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -588,6 +592,9 @@
 				CD23209929B8D8F4003D0B84 /* UIView.swift */,
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
+				F94A8F372A3334FE009F7E03 /* Formatter.swift */,
+				F94A8F392A33358E009F7E03 /* CGSize+SBUIKit.swift */,
+				F94A8F3B2A3335DD009F7E03 /* UIImage+SBUIKit.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -756,7 +763,6 @@
 			isa = PBXGroup;
 			children = (
 				F98BFC612A2277E400C077C8 /* ChattingListViewController.swift */,
-				F9C808DB2A234314002924E3 /* CustomDemoChattingListCell.swift */,
 				F9C808DF2A236A7A002924E3 /* CustomPointerChattingListCell.swift */,
 			);
 			path = ChattingListScene;
@@ -897,6 +903,7 @@
 				CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */,
 				CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */,
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
+				F94A8F3A2A33358E009F7E03 /* CGSize+SBUIKit.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
@@ -909,6 +916,7 @@
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
 				CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */,
+				F94A8F3C2A3335DD009F7E03 /* UIImage+SBUIKit.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
@@ -925,6 +933,7 @@
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
 				473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */,
+				F94A8F382A3334FE009F7E03 /* Formatter.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD5BCC5629F5384300DD44F7 /* PreferenceController.swift in Sources */,
@@ -935,7 +944,6 @@
 				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,
 				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
-				F9C808DC2A234314002924E3 /* CustomDemoChattingListCell.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
