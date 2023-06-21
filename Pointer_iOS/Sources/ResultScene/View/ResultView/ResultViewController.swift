@@ -10,6 +10,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import FloatingPanel
+import SendbirdUIKit
 
 // 1. 현재 타이머 시간을 viewModel에 있는 timeString으로 시작
 
@@ -249,8 +250,12 @@ class ResultViewController: BaseViewController {
     }
     
     @objc func chatTaped() {
-        let resultChatViewController = FloatingChatViewController(contentViewController: RoomFloatingChatViewController())
-        present(resultChatViewController, animated: true)
+//        let resultChatViewController = FloatingChatViewController(contentViewController: RoomFloatingChatViewController())
+//        present(NextTestViewController(), animated: true)
+        let resultChatViewController = ChattingRoomViewController(channelURL: "sendbird_group_channel_121580584_0a41445ba95f50f74241bb813d7d0cc9fcf68576")
+//        resultChatViewController.modalPresentationStyle = .pageSheet
+//        present(resultChatViewController, animated: true)
+        self.navigationController?.pushViewController(resultChatViewController, animated: true)
     }
     
     
