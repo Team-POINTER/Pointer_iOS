@@ -41,7 +41,6 @@ class RoomViewController: BaseViewController {
     
 //MARK: - Rx
     func bindViewModel() {
-//        viewModel.roomObservable.accept(people)
         let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable())
         let output = viewModel.transform(input: input)
         

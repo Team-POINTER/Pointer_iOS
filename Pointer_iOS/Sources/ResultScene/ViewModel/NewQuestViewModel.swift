@@ -94,17 +94,18 @@ class NewQuestViewModel: ViewModelType{
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         guard let endDate = formatter.date(from: timeString) else { return }
-        self.remainingTime.onNext(Int(endDate.timeIntervalSinceNow))
-        guard let remainingTimeValue = try? self.remainingTime.value() else {
-            return
-        }
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            let remainingTimeValue = (try? self.remainingTime.value()) ?? 0
-    
-            self.remainingTime.onNext(remainingTimeValue - 1)
-            if remainingTimeValue == 0 {
-                self.stopTimer()
+        let remainingTimeInterval = Int(endDate.timeIntervalSinceNow)
+        self.remainingTime.onNext(remainingTimeInterval)
+        
+        if remainingTimeInterval > 0 {
+            self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+                guard let self = self else { return }
+                let remainingTimeValue = (try? self.remainingTime.value()) ?? 0
+        
+                self.remainingTime.onNext(remainingTimeValue - 1)
+                if remainingTimeValue == 0 {
+                    self.stopTimer()
+                }
             }
         }
     }
