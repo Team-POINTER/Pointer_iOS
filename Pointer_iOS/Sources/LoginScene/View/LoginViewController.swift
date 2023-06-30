@@ -25,33 +25,15 @@ class LoginViewController: BaseViewController {
         
         output.kakaoLogin
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] b in
-                if (UserApi.isKakaoTalkLoginAvailable()) {
-                    // 카카오톡 로그인. api 호출 결과를 클로저로 전달.
-                    self?.loginViewModel.loginWithApp() { LoginResultTypeMessage in
-                        if LoginResultTypeMessage == "존재하는 유저" {
-                            self?.navigationController?.pushViewController(TermsViewController(), animated: true)
-                        } else {
-                            self?.navigationController?.pushViewController(BaseTabBarController(), animated: true)
-                        }
-                    }
-                } else {
-                    // 만약, 카카오톡이 깔려있지 않을 경우에는 웹 브라우저로 카카오 로그인함.
-                    self?.loginViewModel.loginWithWeb() { LoginResultTypeMessage in
-                        if LoginResultTypeMessage == "존재하는 유저" {
-                            self?.navigationController?.pushViewController(TermsViewController(), animated: true)
-                        } else {
-                            self?.navigationController?.pushViewController(BaseTabBarController(), animated: true)
-                        }
-                    }
-                }
+            .subscribe(onNext: { [weak self] viewController in
+                self?.navigationController?.pushViewController(viewController, animated: true)
             }
             ).disposed(by: disposeBag)
         
         output.appleLogin
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                
+            .subscribe(onNext: { user in
+                print("Apple Login User Data = \(user)")
             }
             ).disposed(by: disposeBag)
     }

@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // set current user
-        SBUGlobals.currentUser = SBUUser(userId: "jason")
+        SBUGlobals.currentUser = SBUUser(userId: "userA")
         
         
         return true
