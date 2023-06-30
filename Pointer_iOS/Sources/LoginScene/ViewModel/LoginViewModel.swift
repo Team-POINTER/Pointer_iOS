@@ -7,18 +7,17 @@
 //
 
 import Foundation
+import AuthenticationServices
 import KakaoSDKAuth
 import KakaoSDKUser
 import RxSwift
 import RxCocoa
 
-class LoginViewModel: ViewModelType {
+class LoginViewModel: NSObject, ViewModelType {
     
     var disposeBag = DisposeBag()
-    
-    init() {
-        print("LoginViewModel Called")
-    }
+    var appleLoginUser = PublishRelay<AppleUser>()
+    var kakaoLoginView = PublishRelay<UIViewController>()
     
     struct Input {
         let kakaoLoginTap: Observable<Void>
@@ -26,25 +25,68 @@ class LoginViewModel: ViewModelType {
     }
     
     struct Output {
-        var kakaoLogin: Observable<Void>
-        var appleLogin: Observable<Void>
+        var kakaoLogin = PublishRelay<UIViewController>()
+        var appleLogin = PublishRelay<AppleUser>()
     }
     
     func transform(input: Input) -> Output {
+        let output = Output()
         
-        let kakao = input.kakaoLoginTap
+        input.kakaoLoginTap
+            .subscribe(onNext: { [weak self] in
+                if (UserApi.isKakaoTalkLoginAvailable()) {
+                    self?.loginWithApp() { LoginResultTypeMessage in
+                        if LoginResultTypeMessage == "존재하는 유저" {
+                            self?.kakaoLoginView.accept(TermsViewController())
+                        } else {
+                            self?.kakaoLoginView.accept(BaseTabBarController())
+                        }
+                    }
+                } else {
+                    self?.loginWithWeb() { LoginResultTypeMessage in
+                        if LoginResultTypeMessage == "존재하는 유저" {
+                            self?.kakaoLoginView.accept(TermsViewController())
+                        } else {
+                            self?.kakaoLoginView.accept(BaseTabBarController())
+                        }
+                    }
+                }
+            }).disposed(by: disposeBag)
         
-        let apple = input.appleLoginTap
-            .map(appleLoginTap)
-       
-        return Output(kakaoLogin: kakao, appleLogin: apple)
+        kakaoLoginView
+            .subscribe(onNext: { [weak self] viewController in
+                output.kakaoLogin.accept(viewController)
+            })
+        
+        
+        input.appleLoginTap
+            .subscribe(onNext: { [weak self] in
+                self?.appleLoginTaped()
+            })
+            .disposed(by: disposeBag)
+        
+        appleLoginUser
+            .subscribe(onNext: { [weak self] user in
+                output.appleLogin.accept(user)
+            })
+            .disposed(by: disposeBag)
+        
+        return output
     }
 
 //MARK: - APPLE
-    func appleLoginTap() {
-        print("애플로그인 버튼 Tap")
+    func appleLoginTaped() {
+        let provider = ASAuthorizationAppleIDProvider()
+        let request = provider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = self
+//        controller.presentationContextProvider = self
+        controller.performRequests()
+        
+        
     }
-    
     
 //MARK: - KAKAO
     
@@ -146,3 +188,36 @@ class LoginViewModel: ViewModelType {
 //    }
 
 
+extension LoginViewModel: ASAuthorizationControllerDelegate {
+    // 애플 로그인 성공
+        func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                let userIdentifier = appleIDCredential.user
+                let familyName = appleIDCredential.fullName?.familyName
+                let givenName = appleIDCredential.fullName?.givenName
+                let email = appleIDCredential.email
+                let state = appleIDCredential.state
+                
+                let user = AppleUser(
+                    userIdentifier: userIdentifier,
+                    familyName: familyName,
+                    givenName: givenName,
+                    email: email
+                )
+                
+                self.appleLoginUser.accept(user)
+            }
+        }
+        
+        // 애플 로그인 실패
+        func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+            print("Apple Sign In Error: \(error.localizedDescription)")
+        }
+}
+
+//extension LoginViewModel: ASAuthorizationControllerPresentationContextProviding {
+//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+//        <#code#>
+//    }
+//
+//}

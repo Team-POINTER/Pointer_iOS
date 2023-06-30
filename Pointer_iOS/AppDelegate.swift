@@ -20,6 +20,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         KakaoSDK.initSDK(appKey: Secret.kakaoNativeKey)
+<<<<<<< Updated upstream
+=======
+        
+        SendbirdUI.initialize(applicationId: Secret.sendbird_App) {
+            // Do something to display the start of the SendbirdUIKit initialization.
+        } migrationHandler: {
+            // Do something to display the progress of the DB migration.
+        } completionHandler: { error in
+            // Do something to display the completion of the SendbirdChat initialization.
+        }
+        
+        // set current user
+        SBUGlobals.currentUser = SBUUser(userId: "userA")
+        
+        
+>>>>>>> Stashed changes
         return true
     }
 
