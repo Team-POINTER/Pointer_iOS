@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SendbirdUIKit
 
 class BaseTabBarController: UITabBarController {
     //MARK: - Properties
@@ -26,7 +27,11 @@ class BaseTabBarController: UITabBarController {
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
+<<<<<<< Updated upstream
         let secondVC = HomeController()
+=======
+        let secondVC = LoginViewController()
+>>>>>>> Stashed changes
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
