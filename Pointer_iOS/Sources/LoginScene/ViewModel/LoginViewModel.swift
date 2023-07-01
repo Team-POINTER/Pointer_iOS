@@ -15,10 +15,12 @@ import RxCocoa
 
 class LoginViewModel: NSObject, ViewModelType {
     
+//MARK: - Properties
     var disposeBag = DisposeBag()
     var appleLoginUser = PublishRelay<AppleUser>()
     var kakaoLoginView = PublishRelay<UIViewController>()
     
+//MARK: - In/Out
     struct Input {
         let kakaoLoginTap: Observable<Void>
         let appleLoginTap: Observable<Void>
@@ -28,7 +30,7 @@ class LoginViewModel: NSObject, ViewModelType {
         var kakaoLogin = PublishRelay<UIViewController>()
         var appleLogin = PublishRelay<AppleUser>()
     }
-    
+//MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         let output = Output()
         
@@ -82,9 +84,8 @@ class LoginViewModel: NSObject, ViewModelType {
         
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
-//        controller.presentationContextProvider = self
+        controller.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
         controller.performRequests()
-        
         
     }
     
@@ -187,37 +188,32 @@ class LoginViewModel: NSObject, ViewModelType {
 //        }
 //    }
 
-
+//MARK: - Apple
 extension LoginViewModel: ASAuthorizationControllerDelegate {
     // 애플 로그인 성공
-        func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                let userIdentifier = appleIDCredential.user
-                let familyName = appleIDCredential.fullName?.familyName
-                let givenName = appleIDCredential.fullName?.givenName
-                let email = appleIDCredential.email
-                let state = appleIDCredential.state
-                
-                let user = AppleUser(
-                    userIdentifier: userIdentifier,
-                    familyName: familyName,
-                    givenName: givenName,
-                    email: email
-                )
-                
-                self.appleLoginUser.accept(user)
-            }
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user
+            let familyName = appleIDCredential.fullName?.familyName
+            let givenName = appleIDCredential.fullName?.givenName
+            let email = appleIDCredential.email
+            let state = appleIDCredential.state
+            
+            let user = AppleUser(
+                userIdentifier: userIdentifier,
+                familyName: familyName,
+                givenName: givenName,
+                email: email
+            )
+            
+            print("DEBUG: AppleLogin Result - \(user)")
+            self.appleLoginUser.accept(user)
         }
-        
-        // 애플 로그인 실패
-        func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-            print("Apple Sign In Error: \(error.localizedDescription)")
-        }
+    }
+    
+    // 애플 로그인 실패
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("Apple Sign In Error: \(error.localizedDescription)")
+    }
 }
 
-//extension LoginViewModel: ASAuthorizationControllerPresentationContextProviding {
-//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-//        <#code#>
-//    }
-//
-//}
