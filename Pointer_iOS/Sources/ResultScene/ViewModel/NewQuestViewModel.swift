@@ -101,7 +101,6 @@ class NewQuestViewModel: ViewModelType{
             self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
                 guard let self = self else { return }
                 let remainingTimeValue = (try? self.remainingTime.value()) ?? 0
-        
                 self.remainingTime.onNext(remainingTimeValue - 1)
                 if remainingTimeValue == 0 {
                     self.stopTimer()

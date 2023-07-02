@@ -24,6 +24,7 @@ enum LoginResultType: String, CaseIterable {
                             
 
 class LoginDataManager {
+    
     static var Headers : HTTPHeaders = ["Content-Type" : "application/json"]
     
     static func posts(_ parameter: KakaoInput,_ completion: @escaping (KakaoInput, LoginResultType) -> Void){

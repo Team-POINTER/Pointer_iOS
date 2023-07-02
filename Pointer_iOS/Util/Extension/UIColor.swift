@@ -17,6 +17,9 @@ extension UIColor {
     static let pointerAlertFontColor = UIColor.rgb(red: 96, green: 95, blue: 95)
     static let inactiveGray = UIColor.rgb(red: 179, green: 183, blue: 205)
     static let backgroundGray = UIColor.rgb(red: 82, green: 84, blue: 95)
+    static let pointerTextField = UIColor.rgb(red: 53, green: 56, blue: 65)
+    static let myTextBoxColor = UIColor.rgb(red: 52, green: 53, blue: 64)
+    static let otherTextBoxColor = UIColor.rgb(red: 226, green: 227, blue: 236)
 }
 
 // RGB값을 받아서 UIColor를 리턴하는 함수

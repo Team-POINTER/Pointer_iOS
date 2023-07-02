@@ -45,6 +45,13 @@
 		4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48E29C0707F00011E06 /* RoomBottomView.swift */; };
 		47548E3C2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47548E3B2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift */; };
 		47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */; };
+		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
+		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
+		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
+		47CC895E2A4684390020246E /* PointerHttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895D2A4684390020246E /* PointerHttpService.swift */; };
+		47CC89602A46844F0020246E /* PointerHttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* PointerHttpRouter.swift */; };
+		47CC89622A46BF110020246E /* RoomAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89612A46BF110020246E /* RoomAPI.swift */; };
+		47CC896A2A4EDD0B0020246E /* AppleUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89692A4EDD0B0020246E /* AppleUser.swift */; };
 		CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */; };
 		CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */; };
 		CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */; };
@@ -138,6 +145,14 @@
 		4749D48E29C0707F00011E06 /* RoomBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBottomView.swift; sourceTree = "<group>"; };
 		47548E3B2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewModel.swift; sourceTree = "<group>"; };
 		47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewController.swift; sourceTree = "<group>"; };
+		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
+		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
+		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
+		47CC895D2A4684390020246E /* PointerHttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerHttpService.swift; sourceTree = "<group>"; };
+		47CC895F2A46844F0020246E /* PointerHttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerHttpRouter.swift; sourceTree = "<group>"; };
+		47CC89612A46BF110020246E /* RoomAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAPI.swift; sourceTree = "<group>"; };
+		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
+		47CC89692A4EDD0B0020246E /* AppleUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleUser.swift; sourceTree = "<group>"; };
 		CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +267,7 @@
 		47117CE029CD92A1001707C8 /* LoginScene */ = {
 			isa = PBXGroup;
 			children = (
+				47CC89682A4EDCFC0020246E /* Model */,
 				47117CE129CD92AC001707C8 /* View */,
 				47117CE229CD92B1001707C8 /* ViewModel */,
 			);
@@ -369,8 +385,28 @@
 			isa = PBXGroup;
 			children = (
 				47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */,
+				47CC89542A41D1C30020246E /* NextTestViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		47CC89562A4681950020246E /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				47CC89572A4681BA0020246E /* HttpRouter.swift */,
+				47CC89592A46829B0020246E /* HttpService.swift */,
+				47CC895D2A4684390020246E /* PointerHttpService.swift */,
+				47CC895F2A46844F0020246E /* PointerHttpRouter.swift */,
+			);
+			path = HTTP;
+			sourceTree = "<group>";
+		};
+		47CC89682A4EDCFC0020246E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				47CC89692A4EDD0B0020246E /* AppleUser.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		CD0667772A04E8870003C7B4 /* ProfileScene */ = {
@@ -512,6 +548,7 @@
 		CD23207829B8C6EB003D0B84 /* Pointer_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */,
 				CD23208F29B8CFCB003D0B84 /* Util */,
 				CD23208D29B8CFC5003D0B84 /* Base */,
 				CD23209329B8D2AF003D0B84 /* API */,
@@ -576,7 +613,9 @@
 		CD23209329B8D2AF003D0B84 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				47CC89562A4681950020246E /* HTTP */,
 				473B73A429D0361800B33C77 /* Login */,
+				47CC89612A46BF110020246E /* RoomAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -865,6 +904,7 @@
 				473B739A29CEE41100B33C77 /* ViewModelType.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
+				47CC89622A46BF110020246E /* RoomAPI.swift in Sources */,
 				CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */,
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
 				CD5BCC5F29F5423700DD44F7 /* PreferenceItemCell.swift in Sources */,
@@ -880,6 +920,7 @@
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
+				47CC896A2A4EDD0B0020246E /* AppleUser.swift in Sources */,
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
@@ -892,10 +933,12 @@
 				CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
+				47CC895A2A46829B0020246E /* HttpService.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
 				CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
+				47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */,
 				CD2F79C42A0FCB860094F81F /* FriendsListCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
@@ -903,6 +946,7 @@
 				473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
+				47CC895E2A4684390020246E /* PointerHttpService.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
 				473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */,
@@ -915,12 +959,14 @@
 				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
 				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,
 				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
+				47CC89602A46844F0020246E /* PointerHttpRouter.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
 				CD2F79C92A0FDFC30094F81F /* FriendsListHeaderView.swift in Sources */,
 				CD94B8C92A0BEF4300D0BC7F /* EditUserIDViewModel.swift in Sources */,
+				47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */,
 				CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1047,9 +1093,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 846TMZL7WC;
+				DEVELOPMENT_TEAM = F6SZ5LV55B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1075,9 +1122,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 846TMZL7WC;
+				DEVELOPMENT_TEAM = F6SZ5LV55B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
