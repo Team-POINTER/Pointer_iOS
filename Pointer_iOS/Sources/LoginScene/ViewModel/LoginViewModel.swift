@@ -114,16 +114,11 @@ class LoginViewModel: NSObject, ViewModelType {
                         print(error)
                     }
                     else {
-                        print("user.kakaoAccout = \(String(describing: user?.kakaoAccount))")
-                        
                         // Token & User
                         guard let accessToken = oauthToken?.accessToken else { return }
                         guard let refreshToken = oauthToken?.refreshToken else {return}
                         guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
-                        print("access Token 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
-                        print("refresh Token 정보입니다 @@@@@@@@@@@@@@\(String(describing: refreshToken))")
-                        print("Web으로 로그인")
-                        print("userNickname = \(String(describing: userNickname))")
+                        print("Web으로 로그인 ")
                         
                         let kakaoData = AuthInputModel(accessToken: accessToken)
                         LoginDataManager.posts(kakaoData) { model, loginResultType in
@@ -151,16 +146,11 @@ class LoginViewModel: NSObject, ViewModelType {
                         print(error)
                     }
                     else {
-                        print("user.kakaoAccout = \(String(describing: user?.kakaoAccount))")
-                        
                         // Token & User
                         guard let accessToken = oauthToken?.accessToken else { return }
                         guard let refreshToken = oauthToken?.refreshToken else {return}
                         guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
-                        print("access Token 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
-                        print("refresh Token 정보입니다 @@@@@@@@@@@@@@\(String(describing: refreshToken))")
-                        print("Web으로 로그인")
-                        print("userNickname = \(String(describing: userNickname))")
+                        print("App으로 로그인")
                         
                         let kakaoData = AuthInputModel(accessToken: accessToken)
                         LoginDataManager.posts(kakaoData) { model, loginResultType in
