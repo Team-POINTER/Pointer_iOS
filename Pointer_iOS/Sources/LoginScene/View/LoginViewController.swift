@@ -27,15 +27,15 @@ class LoginViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
                 self?.navigationController?.pushViewController(viewController, animated: true)
-            }
-            ).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
         output.appleLogin
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { user in
                 print("Apple Login User Data = \(user)")
-            }
-            ).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
     
     

@@ -13,10 +13,32 @@ import RxCocoa
 class CreateUserIDViewController: BaseViewController {
 
     var disposeBag = DisposeBag()
-    let viewModel = CreateUserIDViewModel()
+    lazy var userIdViewModel: CreateUserIDViewModel = { CreateUserIDViewModel() }()
     
 //MARK: - RX
     func bindViewModel() {
+        let input = CreateUserIDViewModel.Input(idTextFieldEditEvent: inputUserIDTextfeild.rx.text.orEmpty.asObservable(), idDoubleCheckButtonTapEvent: idDoubleCheckButton.rx.tap.asObservable(), nextButtonTapEvent: nextButton.rx.tap.asObservable())
+        let output = userIdViewModel.transform(input: input)
+        
+        output.idTextFieldLimitedString
+            .bind(to: self.inputUserIDTextfeild.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.idTextFieldCountString
+            .bind(to: self.checkCountValidLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.idTextFieldValidString
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] b in
+                if b {
+                    self?.checkValueValidLabel.text = "중복 확인해주세요."
+                    self?.checkValueValidLabel.textColor = UIColor.inactiveGray
+                } else {
+                    self?.checkValueValidLabel.text = "형식에 어긋난 아이디입니다."
+                    self?.checkValueValidLabel.textColor = UIColor.pointerRed
+                }
+            }).disposed(by: disposeBag)
         
     }
     
@@ -89,7 +111,7 @@ class CreateUserIDViewController: BaseViewController {
     
     func setUIConstraints() {
         idDoubleCheckButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(12)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.trailing.equalToSuperview().inset(17)
         }
         inputUserIDTextfeild.snp.makeConstraints { make in
@@ -129,5 +151,18 @@ class CreateUserIDViewController: BaseViewController {
         setUI()
         setUIConstraints()
         bindViewModel()
+        configureBar()
+    }
+
+//MARK: - NavigationBar
+    func configureBar() {
+        let backButton = UIImage(systemName: "chevron.backward")
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
+        self.navigationItem.leftBarButtonItem = notiButton
+        self.title = "사용자 아이디 생성"
+    }
+    
+    @objc func backButtonTap() {
+        self.navigationController?.popViewController(animated: true)
     }
 }

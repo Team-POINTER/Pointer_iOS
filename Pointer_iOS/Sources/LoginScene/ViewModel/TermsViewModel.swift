@@ -12,12 +12,11 @@ import RxCocoa
 class TermsViewModel: ViewModelType {
     
 //    var loginNickname = ""
-    var loginAccessToken = ""
+    let authResultModel: AuthResultModel
     
     
-    init(loginAccessToken: String = "") {
-        self.loginAccessToken = loginAccessToken
-        print(loginAccessToken)
+    init(authResultModel: AuthResultModel) {
+        self.authResultModel = authResultModel
     }
     
     struct Input {
