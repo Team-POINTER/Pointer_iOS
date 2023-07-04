@@ -17,7 +17,6 @@ class LoginViewModel: NSObject, ViewModelType {
     
 //MARK: - Properties
     var disposeBag = DisposeBag()
-    var appleLoginUser = PublishRelay<AppleUser>()
     var kakaoLoginView = PublishRelay<UIViewController>()
     
 //MARK: - In/Out
@@ -27,8 +26,7 @@ class LoginViewModel: NSObject, ViewModelType {
     }
     
     struct Output {
-        var kakaoLogin = PublishRelay<UIViewController>()
-        var appleLogin = PublishRelay<AppleUser>()
+        var nextViewController = PublishRelay<UIViewController>()
     }
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
@@ -87,7 +85,7 @@ class LoginViewModel: NSObject, ViewModelType {
         
         kakaoLoginView
             .subscribe(onNext: { viewController in
-                output.kakaoLogin.accept(viewController)
+                output.nextViewController.accept(viewController)
             })
             .disposed(by: disposeBag)
         
@@ -95,12 +93,6 @@ class LoginViewModel: NSObject, ViewModelType {
         input.appleLoginTap
             .subscribe(onNext: { [weak self] in
                 self?.appleLoginTaped()
-            })
-            .disposed(by: disposeBag)
-        
-        appleLoginUser
-            .subscribe(onNext: { user in
-                output.appleLogin.accept(user)
             })
             .disposed(by: disposeBag)
         
@@ -127,8 +119,6 @@ class LoginViewModel: NSObject, ViewModelType {
             if let error = error {
                 print(error)
             } else {
-                print("loginWithKakaoAccount() success.")
-                
                 // 유저 정보
                 UserApi.shared.me() {(user, error) in
                     if let error = error {
@@ -141,8 +131,8 @@ class LoginViewModel: NSObject, ViewModelType {
                         guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
                         print("Web으로 로그인 ")
                         
-                        let kakaoData = AuthInputModel(accessToken: accessToken)
-                        LoginDataManager.shared.posts(kakaoData) { model, loginResultType in
+                        let kakaoToken = AuthInputModel(accessToken: accessToken)
+                        LoginDataManager.shared.posts(kakaoToken) { model, loginResultType in
                             completion(loginResultType, model)
                         }
                     }
@@ -159,8 +149,6 @@ class LoginViewModel: NSObject, ViewModelType {
                 print(error)
             }
             else {
-                print("loginWithKakaoTalk() success.")
-                
                 // 유저 정보
                 UserApi.shared.me() {(user, error) in
                     if let error = error {
@@ -173,8 +161,8 @@ class LoginViewModel: NSObject, ViewModelType {
                         guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
                         print("App으로 로그인")
                         
-                        let kakaoData = AuthInputModel(accessToken: accessToken)
-                        LoginDataManager.shared.posts(kakaoData) { model, loginResultType in
+                        let kakaoToken = AuthInputModel(accessToken: accessToken)
+                        LoginDataManager.shared.posts(kakaoToken) { model, loginResultType in
                             completion(loginResultType, model)
                         }
                     }
@@ -201,23 +189,20 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
     // 애플 로그인 성공
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            let token = appleIDCredential.identityToken // JWT token
             let userIdentifier = appleIDCredential.user // uuid
             let familyName = appleIDCredential.fullName?.familyName
             let givenName = appleIDCredential.fullName?.givenName
             let email = appleIDCredential.email
-            let state = appleIDCredential.state
             
-            
-            let user = AppleUser(
-                userIdentifier: userIdentifier,
-                familyName: familyName,
-                givenName: givenName,
-                email: email
-            )
-            
-            print("DEBUG: AppleLogin Result - \(user)")
-            self.appleLoginUser.accept(user)
+            if let token = appleIDCredential.identityToken, // JWT token
+               let tokenString = String(data: token, encoding: .utf8) {
+                
+                let appleToken = AuthInputModel(accessToken: tokenString)
+                LoginDataManager.shared.posts(appleToken) { model, loginResultType in
+                    let termsViewModel = TermsViewModel(authResultModel: model)
+                    self.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                }
+            }
         }
     }
     

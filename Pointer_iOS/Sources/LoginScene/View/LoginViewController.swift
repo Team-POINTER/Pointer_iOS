@@ -23,17 +23,10 @@ class LoginViewController: BaseViewController {
         let input = LoginViewModel.Input(kakaoLoginTap: kakaoButton.rx.tap.asObservable(), appleLoginTap: appleButton.rx.tap.asObservable())
         let output = loginViewModel.transform(input: input)
         
-        output.kakaoLogin
+        output.nextViewController
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
                 self?.navigationController?.pushViewController(viewController, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.appleLogin
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { user in
-                print("Apple Login User Data = \(user)")
             })
             .disposed(by: disposeBag)
     }

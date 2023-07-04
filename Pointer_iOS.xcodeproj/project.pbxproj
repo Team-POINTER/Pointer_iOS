@@ -50,7 +50,6 @@
 		47CC895E2A4684390020246E /* PointerHttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895D2A4684390020246E /* PointerHttpService.swift */; };
 		47CC89602A46844F0020246E /* PointerHttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* PointerHttpRouter.swift */; };
 		47CC89622A46BF110020246E /* RoomAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89612A46BF110020246E /* RoomAPI.swift */; };
-		47CC896A2A4EDD0B0020246E /* AppleUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89692A4EDD0B0020246E /* AppleUser.swift */; };
 		47CC896F2A4EF51D0020246E /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC896E2A4EF51D0020246E /* Secret.swift */; };
 		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
 		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
@@ -153,7 +152,6 @@
 		47CC895F2A46844F0020246E /* PointerHttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerHttpRouter.swift; sourceTree = "<group>"; };
 		47CC89612A46BF110020246E /* RoomAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAPI.swift; sourceTree = "<group>"; };
 		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
-		47CC89692A4EDD0B0020246E /* AppleUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleUser.swift; sourceTree = "<group>"; };
 		47CC896E2A4EF51D0020246E /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
 		47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewModel.swift; sourceTree = "<group>"; };
@@ -410,7 +408,6 @@
 		47CC89682A4EDCFC0020246E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				47CC89692A4EDD0B0020246E /* AppleUser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -927,7 +924,6 @@
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
-				47CC896A2A4EDD0B0020246E /* AppleUser.swift in Sources */,
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
