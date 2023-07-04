@@ -27,7 +27,7 @@ class BaseTabBarController: UITabBarController {
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
-        let secondVC = LoginViewController()
+        let secondVC = TermsViewController(viewModel: TermsViewModel(authResultModel: AuthResultModel(status: 404, code: "asd", message: "asd", userId: 3)))
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭

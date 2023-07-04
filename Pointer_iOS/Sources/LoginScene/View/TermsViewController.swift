@@ -15,9 +15,9 @@ class TermsViewController: BaseViewController {
     var disposeBag = DisposeBag()
     let viewModel: TermsViewModel
     
-    init(viewModel: TermsViewModel) {
+    init(viewModel: TermsViewModel, nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         self.viewModel = viewModel
-        super.init()
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     required init?(coder: NSCoder) {
@@ -43,8 +43,8 @@ class TermsViewController: BaseViewController {
         
         output.allAllowButtonValid
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                if self?.checkBoxAll.isSelected == true {
+            .subscribe(onNext: { [weak self] b in
+                if b {
                     self?.checkBox1.isSelected = true
                     self?.checkBox2.isSelected = true
                     self?.checkBox3.isSelected = true
@@ -132,9 +132,8 @@ class TermsViewController: BaseViewController {
         
         output.nextButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                let vc = CreateUserIDViewController()
-                self?.navigationController?.pushViewController(vc, animated: true)
+            .subscribe(onNext: { [weak self] viewController in
+                self?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
     }

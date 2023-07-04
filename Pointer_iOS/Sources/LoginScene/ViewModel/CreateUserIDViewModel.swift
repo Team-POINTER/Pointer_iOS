@@ -12,8 +12,14 @@ import RxCocoa
 class CreateUserIDViewModel: ViewModelType {
     
 //MARK: - Properties
-    var disposeBag = DisposeBag()
     
+    var disposeBag = DisposeBag()
+    let authResultModel: AuthResultModel
+    
+    init(authResultModel: AuthResultModel) {
+        self.authResultModel = authResultModel
+    }
+
 //MARK: - In/Out
     struct Input {
         let idTextFieldEditEvent: Observable<String>

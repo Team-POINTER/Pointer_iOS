@@ -62,14 +62,14 @@ struct AuthInputModel: Encodable {
 }
 
 struct AuthResultModel: Decodable {
-    let status: Int?
-    let code: String?
-    let message: String?
-    let token: PointerToken?
-    let userId: Int?
+    let status: Int
+    let code: String
+    let message: String
+    let userId: Int
 }
 
+// 이후에
 struct PointerToken: Decodable {
-    let accessToken: String?
-    let refreshToken: String?
+    let accessToken: String
+    let refreshToken: String
 }

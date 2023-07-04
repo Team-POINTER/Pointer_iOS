@@ -5,13 +5,13 @@
 //  Created by 박현준 on 2023/03/27.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
+import UIKit
 
 class TermsViewModel: ViewModelType {
     
-//    var loginNickname = ""
+    let disposeBag = DisposeBag()
     let authResultModel: AuthResultModel
     
     
@@ -29,61 +29,83 @@ class TermsViewModel: ViewModelType {
     }
     
     struct Output {
-        var allAllow: Observable<Bool>
-        var allAllowButtonValid: Observable<Void>
-        var overAgeAllow: Observable<Bool>
-        var serviceAllow: Observable<Bool>
-        var privateInfoAllow: Observable<Bool>
-        var marketingInfoAllow: Observable<Bool>
-        var exceptAllAllowValid: Observable<Bool>
-        var nextButtonValid: Observable<Bool>
-        var nextButtonTap: Observable<Void>
+        var allAllow = BehaviorRelay<Bool>(value: false)
+        var allAllowButtonValid = BehaviorRelay<Bool>(value: false)
+        var overAgeAllow = BehaviorRelay<Bool>(value: false)
+        var serviceAllow = BehaviorRelay<Bool>(value: false)
+        var privateInfoAllow = BehaviorRelay<Bool>(value: false)
+        var marketingInfoAllow = BehaviorRelay<Bool>(value: false)
+        var exceptAllAllowValid = BehaviorRelay<Bool>(value: false)
+        var nextButtonValid = BehaviorRelay<Bool>(value: false)
+        var nextButtonTap = PublishRelay<UIViewController>()
 
     }
     
     func transform(input: Input) -> Output {
+        let output = Output()
         
-        let allAllow = input.allAllowTapEvent
+        input.allAllowTapEvent
             .scan(false) { lastValue, _ in
                 return !lastValue
-            }
+            }.bind(to: output.allAllow)
+            .disposed(by: disposeBag)
         
-        let overAllow = input.overAgeAllowTapEvent
+        input.overAgeAllowTapEvent
             .scan(false) { lastValue, _ in
                 return !lastValue
-            }
+            }.bind(to: output.overAgeAllow)
+            .disposed(by: disposeBag)
         
-        let serviceAllow = input.serviceAllowTapEvent
+        input.serviceAllowTapEvent
             .scan(false) { lastValue, _ in
                 return !lastValue
-            }
+            }.bind(to: output.serviceAllow)
+            .disposed(by: disposeBag)
         
-        let privateInfoAllow = input.privateInfoAllowTapEvent
+        input.privateInfoAllowTapEvent
             .scan(false) { lastValue, _ in
                 return !lastValue
-            }
+            }.bind(to: output.privateInfoAllow)
+            .disposed(by: disposeBag)
         
-        let marketingInfoAllow = input.marketingInfoAllowTapEvent
+        input.marketingInfoAllowTapEvent
             .scan(false) { lastValue, _ in
                 return !lastValue
-            }
+            }.bind(to: output.marketingInfoAllow)
+            .disposed(by: disposeBag)
         
-        let allAllowValid = input.allAllowTapEvent
+        output.allAllow
+            .subscribe(onNext: { b in
+                output.allAllowButtonValid.accept(b)
+            })
+            .disposed(by: disposeBag)
+        
+        
             
         
-        let exceptAllAllow = Observable.combineLatest(overAllow, serviceAllow, privateInfoAllow, marketingInfoAllow, resultSelector: { $0 && $1 && $2 && $3})
+        Observable.combineLatest(output.overAgeAllow, output.serviceAllow, output.privateInfoAllow, output.marketingInfoAllow, resultSelector: { $0 && $1 && $2 && $3})
+            .subscribe(onNext: { b in
+                output.nextButtonValid.accept(b)
+            })
+            .disposed(by: disposeBag)
         
-        let nextButtonValid = Observable.combineLatest(serviceAllow, privateInfoAllow, resultSelector: { $0 && $1 })
+        Observable.combineLatest(output.serviceAllow, output.privateInfoAllow, resultSelector: { $0 && $1 })
+            .subscribe(onNext: { b in
+                output.nextButtonValid.accept(b)
+            })
+            .disposed(by: disposeBag)
         
-        let nextButtonTap = input.nextButtonTapEvent
-            .map(nextBtnTap)
-       
-        return Output(allAllow: allAllow, allAllowButtonValid: allAllowValid, overAgeAllow: overAllow, serviceAllow: serviceAllow, privateInfoAllow: privateInfoAllow, marketingInfoAllow: marketingInfoAllow,exceptAllAllowValid: exceptAllAllow ,nextButtonValid: nextButtonValid, nextButtonTap: nextButtonTap)
+        input.nextButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                let createUserIdViewModel = CreateUserIDViewModel(authResultModel: self.authResultModel)
+                let createUserIdViewController = CreateUserIDViewController(viewModel: createUserIdViewModel)
+                output.nextButtonTap.accept(createUserIdViewController)
+            })
+            .disposed(by: disposeBag)
+        
+        return output
     }
-
-
-    func nextBtnTap() {
-        print("버튼 활성화 시 실행할 함수")
-    }
+    
     
 }

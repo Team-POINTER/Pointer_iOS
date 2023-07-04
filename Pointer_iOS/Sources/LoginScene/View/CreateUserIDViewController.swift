@@ -13,12 +13,21 @@ import RxCocoa
 class CreateUserIDViewController: BaseViewController {
 
     var disposeBag = DisposeBag()
-    lazy var userIdViewModel: CreateUserIDViewModel = { CreateUserIDViewModel() }()
+    let createUserIdViewModel: CreateUserIDViewModel
+    
+    init(viewModel: CreateUserIDViewModel, nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
+        self.createUserIdViewModel = viewModel
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //MARK: - RX
     func bindViewModel() {
         let input = CreateUserIDViewModel.Input(idTextFieldEditEvent: inputUserIDTextfeild.rx.text.orEmpty.asObservable(), idDoubleCheckButtonTapEvent: idDoubleCheckButton.rx.tap.asObservable(), nextButtonTapEvent: nextButton.rx.tap.asObservable())
-        let output = userIdViewModel.transform(input: input)
+        let output = createUserIdViewModel.transform(input: input)
         
         output.idTextFieldLimitedString
             .bind(to: self.inputUserIDTextfeild.rx.text)
