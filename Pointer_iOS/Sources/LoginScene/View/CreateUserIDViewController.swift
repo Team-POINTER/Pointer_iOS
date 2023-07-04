@@ -103,7 +103,6 @@ class CreateUserIDViewController: BaseViewController {
         $0.titleLabel?.textColor = UIColor.white
         $0.layer.cornerRadius = 16
         $0.setTitle("확인", for: .normal)
-        $0.isEnabled = false
         return $0
     }(UIButton())
     

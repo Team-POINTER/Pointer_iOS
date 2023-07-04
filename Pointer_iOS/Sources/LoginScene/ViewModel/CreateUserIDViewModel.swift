@@ -57,6 +57,32 @@ class CreateUserIDViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
         
+        input.idDoubleCheckButtonTapEvent
+            .withLatestFrom(output.idTextFieldLimitedString)
+            .subscribe { [weak self] text in
+                print("중복 확인 버튼 TAP - \(text)")
+                if let self = self {
+                    let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
+                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel in
+                        print(authIdResultModel.message)
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        input.nextButtonTapEvent
+            .withLatestFrom(output.idTextFieldLimitedString)
+            .subscribe { [weak self] text in
+                print("확인 버튼 TAP - \(text)")
+                if let self = self {
+                    let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
+                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel in
+                        print(authIdResultModel.message)
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
         return output
     }
     

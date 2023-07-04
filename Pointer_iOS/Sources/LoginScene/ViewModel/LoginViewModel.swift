@@ -46,6 +46,16 @@ class LoginViewModel: NSObject, ViewModelType {
                             self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
                         case .dataBaseError:
                             return
+                        case .doubleCheck:
+                            return
+                        case .duplicatedId:
+                            return
+                        case .saveId:
+                            return
+                        case .haveToCheckId:
+                            return
+                        case .notFoundId:
+                            return
                         }
                     }
                 } else {
@@ -58,6 +68,17 @@ class LoginViewModel: NSObject, ViewModelType {
                             self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
                         case .dataBaseError:
                             return
+                        case .doubleCheck:
+                            return
+                        case .duplicatedId:
+                            return
+                        case .saveId:
+                            return
+                        case .haveToCheckId:
+                            return
+                        case .notFoundId:
+                            return
+                        
                         }
                     }
                 }
@@ -121,7 +142,7 @@ class LoginViewModel: NSObject, ViewModelType {
                         print("Web으로 로그인 ")
                         
                         let kakaoData = AuthInputModel(accessToken: accessToken)
-                        LoginDataManager.posts(kakaoData) { model, loginResultType in
+                        LoginDataManager.shared.posts(kakaoData) { model, loginResultType in
                             completion(loginResultType, model)
                         }
                     }
@@ -153,7 +174,7 @@ class LoginViewModel: NSObject, ViewModelType {
                         print("App으로 로그인")
                         
                         let kakaoData = AuthInputModel(accessToken: accessToken)
-                        LoginDataManager.posts(kakaoData) { model, loginResultType in
+                        LoginDataManager.shared.posts(kakaoData) { model, loginResultType in
                             completion(loginResultType, model)
                         }
                     }
