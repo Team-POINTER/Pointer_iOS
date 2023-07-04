@@ -41,9 +41,13 @@ class CreateUserIDViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] b in
                 if b {
+                    self?.idDoubleCheckButton.isEnabled = true
+                    self?.idDoubleCheckButton.setTitleColor(UIColor.pointerRed, for: .normal)
                     self?.checkValueValidLabel.text = "중복 확인해주세요."
                     self?.checkValueValidLabel.textColor = UIColor.inactiveGray
                 } else {
+                    self?.idDoubleCheckButton.isEnabled = false
+                    self?.idDoubleCheckButton.setTitleColor(UIColor.inactiveGray, for: .normal)
                     self?.checkValueValidLabel.text = "형식에 어긋난 아이디입니다."
                     self?.checkValueValidLabel.textColor = UIColor.pointerRed
                 }
@@ -70,13 +74,12 @@ class CreateUserIDViewController: BaseViewController {
     
     let idDoubleCheckButton: UIButton = {
         $0.setTitle("중복확인", for: .normal)
-        $0.setTitleColor(UIColor.pointerRed, for: .normal)
+        $0.isEnabled = false
         $0.titleLabel?.font = UIFont.notoSansBold(size: 14)
         return $0
     }(UIButton())
     
     var checkValueValidLabel: UILabel = {
-        $0.text = "사용가능한 아이디입니다."
         $0.font = UIFont.notoSansRegular(size: 12)
         $0.textColor = UIColor.inactiveGray
         return $0
