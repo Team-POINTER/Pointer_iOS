@@ -59,28 +59,33 @@ class CreateUserIDViewModel: ViewModelType {
         
         input.idDoubleCheckButtonTapEvent
             .withLatestFrom(output.idTextFieldLimitedString)
-            .subscribe { [weak self] text in
+            .subscribe(onNext: { [weak self] text in
                 print("중복 확인 버튼 TAP - \(text)")
                 if let self = self {
                     let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
-                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel in
-                        print(authIdResultModel.message)
+                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel, loginResultType in
+                        if loginResultType == LoginResultType.doubleCheck {
+                            // 중복 확인 성공 시 버튼 Enable
+                            output.nextButtonValid.accept(true)
+                        }
                     }
                 }
-            }
+            })
             .disposed(by: disposeBag)
         
         input.nextButtonTapEvent
             .withLatestFrom(output.idTextFieldLimitedString)
-            .subscribe { [weak self] text in
-                print("확인 버튼 TAP - \(text)")
+            .subscribe(onNext: { [weak self] text in
+                print("중복 확인 버튼 TAP - \(text)")
                 if let self = self {
                     let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
-                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel in
-                        print(authIdResultModel.message)
+                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel, loginResultType in
+                        if loginResultType == LoginResultType.saveId {
+                            // MARK: [FIXME] saveId가 된 후 처리 내용  
+                        }
                     }
                 }
-            }
+            })
             .disposed(by: disposeBag)
         
         return output

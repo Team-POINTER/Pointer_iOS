@@ -51,8 +51,21 @@ class CreateUserIDViewController: BaseViewController {
                     self?.checkValueValidLabel.text = "형식에 어긋난 아이디입니다."
                     self?.checkValueValidLabel.textColor = UIColor.pointerRed
                 }
-            }).disposed(by: disposeBag)
-        
+            })
+            .disposed(by: disposeBag)
+     
+        output.nextButtonValid
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] b in
+                if b {
+                    self?.nextButton.isEnabled = true
+                    self?.nextButton.backgroundColor = UIColor.pointerRed
+                } else {
+                    self?.nextButton.isEnabled = false
+                    self?.nextButton.backgroundColor = UIColor.rgb(red: 87, green: 90, blue: 107)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     
@@ -101,7 +114,6 @@ class CreateUserIDViewController: BaseViewController {
     }(UILabel())
     
     var nextButton: UIButton = {
-        $0.backgroundColor = UIColor.rgb(red: 87, green: 90, blue: 107)
         $0.titleLabel?.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         $0.titleLabel?.textColor = UIColor.white
         $0.layer.cornerRadius = 16

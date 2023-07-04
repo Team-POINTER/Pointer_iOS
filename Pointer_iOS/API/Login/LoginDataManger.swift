@@ -68,7 +68,7 @@ struct LoginDataManager {
         }
     }
     
-    func idCheckPost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel) -> Void) {
+    func idCheckPost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         
         print("중복 확인 버튼 함수 시작")
         AF.request(Secret.checkIdURL, method: .post, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
@@ -79,13 +79,13 @@ struct LoginDataManager {
                 print(result)
                 switch(result.code){
                 case "C004":
-                    completion(result)
+                    completion(result, LoginResultType.doubleCheck)
                     return
                 case "A002":
-                    print("아이디 중복")
+                    completion(result, LoginResultType.duplicatedId)
                     return
                 case "C001":
-                    print("회원 정보 없음")
+                    completion(result, LoginResultType.notFoundId)
                     return
                 default:
                     print("데이터베이스 오류")
@@ -98,7 +98,7 @@ struct LoginDataManager {
         }
     }
     
-    func idSavePost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel) -> Void) {
+    func idSavePost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         print("확인 버튼 함수 시작")
         
         AF.request(Secret.saveIdURL, method: .post, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
@@ -109,13 +109,13 @@ struct LoginDataManager {
                 print(result)
                 switch(result.code){
                 case "C003":
-                    completion(result)
+                    completion(result, LoginResultType.saveId)
                     return
                 case "C005":
-                    print("아이디 중복 확인 실패")
+                    completion(result, LoginResultType.haveToCheckId)
                     return
                 case "C001":
-                    print("회원 정보 없음")
+                    completion(result, LoginResultType.notFoundId)
                     return
                 default:
                     print("데이터베이스 오류")
