@@ -26,7 +26,9 @@ class LoginViewController: BaseViewController {
         output.nextViewController
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                //MARK: [FIXME] .fullScreen present[X]
+                viewController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+                self?.present(UINavigationController(rootViewController: viewController), animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
