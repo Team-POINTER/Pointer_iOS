@@ -68,6 +68,20 @@ class CreateUserIDViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.nextButtonTap
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] viewController in
+                // 기존 스택 제거 후 BaseTapBarController present
+                if let navigationController = self?.navigationController {
+                    navigationController.setViewControllers([viewController], animated: false)
+                } else {
+                    let newNavigationController = viewController
+                    self?.present(newNavigationController, animated: true, completion: nil)
+                }
+                
+            })
+            .disposed(by: disposeBag)
     }
     
     

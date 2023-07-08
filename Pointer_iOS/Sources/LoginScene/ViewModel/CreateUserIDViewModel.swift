@@ -5,7 +5,7 @@
 //  Created by 박현준 on 2023/07/01.
 //
 
-import Foundation
+import UIKit
 import RxSwift
 import RxCocoa
 
@@ -32,6 +32,7 @@ class CreateUserIDViewModel: ViewModelType {
         var idTextFieldLimitedString = PublishRelay<String>()
         var idTextFieldValidString = BehaviorRelay<Bool>(value: false)
         var nextButtonValid = BehaviorRelay<Bool>(value: false)
+        var nextButtonTap = PublishRelay<UIViewController>()
     }
     
 //MARK: - Rxswift Transform
@@ -63,7 +64,7 @@ class CreateUserIDViewModel: ViewModelType {
                 print("중복 확인 버튼 TAP - \(text)")
                 if let self = self {
                     let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
-                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel, loginResultType in
+                    LoginDataManager.shared.idCheckPost(authIdInput) { authIdResultModel, loginResultType in
                         if loginResultType == LoginResultType.doubleCheck {
                             // 중복 확인 성공 시 버튼 Enable
                             output.nextButtonValid.accept(true)
@@ -81,7 +82,7 @@ class CreateUserIDViewModel: ViewModelType {
                     let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
                     LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel, loginResultType in
                         if loginResultType == LoginResultType.saveId {
-                            // MARK: [FIXME] saveId가 된 후 처리 내용  
+                            output.nextButtonTap.accept(BaseTabBarController())
                         }
                     }
                 }
