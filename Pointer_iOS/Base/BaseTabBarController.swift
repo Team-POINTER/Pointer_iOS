@@ -28,6 +28,7 @@ class BaseTabBarController: UITabBarController {
         
         // 두번째 탭
         let secondVC = LoginViewController()
+//        let secondVC = TermsViewController(viewModel: TermsViewModel(authResultModel: AuthResultModel(status: 200, code: "abc", message: "abc", userId: 705)))
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭

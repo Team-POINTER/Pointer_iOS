@@ -38,10 +38,10 @@ class LoginViewModel: NSObject, ViewModelType {
                     self?.loginWithApp() { loginResultType, model in
                         switch loginResultType {
                         case .success:
-                            self?.kakaoLoginView.accept(BaseTabBarController())
-                        case .existedUser:
                             let termsViewModel = TermsViewModel(authResultModel: model)
                             self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                        case .existedUser:
+                            self?.kakaoLoginView.accept(BaseTabBarController())
                         case .dataBaseError:
                             return
                         case .doubleCheck:
@@ -60,10 +60,10 @@ class LoginViewModel: NSObject, ViewModelType {
                     self?.loginWithWeb() { loginResultType, model in
                         switch loginResultType {
                         case .success:
-                            self?.kakaoLoginView.accept(BaseTabBarController())
-                        case .existedUser:
                             let termsViewModel = TermsViewModel(authResultModel: model)
                             self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                        case .existedUser:
+                            self?.kakaoLoginView.accept(BaseTabBarController())
                         case .dataBaseError:
                             return
                         case .doubleCheck:
@@ -76,7 +76,7 @@ class LoginViewModel: NSObject, ViewModelType {
                             return
                         case .notFoundId:
                             return
-                        
+                    
                         }
                     }
                 }
