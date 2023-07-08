@@ -15,13 +15,34 @@ class BaseTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tabBarSetting()
-        configureViewControllers()
+        configureAuth()
+    }
+    
+    //MARK: - Auth 상태에 따라 View 변경
+    private func configureAuth() {
+        // 유저 토큰이 존재하면
+        if AuthManager.getUserToken() != nil {
+            // ToDo - 액세스 토큰 유효 검사
+            configureViewControllers()
+        } else {
+            // 로그인 뷰 띄우기
+            presentAuthView()
+        }
+    }
+    
+    //MARK: - 로그인 뷰 띄우기
+    private func presentAuthView() {
+        // 유저 토큰이 존재하지 않다면
+        DispatchQueue.main.async { [weak self] in
+            let loginView = LoginViewController()
+            loginView.modalPresentationStyle = .fullScreen
+            self?.present(loginView, animated: true)
+        }
     }
     
     //MARK: - Function
     private func configureViewControllers() {
-        
+        tabBarSetting()
         // 첫번째 탭
         let firstVC = FriendsListViewController(type: .normal)
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)

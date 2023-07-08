@@ -9,6 +9,7 @@ import Alamofire
 import Foundation
 
 protocol HttpRouter {
+    var url: String { get }
     var baseUrlString: String { get }
     var path: String { get }
     var method: HTTPMethod { get }
