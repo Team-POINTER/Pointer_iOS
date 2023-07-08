@@ -58,6 +58,8 @@ class CreateUserIDViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] b in
                 if b {
+                    self?.checkValueValidLabel.text = "사용 가능한 ID 입니다."
+                    self?.checkValueValidLabel.textColor = UIColor.green
                     self?.nextButton.isEnabled = true
                     self?.nextButton.backgroundColor = UIColor.pointerRed
                 } else {
