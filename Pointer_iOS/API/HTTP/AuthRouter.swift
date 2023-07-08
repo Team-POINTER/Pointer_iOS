@@ -8,11 +8,17 @@
 import Foundation
 import Alamofire
 
-enum PointerHttpRouter {
+enum AuthRouter {
     case login
+    case checkId
+    case saveId
 }
 
-extension PointerHttpRouter: HttpRouter {
+extension AuthRouter: HttpRouter {
+    
+    var url: String {
+        return baseUrlString + path
+    }
  
     var baseUrlString: String {
         return Secret.baseURL
@@ -22,6 +28,10 @@ extension PointerHttpRouter: HttpRouter {
         switch self {
         case .login:
             return "/auth/login"
+        case .checkId:
+            return "/auth/checkId"
+        case .saveId:
+            return "/auth/id"
         }
     }
     
@@ -29,6 +39,10 @@ extension PointerHttpRouter: HttpRouter {
         switch self {
         case .login:
             return .get
+        case .checkId:
+            return .post
+        case .saveId:
+            return .post
         }
     }
     
