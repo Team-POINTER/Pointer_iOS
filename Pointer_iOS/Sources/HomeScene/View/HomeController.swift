@@ -52,6 +52,13 @@ class HomeController: BaseViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    @objc private func handleNotiLogoutTapped() {
+        TokenManager.resetUserToken()
+        guard let tabVc = tabBarController as? BaseTabBarController else { return }
+        tabVc.viewControllers = []
+        tabVc.configureAuth()
+    }
+    
     @objc private func something() {
         print(#function)
     }
@@ -110,8 +117,13 @@ class HomeController: BaseViewController {
 
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, handler: #selector(handleNotiButtonTapped))
         let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, handler: #selector(handleSearchButtonTapped))
+        
+        // (임시)로그아웃
+        let logoutImage = UIImage(systemName: "arrow.up.forward")
 
-        navigationItem.rightBarButtonItems = [notiButton, searchButton]
+        let logoutButton = UIBarButtonItem.getPointerBarButton(withIconimage: logoutImage, size: 45, target: self, handler: #selector(handleNotiLogoutTapped))
+
+        navigationItem.rightBarButtonItems = [notiButton, searchButton, logoutButton]
     }
 }
 

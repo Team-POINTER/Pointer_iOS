@@ -38,7 +38,7 @@ extension AuthRouter: HttpRouter {
     var method: HTTPMethod {
         switch self {
         case .login:
-            return .get
+            return .post
         case .checkId:
             return .post
         case .saveId:

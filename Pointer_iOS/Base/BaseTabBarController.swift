@@ -19,9 +19,10 @@ class BaseTabBarController: UITabBarController {
     }
     
     //MARK: - Auth 상태에 따라 View 변경
-    private func configureAuth() {
+    func configureAuth() {
+        print("🔥ConfigureAuth")
         // 유저 토큰이 존재하면
-        if AuthManager.getUserToken() != nil {
+        if TokenManager.getUserToken() != nil {
             // ToDo - 액세스 토큰 유효 검사
             configureViewControllers()
         } else {
@@ -48,16 +49,17 @@ class BaseTabBarController: UITabBarController {
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
-        let secondVC = LoginViewController()
+        let secondVC = HomeController()
 //        let secondVC = TermsViewController(viewModel: TermsViewModel(authResultModel: AuthResultModel(status: 200, code: "abc", message: "abc", userId: 705)))
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
-        let thirdVC = PreferenceController()
+        let thirdVC = ProfileViewController()
         let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup
         viewControllers = [nav1, nav2, nav3]
+        selectedIndex = 1
     }
     
     // 네비게이션 컨트롤러 만들기
