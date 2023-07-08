@@ -13,8 +13,17 @@ import RxCocoa
 class TermsViewController: BaseViewController {
 
     var disposeBag = DisposeBag()
-    var viewModel = TermsViewModel()
-
+    let viewModel: TermsViewModel
+    
+    init(viewModel: TermsViewModel, nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
+        self.viewModel = viewModel
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 //MARK: - RX
     func bindViewModel() {
         let input = TermsViewModel.Input(allAllowTapEvent: checkBoxAll.rx.tap.asObservable(), overAgeAllowTapEvent: checkBox1.rx.tap.asObservable(), serviceAllowTapEvent: checkBox2.rx.tap.asObservable(), privateInfoAllowTapEvent: checkBox3.rx.tap.asObservable(), marketingInfoAllowTapEvent: checkBox4.rx.tap.asObservable(), nextButtonTapEvent: nextButton.rx.tap.asObservable())
@@ -34,8 +43,8 @@ class TermsViewController: BaseViewController {
         
         output.allAllowButtonValid
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                if self?.checkBoxAll.isSelected == true {
+            .subscribe(onNext: { [weak self] b in
+                if b {
                     self?.checkBox1.isSelected = true
                     self?.checkBox2.isSelected = true
                     self?.checkBox3.isSelected = true
@@ -123,8 +132,8 @@ class TermsViewController: BaseViewController {
         
         output.nextButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                
+            .subscribe(onNext: { [weak self] viewController in
+                self?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -132,6 +141,7 @@ class TermsViewController: BaseViewController {
 //MARK: - UIComponents
     private let serviceLabel: UILabel = {
         $0.text = "서비스 이용동의"
+        $0.textColor = .white
         $0.font = UIFont.notoSansBold(size: 20)
         return $0
     }(UILabel())
@@ -144,6 +154,7 @@ class TermsViewController: BaseViewController {
     
     private let TermAllLabel: UILabel = {
         $0.text = "약관 전체동의"
+        $0.textColor = .white
         $0.font = UIFont.notoSansBold(size: 16)
         return $0
     }(UILabel())
@@ -156,6 +167,7 @@ class TermsViewController: BaseViewController {
     
     private let Label1: UILabel = {
         $0.text = "만 14세 이상입니다."
+        $0.textColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         return $0
     }(UILabel())
@@ -169,6 +181,7 @@ class TermsViewController: BaseViewController {
     
     private let Label2: UILabel = {
         $0.text = "(필수) 서비스 이용 약관"
+        $0.textColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         return $0
     }(UILabel())
@@ -187,6 +200,7 @@ class TermsViewController: BaseViewController {
     
     private let Label3: UILabel = {
         $0.text = "(필수) 개인정보 처리방침"
+        $0.textColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         return $0
     }(UILabel())
@@ -205,6 +219,7 @@ class TermsViewController: BaseViewController {
     
     private let Label4: UILabel = {
         $0.text = "(선택) 마케팅 정보 수신동의"
+        $0.textColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         return $0
     }(UILabel())

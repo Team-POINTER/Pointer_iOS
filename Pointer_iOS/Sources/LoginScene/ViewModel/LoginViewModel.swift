@@ -15,59 +15,84 @@ import RxCocoa
 
 class LoginViewModel: NSObject, ViewModelType {
     
+//MARK: - Properties
     var disposeBag = DisposeBag()
-    var appleLoginUser = PublishRelay<AppleUser>()
     var kakaoLoginView = PublishRelay<UIViewController>()
     
+//MARK: - In/Out
     struct Input {
         let kakaoLoginTap: Observable<Void>
         let appleLoginTap: Observable<Void>
     }
     
     struct Output {
-        var kakaoLogin = PublishRelay<UIViewController>()
-        var appleLogin = PublishRelay<AppleUser>()
+        var nextViewController = PublishRelay<UIViewController>()
     }
-    
+//MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         let output = Output()
         
         input.kakaoLoginTap
             .subscribe(onNext: { [weak self] in
                 if (UserApi.isKakaoTalkLoginAvailable()) {
-                    self?.loginWithApp() { LoginResultTypeMessage in
-                        if LoginResultTypeMessage == "존재하는 유저" {
-                            self?.kakaoLoginView.accept(TermsViewController())
-                        } else {
+                    self?.loginWithApp() { loginResultType, model in
+                        switch loginResultType {
+                        case .success:
                             self?.kakaoLoginView.accept(BaseTabBarController())
+                        case .existedUser:
+                            let termsViewModel = TermsViewModel(authResultModel: model)
+                            self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                        case .dataBaseError:
+                            return
+                        case .doubleCheck:
+                            return
+                        case .duplicatedId:
+                            return
+                        case .saveId:
+                            return
+                        case .haveToCheckId:
+                            return
+                        case .notFoundId:
+                            return
                         }
                     }
                 } else {
-                    self?.loginWithWeb() { LoginResultTypeMessage in
-                        if LoginResultTypeMessage == "존재하는 유저" {
-                            self?.kakaoLoginView.accept(TermsViewController())
-                        } else {
+                    self?.loginWithWeb() { loginResultType, model in
+                        switch loginResultType {
+                        case .success:
                             self?.kakaoLoginView.accept(BaseTabBarController())
+                        case .existedUser:
+                            let termsViewModel = TermsViewModel(authResultModel: model)
+                            self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                        case .dataBaseError:
+                            return
+                        case .doubleCheck:
+                            return
+                        case .duplicatedId:
+                            return
+                        case .saveId:
+                            return
+                        case .haveToCheckId:
+                            return
+                        case .notFoundId:
+                            return
+                        
                         }
                     }
                 }
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
         kakaoLoginView
-            .subscribe(onNext: { [weak self] viewController in
-                output.kakaoLogin.accept(viewController)
+            .subscribe(onNext: { viewController in
+                output.nextViewController.accept(viewController)
             })
+            .disposed(by: disposeBag)
         
         
         input.appleLoginTap
             .subscribe(onNext: { [weak self] in
                 self?.appleLoginTaped()
-            })
-            .disposed(by: disposeBag)
-        
-        appleLoginUser
-            .subscribe(onNext: { [weak self] user in
-                output.appleLogin.accept(user)
             })
             .disposed(by: disposeBag)
         
@@ -82,90 +107,33 @@ class LoginViewModel: NSObject, ViewModelType {
         
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
-//        controller.presentationContextProvider = self
+        controller.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
         controller.performRequests()
-        
         
     }
     
 //MARK: - KAKAO
     
-    func loginWithWeb(completion: @escaping (String) -> Void) {
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("loginWithKakaoAccount() success.")
-                    
-                    // 유저 정보
-                    UserApi.shared.me() {(user, error) in
-                        if let error = error {
-                            print(error)
-                        }
-                        else {
-                            print("user.kakaoAccout = \(String(describing: user?.kakaoAccount))")
-                            
-                            // Token & User
-                            guard let accessToken = oauthToken?.accessToken else { return }
-                            guard let refreshToken = oauthToken?.refreshToken else {return}
-                            guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
-                            print("access Token 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
-                            print("refresh Token 정보입니다 @@@@@@@@@@@@@@\(String(describing: refreshToken))")
-                            print("Web으로 로그인")
-                            print("userNickname = \(String(describing: userNickname))")
-                            
-                            let kakaoData = KakaoInput(accessToken: accessToken)
-                            LoginDataManager.posts(kakaoData) { model, loginResultType in
-                                let accessToken = model.accessToken
-                                _ = TermsViewModel(loginAccessToken: accessToken)
-                                if loginResultType == .success {
-                                    completion(loginResultType.message)
-                                } else {
-                                    completion(loginResultType.message)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-    }
-    
-    
-    func loginWithApp(completion: @escaping (String) -> Void) {
-        
-        UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+    func loginWithWeb(completion: @escaping (LoginResultType, AuthResultModel) -> Void) {
+        UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
             if let error = error {
                 print(error)
-            }
-            else {
-                print("loginWithKakaoTalk() success.")
-                
+            } else {
                 // 유저 정보
                 UserApi.shared.me() {(user, error) in
                     if let error = error {
                         print(error)
                     }
                     else {
-                        print("user.kakaoAccout = \(String(describing: user?.kakaoAccount))")
-                        
                         // Token & User
                         guard let accessToken = oauthToken?.accessToken else { return }
                         guard let refreshToken = oauthToken?.refreshToken else {return}
                         guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
-                        print("access Token 정보입니다 !!!!!!!!!\(String(describing: accessToken))")
-                        print("refresh Token 정보입니다 @@@@@@@@@@@@@@\(String(describing: refreshToken))")
-                        print("Web으로 로그인")
-                        print("userNickname = \(String(describing: userNickname))")
+                        print("Web으로 로그인 ")
                         
-                        let kakaoData = KakaoInput(accessToken: accessToken)
-                        LoginDataManager.posts(kakaoData) { model, loginResultType in
-                            let accessToken = model.accessToken
-                            _ = TermsViewModel(loginAccessToken: accessToken)
-                            if loginResultType == .success {
-                                completion(loginResultType.message)
-                            } else {
-                                completion(loginResultType.message)
-                            }
+                        let kakaoToken = AuthInputModel(accessToken: accessToken)
+                        LoginDataManager.shared.posts(kakaoToken) { model, loginResultType in
+                            completion(loginResultType, model)
                         }
                     }
                 }
@@ -173,6 +141,35 @@ class LoginViewModel: NSObject, ViewModelType {
         }
     }
     
+    
+    func loginWithApp(completion: @escaping (LoginResultType, AuthResultModel) -> Void) {
+        
+        UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+            if let error = error {
+                print(error)
+            }
+            else {
+                // 유저 정보
+                UserApi.shared.me() {(user, error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    else {
+                        // Token & User
+                        guard let accessToken = oauthToken?.accessToken else { return }
+                        guard let refreshToken = oauthToken?.refreshToken else {return}
+                        guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
+                        print("App으로 로그인")
+                        
+                        let kakaoToken = AuthInputModel(accessToken: accessToken)
+                        LoginDataManager.shared.posts(kakaoToken) { model, loginResultType in
+                            completion(loginResultType, model)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -187,37 +184,31 @@ class LoginViewModel: NSObject, ViewModelType {
 //        }
 //    }
 
-
+//MARK: - Apple
 extension LoginViewModel: ASAuthorizationControllerDelegate {
     // 애플 로그인 성공
-        func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                let userIdentifier = appleIDCredential.user
-                let familyName = appleIDCredential.fullName?.familyName
-                let givenName = appleIDCredential.fullName?.givenName
-                let email = appleIDCredential.email
-                let state = appleIDCredential.state
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user // uuid
+            let familyName = appleIDCredential.fullName?.familyName
+            let givenName = appleIDCredential.fullName?.givenName
+            let email = appleIDCredential.email
+            
+            if let token = appleIDCredential.identityToken, // JWT token
+               let tokenString = String(data: token, encoding: .utf8) {
                 
-                let user = AppleUser(
-                    userIdentifier: userIdentifier,
-                    familyName: familyName,
-                    givenName: givenName,
-                    email: email
-                )
-                
-                self.appleLoginUser.accept(user)
+                let appleToken = AuthInputModel(accessToken: tokenString)
+                LoginDataManager.shared.posts(appleToken) { model, loginResultType in
+                    let termsViewModel = TermsViewModel(authResultModel: model)
+                    self.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                }
             }
         }
-        
-        // 애플 로그인 실패
-        func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-            print("Apple Sign In Error: \(error.localizedDescription)")
-        }
+    }
+    
+    // 애플 로그인 실패
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("Apple Sign In Error: \(error.localizedDescription)")
+    }
 }
 
-//extension LoginViewModel: ASAuthorizationControllerPresentationContextProviding {
-//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-//        <#code#>
-//    }
-//
-//}

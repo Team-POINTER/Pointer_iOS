@@ -8,5 +8,5 @@
 import RxSwift
 
 protocol RoomAPI {
-    func fetchRooms() -> Single<KakaoModel>
+//    func fetchRooms() -> Single<KakaoModel>
 }

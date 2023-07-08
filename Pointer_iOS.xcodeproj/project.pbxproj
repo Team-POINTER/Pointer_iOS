@@ -21,7 +21,6 @@
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
 		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
 		47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47194E7C29D94DA900671360 /* NewQuestViewController.swift */; };
-		471FCFDD2A2268B40061CF44 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471FCFDC2A2268B40061CF44 /* Secret.swift */; };
 		473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739329CEDC0F00B33C77 /* MyResultViewController.swift */; };
 		473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */; };
 		473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */; };
@@ -51,7 +50,9 @@
 		47CC895E2A4684390020246E /* PointerHttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895D2A4684390020246E /* PointerHttpService.swift */; };
 		47CC89602A46844F0020246E /* PointerHttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* PointerHttpRouter.swift */; };
 		47CC89622A46BF110020246E /* RoomAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89612A46BF110020246E /* RoomAPI.swift */; };
-		47CC896A2A4EDD0B0020246E /* AppleUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89692A4EDD0B0020246E /* AppleUser.swift */; };
+		47CC896F2A4EF51D0020246E /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC896E2A4EF51D0020246E /* Secret.swift */; };
+		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
+		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
 		CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */; };
 		CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */; };
 		CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */; };
@@ -121,7 +122,6 @@
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		47194E7C29D94DA900671360 /* NewQuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestViewController.swift; sourceTree = "<group>"; };
-		471FCFDC2A2268B40061CF44 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		473B739329CEDC0F00B33C77 /* MyResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewController.swift; sourceTree = "<group>"; };
 		473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultTableViewCell.swift; sourceTree = "<group>"; };
 		473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewModel.swift; sourceTree = "<group>"; };
@@ -152,7 +152,9 @@
 		47CC895F2A46844F0020246E /* PointerHttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerHttpRouter.swift; sourceTree = "<group>"; };
 		47CC89612A46BF110020246E /* RoomAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAPI.swift; sourceTree = "<group>"; };
 		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
-		47CC89692A4EDD0B0020246E /* AppleUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleUser.swift; sourceTree = "<group>"; };
+		47CC896E2A4EF51D0020246E /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
+		47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewModel.swift; sourceTree = "<group>"; };
 		CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 			children = (
 				47117CE329CD92C9001707C8 /* LoginViewController.swift */,
 				473B73A229D029A200B33C77 /* TermsViewController.swift */,
+				47CC89702A5015E10020246E /* CreateUserIDViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 			children = (
 				47117CE529CD92D5001707C8 /* LoginViewModel.swift */,
 				473B73A729D18A1700B33C77 /* TermsViewModel.swift */,
+				47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -404,7 +408,6 @@
 		47CC89682A4EDCFC0020246E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				47CC89692A4EDD0B0020246E /* AppleUser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -576,7 +579,7 @@
 		CD23208E29B8CFC8003D0B84 /* Secret */ = {
 			isa = PBXGroup;
 			children = (
-				471FCFDC2A2268B40061CF44 /* Secret.swift */,
+				47CC896E2A4EF51D0020246E /* Secret.swift */,
 			);
 			path = Secret;
 			sourceTree = "<group>";
@@ -894,7 +897,6 @@
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,
 				CD5BCC5D29F53B8500DD44F7 /* PreferenceViewModel.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
-				471FCFDD2A2268B40061CF44 /* Secret.swift in Sources */,
 				47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */,
@@ -902,11 +904,13 @@
 				473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,
 				473B739A29CEE41100B33C77 /* ViewModelType.swift in Sources */,
+				47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
 				47CC89622A46BF110020246E /* RoomAPI.swift in Sources */,
 				CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */,
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
+				47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */,
 				CD5BCC5F29F5423700DD44F7 /* PreferenceItemCell.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
@@ -920,7 +924,6 @@
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
-				47CC896A2A4EDD0B0020246E /* AppleUser.swift in Sources */,
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
@@ -947,6 +950,7 @@
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
 				47CC895E2A4684390020246E /* PointerHttpService.swift in Sources */,
+				47CC896F2A4EF51D0020246E /* Secret.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
 				473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */,
@@ -1096,9 +1100,13 @@
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F6SZ5LV55B;
+				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 및 동영상 첨부를 위한 앨범 사용 권한";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1109,7 +1117,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Pointer.Pointer-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1125,9 +1133,13 @@
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F6SZ5LV55B;
+				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 및 동영상 첨부를 위한 앨범 사용 권한";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1138,7 +1150,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Pointer.Pointer-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
