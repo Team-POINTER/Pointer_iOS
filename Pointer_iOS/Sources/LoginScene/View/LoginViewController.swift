@@ -24,11 +24,14 @@ class LoginViewController: BaseViewController {
         let output = loginViewModel.transform(input: input)
         
         output.nextViewController
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] viewController in
-                //MARK: [FIXME] .fullScreen present[X]
-                viewController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-                self?.present(UINavigationController(rootViewController: viewController), animated: true, completion: nil)
+            .bind(onNext: { [weak self] vc in
+                guard let self = self,
+                      let parentVc = self.presentingViewController else { return }
+                self.dismiss(animated: false) {
+                    let nav = UINavigationController(rootViewController: vc)
+                    nav.modalPresentationStyle = .fullScreen
+                    parentVc.present(nav, animated: true, completion: nil)
+                }
             })
             .disposed(by: disposeBag)
     }

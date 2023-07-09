@@ -16,13 +16,13 @@ enum LoginResultType: String, CaseIterable {
     case saveId = "C003"
     case haveToCheckId = "C005"
     case notFoundId = "C001"
-    case dataBaseError
+    case unknownedError
     
     var message: String {
         switch self {
         case .success: return "회원가입 완료"
         case .existedUser: return "존재하는 유저"
-        case .dataBaseError: return "데이터 베이스 에러"
+        case .unknownedError: return "알 수 없는 에러"
         case .doubleCheck: return "아이디 사용 가능"
         case .duplicatedId: return "중복된 아이디"
         case .saveId: return "ID 저장 성공"
@@ -33,33 +33,27 @@ enum LoginResultType: String, CaseIterable {
 }
                             
 
-struct LoginDataManager {
+struct AuthNetworkManager {
     
-    static let shared = LoginDataManager()
+    static let shared = AuthNetworkManager()
     
     let Headers : HTTPHeaders = ["Content-Type" : "application/json"]
     
     func posts(_ parameter: AuthInputModel,_ completion: @escaping (AuthResultModel, LoginResultType) -> Void){
-        print("Login URL = \(Secret.loginURL)")
+        print("Login URL = \(AuthRouter.login.url)")
         
-        AF.request(Secret.loginURL, method: .post, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
+        AF.request(AuthRouter.login.url, method: AuthRouter.login.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
+                // 성공인 경우
             case .success(let result):
                 print("카카오 데이터 전송 성공")
-                print(result)
-                switch(result.code){
-                case "A000":
-                    completion(result, LoginResultType.success)
-                    return
-                case "A001":
-                    completion(result, LoginResultType.existedUser)
-                    return
-                default:
-                    print("데이터베이스 오류")
-                    return
-                }
+                // rawValue로 resultType 생성
+                let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
+                // completion 전송
+                completion(result, loginResultType)
+                // 실패인 경우
             case .failure(let error):
                 print("카카오 데이터 전송 실패")
                 print(error.localizedDescription)
@@ -71,26 +65,16 @@ struct LoginDataManager {
     func idCheckPost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         
         print("중복 확인 버튼 함수 시작")
-        AF.request(Secret.checkIdURL, method: .post, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
+        AF.request(AuthRouter.checkId.url, method: AuthRouter.checkId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthIdResultModel.self) { response in
             switch response.result {
             case .success(let result):
                 print(result)
-                switch(result.code){
-                case "C004":
-                    completion(result, LoginResultType.doubleCheck)
-                    return
-                case "A002":
-                    completion(result, LoginResultType.duplicatedId)
-                    return
-                case "C001":
-                    completion(result, LoginResultType.notFoundId)
-                    return
-                default:
-                    print("데이터베이스 오류")
-                    return
-                }
+                // rawValue로 resultType 생성
+                let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
+                // 핸들러로 전송
+                completion(result, loginResultType)
             case .failure(let error):
                 print(error.localizedDescription)
                 print(response.error ?? "")
@@ -101,26 +85,14 @@ struct LoginDataManager {
     func idSavePost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         print("확인 버튼 함수 시작")
         
-        AF.request(Secret.saveIdURL, method: .post, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
+        AF.request(AuthRouter.saveId.url, method: AuthRouter.saveId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthIdResultModel.self) { response in
             switch response.result {
             case .success(let result):
-                print(result)
-                switch(result.code){
-                case "C003":
-                    completion(result, LoginResultType.saveId)
-                    return
-                case "C005":
-                    completion(result, LoginResultType.haveToCheckId)
-                    return
-                case "C001":
-                    completion(result, LoginResultType.notFoundId)
-                    return
-                default:
-                    print("데이터베이스 오류")
-                    return
-                }
+                // rawValue로 resultType 생성
+                let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
+                completion(result, loginResultType)
             case .failure(let error):
                 print(error.localizedDescription)
                 print(response.error ?? "")

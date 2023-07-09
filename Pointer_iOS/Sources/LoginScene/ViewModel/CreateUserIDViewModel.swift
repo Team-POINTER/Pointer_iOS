@@ -64,7 +64,7 @@ class CreateUserIDViewModel: ViewModelType {
                 print("중복 확인 버튼 TAP - \(text)")
                 if let self = self {
                     let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
-                    LoginDataManager.shared.idCheckPost(authIdInput) { authIdResultModel, loginResultType in
+                    AuthNetworkManager.shared.idCheckPost(authIdInput) { authIdResultModel, loginResultType in
                         if loginResultType == LoginResultType.doubleCheck {
                             // 중복 확인 성공 시 버튼 Enable
                             output.nextButtonValid.accept(true)
@@ -80,8 +80,11 @@ class CreateUserIDViewModel: ViewModelType {
                 print("중복 확인 버튼 TAP - \(text)")
                 if let self = self {
                     let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
-                    LoginDataManager.shared.idSavePost(authIdInput) { authIdResultModel, loginResultType in
+                    AuthNetworkManager.shared.idSavePost(authIdInput) { authIdResultModel, loginResultType in
                         if loginResultType == LoginResultType.saveId {
+                            // ToDo - 추후 토큰으로 교체요
+                            guard let userID = authIdResultModel.userId else { return }
+                            self.saveTokenInDevice(string: String(userID))
                             output.nextButtonTap.accept(BaseTabBarController())
                         }
                     }
@@ -93,6 +96,11 @@ class CreateUserIDViewModel: ViewModelType {
     }
     
 //MARK: - Helper Function
+    func saveTokenInDevice(string: String?) {
+        if let token = string {
+            TokenManager.saveUserToken(token: token)
+        }
+    }
     
     // idTextField 글자 수 제한 함수
     func hintTextFieldLimitedString(text: String) -> String {

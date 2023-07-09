@@ -34,52 +34,18 @@ class LoginViewModel: NSObject, ViewModelType {
         
         input.kakaoLoginTap
             .subscribe(onNext: { [weak self] in
-                if (UserApi.isKakaoTalkLoginAvailable()) {
-                    self?.loginWithApp() { loginResultType, model in
-                        switch loginResultType {
-                        case .success:
-                            let termsViewModel = TermsViewModel(authResultModel: model)
-                            self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
-                        case .existedUser:
-                            self?.kakaoLoginView.accept(BaseTabBarController())
-                        case .dataBaseError:
-                            return
-                        case .doubleCheck:
-                            return
-                        case .duplicatedId:
-                            return
-                        case .saveId:
-                            return
-                        case .haveToCheckId:
-                            return
-                        case .notFoundId:
-                            return
-                        }
+                self?.requestKakaoLogin(completion: { loginResultType, model in
+                    switch loginResultType {
+                    case .success:
+                        let termsViewModel = TermsViewModel(authResultModel: model)
+                        self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                    case .existedUser:
+                        self?.kakaoLoginView.accept(BaseTabBarController())
+                    default:
+                        print(loginResultType.message)
+                        return
                     }
-                } else {
-                    self?.loginWithWeb() { loginResultType, model in
-                        switch loginResultType {
-                        case .success:
-                            let termsViewModel = TermsViewModel(authResultModel: model)
-                            self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
-                        case .existedUser:
-                            self?.kakaoLoginView.accept(BaseTabBarController())
-                        case .dataBaseError:
-                            return
-                        case .doubleCheck:
-                            return
-                        case .duplicatedId:
-                            return
-                        case .saveId:
-                            return
-                        case .haveToCheckId:
-                            return
-                        case .notFoundId:
-                            return
-                    
-                        }
-                    }
-                }
+                })
             })
             .disposed(by: disposeBag)
         
@@ -88,7 +54,6 @@ class LoginViewModel: NSObject, ViewModelType {
                 output.nextViewController.accept(viewController)
             })
             .disposed(by: disposeBag)
-        
         
         input.appleLoginTap
             .subscribe(onNext: { [weak self] in
@@ -113,62 +78,77 @@ class LoginViewModel: NSObject, ViewModelType {
     }
     
 //MARK: - KAKAO
+    func requestKakaoLogin(completion: @escaping (LoginResultType, AuthResultModel) -> Void) {
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            loginWithApp(completion: completion)
+        } else {
+            loginWithWeb(completion: completion)
+        }
+    }
     
     func loginWithWeb(completion: @escaping (LoginResultType, AuthResultModel) -> Void) {
+        
         UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+            // Validation
             if let error = error {
                 print(error)
-            } else {
-                // 유저 정보
-                UserApi.shared.me() {(user, error) in
-                    if let error = error {
-                        print(error)
-                    }
-                    else {
-                        // Token & User
-                        guard let accessToken = oauthToken?.accessToken else { return }
-                        guard let refreshToken = oauthToken?.refreshToken else {return}
-                        guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
-                        print("Web으로 로그인 ")
-                        
-                        let kakaoToken = AuthInputModel(accessToken: accessToken)
-                        LoginDataManager.shared.posts(kakaoToken) { model, loginResultType in
-                            completion(loginResultType, model)
-                        }
-                    }
+                return
+            }
+            
+            // 유저 정보
+            UserApi.shared.me() { [weak self] (user, error) in
+                // Validation
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
+                // 받은 정보로 카카오 토큰 생성
+                guard let kakaoToken = self?.generateKakaoAuthModel(oauthToken: oauthToken, user: user) else { return }
+                
+                
+                AuthNetworkManager.shared.posts(kakaoToken) { model, loginResultType in
+                    completion(loginResultType, model)
                 }
             }
         }
     }
     
-    
     func loginWithApp(completion: @escaping (LoginResultType, AuthResultModel) -> Void) {
         
         UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+            // Validation
             if let error = error {
                 print(error)
+                return
             }
-            else {
-                // 유저 정보
-                UserApi.shared.me() {(user, error) in
-                    if let error = error {
-                        print(error)
-                    }
-                    else {
-                        // Token & User
-                        guard let accessToken = oauthToken?.accessToken else { return }
-                        guard let refreshToken = oauthToken?.refreshToken else {return}
-                        guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return }
-                        print("App으로 로그인")
-                        
-                        let kakaoToken = AuthInputModel(accessToken: accessToken)
-                        LoginDataManager.shared.posts(kakaoToken) { model, loginResultType in
-                            completion(loginResultType, model)
-                        }
-                    }
+            
+            // 유저 정보
+            UserApi.shared.me() { [weak self] (user, error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
+                // 받은 정보로 카카오 토큰 생성
+                guard let kakaoToken = self?.generateKakaoAuthModel(oauthToken: oauthToken, user: user) else { return }
+                
+                
+                AuthNetworkManager.shared.posts(kakaoToken) { model, loginResultType in
+                    completion(loginResultType, model)
                 }
             }
         }
+    }
+    
+    func generateKakaoAuthModel(oauthToken: OAuthToken?, user: KakaoSDKUser.User?) -> AuthInputModel? {
+        // Token & User
+        guard let accessToken = oauthToken?.accessToken else { return nil }
+        guard let refreshToken = oauthToken?.refreshToken else { return nil }
+        guard let userNickname = user?.kakaoAccount?.profile?.nickname else { return nil }
+        
+        let kakaoToken = AuthInputModel(accessToken: accessToken)
+        return kakaoToken
     }
 }
 
@@ -198,7 +178,7 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                let tokenString = String(data: token, encoding: .utf8) {
                 
                 let appleToken = AuthInputModel(accessToken: tokenString)
-                LoginDataManager.shared.posts(appleToken) { model, loginResultType in
+                AuthNetworkManager.shared.posts(appleToken) { model, loginResultType in
                     let termsViewModel = TermsViewModel(authResultModel: model)
                     self.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
                 }

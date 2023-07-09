@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AuthManager {
+struct TokenManager {
     
     // 디바이스에 저장한 토큰을 받아오기
     static func getUserToken() -> String? {
@@ -17,5 +17,9 @@ struct AuthManager {
     // 디바이스에 토큰 저장하기
     static func saveUserToken(token: String) {
         UserDefaults.standard.set(token, forKey: "token")
+    }
+    
+    static func resetUserToken() {
+        UserDefaults.standard.removeObject(forKey: "token")
     }
 }

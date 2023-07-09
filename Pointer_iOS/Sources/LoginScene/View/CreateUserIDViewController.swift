@@ -71,15 +71,13 @@ class CreateUserIDViewController: BaseViewController {
         
         output.nextButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] viewController in
-                // 기존 스택 제거 후 BaseTapBarController present
-                if let navigationController = self?.navigationController {
-                    navigationController.setViewControllers([viewController], animated: false)
-                } else {
-                    let newNavigationController = viewController
-                    self?.present(newNavigationController, animated: true, completion: nil)
-                }
+            .subscribe(onNext: { [weak self] _ in
                 
+                guard let self = self,
+                      let tabBarVc = presentingViewController as? BaseTabBarController else { return }
+                self.dismiss(animated: true) {
+                    tabBarVc.configureAuth()
+                }
             })
             .disposed(by: disposeBag)
     }
