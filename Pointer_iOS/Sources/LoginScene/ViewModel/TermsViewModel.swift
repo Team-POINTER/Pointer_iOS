@@ -30,12 +30,10 @@ class TermsViewModel: ViewModelType {
     
     struct Output {
         var allAllow = BehaviorRelay<Bool>(value: false)
-        var allAllowButtonValid = BehaviorRelay<Bool>(value: false)
         var overAgeAllow = BehaviorRelay<Bool>(value: false)
         var serviceAllow = BehaviorRelay<Bool>(value: false)
         var privateInfoAllow = BehaviorRelay<Bool>(value: false)
         var marketingInfoAllow = BehaviorRelay<Bool>(value: false)
-        var exceptAllAllowValid = BehaviorRelay<Bool>(value: false)
         var nextButtonValid = BehaviorRelay<Bool>(value: false)
         var nextButtonTap = PublishRelay<UIViewController>()
 
@@ -76,15 +74,10 @@ class TermsViewModel: ViewModelType {
         
         output.allAllow
             .subscribe(onNext: { b in
-                output.allAllowButtonValid.accept(b)
-            })
-            .disposed(by: disposeBag)
-        
-        
-            
-        
-        Observable.combineLatest(output.overAgeAllow, output.serviceAllow, output.privateInfoAllow, output.marketingInfoAllow, resultSelector: { $0 && $1 && $2 && $3})
-            .subscribe(onNext: { b in
+                output.marketingInfoAllow.accept(b)
+                output.overAgeAllow.accept(b)
+                output.privateInfoAllow.accept(b)
+                output.serviceAllow.accept(b)
                 output.nextButtonValid.accept(b)
             })
             .disposed(by: disposeBag)
