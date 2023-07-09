@@ -17,7 +17,7 @@ class LoginViewModel: NSObject, ViewModelType {
     
 //MARK: - Properties
     var disposeBag = DisposeBag()
-    var kakaoLoginView = PublishRelay<UIViewController>()
+    var loginView = PublishRelay<UIViewController>()
     
 //MARK: - In/Out
     struct Input {
@@ -38,9 +38,9 @@ class LoginViewModel: NSObject, ViewModelType {
                     switch loginResultType {
                     case .success:
                         let termsViewModel = TermsViewModel(authResultModel: model)
-                        self?.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                        self?.loginView.accept(TermsViewController(viewModel: termsViewModel))
                     case .existedUser:
-                        self?.kakaoLoginView.accept(BaseTabBarController())
+                        self?.loginView.accept(BaseTabBarController())
                     default:
                         print(loginResultType.message)
                         return
@@ -49,7 +49,7 @@ class LoginViewModel: NSObject, ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        kakaoLoginView
+        loginView
             .subscribe(onNext: { viewController in
                 output.nextViewController.accept(viewController)
             })
@@ -180,7 +180,7 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                 let appleToken = AuthInputModel(accessToken: tokenString)
                 AuthNetworkManager.shared.posts(appleToken) { model, loginResultType in
                     let termsViewModel = TermsViewModel(authResultModel: model)
-                    self.kakaoLoginView.accept(TermsViewController(viewModel: termsViewModel))
+                    self.loginView.accept(TermsViewController(viewModel: termsViewModel))
                 }
             }
         }

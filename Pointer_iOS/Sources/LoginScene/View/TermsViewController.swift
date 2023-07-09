@@ -41,38 +41,6 @@ class TermsViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output.allAllowButtonValid
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] b in
-                if b {
-                    self?.checkBox1.isSelected = true
-                    self?.checkBox2.isSelected = true
-                    self?.checkBox3.isSelected = true
-                    self?.checkBox4.isSelected = true
-                    self?.nextButton.isEnabled = true
-                    self?.nextButton.backgroundColor = UIColor.pointerRed
-                } else {
-                    self?.checkBox1.isSelected = false
-                    self?.checkBox2.isSelected = false
-                    self?.checkBox3.isSelected = false
-                    self?.checkBox4.isSelected = false
-                    self?.nextButton.isEnabled = false
-                    self?.nextButton.backgroundColor = UIColor.rgb(red: 87, green: 90, blue: 107)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.exceptAllAllowValid
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] b in
-                if b {
-                    self?.checkBoxAll.isSelected = b
-                } else {
-                    self?.checkBoxAll.isSelected = b
-                }
-            })
-            .disposed(by: disposeBag)
-        
         output.overAgeAllow
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] b in
@@ -121,10 +89,10 @@ class TermsViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] b in
                 if b {
-                    self?.nextButton.isEnabled = true
+                    self?.nextButton.isEnabled = b
                     self?.nextButton.backgroundColor = UIColor.pointerRed
                 } else {
-                    self?.nextButton.isEnabled = false
+                    self?.nextButton.isEnabled = b
                     self?.nextButton.backgroundColor = UIColor.rgb(red: 87, green: 90, blue: 107)
                 }
             })
