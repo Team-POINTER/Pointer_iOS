@@ -30,11 +30,11 @@ class CreateUserIDViewController: BaseViewController {
         let output = createUserIdViewModel.transform(input: input)
         
         output.idTextFieldLimitedString
-            .bind(to: self.inputUserIDTextfeild.rx.text)
+            .bind(to: inputUserIDTextfeild.rx.text)
             .disposed(by: disposeBag)
         
         output.idTextFieldCountString
-            .bind(to: self.checkCountValidLabel.rx.text)
+            .bind(to: checkCountValidLabel.rx.text)
             .disposed(by: disposeBag)
         
         output.idTextFieldValidString
@@ -43,13 +43,33 @@ class CreateUserIDViewController: BaseViewController {
                 if b {
                     self?.idDoubleCheckButton.isEnabled = true
                     self?.idDoubleCheckButton.setTitleColor(UIColor.pointerRed, for: .normal)
-                    self?.checkValueValidLabel.text = "중복 확인해주세요."
-                    self?.checkValueValidLabel.textColor = UIColor.inactiveGray
                 } else {
                     self?.idDoubleCheckButton.isEnabled = false
                     self?.idDoubleCheckButton.setTitleColor(UIColor.inactiveGray, for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.userNoticeString
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] num in
+                switch num {
+                case 0:
+                    self?.checkValueValidLabel.text = ""
+                case 1:
+                    self?.checkValueValidLabel.text = "중복 확인해주세요."
+                    self?.checkValueValidLabel.textColor = UIColor.inactiveGray
+                case 2:
                     self?.checkValueValidLabel.text = "형식에 어긋난 아이디입니다."
                     self?.checkValueValidLabel.textColor = UIColor.pointerRed
+                case 3:
+                    self?.checkValueValidLabel.text = "중복되는 ID가 있습니다."
+                    self?.checkValueValidLabel.textColor = UIColor.pointerRed
+                case 4:
+                    self?.checkValueValidLabel.text = "사용 가능한 ID 입니다."
+                    self?.checkValueValidLabel.textColor = UIColor.green
+                default:
+                    return
                 }
             })
             .disposed(by: disposeBag)
@@ -58,8 +78,6 @@ class CreateUserIDViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] b in
                 if b {
-                    self?.checkValueValidLabel.text = "사용 가능한 ID 입니다."
-                    self?.checkValueValidLabel.textColor = UIColor.green
                     self?.nextButton.isEnabled = true
                     self?.nextButton.backgroundColor = UIColor.pointerRed
                 } else {
@@ -170,7 +188,7 @@ class CreateUserIDViewController: BaseViewController {
             make.trailing.equalToSuperview().inset(17)
         }
         noticeValidLabel.snp.makeConstraints { make in
-            make.top.equalTo(checkValueValidLabel.snp.bottom).inset(-25)
+            make.top.equalTo(textfieldBottomLine.snp.bottom).inset(-45)
             make.leading.equalToSuperview().inset(17)
         }
         nextButton.snp.makeConstraints { make in
