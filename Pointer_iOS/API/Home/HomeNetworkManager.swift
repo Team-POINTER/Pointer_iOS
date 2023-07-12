@@ -10,18 +10,19 @@ import Alamofire
 import RxSwift
 
 protocol HomeNetworkProtocol {
-    func createRoomRequest() -> Observable<CreateRoomResultModel>
+    func createRoomRequest(_ parameter: CreateRoomInputModel) -> Observable<CreateRoomResultModel>
 }
 
 
-class HomeNetworkManager {
+class HomeNetworkManager: HomeNetworkProtocol {
+
     
-    //MARK: - shared
+//MARK: - shared
     static let shared = HomeNetworkManager()
     let router = RoomRouter.self
     
     
-    //MARK: - Observable 변환
+//MARK: - Observable 변환
     func createRoomRequest(_ parameter: CreateRoomInputModel) -> Observable<CreateRoomResultModel> {
         return Observable.create { (observer) -> Disposable in
             self.createRoomRequest(parameter) { error, createRoomResultModel in
@@ -40,7 +41,7 @@ class HomeNetworkManager {
         }
     }
     
-    //MARK: - Function
+//MARK: - Function
     private func createRoomRequest(_ parameter: CreateRoomInputModel,_ completion: @escaping (Error?, CreateRoomResultModel?) -> Void){
         
         AF.request(router.createRoom.url, method: router.createRoom.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.createRoom.headers)
