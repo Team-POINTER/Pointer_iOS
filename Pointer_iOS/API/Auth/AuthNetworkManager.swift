@@ -34,14 +34,15 @@ enum LoginResultType: String, CaseIterable {
 
 struct AuthNetworkManager {
     
+//MARK: - shared
     static let shared = AuthNetworkManager()
+    let router = AuthRouter.self
     
-    let Headers : HTTPHeaders = ["Content-Type" : "application/json"]
-    
+//MARK: - Function
     func posts(_ parameter: AuthInputModel,_ completion: @escaping (AuthResultModel, LoginResultType) -> Void){
         print("Login URL = \(AuthRouter.login.url)")
         
-        AF.request(AuthRouter.login.url, method: AuthRouter.login.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
+        AF.request(router.login.url, method: router.login.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.login.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
@@ -64,7 +65,7 @@ struct AuthNetworkManager {
     func idCheckPost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         
         print("중복 확인 버튼 함수 시작")
-        AF.request(AuthRouter.checkId.url, method: AuthRouter.checkId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
+        AF.request(router.checkId.url, method: router.checkId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.login.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthIdResultModel.self) { response in
             switch response.result {
@@ -84,7 +85,7 @@ struct AuthNetworkManager {
     func idSavePost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         print("확인 버튼 함수 시작")
         
-        AF.request(AuthRouter.saveId.url, method: AuthRouter.saveId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: Headers)
+        AF.request(router.saveId.url, method: router.saveId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.login.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthIdResultModel.self) { response in
             switch response.result {

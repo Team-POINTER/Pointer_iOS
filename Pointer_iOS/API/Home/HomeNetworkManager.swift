@@ -9,41 +9,59 @@ import Foundation
 import Alamofire
 import RxSwift
 
-class HomeNetworkManager {
-    
-    private lazy var httpService = PointerHttpService()
-    static let shared: HomeNetworkManager = HomeNetworkManager()
-    
-    let Headers : HTTPHeaders = ["Content-Type" : "application/json"]
-    
-    
-    
+protocol HomeNetworkProtocol {
+    func createRoomRequest() -> Observable<CreateRoomResultModel>
 }
 
-extension HomeNetworkManager: HomeAPI {
+
+class HomeNetworkManager {
     
-    func createRoom() -> RxSwift.Single<CreateRoomResultModel> {
-        return Single.create { [httpService] (single) -> Disposable in
-            do {
-                try AuthRouter.login
-                    .request(usingHttpService: httpService)
-                    .responseJSON { (result) in
-                        guard let data = result.data else { return }
-                        
-                        do {
-                            let createRoomResult = try JSONDecoder().decode(CreateRoomResultModel.self, from: data)
-                            print(createRoomResult)
-                            single(.success(createRoomResult))
-                        } catch {
-                            print("createRoom Error: \(error)")
-                        }
-                    }
-            } catch { }
-            
+    //MARK: - shared
+    static let shared = HomeNetworkManager()
+    let router = RoomRouter.self
+    
+    
+    //MARK: - Observable 변환
+    func createRoomRequest(_ parameter: CreateRoomInputModel) -> Observable<CreateRoomResultModel> {
+        return Observable.create { (observer) -> Disposable in
+            self.createRoomRequest(parameter) { error, createRoomResultModel in
+                if let error = error {
+                    observer.onError(error)
+                }
+                
+                if let model = createRoomResultModel {
+                    observer.onNext(model)
+                }
+                
+                observer.onCompleted()
+            }
             
             return Disposables.create()
         }
     }
+    
+    //MARK: - Function
+    private func createRoomRequest(_ parameter: CreateRoomInputModel,_ completion: @escaping (Error?, CreateRoomResultModel?) -> Void){
+        
+        AF.request(router.createRoom.url, method: router.createRoom.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.createRoom.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: CreateRoomResultModel.self) { response in
+            switch response.result {
+                // 성공인 경우
+            case .success(let result):
+                print("룸 생성 데이터 전송 성공 - \(result)")
+                // completion 전송
+                completion(nil, result)
+                // 실패인 경우
+            case .failure(let error):
+                print("룸 생성 데이터 전송 실패 - \(error.localizedDescription)")
+                // completion 전송
+                completion(error, nil)
+            }
+        }
+    }
+    
+    
 }
 
 

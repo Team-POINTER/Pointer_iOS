@@ -45,12 +45,12 @@
 		47548E3C2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47548E3B2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift */; };
 		47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */; };
 		478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */; };
+		478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */; };
 		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
 		47CC895E2A4684390020246E /* PointerHttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895D2A4684390020246E /* PointerHttpService.swift */; };
 		47CC89602A46844F0020246E /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* AuthRouter.swift */; };
-		47CC89622A46BF110020246E /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89612A46BF110020246E /* HomeAPI.swift */; };
 		47CC896F2A4EF51D0020246E /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC896E2A4EF51D0020246E /* Secret.swift */; };
 		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
 		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
@@ -149,12 +149,12 @@
 		47548E3B2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewModel.swift; sourceTree = "<group>"; };
 		47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewController.swift; sourceTree = "<group>"; };
 		478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNetworkManager.swift; sourceTree = "<group>"; };
+		478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
 		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
 		47CC895D2A4684390020246E /* PointerHttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerHttpService.swift; sourceTree = "<group>"; };
 		47CC895F2A46844F0020246E /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
-		47CC89612A46BF110020246E /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
 		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
 		47CC896E2A4EF51D0020246E /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
@@ -404,9 +404,16 @@
 			isa = PBXGroup;
 			children = (
 				478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */,
-				47CC89612A46BF110020246E /* HomeAPI.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		478C9FF02A5EDA8D000FA196 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		47CC89562A4681950020246E /* HTTP */ = {
@@ -746,7 +753,7 @@
 			isa = PBXGroup;
 			children = (
 				CDD1DEF129BA004A00B03973 /* View */,
-				CDD1DEF229BA005000B03973 /* ViewModel */,
+				478C9FF02A5EDA8D000FA196 /* ViewModel */,
 			);
 			path = HomeScene;
 			sourceTree = "<group>";
@@ -768,13 +775,6 @@
 				CD06C77B29C0C68600A88ACD /* TextfieldCustomView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		CDD1DEF229BA005000B03973 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CDD1DEF329BA005800B03973 /* ViewModel */ = {
@@ -934,7 +934,6 @@
 				47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
-				47CC89622A46BF110020246E /* HomeAPI.swift in Sources */,
 				F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */,
 				CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */,
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
@@ -994,6 +993,7 @@
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
+				478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */,
 				CD2F79C92A0FDFC30094F81F /* FriendsListHeaderView.swift in Sources */,
 				CD94B8C92A0BEF4300D0BC7F /* EditUserIDViewModel.swift in Sources */,
 				47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */,
