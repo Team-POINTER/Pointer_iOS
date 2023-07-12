@@ -31,7 +31,6 @@ enum LoginResultType: String, CaseIterable {
         }
     }
 }
-                            
 
 struct AuthNetworkManager {
     
@@ -48,14 +47,14 @@ struct AuthNetworkManager {
             switch response.result {
                 // 성공인 경우
             case .success(let result):
-                print("카카오 데이터 전송 성공")
+                print("소셜 로그인 데이터 전송 성공 - \(result)")
                 // rawValue로 resultType 생성
                 let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
                 // completion 전송
                 completion(result, loginResultType)
                 // 실패인 경우
             case .failure(let error):
-                print("카카오 데이터 전송 실패")
+                print("소셜 로그인 데이터 전송 실패")
                 print(error.localizedDescription)
                 print(response.error ?? "")
             }
@@ -101,6 +100,7 @@ struct AuthNetworkManager {
     }
     
 }
+
 
 //MARK: - 로그인 시
 struct AuthInputModel: Encodable {
