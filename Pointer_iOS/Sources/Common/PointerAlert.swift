@@ -251,6 +251,7 @@ class PointerAlert: UIViewController {
         label.textAlignment = .center
         label.text = text
         label.font = font
+        label.textColor = .black
         return label
     }
     

@@ -6,19 +6,22 @@
 //
 
 import UIKit
+import RxSwift
 import SnapKit
-
-private let reuseIdentifier = "RoomPreviewCell"
 
 class HomeController: BaseViewController {
     //MARK: - Properties
-    private let collectionView: UICollectionView = {
+    private let disposeBag = DisposeBag()
+    
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 18
         layout.minimumLineSpacing = 18
         layout.sectionInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
+        cv.register(RoomPreviewCell.self, forCellWithReuseIdentifier: RoomPreviewCell.identifier)
+        cv.delegate = self
         return cv
     }()
     
@@ -32,13 +35,37 @@ class HomeController: BaseViewController {
         return button
     }()
     
+    private let viewModel = HomeViewModel()
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         setupNavigationController()
-        setupCollectionView()
+        bind()
+    }
+    
+    //MARK: - Bind
+    private func bind() {
+        let input = HomeViewModel.Input()
+        _ = viewModel.transform(input: input)
+        
+        viewModel.roomModel
+            .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoomPreviewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPreviewCell else { return UICollectionViewCell() }
+                cell.roomViewModel = self?.viewModel.getRoomViewModel(index: index)
+                cell.delegate = self
+                return cell
+            }
+            .disposed(by: disposeBag)
+            
+        Observable
+            .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(PointerRoomModel.self))
+            .bind { [weak self] indexPath, model in
+                self?.roomCellTapped(model: model)
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Selector
@@ -68,20 +95,6 @@ class HomeController: BaseViewController {
     }
     
     //MARK: - Functions
-    private func modifyRoomNameAction() {
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 18), handler: nil)
-        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 18)) {
-            if let text = $0 {
-                print("DEBUG - 방이름 : \(text)")
-            } else {
-                print("변경 내역 없음")
-            }
-        }
-        let customView = CustomTextfieldView(roomName: "임시 방 이름", withViewHeight: 50)
-        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "방 이름 변경", description: "변경할 이름을 입력해주세요", customView: customView)
-        self.present(alert, animated: true)
-    }
-    
     private func setupUI() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
@@ -97,10 +110,12 @@ class HomeController: BaseViewController {
         }
     }
     
-    private func setupCollectionView() {
-        collectionView.register(RoomPreviewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+    /// 👉 다음 뷰 구현할 부분
+    private func roomCellTapped(model: PointerRoomModel) {
+        // 룸 뷰 컨트롤러
+        let viewController = RoomViewController()
+        print("🔥DEBUG: 선택한 룸 ID - \(model.roomId)")
+        // ToDo - RoomViewController 의존성 주입해 다음 뷰 컨트롤러 push 하기
     }
     
     private func setupNavigationController() {
@@ -127,19 +142,7 @@ class HomeController: BaseViewController {
     }
 }
 
-//MARK: - UICollectionView
-extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? RoomPreviewCell else { return UICollectionViewCell() }
-        cell.delegate = self
-        return cell
-    }
-}
-
+//MARK: - UICollectionViewDelegateFlowLayout
 extension HomeController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width - 32, height: 160)
@@ -148,10 +151,11 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - RoomCellDelegate
 extension HomeController: RoomPreviewCellDelegate {
-    func roomCellActionImageTapped() {
+    func roomCellActionImageTapped(roomId: Int, _ currentName: String) {
         let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
-            print("DEBUG - 룸 이름 편집 눌림")
-            self?.modifyRoomNameAction()
+            guard let self = self else { return }
+            let alert = self.viewModel.getModifyRoomNameAlert(currentName, roomId: roomId)
+            self.present(alert, animated: true)
         }
         let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
             print("DEBUG - 링크로 룸 초대 눌림")

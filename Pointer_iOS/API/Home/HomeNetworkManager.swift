@@ -41,6 +41,25 @@ class HomeNetworkManager: HomeNetworkProtocol {
         }
     }
     
+    /// Observable.create 뭔가 공통 함수로 뺼 수 있을듯
+    func requestRoomList() -> Observable<[PointerRoomModel]> {
+        return Observable.create { (observer) -> Disposable in
+            self.requestRoomList() { models, error in
+                if let error = error {
+                    observer.onError(error)
+                }
+                
+                if let models = models {
+                    observer.onNext(models)
+                }
+                
+                observer.onCompleted()
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
 //MARK: - Function
     private func createRoomRequest(_ parameter: CreateRoomInputModel,_ completion: @escaping (Error?, CreateRoomResultModel?) -> Void){
         
@@ -62,7 +81,39 @@ class HomeNetworkManager: HomeNetworkProtocol {
         }
     }
     
+    private func requestRoomList(_ completion: @escaping ([PointerRoomModel]?, Error?) -> Void) {
+        let router = RoomRouter.getRoomList
+        
+        AF.request(router.url, method: router.method, parameters: router.parameters, encoding: JSONEncoding.default, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: PointerHomeModel.self) { response in
+            switch response.result {
+                // 성공인 경우
+            case .success(let result):
+                // completion 전송
+                completion(result.roomList, nil)
+                // 실패인 경우
+            case .failure(let error):
+                // completion 전송
+                completion(nil, error)
+            }
+        }
+    }
     
+    func requestRoomNameChange(input: RoomNameChangeInput, completion: @escaping (PointerDefaultResponse) -> Void) {
+        let router = RoomRouter.modifyRoomTitle
+        
+        AF.request(router.url, method: router.method, parameters: input, encoder: JSONParameterEncoder.default, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: PointerDefaultResponse.self) { respose in
+                switch respose.result {
+                case .success(let result):
+                    completion(result)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 }
 
 
@@ -80,6 +131,7 @@ struct CreateRoomResultModel: Decodable {
     let data: CreateRoomData?
 }
 
+//MARK: - 룸 조회 Input
 struct CreateRoomData: Decodable {
     let accessToken: String?
     let refreshToken: String?
