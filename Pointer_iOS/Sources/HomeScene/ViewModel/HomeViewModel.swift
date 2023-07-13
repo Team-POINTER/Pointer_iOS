@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxRelay
 import RxSwift
 import RxCocoa
 
@@ -13,8 +14,9 @@ class HomeViewModel: ViewModelType {
     
 //MARK: - Properties
     var disposeBag = DisposeBag()
+    let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
+    let network = HomeNetworkManager()
 //    private let homeNextworkProtocol: HomeNetworkProtocol
-//
 //
 //    init( homeNextworkProtocol: HomeNetworkProtocol) {
 //        self.homeNextworkProtocol = homeNextworkProtocol
@@ -33,15 +35,17 @@ class HomeViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let output = Output()
         
-    
+        network.requestRoomList()
+            .subscribe { [weak self] models in
+                self?.roomModel.accept(models)
+            }
+            .disposed(by: disposeBag)
         
         return output
     }
     
 //MARK: - Helper Function
-    
-    
+    func getRoomViewModel(index: Int) -> RoomCellViewModel {
+        return RoomCellViewModel(roomModel: roomModel.value[index])
+    }
 }
-
-
-

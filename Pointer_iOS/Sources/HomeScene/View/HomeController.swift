@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import RxSwift
 import SnapKit
-
-private let reuseIdentifier = "RoomPreviewCell"
 
 class HomeController: BaseViewController {
     //MARK: - Properties
+    private let disposeBag = DisposeBag()
+    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 18
@@ -32,6 +33,8 @@ class HomeController: BaseViewController {
         return button
     }()
     
+    private let viewModel = HomeViewModel()
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +42,23 @@ class HomeController: BaseViewController {
         setupUI()
         setupNavigationController()
         setupCollectionView()
+        bind()
+    }
+    
+    //MARK: - Bind
+    private func bind() {
+        let input = HomeViewModel.Input()
+        _ = viewModel.transform(input: input)
+        
+        viewModel.roomModel
+            .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoomPreviewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPreviewCell else { return UICollectionViewCell() }
+                cell.roomViewModel = self?.viewModel.getRoomViewModel(index: index)
+                cell.delegate = self
+                return cell
+            }
+            .disposed(by: disposeBag)
+            
     }
     
     //MARK: - Selector
@@ -98,9 +118,8 @@ class HomeController: BaseViewController {
     }
     
     private func setupCollectionView() {
-        collectionView.register(RoomPreviewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.register(RoomPreviewCell.self, forCellWithReuseIdentifier: RoomPreviewCell.identifier)
         collectionView.delegate = self
-        collectionView.dataSource = self
     }
     
     private func setupNavigationController() {
@@ -127,19 +146,7 @@ class HomeController: BaseViewController {
     }
 }
 
-//MARK: - UICollectionView
-extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? RoomPreviewCell else { return UICollectionViewCell() }
-        cell.delegate = self
-        return cell
-    }
-}
-
+//MARK: - UICollectionViewDelegateFlowLayout
 extension HomeController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width - 32, height: 160)
