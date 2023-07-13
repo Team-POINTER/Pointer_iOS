@@ -47,7 +47,7 @@ extension AuthRouter: HttpRouter {
     }
     
     var headers: HTTPHeaders? {
-        return nil
+        return ["Content-Type" : "application/json"]
     }
     
     var parameters: Parameters? {

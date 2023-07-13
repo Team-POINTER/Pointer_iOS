@@ -7,6 +7,6 @@
 
 import RxSwift
 
-protocol RoomAPI {
-//    func fetchRooms() -> Single<KakaoModel>
+protocol HomeAPI {
+    func createRoom() -> Single<CreateRoomResultModel>
 }
