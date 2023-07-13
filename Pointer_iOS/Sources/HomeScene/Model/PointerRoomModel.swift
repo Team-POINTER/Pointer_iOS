@@ -20,3 +20,14 @@ struct PointerRoomModel: Codable {
     let memberCnt: Int
 }
 
+struct RoomNameChangeInput: Codable {
+    let privateRoomNm: String
+    let roomId: Int
+    let userId: Int
+}
+
+struct PointerDefaultResponse: Codable {
+    let status: Int
+    let code: String
+    let message: String
+}

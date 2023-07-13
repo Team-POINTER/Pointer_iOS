@@ -99,6 +99,21 @@ class HomeNetworkManager: HomeNetworkProtocol {
             }
         }
     }
+    
+    func requestRoomNameChange(input: RoomNameChangeInput, completion: @escaping (PointerDefaultResponse) -> Void) {
+        let router = RoomRouter.modifyRoomTitle
+        
+        AF.request(router.url, method: router.method, parameters: input, encoder: JSONParameterEncoder.default, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: PointerDefaultResponse.self) { respose in
+                switch respose.result {
+                case .success(let result):
+                    completion(result)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 }
 
 

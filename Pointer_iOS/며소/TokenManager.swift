@@ -22,4 +22,12 @@ struct TokenManager {
     static func resetUserToken() {
         UserDefaults.standard.removeObject(forKey: "token")
     }
+    
+    static func getIntUserId() -> Int {
+        if let token = TokenManager.getUserToken() {
+            return Int(token) ?? 0
+        } else {
+            return 0
+        }
+    }
 }

@@ -13,13 +13,15 @@ class HomeController: BaseViewController {
     //MARK: - Properties
     private let disposeBag = DisposeBag()
     
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 18
         layout.minimumLineSpacing = 18
         layout.sectionInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
+        cv.register(RoomPreviewCell.self, forCellWithReuseIdentifier: RoomPreviewCell.identifier)
+        cv.delegate = self
         return cv
     }()
     
@@ -41,7 +43,6 @@ class HomeController: BaseViewController {
         
         setupUI()
         setupNavigationController()
-        setupCollectionView()
         bind()
     }
     
@@ -88,20 +89,6 @@ class HomeController: BaseViewController {
     }
     
     //MARK: - Functions
-    private func modifyRoomNameAction() {
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 18), handler: nil)
-        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 18)) {
-            if let text = $0 {
-                print("DEBUG - 방이름 : \(text)")
-            } else {
-                print("변경 내역 없음")
-            }
-        }
-        let customView = CustomTextfieldView(roomName: "임시 방 이름", withViewHeight: 50)
-        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "방 이름 변경", description: "변경할 이름을 입력해주세요", customView: customView)
-        self.present(alert, animated: true)
-    }
-    
     private func setupUI() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
@@ -115,11 +102,6 @@ class HomeController: BaseViewController {
             actionButton.layer.cornerRadius = 62 / 2
             actionButton.clipsToBounds = true
         }
-    }
-    
-    private func setupCollectionView() {
-        collectionView.register(RoomPreviewCell.self, forCellWithReuseIdentifier: RoomPreviewCell.identifier)
-        collectionView.delegate = self
     }
     
     private func setupNavigationController() {
@@ -155,10 +137,11 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - RoomCellDelegate
 extension HomeController: RoomPreviewCellDelegate {
-    func roomCellActionImageTapped() {
+    func roomCellActionImageTapped(roomId: Int, _ currentName: String) {
         let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
-            print("DEBUG - 룸 이름 편집 눌림")
-            self?.modifyRoomNameAction()
+            guard let self = self else { return }
+            let alert = self.viewModel.getModifyRoomNameAlert(currentName, roomId: roomId)
+            self.present(alert, animated: true)
         }
         let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
             print("DEBUG - 링크로 룸 초대 눌림")

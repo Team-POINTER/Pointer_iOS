@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 protocol RoomPreviewCellDelegate: AnyObject {
-    func roomCellActionImageTapped()
+    func roomCellActionImageTapped(roomId: Int, _ currentName: String)
 }
 
 class RoomPreviewCell: UICollectionViewCell {
@@ -89,7 +89,9 @@ class RoomPreviewCell: UICollectionViewCell {
     
     //MARK: - Selector
     @objc func actionImageTapped() {
-        delegate?.roomCellActionImageTapped()
+        if let roomViewModel = roomViewModel {
+            delegate?.roomCellActionImageTapped(roomId: roomViewModel.roomModel.roomId, roomViewModel.roomModel.roomNm)
+        }
     }
     
     //MARK: - Functions

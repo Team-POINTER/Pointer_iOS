@@ -21,6 +21,7 @@ class CustomTextfieldView: UIView {
         tf.placeholder = "룸 이름을 입력하세요"
         tf.font = .notoSansRegular(size: 16)
         tf.delegate = self
+        tf.textColor = .black
         return tf
     }()
     
