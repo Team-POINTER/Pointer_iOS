@@ -41,38 +41,46 @@ class RoomNetworkManager {
         AF.request(router.getSingleRoom(roomId).url, method: router.getSingleRoom(roomId).method, headers: router.getSingleRoom(roomId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: SearchRoomResultModel.self) { response in
-            switch response.result {
+                switch response.result {
                 // 성공인 경우
-            case .success(let result):
-                print("룸 조회 데이터 전송 성공 - \(result)")
-                // completion 전송
-                completion(nil, result)
+                case .success(let result):
+                    print("룸 조회 데이터 전송 성공 - \(result)")
+                    // completion 전송
+                    completion(nil, result)
                 // 실패인 경우
-            case .failure(let error):
-                print("룸 조회 데이터 전송 실패 - \(error.localizedDescription)")
-                // completion 전송
-                completion(error, nil)
+                case .failure(let error):
+                    print("룸 조회 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
             }
-        }
     }
     
 }
 
 
 //MARK: - 룸(하나) 조회 Result Model
+// Todo : 교체 예정
 struct SearchRoomResultModel: Decodable {
-    let roomId: Int
-    let roomNm: String
-    let memeberNum: Int
-    let votingNum: Int
-    let question: String
-    let limitedAt: String
-    let roomMembers: SearchRoomMembers
+    let status: Int
+    let code: String
+    let message: String
+    let data: SearchRoomResultData?
+}
+
+struct SearchRoomResultData: Decodable {
+    let roomId: Int?
+    let roomNm: String?
+    let memberNum: Int?
+    let votingNum: Int?
+    let question: String?
+    let limitedAt: String?
+    let roomMembers: SearchRoomMembers?
 }
 
 struct SearchRoomMembers: Decodable {
-    let userId: Int
-    let id: String
-    let name: String
-    let privateRoomNm: String
+    let userId: Int?
+    let id: String?
+    let name: String?
+    let privateRoomNm: String?
 }
