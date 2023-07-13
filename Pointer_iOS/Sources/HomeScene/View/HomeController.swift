@@ -60,6 +60,12 @@ class HomeController: BaseViewController {
             }
             .disposed(by: disposeBag)
             
+        Observable
+            .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(PointerRoomModel.self))
+            .bind { [weak self] indexPath, model in
+                self?.roomCellTapped(model: model)
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Selector
@@ -102,6 +108,14 @@ class HomeController: BaseViewController {
             actionButton.layer.cornerRadius = 62 / 2
             actionButton.clipsToBounds = true
         }
+    }
+    
+    /// 👉 다음 뷰 구현할 부분
+    private func roomCellTapped(model: PointerRoomModel) {
+        // 룸 뷰 컨트롤러
+        let viewController = RoomViewController()
+        print("🔥DEBUG: 선택한 룸 ID - \(model.roomId)")
+        // ToDo - RoomViewController 의존성 주입해 다음 뷰 컨트롤러 push 하기
     }
     
     private func setupNavigationController() {
