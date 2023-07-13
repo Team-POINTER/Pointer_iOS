@@ -9,13 +9,7 @@ import Foundation
 import Alamofire
 import RxSwift
 
-protocol HomeNetworkProtocol {
-    func createRoomRequest(_ parameter: CreateRoomInputModel) -> Observable<CreateRoomResultModel>
-}
-
-
-class HomeNetworkManager: HomeNetworkProtocol {
-
+class HomeNetworkManager {
     
 //MARK: - shared
     static let shared = HomeNetworkManager()
