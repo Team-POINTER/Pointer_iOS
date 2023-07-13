@@ -9,11 +9,20 @@ import UIKit
 import SnapKit
 
 protocol RoomPreviewCellDelegate: AnyObject {
-    func roomCellActionImageTapped()
+    func roomCellActionImageTapped(roomId: Int, _ currentName: String)
 }
 
 class RoomPreviewCell: UICollectionViewCell {
+    //MARK: - Identifier
+    static let identifier = "RoomPreviewCell"
+    
     //MARK: - Properties
+    var roomViewModel: RoomCellViewModel? {
+        didSet {
+            configure()
+        }
+    }
+    
     weak var delegate: RoomPreviewCellDelegate?
     
     let roomNameLabel: UILabel = {
@@ -80,7 +89,9 @@ class RoomPreviewCell: UICollectionViewCell {
     
     //MARK: - Selector
     @objc func actionImageTapped() {
-        delegate?.roomCellActionImageTapped()
+        if let roomViewModel = roomViewModel {
+            delegate?.roomCellActionImageTapped(roomId: roomViewModel.roomModel.roomId, roomViewModel.roomModel.roomNm)
+        }
     }
     
     //MARK: - Functions
@@ -125,5 +136,13 @@ class RoomPreviewCell: UICollectionViewCell {
             $0.trailing.bottom.equalToSuperview().inset(16)
             $0.width.height.equalTo(20)
         }
+    }
+    
+    private func configure() {
+        guard let viewModel = roomViewModel else { return }
+        roomNameLabel.text = viewModel.roomModel.roomNm
+        roomBodyLabel.text = viewModel.roomModel.question
+        memberCountLabel.text = "\(viewModel.roomModel.memberCnt) 명"
+        
     }
 }

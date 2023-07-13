@@ -46,7 +46,7 @@ extension RoomRouter: HttpRouter {
         case .getSingleRoom(let roomId):
             return "/room/\(roomId)"
         case .getRoomList:
-            return "/room?kwd="
+            return "/room"
         }
     }
     
@@ -76,7 +76,10 @@ extension RoomRouter: HttpRouter {
     }
     
     var parameters: Parameters? {
-        return nil
+        let parameters: [String: Any] = [
+            "userId": 4
+        ]
+        return parameters
     }
     
     func body() throws -> Data? {
