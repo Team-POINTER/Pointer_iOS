@@ -24,7 +24,8 @@ import RxSwift
 // 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[X])
 
 class RoomViewController: BaseViewController {
-//MARK: - UIComponents
+    
+//MARK: - properties
     var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 500))
     
     private let peopleTableView : UITableView = {
@@ -35,9 +36,20 @@ class RoomViewController: BaseViewController {
     }(UITableView())
     
     private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 200))
-//MARK: - Components
-    var disposeBag = DisposeBag()
-    var viewModel = RoomViewModel()
+    
+    let disposeBag = DisposeBag()
+    let viewModel: RoomViewModel
+    
+    
+//MARK: - Init
+    init(viewModel: RoomViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //MARK: - Rx
     func bindViewModel() {

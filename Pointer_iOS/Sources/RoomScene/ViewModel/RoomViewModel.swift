@@ -10,6 +10,22 @@ import RxSwift
 import RxCocoa
 
 final class RoomViewModel: ViewModelType {
+    
+    //MARK: - Properties
+    let disposeBag = DisposeBag()
+    let roomResultObservable = PublishRelay<SearchRoomResultModel>()
+    
+    var roomObservable = BehaviorRelay<[User]>(value: [])
+    let allUsersInThisRoom = BehaviorRelay<[User]>(value: [])
+    var selectedUsers = BehaviorRelay<[User]>(value: [])
+    
+    //MARK: - LifeCycle
+    init(roomId: Int) {
+        // 더미 User들 생성 !
+        allUsersInThisRoom.accept(User.getDummyUsers())
+        searchRoomRequest(roomId)
+    }
+
     //MARK: - In/Out
     struct Input {
         let hintTextEditEvent: Observable<String>
@@ -22,19 +38,6 @@ final class RoomViewModel: ViewModelType {
         var pointButtonValid = PublishRelay<Bool>()
     }
     
-    //MARK: - Properties
-    let disposeBag = DisposeBag()
-    var roomObservable = BehaviorRelay<[User]>(value: [])
-
-    let allUsersInThisRoom = BehaviorRelay<[User]>(value: [])
-    var selectedUsers = BehaviorRelay<[User]>(value: [])
-    
-    //MARK: - LifeCycle
-    init() {
-        // 더미 User들 생성 !
-        allUsersInThisRoom.accept(User.getDummyUsers())
-    }
-
     //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         
@@ -149,5 +152,18 @@ final class RoomViewModel: ViewModelType {
         } else {
             return text
         }
+    }
+    
+    //MARK: - Network
+    func searchRoomRequest(_ roomId: Int) {
+        // 룸 조회 API
+        RoomNetworkManager.shared.searchRoomRequest(roomId)
+            .subscribe(onNext: { result in
+                self.roomResultObservable.accept(result)
+                print("RoomViewModel - searchRoomRequest 데이터: \(result)")
+            }, onError: { error in
+                print("RoomViewModel - searchRoomRequest 에러: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
     }
 }
