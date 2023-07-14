@@ -56,6 +56,14 @@ class RoomViewController: BaseViewController {
         let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable())
         let output = viewModel.transform(input: input)
         
+        viewModel.roomResultObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] data in
+                self?.title = data.roomNm
+                self?.roomTopView.questLabel.text = data.question
+            })
+            .disposed(by: disposeBag)
+        
 // - TextField bind
         output.hintTextFieldCountString
             .bind(to: roomTopView.hintTextCount.rx.text)
@@ -80,7 +88,7 @@ class RoomViewController: BaseViewController {
             .disposed(by: disposeBag)
         
 // - tableView bind
-        viewModel.allUsersInThisRoom
+        viewModel.roomResultMembersObservable
             .observe(on: MainScheduler.instance)
             .bind(to: peopleTableView.rx.items) { [weak self] tableView, index, item in
                 guard let self = self,
@@ -94,14 +102,12 @@ class RoomViewController: BaseViewController {
                 
                 /// 아래 코드는 Cell 안으로 이동 - cell.user -> didset - configure()
                 /// 클래스의 단일 책임 원칙 (Cell 안에서 일어나는 일은 Cell이 책임지도록)
-                
                 return cell
-                
             }.disposed(by: disposeBag)
         
 //- tableView cell tapped
         Observable
-            .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(User.self))
+            .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(SearchRoomMembers.self))
             .bind { [weak self] indexPath, model in
                 
                 // 셀 타입캐스팅, 셀 안에 있는 User 언래핑
