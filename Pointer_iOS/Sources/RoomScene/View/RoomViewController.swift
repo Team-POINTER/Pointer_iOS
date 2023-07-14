@@ -61,8 +61,8 @@ class RoomViewController: BaseViewController {
         viewModel.roomResultObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                self?.title = data.roomNm
-                self?.roomTopView.questLabel.text = data.question
+                self?.title = data.roomName
+                self?.roomTopView.questLabel.text = data.content
             })
             .disposed(by: disposeBag)
         
@@ -109,7 +109,7 @@ class RoomViewController: BaseViewController {
         
 //- tableView cell tapped
         Observable
-            .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(SearchRoomMembers.self))
+            .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(SearchQuestionResultMembers.self))
             .bind { [weak self] indexPath, model in
                 
                 // 셀 타입캐스팅, 셀 안에 있는 User 언래핑

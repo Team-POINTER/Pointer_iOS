@@ -13,9 +13,9 @@ final class RoomViewModel: ViewModelType {
     
     //MARK: - Properties
     let disposeBag = DisposeBag()
-    let roomResultObservable = PublishRelay<SearchRoomResultData>()
-    let roomResultMembersObservable = PublishRelay<[SearchRoomMembers]>()
-    var selectedUsers = BehaviorRelay<[SearchRoomMembers]>(value: [])
+    let roomResultObservable = PublishRelay<SearchQuestionResultData>()
+    let roomResultMembersObservable = PublishRelay<[SearchQuestionResultMembers]>()
+    var selectedUsers = BehaviorRelay<[SearchQuestionResultMembers]>(value: [])
     
     var roomObservable = BehaviorRelay<[User]>(value: []) //
     let allUsersInThisRoom = BehaviorRelay<[User]>(value: []) // 더미
@@ -25,7 +25,8 @@ final class RoomViewModel: ViewModelType {
     init(roomId: Int) {
         // 더미 User들 생성 !
         allUsersInThisRoom.accept(User.getDummyUsers())
-        searchRoomRequest(roomId)
+        currentQuestionRequest(roomId)
+        
     }
 
     //MARK: - In/Out
@@ -79,7 +80,7 @@ final class RoomViewModel: ViewModelType {
             .subscribe { users in
                 if let users = users.element {
                     /// 2-1 선택한 유저들을 합친 string 반환
-                    let joined = users.map { $0.name }.joined(separator: " ・ ")
+                    let joined = users.map { $0.nickname }.joined(separator: " ・ ")
                     output.selectedUsersJoinedString.accept(joined)
                     /// 2-2 유저를 선택한 상태인지? 체크
                     if users.count > 0 {
@@ -116,20 +117,20 @@ final class RoomViewModel: ViewModelType {
     
     //MARK: - Functions
     /// 유저 선택
-    func selectUser(_ user: SearchRoomMembers) {
+    func selectUser(_ user: SearchQuestionResultMembers) {
         var currentSelectedUser = selectedUsers.value
         currentSelectedUser.append(user)
         selectedUsers.accept(currentSelectedUser)
-        print("DEBUG: \(user.name) 이 선택됨")
+        print("DEBUG: \(user.userId) 이 선택됨")
     }
     
     /// 유저 선택 해제
-    func deSelectUser(_ selectedUser: SearchRoomMembers) {
+    func deSelectUser(_ selectedUser: SearchQuestionResultMembers) {
         var currentSelectedUser = selectedUsers.value
         currentSelectedUser.enumerated().forEach { (index, user) in
             // User의 고유값이 같으면 해당 Index 삭제
-            if selectedUser.id == user.id {
-                print("DEBUG: \(user.name) 선택 해제")
+            if selectedUser.userId == user.userId {
+                print("DEBUG: \(user.nickname) 선택 해제")
                 currentSelectedUser.remove(at: index)
                 selectedUsers.accept(currentSelectedUser)
             }
@@ -144,10 +145,10 @@ final class RoomViewModel: ViewModelType {
     
     /// SelectedUser 배열 안에 있는 유저인지 확인
     /// reuse 시 체크하는 함수
-    func detectSelectedUser(_ selectedUser: SearchRoomMembers) -> Bool {
+    func detectSelectedUser(_ selectedUser: SearchQuestionResultMembers) -> Bool {
         var isSelectedUser = false
         for user in selectedUsers.value {
-            if user.id == selectedUser.id {
+            if user.userId == selectedUser.userId {
                 isSelectedUser = true
                 break
             }
@@ -174,16 +175,30 @@ final class RoomViewModel: ViewModelType {
     }
     
     //MARK: - Network
-    func searchRoomRequest(_ roomId: Int) {
-        // 룸 조회 API
-        RoomNetworkManager.shared.searchRoomRequest(roomId)
+//    func searchRoomRequest(_ roomId: Int) {
+//        // 룸 조회 API
+//        RoomNetworkManager.shared.searchRoomRequest(roomId)
+//            .subscribe(onNext: { result in
+//                self.roomResultObservable.accept(result)
+//                self.roomResultMembersObservable.accept(result.roomMembers)
+//                print("RoomViewModel - searchRoomRequest 데이터: \(result)")
+//            }, onError: { error in
+//                print("RoomViewModel - searchRoomRequest 에러: \(error.localizedDescription)")
+//            })
+//            .disposed(by: disposeBag)
+//    }
+    
+    func currentQuestionRequest(_ roomId: Int) {
+        RoomNetworkManager.shared.currentQuestionRequest(roomId)
             .subscribe(onNext: { result in
                 self.roomResultObservable.accept(result)
-                self.roomResultMembersObservable.accept(result.roomMembers)
-                print("RoomViewModel - searchRoomRequest 데이터: \(result)")
+                self.roomResultMembersObservable.accept(result.members)
+                print("RoomViewModel - currentQuestionRequest 데이터: \(result)")
             }, onError: { error in
-                print("RoomViewModel - searchRoomRequest 에러: \(error.localizedDescription)")
+                print("RoomViewModel - currentQuestionRequest 에러: \(error.localizedDescription)")
             })
             .disposed(by: disposeBag)
     }
+    
+    
 }

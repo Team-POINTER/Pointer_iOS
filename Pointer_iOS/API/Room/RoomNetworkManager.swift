@@ -13,7 +13,8 @@ class RoomNetworkManager {
     
 //MARK: - shared
     static let shared = RoomNetworkManager()
-    let router = RoomRouter.self
+    let roomRouter = RoomRouter.self
+    let questionRouter = QuestionRouter.self
     
     
 //MARK: - Observable 변환
@@ -35,10 +36,30 @@ class RoomNetworkManager {
         }
     }
     
+    func currentQuestionRequest(_ roomId: Int) -> Observable<SearchQuestionResultData> {
+        return Observable.create { (observer) -> Disposable in
+            
+            self.currentQuestionRequest(roomId) { error, searchQuestionResultData in
+                if let error = error {
+                    observer.onError(error)
+                }
+                
+                if let data = searchQuestionResultData {
+                    observer.onNext(data)
+                }
+                
+                observer.onCompleted()
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
 //MARK: - Function
+    // 룸 하나 조회
     private func searchRoomRequest(_ roomId: Int,_ completion: @escaping (Error?, SearchRoomResultData?) -> Void){
         
-        AF.request(router.getSingleRoom(roomId).url, method: router.getSingleRoom(roomId).method, headers: router.getSingleRoom(roomId).headers)
+        AF.request(roomRouter.getSingleRoom(roomId).url, method: roomRouter.getSingleRoom(roomId).method, headers: roomRouter.getSingleRoom(roomId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: SearchRoomResultModel.self) { response in
                 switch response.result {
@@ -55,8 +76,28 @@ class RoomNetworkManager {
             }
     }
     
-    private func searchQuestionRequest() {
+    // 현재 질문 조회 - 이거 적용 중
+    private func currentQuestionRequest(_ roomId: Int, completion: @escaping (Error?, SearchQuestionResultData?) -> Void){
+        let userId = TokenManager.getIntUserId()
         
+        AF.request(questionRouter.currentSearchQuestion(userId, roomId).url,
+                   method: questionRouter.currentSearchQuestion(userId, roomId).method,
+                   headers: questionRouter.currentSearchQuestion(userId, roomId).headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: SearchQuestionResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    guard let data = result.result else { return }
+                    completion(nil, data)
+                // 실패인 경우
+                case .failure(let error):
+                    print("현재 질문 조회 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
+            }
     }
     
 }
@@ -92,20 +133,20 @@ struct SearchQuestionResultModel: Decodable {
     let status: Int?
     let code: String
     let message: String
-    let result: [SearchQuestionResultData]?
+    let result: SearchQuestionResultData?
 }
 
 struct SearchQuestionResultData: Decodable {
-    let roomName: String?
-    let questionId: Int?
-    let content: String?
-    let member: [SearchQuestResultMember]?
-    let voted: Bool?
+    let roomName: String
+    let questionId: Int
+    let content: String
+    let members: [SearchQuestionResultMembers]
+    let voted: Bool
 }
 
-struct SearchQuestResultMember: Decodable {
-    let userId: Int?
-    let nickname: String?
+struct SearchQuestionResultMembers: Decodable {
+    let userId: Int
+    let nickname: String
 }
 
 //MARK: - #1-1 투표하기 API
