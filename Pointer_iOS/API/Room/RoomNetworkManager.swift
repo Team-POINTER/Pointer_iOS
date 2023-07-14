@@ -15,6 +15,7 @@ class RoomNetworkManager {
     static let shared = RoomNetworkManager()
     let roomRouter = RoomRouter.self
     let questionRouter = QuestionRouter.self
+    let voteRouter = VoteRouter.self
     
     
 //MARK: - Observable 변환
@@ -97,6 +98,33 @@ class RoomNetworkManager {
                     // completion 전송
                     completion(error, nil)
                 }
+            }
+    }
+    
+    // 투표하기
+    func voteRequest(_ parameters: VoteRequestModel, completion: @escaping (Error?, [VoteResultData]?) -> Void){
+        
+        AF.request(voteRouter.vote.url,
+                   method: voteRouter.vote.method,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default,
+                   headers: voteRouter.vote.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: VoteResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    print(result)
+                    guard let data = result.result else { return }
+                    completion(nil, data)
+                // 실패인 경우
+                case .failure(let error):
+                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
+                
             }
     }
     

@@ -20,6 +20,11 @@ final class RoomViewModel: ViewModelType {
     var roomObservable = BehaviorRelay<[User]>(value: []) //
     let allUsersInThisRoom = BehaviorRelay<[User]>(value: []) // 더미
     
+    // 투표용 properties
+    var questionId: Int = 0
+    var userId = TokenManager.getIntUserId()
+    var votedUsers: [Int] = [0]
+    var hintString: String = ""
     
     //MARK: - LifeCycle
     init(roomId: Int) {
@@ -60,6 +65,7 @@ final class RoomViewModel: ViewModelType {
                    let self = self {
                     /// 1-1 글자수 제한
                     let limitedString = self.hintTextFieldLimitedString(text: text)
+                    hintString = limitedString
                     output.hintTextFieldLimitedString.accept(limitedString)
                     
                     /// 1-2 카운트 string값 방출
@@ -99,9 +105,37 @@ final class RoomViewModel: ViewModelType {
                 output.pointButtonValid.accept($0)
             }.disposed(by: disposeBag)
         
+        /// 4. POINT 버튼 Tap 시
         input.pointButtonTapEvent
-            .subscribe(onNext: { _ in
-                output.pointButtonTap.accept(ResultViewController())
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                // selected된 유저의 userId 값만 따로 배열 설정
+                self.selectedUsers
+                    .subscribe { selectedUsers in
+                        if let users = selectedUsers.element {
+                            self.votedUsers = users.map { $0.userId }
+                        }
+                    }
+                    .disposed(by: disposeBag)
+                
+                
+                let vote = VoteRequestModel(questionId: self.questionId,
+                                            userId: self.userId,
+                                            votedUserIds: self.votedUsers,
+                                            hint: self.hintString)
+
+                self.voteRequest(vote) { (error, model) in
+                    // 서버 연동 실패 시
+                    if let error = error {
+                        return
+                    }
+                    
+                    // 서버 연동 성공 시
+                    if let model = model {
+                        output.pointButtonTap.accept(ResultViewController())
+                    }
+                }
             })
             .disposed(by: disposeBag)
         
@@ -190,9 +224,10 @@ final class RoomViewModel: ViewModelType {
     
     func currentQuestionRequest(_ roomId: Int) {
         RoomNetworkManager.shared.currentQuestionRequest(roomId)
-            .subscribe(onNext: { result in
-                self.roomResultObservable.accept(result)
-                self.roomResultMembersObservable.accept(result.members)
+            .subscribe(onNext: { [weak self] result in
+                self?.roomResultObservable.accept(result)
+                self?.roomResultMembersObservable.accept(result.members)
+                self?.questionId = result.questionId
                 print("RoomViewModel - currentQuestionRequest 데이터: \(result)")
             }, onError: { error in
                 print("RoomViewModel - currentQuestionRequest 에러: \(error.localizedDescription)")
@@ -200,5 +235,18 @@ final class RoomViewModel: ViewModelType {
             .disposed(by: disposeBag)
     }
     
+    func voteRequest(_ voteRequestModel: VoteRequestModel, completion: @escaping(Error?, [VoteResultData]?) -> Void) {
+        RoomNetworkManager.shared.voteRequest(voteRequestModel) { (error, model) in
+            if let error = error {
+                print("RoomViewModel - voteRequest 에러: \(error.localizedDescription)")
+                completion(error,nil)
+            }
+            
+            if let model = model {
+                print("🔥투표 성공")
+                completion(nil, model)
+            }
+        }
+    }
     
 }
