@@ -55,10 +55,14 @@ class RoomNetworkManager {
             }
     }
     
+    private func searchQuestionRequest() {
+        
+    }
+    
 }
 
 
-//MARK: - 룸(하나) 조회 Result Model
+//MARK: - #1-1 룸(하나) 조회 Result Model
 struct SearchRoomResultModel: Decodable {
     let status: Int
     let code: String
@@ -81,4 +85,48 @@ struct SearchRoomMembers: Decodable {
     let id: String
     let name: String
     let privateRoomNm: String
+}
+
+//MARK: - #1-1 질문 API
+struct SearchQuestionResultModel: Decodable {
+    let status: Int?
+    let code: String
+    let message: String
+    let result: [SearchQuestionResultData]?
+}
+
+struct SearchQuestionResultData: Decodable {
+    let roomName: String?
+    let questionId: Int?
+    let content: String?
+    let member: [SearchQuestResultMember]?
+    let voted: Bool?
+}
+
+struct SearchQuestResultMember: Decodable {
+    let userId: Int?
+    let nickname: String?
+}
+
+//MARK: - #1-1 투표하기 API
+struct VoteRequestModel: Encodable {
+    let questionId: Int
+    let userId: Int
+    let votedUserIds: [Int]
+    let hint: String
+}
+
+struct VoteResultModel: Decodable {
+    let status: Int?
+    let code: String
+    let message: String
+    let result: [VoteResultData]?
+}
+
+struct VoteResultData: Decodable {
+    let id: Int
+    let questionId: Int
+    let userId: Int
+    let votedUserId: Int
+    let hint: String
 }
