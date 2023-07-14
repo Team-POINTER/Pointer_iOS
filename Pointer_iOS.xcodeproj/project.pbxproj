@@ -47,6 +47,7 @@
 		478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */; };
 		478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */; };
 		478C9FF92A603882000FA196 /* RoomNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FF82A603882000FA196 /* RoomNetworkManager.swift */; };
+		478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FFE2A618483000FA196 /* QuestionRouter.swift */; };
 		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
@@ -153,6 +154,7 @@
 		478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNetworkManager.swift; sourceTree = "<group>"; };
 		478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		478C9FF82A603882000FA196 /* RoomNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomNetworkManager.swift; sourceTree = "<group>"; };
+		478C9FFE2A618483000FA196 /* QuestionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRouter.swift; sourceTree = "<group>"; };
 		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
 		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 				47CC89592A46829B0020246E /* HttpService.swift */,
 				47CC895F2A46844F0020246E /* AuthRouter.swift */,
 				F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */,
+				478C9FFE2A618483000FA196 /* QuestionRouter.swift */,
 			);
 			path = HTTP;
 			sourceTree = "<group>";
@@ -990,6 +993,7 @@
 				47CC895A2A46829B0020246E /* HttpService.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
 				CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */,
+				478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
 				47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */,
 				CD2F79C42A0FCB860094F81F /* FriendsListCell.swift in Sources */,
