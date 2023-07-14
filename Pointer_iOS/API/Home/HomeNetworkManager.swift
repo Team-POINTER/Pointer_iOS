@@ -85,7 +85,7 @@ class HomeNetworkManager {
                 // 성공인 경우
             case .success(let result):
                 // completion 전송
-                completion(result.roomList, nil)
+                completion(result.data.roomList, nil)
                 // 실패인 경우
             case .failure(let error):
                 // completion 전송

@@ -9,6 +9,13 @@ import Foundation
 
 // MARK: - Welcome
 struct PointerHomeModel: Codable {
+    let status: Int
+    let code: String
+    let message: String
+    let data: PointerRoomListModel
+}
+
+struct PointerRoomListModel: Codable {
     let roomList: [PointerRoomModel]
 }
 
@@ -18,6 +25,7 @@ struct PointerRoomModel: Codable {
     let roomNm: String
     let question: String
     let memberCnt: Int
+    let topUserName: String?
 }
 
 struct RoomNameChangeInput: Codable {

@@ -31,6 +31,8 @@ final class RoomViewModel: ViewModelType {
     //MARK: - In/Out
     struct Input {
         let hintTextEditEvent: Observable<String>
+        let pointButtonTapEvent: Observable<Void>
+        let inviteButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -38,6 +40,8 @@ final class RoomViewModel: ViewModelType {
         var hintTextFieldLimitedString = PublishRelay<String>()
         var selectedUsersJoinedString = BehaviorRelay<String>(value: "")
         var pointButtonValid = PublishRelay<Bool>()
+        var pointButtonTap = PublishRelay<UIViewController>()
+        var inviteButtonTap = PublishRelay<UIViewController>()
     }
     
     //MARK: - Rxswift Transform
@@ -93,6 +97,19 @@ final class RoomViewModel: ViewModelType {
             ).subscribe {
                 output.pointButtonValid.accept($0)
             }.disposed(by: disposeBag)
+        
+        input.pointButtonTapEvent
+            .subscribe(onNext: { _ in
+                output.pointButtonTap.accept(ResultViewController())
+            })
+            .disposed(by: disposeBag)
+        
+        input.inviteButtonTapEvent
+            .subscribe(onNext: { _ in
+                print("초대하기 버튼 Tap")
+//                output.inviteButtonTap.accept(<#T##event: UIViewController##UIViewController#>)
+            })
+            .disposed(by: disposeBag)
         
         return output
     }

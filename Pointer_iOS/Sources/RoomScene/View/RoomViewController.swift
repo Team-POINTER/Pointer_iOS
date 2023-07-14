@@ -53,7 +53,9 @@ class RoomViewController: BaseViewController {
     
 //MARK: - Rx
     func bindViewModel() {
-        let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable())
+        let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable(),
+                                        pointButtonTapEvent: roomTopView.pointerButton.rx.tap.asObservable(),
+                                        inviteButtonTapEvent: roomBottomView.inviteButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
         viewModel.roomResultObservable
@@ -142,18 +144,16 @@ class RoomViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        roomTopView.pointerButton.rx.tap
+        output.pointButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                self.navigationController?.pushViewController(ResultViewController(), animated: true)
-                self.tabBarController?.tabBar.isHidden = true
+            .subscribe(onNext: { [weak self] viewController in
+                self?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
-        roomBottomView.inviteButton.rx.tap
+        output.inviteButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { _ in
+            .subscribe(onNext: { [weak self] viewController in
                 print("invite 버튼 click")
             })
             .disposed(by: disposeBag)
@@ -164,7 +164,6 @@ class RoomViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        self.title = "룸 이름"
     }
     
     func setUI() {
