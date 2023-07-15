@@ -35,23 +35,24 @@ class ResultViewController: BaseViewController {
 //MARK: - Rx
     func bindViewModel() {
         
-        let input = ResultViewModel.Input()
+        let input = ResultViewModel.Input(myResultButtonTap: myResultButton.rx.tap.asObservable(),
+                                          newQuestionButtonTap: newQuestionButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
-        myResultButton.rx.tap
+        output.myResultButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .subscribe(onNext: { [weak self] viewController in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(MyResultViewController(), animated: true)
+                self.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
-        newQuestionButton.rx.tap
+        
+        output.newQuestionButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .subscribe(onNext: { [weak self] viewController in
                 guard let self = self else { return }
-                let vc = NewQuestViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         

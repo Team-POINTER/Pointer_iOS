@@ -12,6 +12,12 @@ class MyResultTableViewCell: UITableViewCell {
     
     static let identifier = "MyResultTableViewCell"
     
+    var result: TotalQuestionResultData? {
+        didSet {
+            configure()
+        }
+    }
+    
     private let view: UIView = {
         $0.backgroundColor = UIColor.white
         $0.layer.cornerRadius = 10
@@ -19,7 +25,7 @@ class MyResultTableViewCell: UITableViewCell {
         return $0
     }(UIView())
     
-    var hintLabel: UILabel = {
+    var questionLabel: UILabel = {
         $0.text = "가장 친해지고 싶은 사람은?"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.black
@@ -47,6 +53,7 @@ class MyResultTableViewCell: UITableViewCell {
         backgroundColor = .clear
         setUIandConstraints()
     }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 7.5, left: 0, bottom: 7.5, right: 0))
@@ -59,14 +66,14 @@ class MyResultTableViewCell: UITableViewCell {
     
     func setUIandConstraints() {
         contentView.addSubview(view)
-        view.addSubview(hintLabel)
+        view.addSubview(questionLabel)
         view.addSubview(selectedMeNumber)
         view.addSubview(hintDate)
         
         view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        hintLabel.snp.makeConstraints { make in
+        questionLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(21)
             make.leading.trailing.equalToSuperview().inset(25)
         }
@@ -79,4 +86,10 @@ class MyResultTableViewCell: UITableViewCell {
         }
     }
 
+    func configure() {
+        questionLabel.text = result?.question
+        selectedMeNumber.text = "\(result?.votedMemberCnt) / \(result?.allVoteCnt)"
+        hintDate.text = result?.createdAt
+    }
+    
 }

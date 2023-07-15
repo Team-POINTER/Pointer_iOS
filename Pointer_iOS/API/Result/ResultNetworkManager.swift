@@ -13,7 +13,9 @@ class ResultNetworkManager {
     
 //MARK: - shared
     static let shared = ResultNetworkManager()
+    let questionRouter = QuestionRouter.self
     let voteRouter = VoteRouter.self
+    let userId = TokenManager.getIntUserId()
     
     
 //MARK: - Observable 변환
@@ -31,7 +33,24 @@ class ResultNetworkManager {
                 
                 observer.onCompleted()
             }
+            return Disposables.create()
+        }
+    }
+    
+    func totalQuestionRequest(_ roomId: Int) -> Observable<[TotalQuestionResultData]> {
+        return Observable.create { (observer) -> Disposable in
             
+            self.totalQuestionRequest(roomId) { error, totalQuestionResultData in
+                if let error = error {
+                    observer.onError(error)
+                }
+                
+                if let data = totalQuestionResultData {
+                    observer.onNext(data)
+                }
+                
+                observer.onCompleted()
+            }
             return Disposables.create()
         }
     }
@@ -40,8 +59,6 @@ class ResultNetworkManager {
     
     // 지목화면 결과 조회
     private func votedResultRequest(_ questionId: Int, _ completion: @escaping (Error?, VotedResultData?) -> Void){
-        let userId = TokenManager.getIntUserId()
-        
         AF.request(voteRouter.votedResult(userId, questionId).url,
                    method: voteRouter.votedResult(userId, questionId).method,
                    headers: voteRouter.votedResult(userId, questionId).headers)
@@ -60,7 +77,28 @@ class ResultNetworkManager {
                     // completion 전송
                     completion(error, nil)
                 }
-                
+            }
+    }
+    
+    private func totalQuestionRequest(_ roomId: Int, completion: @escaping(Error?, [TotalQuestionResultData]?) -> Void) {
+        AF.request(questionRouter.totalSearchQuestion(userId, roomId).url,
+                   method:questionRouter.totalSearchQuestion(userId, roomId).method,
+                   headers: questionRouter.totalSearchQuestion(userId, roomId).headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: TotalQuestionResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    print(result)
+                    guard let data = result.result else { return }
+                    completion(nil, data)
+                // 실패인 경우
+                case .failure(let error):
+                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
             }
     }
     
@@ -89,4 +127,20 @@ struct VotedUser: Decodable {
     let userName: String
     let allVoteCnt: Int // 모든 투표 수
     let votedMemberCnt: Int // 해당 유저가 받은 투표 수
+}
+
+//MARK: - #1-3 질문 전체 조회
+struct TotalQuestionResultModel: Decodable {
+    let status: Int?
+    let code: String
+    let message: String
+    let result: [TotalQuestionResultData]?
+}
+
+struct TotalQuestionResultData: Decodable {
+    let questionId: Int
+    let question: String
+    let allVoteCnt: Int
+    let votedMemberCnt: Int
+    let createdAt: String
 }

@@ -40,6 +40,7 @@ class ResultViewModel: ViewModelType{
     // resultView에 맞는 모델 [X] -> API 연결 시
     
     var timeString = "2023-05-23 14:25:15"
+    var roomId = 0
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     let votedResultObservable = PublishRelay<VotedResultData>()
@@ -50,26 +51,42 @@ class ResultViewModel: ViewModelType{
     
     
 //MARK: - init
-    init(_ questionId: Int) {
+    init(_ roomId: Int, _ questionId: Int) {
         resultRequest(questionId)
     }
     
 //MARK: - In/Out
     struct Input {
-        //viewdidload가 되었다면 모델데이터를 불러오나?
+        let myResultButtonTap: Observable<Void>
+        let newQuestionButtonTap: Observable<Void>
     }
     
     struct Output {
         let timeLabelIsHidden = PublishSubject<timeLabelStyle>()
+        let myResultButtonTap = PublishRelay<UIViewController>()
+        let newQuestionButtonTap = PublishRelay<UIViewController>()
     }
 
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         let output = Output()
         
+        input.myResultButtonTap
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                output.myResultButtonTap.accept(MyResultViewController(viewModel: MyResultViewModel(roomId: self.roomId)))
+            }
+            .disposed(by: disposeBag)
+        
+        input.newQuestionButtonTap
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                output.newQuestionButtonTap.accept(NewQuestViewController())
+            }
+            .disposed(by: disposeBag)
+        
         remainingTime
             .subscribe { time in
-//                print("ResultViewModel function called \(time)")
                 guard let time = time.element else { return }
                 if time <= 0 {
                     output.timeLabelIsHidden.onNext(.isHidden)
@@ -111,8 +128,8 @@ class ResultViewModel: ViewModelType{
 //MARK: - Network
     func resultRequest(_ questionId: Int) {
         ResultNetworkManager.shared.votedResultRequest(questionId)
-            .subscribe(onNext: { data in
-                self.votedResultObservable.accept(data)
+            .subscribe(onNext: { [weak self] data in
+                self?.votedResultObservable.accept(data)
             }, onError: { error in
                 print("DEBUG: ResultViewModel - resultRequest Error: \(error.localizedDescription)")
             } )

@@ -20,6 +20,8 @@ final class RoomViewModel: ViewModelType {
     var roomObservable = BehaviorRelay<[User]>(value: []) //
     let allUsersInThisRoom = BehaviorRelay<[User]>(value: []) // 더미
     
+    var roomId: Int
+    
     // 투표용 properties
     var questionId: Int = 0
     var userId = TokenManager.getIntUserId()
@@ -28,6 +30,7 @@ final class RoomViewModel: ViewModelType {
     
     //MARK: - LifeCycle
     init(roomId: Int) {
+        self.roomId = roomId
         // 더미 User들 생성 !
 //        allUsersInThisRoom.accept(User.getDummyUsers())
         searchRoomRequest(roomId)
@@ -132,7 +135,7 @@ final class RoomViewModel: ViewModelType {
                     
                     // 서버 연동 성공 시
                     if let model = model {
-                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.questionId)))
+                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId)))
                     }
                 }
             })
