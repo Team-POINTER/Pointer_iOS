@@ -57,13 +57,12 @@ class RoomNetworkManager {
     }
     
 //MARK: - Function
-    // 룸 하나 조회
+    // 룸 하나 조회 - 이거 적용 중
     private func searchRoomRequest(_ roomId: Int,_ completion: @escaping (Error?, SearchRoomResultData?) -> Void){
         
         AF.request(roomRouter.getSingleRoom(roomId).url, method: roomRouter.getSingleRoom(roomId).method, headers: roomRouter.getSingleRoom(roomId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: SearchRoomResultModel.self) { response in
-                print("🔥 searchRoomRequest in")
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):
@@ -78,7 +77,7 @@ class RoomNetworkManager {
             }
     }
     
-    // 현재 질문 조회 - 이거 적용 중
+    // 현재 질문 조회
     private func currentQuestionRequest(_ roomId: Int, completion: @escaping (Error?, SearchQuestionResultData?) -> Void){
         let userId = TokenManager.getIntUserId()
         
@@ -145,6 +144,7 @@ struct SearchRoomResultData: Decodable {
     let roomNm: String
     let memberNum: Int
     let votingNum: Int
+    let questionId: Int
     let question: String
     let limitedAt: String
     let roomMembers: [SearchRoomMembers]

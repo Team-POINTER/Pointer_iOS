@@ -77,6 +77,7 @@ struct VotedResultModel: Decodable {
 
 struct VotedResultData: Decodable {
     let roomName: String
+    let question: String
     let targetUser: VotedUser // 해당 유저
     let members: [VotedUser] // 룸 안 유저
     let notNotedMemberCnt: Int // 투표하지 않은 유저 수

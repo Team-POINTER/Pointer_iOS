@@ -19,11 +19,13 @@ class ResultViewController: BaseViewController {
     var viewModel: ResultViewModel
     let disposeBag = DisposeBag()
     
+    var notVotedMemberCnt = 0 // 지목하지 않은 멤버 수
     
 //MARK: - Init
     init(viewModel: ResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -68,17 +70,18 @@ class ResultViewController: BaseViewController {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 self.title = data.roomName
-                self.myNameLabel.text = data.targetUser.userName
+                self.hintText.text = data.question
+                self.myNameLabel.text = "\(data.targetUser.userName) 님"
                 self.mySelectedPointLabel.text = "\(data.targetUser.votedMemberCnt) / \(data.targetUser.allVoteCnt)"
                 var selectedPeople = ""
                 var selectedPoint = ""
                 for i in 0..<data.members.count {
-                    selectedPeople += "\(i+1). \(data.members[i].userName)\n "
-                    selectedPoint += "\(data.members[i].votedMemberCnt) / \(data.members[i].allVoteCnt)\n  "
+                    selectedPeople += "\(i+1). \(data.members[i].userName)\n"
+                    selectedPoint += "\(data.members[i].votedMemberCnt) / \(data.members[i].allVoteCnt)\n"
                 }
                 self.selectedPeopleLabel.text = selectedPeople
                 self.selectedPointLabel.text = selectedPoint
-                
+                self.notVotedMemberCnt = data.notNotedMemberCnt
             })
             .disposed(by: disposeBag)
         
@@ -91,6 +94,7 @@ class ResultViewController: BaseViewController {
 //MARK: - UIComponents
     var scrollView: UIScrollView = {
         $0.bounces = false
+        $0.isScrollEnabled = true
         return $0
     }(UIScrollView())
     
@@ -116,6 +120,7 @@ class ResultViewController: BaseViewController {
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
+        $0.textAlignment = .right
         return $0
     }(UILabel())
     
@@ -159,8 +164,8 @@ class ResultViewController: BaseViewController {
         return $0
     }(UIButton())
     
-    var kokButton: UIButton = {
-        var attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!  4명")
+    lazy var kokButton: UIButton = {
+        var attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!  \(notVotedMemberCnt)명")
         attributedString.addAttribute(.font, value: UIFont.notoSansBold(size: 16), range: NSRange(location: 0, length: attributedString.length))
         attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 15))
         attributedString.addAttribute(.foregroundColor, value: UIColor.rgb(red: 121, green: 125, blue: 148), range: NSRange(location: 16, length: 3))
@@ -233,7 +238,7 @@ class ResultViewController: BaseViewController {
         }
         myNameLabel.snp.makeConstraints { make in
             make.top.equalTo(selectedPeopleLabel.snp.bottom).inset(15)
-            make.leading.equalToSuperview().inset(60)
+            make.leading.equalToSuperview().inset(53)
         }
         mySelectedPointLabel.snp.makeConstraints { make in
             make.top.equalTo(selectedPointLabel.snp.bottom).inset(15)

@@ -13,7 +13,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
     static let identifier = "RoomPeopleTableViewCell"
     
     //MARK: - Properties
-    var user: SearchQuestionResultMembers? {
+    var user: SearchRoomMembers? {
         didSet {
             configure()
         }
@@ -86,7 +86,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
     // 선택시 UI 전환
     func configure() {
         guard let user = user else { return }
-        nameLabel.text = "\(user.nickname)"
+        nameLabel.text = "\(user.name)"
     }
 
 }
