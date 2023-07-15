@@ -138,6 +138,7 @@ struct TotalQuestionResultModel: Decodable {
 }
 
 struct TotalQuestionResultData: Decodable {
+    let roomName: String?
     let questionId: Int
     let question: String
     let allVoteCnt: Int

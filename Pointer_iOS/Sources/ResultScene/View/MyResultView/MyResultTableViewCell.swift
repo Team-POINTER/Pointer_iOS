@@ -74,22 +74,23 @@ class MyResultTableViewCell: UITableViewCell {
             make.edges.equalToSuperview()
         }
         questionLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(21)
-            make.leading.trailing.equalToSuperview().inset(25)
+            make.top.equalToSuperview().inset(24.47)
+            make.leading.trailing.equalToSuperview().inset(21.61)
         }
         selectedMeNumber.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
-            make.bottom.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().inset(21.61)
+            make.bottom.equalToSuperview().inset(20.48)
         }
         hintDate.snp.makeConstraints { make in
-            make.trailing.bottom.equalToSuperview().inset(15)
+            make.trailing.bottom.equalToSuperview().inset(16.48)
         }
     }
 
     func configure() {
-        questionLabel.text = result?.question
-        selectedMeNumber.text = "\(result?.votedMemberCnt) / \(result?.allVoteCnt)"
-        hintDate.text = result?.createdAt
+        guard let result = result else { return }
+        questionLabel.text = result.question
+        selectedMeNumber.text = "\(result.votedMemberCnt) / \(result.allVoteCnt)"
+        hintDate.text = result.createdAt
     }
     
 }
