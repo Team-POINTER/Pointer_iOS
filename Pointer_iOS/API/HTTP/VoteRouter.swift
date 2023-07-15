@@ -10,7 +10,7 @@ import Alamofire
 
 enum VoteRouter {
     case vote // 투표하기
-    case searchVotedResult(_ userId: Int ,_ questionId: Int) // 지목화면 결과 조회
+    case votedResult(_ userId: Int ,_ questionId: Int) // 지목화면 결과 조회
     case showHint(_ userId: Int ,_ questionId: Int) // 힌트 보기
     case searchNotVotedResult(_ questionId: Int) // 지목하지 않은 사람 조회
 
@@ -30,7 +30,7 @@ extension VoteRouter: HttpRouter {
         switch self {
         case .vote:
             return "/votes"
-        case .searchVotedResult(let userId, let questionId):
+        case .votedResult(let userId, let questionId):
             return "/votes/\(userId)/\(questionId)"
         case .showHint(let userId, let questionId):
             return "/votes/hint/\(userId)/\(questionId)"
@@ -43,7 +43,7 @@ extension VoteRouter: HttpRouter {
         switch self {
         case .vote:
             return .post
-        case .searchVotedResult:
+        case .votedResult:
             return .get
         case .showHint:
             return .get

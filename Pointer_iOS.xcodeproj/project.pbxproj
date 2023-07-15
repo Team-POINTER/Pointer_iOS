@@ -49,6 +49,7 @@
 		478C9FF92A603882000FA196 /* RoomNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FF82A603882000FA196 /* RoomNetworkManager.swift */; };
 		478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FFE2A618483000FA196 /* QuestionRouter.swift */; };
 		478CA0012A61935F000FA196 /* VoteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0002A61935F000FA196 /* VoteRouter.swift */; };
+		478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0032A623EC4000FA196 /* ResultNetworkManager.swift */; };
 		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
@@ -157,6 +158,7 @@
 		478C9FF82A603882000FA196 /* RoomNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomNetworkManager.swift; sourceTree = "<group>"; };
 		478C9FFE2A618483000FA196 /* QuestionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRouter.swift; sourceTree = "<group>"; };
 		478CA0002A61935F000FA196 /* VoteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteRouter.swift; sourceTree = "<group>"; };
+		478CA0032A623EC4000FA196 /* ResultNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultNetworkManager.swift; sourceTree = "<group>"; };
 		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
 		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
@@ -433,6 +435,14 @@
 			path = Room;
 			sourceTree = "<group>";
 		};
+		478CA0022A623EA7000FA196 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				478CA0032A623EC4000FA196 /* ResultNetworkManager.swift */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
 		47CC89562A4681950020246E /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
@@ -662,6 +672,7 @@
 				473B73A429D0361800B33C77 /* Auth */,
 				478C9FED2A5EC274000FA196 /* Home */,
 				478C9FF72A60385D000FA196 /* Room */,
+				478CA0022A623EA7000FA196 /* Result */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -985,6 +996,7 @@
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
+				478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				47548E3C2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift in Sources */,
 				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,

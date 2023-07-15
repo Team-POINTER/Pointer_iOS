@@ -101,6 +101,9 @@ class ResultViewModel: ViewModelType{
         self.timer = nil
     }
     
-    
+//MARK: - Network
+    func resultRequest() {
+        
+    }
     
 }
