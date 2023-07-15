@@ -29,9 +29,8 @@ final class RoomViewModel: ViewModelType {
     //MARK: - LifeCycle
     init(roomId: Int) {
         // 더미 User들 생성 !
-        allUsersInThisRoom.accept(User.getDummyUsers())
+//        allUsersInThisRoom.accept(User.getDummyUsers())
         currentQuestionRequest(roomId)
-        
     }
 
     //MARK: - In/Out
@@ -133,7 +132,7 @@ final class RoomViewModel: ViewModelType {
                     
                     // 서버 연동 성공 시
                     if let model = model {
-                        output.pointButtonTap.accept(ResultViewController())
+                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.questionId)))
                     }
                 }
             })
@@ -223,12 +222,13 @@ final class RoomViewModel: ViewModelType {
 //    }
     
     func currentQuestionRequest(_ roomId: Int) {
+        print("🔥 currentQuestionRequest")
         RoomNetworkManager.shared.currentQuestionRequest(roomId)
             .subscribe(onNext: { [weak self] result in
                 self?.roomResultObservable.accept(result)
                 self?.roomResultMembersObservable.accept(result.members)
                 self?.questionId = result.questionId
-                print("RoomViewModel - currentQuestionRequest 데이터: \(result)")
+                print("🔥RoomViewModel - currentQuestionRequest 데이터: \(result)")
             }, onError: { error in
                 print("RoomViewModel - currentQuestionRequest 에러: \(error.localizedDescription)")
             })

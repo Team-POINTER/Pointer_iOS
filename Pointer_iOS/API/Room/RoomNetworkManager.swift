@@ -63,6 +63,7 @@ class RoomNetworkManager {
         AF.request(roomRouter.getSingleRoom(roomId).url, method: roomRouter.getSingleRoom(roomId).method, headers: roomRouter.getSingleRoom(roomId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: SearchRoomResultModel.self) { response in
+                print("🔥 searchRoomRequest in")
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):

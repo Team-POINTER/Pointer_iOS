@@ -15,9 +15,20 @@ import SendbirdUIKit
 // 1. 현재 타이머 시간을 viewModel에 있는 timeString으로 시작
 
 class ResultViewController: BaseViewController {
-    
-    var viewModel = ResultViewModel()
+//MARK: - properties
+    var viewModel: ResultViewModel
     let disposeBag = DisposeBag()
+    
+    
+//MARK: - Init
+    init(viewModel: ResultViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //MARK: - Rx
     func bindViewModel() {
@@ -51,6 +62,24 @@ class ResultViewController: BaseViewController {
                 self.newQuestionTimerLabel.text = style.getTimeString(time)
                 self.newQuestionTimerLabel.isHidden = false
             }
+            .disposed(by: disposeBag)
+        
+        viewModel.votedResultObservable
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.title = data.roomName
+                self.myNameLabel.text = data.targetUser.userName
+                self.mySelectedPointLabel.text = "\(data.targetUser.votedMemberCnt) / \(data.targetUser.allVoteCnt)"
+                var selectedPeople = ""
+                var selectedPoint = ""
+                for i in 0..<data.members.count {
+                    selectedPeople += "\(i+1). \(data.members[i].userName)\n "
+                    selectedPoint += "\(data.members[i].votedMemberCnt) / \(data.members[i].allVoteCnt)\n  "
+                }
+                self.selectedPeopleLabel.text = selectedPeople
+                self.selectedPointLabel.text = selectedPoint
+                
+            })
             .disposed(by: disposeBag)
         
         
@@ -168,8 +197,6 @@ class ResultViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        
-        self.title = "룸 이름"
         // - navigation bar title 색상 변경
     }
     

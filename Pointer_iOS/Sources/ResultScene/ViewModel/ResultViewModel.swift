@@ -9,32 +9,32 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ResultViewModel: ViewModelType{
+enum timeLabelStyle: CaseIterable {
+    case isHidden
+    case isNotHidden
     
-    enum timeLabelStyle: CaseIterable {
-        case isHidden
-        case isNotHidden
-        
-        var isHidden: Bool {
-            switch self {
-            case .isHidden: return true
-            case .isNotHidden: return false
-            }
-        }
-        
-        func getTimeString(_ time: Int) -> String {
-            switch self {
-            case .isHidden:
-                return " "
-            case .isNotHidden:
-                let hours = time / 3600
-                let minutes = (time % 3600) / 60
-                let seconds = time % 60
-                let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-                return changingTime
-            }
+    var isHidden: Bool {
+        switch self {
+        case .isHidden: return true
+        case .isNotHidden: return false
         }
     }
+    
+    func getTimeString(_ time: Int) -> String {
+        switch self {
+        case .isHidden:
+            return " "
+        case .isNotHidden:
+            let hours = time / 3600
+            let minutes = (time % 3600) / 60
+            let seconds = time % 60
+            let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            return changingTime
+        }
+    }
+}
+
+class ResultViewModel: ViewModelType{
     
 //MARK: - Properties
     // resultView에 맞는 모델 [X] -> API 연결 시
@@ -42,10 +42,17 @@ class ResultViewModel: ViewModelType{
     var timeString = "2023-05-23 14:25:15"
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
+    let votedResultObservable = PublishRelay<VotedResultData>()
     private var timer: Timer?
     
     
     let disposeBag = DisposeBag()
+    
+    
+//MARK: - init
+    init(_ questionId: Int) {
+        resultRequest(questionId)
+    }
     
 //MARK: - In/Out
     struct Input {
@@ -102,8 +109,14 @@ class ResultViewModel: ViewModelType{
     }
     
 //MARK: - Network
-    func resultRequest() {
-        
+    func resultRequest(_ questionId: Int) {
+        ResultNetworkManager.shared.votedResultRequest(questionId)
+            .subscribe(onNext: { data in
+                self.votedResultObservable.accept(data)
+            }, onError: { error in
+                print("DEBUG: ResultViewModel - resultRequest Error: \(error.localizedDescription)")
+            } )
+            .disposed(by: disposeBag)
     }
     
 }
