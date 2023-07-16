@@ -91,7 +91,8 @@ class HomeController: BaseViewController {
     }
     
     @objc private func handleActionButtonTapped() {
-
+        let alert = viewModel.getCreateRoomNameAlert()
+        present(alert, animated: true)
     }
     
     //MARK: - Functions

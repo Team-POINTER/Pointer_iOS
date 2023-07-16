@@ -47,15 +47,30 @@ class HomeViewModel: ViewModelType {
             .disposed(by: disposeBag)
     }
     
+    //MARK: - API Request
     // ToDo - 이름 최소 조건시 확인 버튼이 안눌리도록
     // ToDo - request 넘기는거 memory leak 나는건가..?
     func getModifyRoomNameAlert(_ currentName: String, roomId: Int) -> PointerAlert {
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 18), handler: nil)
-        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 18)) { [weak self] changeTo in
+        // 0. 취소 Action
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        // 1. 확인 Action
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
+            // 2. 입력한 텍스트로 룸 이름 변경 API 호출
             self?.requestChangeRoomName(changeTo: changeTo, roomId: roomId)
         }
         let customView = CustomTextfieldView(roomName: currentName, withViewHeight: 50)
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "방 이름 변경", description: "변경할 이름을 입력해주세요", customView: customView)
+        return alert
+    }
+    
+    
+    func getCreateRoomNameAlert() -> PointerAlert {
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { changeTo in
+//            self?.requestCreateRoom(roomName: <#T##String#>, question: <#T##String#>)
+        }
+        let customView = CustomTextfieldView(roomName: "", withViewHeight: 50)
+        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 설정", description: "새로운 룸의 이름을 입력하세요", customView: customView)
         return alert
     }
     
@@ -70,5 +85,9 @@ class HomeViewModel: ViewModelType {
                 self?.network.requestRoomList()
             }
         }
+    }
+    
+    func requestCreateRoom(roomName: String, question: String) {
+//        network.requestCreateRoom(roomName: <#T##String#>, question: <#T##String#>)
     }
 }

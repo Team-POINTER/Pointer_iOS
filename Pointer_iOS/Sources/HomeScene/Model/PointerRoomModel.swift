@@ -39,3 +39,8 @@ struct PointerDefaultResponse: Codable {
     let code: String
     let message: String
 }
+
+//MARK: - CreateRoom
+struct CreateRoomResponse: Codable {
+    
+}

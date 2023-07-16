@@ -108,6 +108,21 @@ class HomeNetworkManager {
                 }
             }
     }
+    
+    func requestCreateRoom(roomName: String, question: String) {
+        let router = RoomRouter.createRoom
+        
+        var param = [String: Any]()
+        param["userId"] = TokenManager.getUserToken()
+        param["roomNm"] = roomName
+        param["question"] = question
+        
+        AF.request(router.url, method: router.method, parameters: param, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: CreateRoomResponse.self) { response in
+                print(response)
+            }
+    }
 }
 
 
