@@ -114,6 +114,7 @@
 		CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */; };
 		F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90071982A60367500D1CDEE /* PointerRoomModel.swift */; };
 		F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F925EB5C2A604897008139FE /* RoomCellViewModel.swift */; };
+		F94019552A63FBA000C732CB /* UserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94019542A63FBA000C732CB /* UserRouter.swift */; };
 		F9F120702A5922AD009A33F2 /* RoomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */; };
 		F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F120722A592D75009A33F2 /* TokenManager.swift */; };
 /* End PBXBuildFile section */
@@ -217,6 +218,7 @@
 		CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewController.swift; sourceTree = "<group>"; };
 		F90071982A60367500D1CDEE /* PointerRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerRoomModel.swift; sourceTree = "<group>"; };
 		F925EB5C2A604897008139FE /* RoomCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCellViewModel.swift; sourceTree = "<group>"; };
+		F94019542A63FBA000C732CB /* UserRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRouter.swift; sourceTree = "<group>"; };
 		F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRouter.swift; sourceTree = "<group>"; };
 		F9F120722A592D75009A33F2 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -455,6 +457,7 @@
 				F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */,
 				478C9FFE2A618483000FA196 /* QuestionRouter.swift */,
 				478CA0002A61935F000FA196 /* VoteRouter.swift */,
+				F94019542A63FBA000C732CB /* UserRouter.swift */,
 			);
 			path = HTTP;
 			sourceTree = "<group>";
@@ -960,6 +963,7 @@
 				F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */,
 				CD0667812A04E8870003C7B4 /* UserFriendCell.swift in Sources */,
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
+				F94019552A63FBA000C732CB /* UserRouter.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
 				CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */,
 				473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */,
