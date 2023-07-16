@@ -24,7 +24,8 @@ import RxSwift
 // 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[X])
 
 class RoomViewController: BaseViewController {
-//MARK: - UIComponents
+    
+//MARK: - properties
     var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 500))
     
     private let peopleTableView : UITableView = {
@@ -35,14 +36,35 @@ class RoomViewController: BaseViewController {
     }(UITableView())
     
     private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 200))
-//MARK: - Components
-    var disposeBag = DisposeBag()
-    var viewModel = RoomViewModel()
+    
+    let disposeBag = DisposeBag()
+    let viewModel: RoomViewModel
+    
+    
+//MARK: - Init
+    init(viewModel: RoomViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //MARK: - Rx
     func bindViewModel() {
-        let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable())
+        let input = RoomViewModel.Input(hintTextEditEvent: roomTopView.hintTextField.rx.text.orEmpty.asObservable(),
+                                        pointButtonTapEvent: roomTopView.pointerButton.rx.tap.asObservable(),
+                                        inviteButtonTapEvent: roomBottomView.inviteButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
+        
+        viewModel.roomResultObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] data in
+                self?.title = data.roomNm
+                self?.roomTopView.questLabel.text = data.question
+            })
+            .disposed(by: disposeBag)
         
 // - TextField bind
         output.hintTextFieldCountString
@@ -68,7 +90,7 @@ class RoomViewController: BaseViewController {
             .disposed(by: disposeBag)
         
 // - tableView bind
-        viewModel.allUsersInThisRoom
+        viewModel.roomResultMembersObservable
             .observe(on: MainScheduler.instance)
             .bind(to: peopleTableView.rx.items) { [weak self] tableView, index, item in
                 guard let self = self,
@@ -82,14 +104,12 @@ class RoomViewController: BaseViewController {
                 
                 /// 아래 코드는 Cell 안으로 이동 - cell.user -> didset - configure()
                 /// 클래스의 단일 책임 원칙 (Cell 안에서 일어나는 일은 Cell이 책임지도록)
-                
                 return cell
-                
             }.disposed(by: disposeBag)
         
 //- tableView cell tapped
         Observable
-            .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(User.self))
+            .zip(peopleTableView.rx.itemSelected, peopleTableView.rx.modelSelected(SearchRoomMembers.self))
             .bind { [weak self] indexPath, model in
                 
                 // 셀 타입캐스팅, 셀 안에 있는 User 언래핑
@@ -124,18 +144,16 @@ class RoomViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        roomTopView.pointerButton.rx.tap
+        output.pointButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                self.navigationController?.pushViewController(ResultViewController(), animated: true)
-                self.tabBarController?.tabBar.isHidden = true
+            .subscribe(onNext: { [weak self] viewController in
+                self?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
-        roomBottomView.inviteButton.rx.tap
+        output.inviteButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { _ in
+            .subscribe(onNext: { [weak self] viewController in
                 print("invite 버튼 click")
             })
             .disposed(by: disposeBag)
@@ -146,7 +164,6 @@ class RoomViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        self.title = "룸 이름"
     }
     
     func setUI() {

@@ -15,30 +15,44 @@ import SendbirdUIKit
 // 1. 현재 타이머 시간을 viewModel에 있는 timeString으로 시작
 
 class ResultViewController: BaseViewController {
-    
-    var viewModel = ResultViewModel()
+//MARK: - properties
+    var viewModel: ResultViewModel
     let disposeBag = DisposeBag()
+    
+    var notVotedMemberCnt = 0 // 지목하지 않은 멤버 수
+    
+//MARK: - Init
+    init(viewModel: ResultViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //MARK: - Rx
     func bindViewModel() {
         
-        let input = ResultViewModel.Input()
+        let input = ResultViewModel.Input(myResultButtonTap: myResultButton.rx.tap.asObservable(),
+                                          newQuestionButtonTap: newQuestionButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
-        myResultButton.rx.tap
+        output.myResultButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .subscribe(onNext: { [weak self] viewController in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(MyResultViewController(), animated: true)
+                self.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
-        newQuestionButton.rx.tap
+        
+        output.newQuestionButtonTap
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .subscribe(onNext: { [weak self] viewController in
                 guard let self = self else { return }
-                let vc = NewQuestViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -53,6 +67,25 @@ class ResultViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
+        viewModel.votedResultObservable
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.title = data.roomName
+                self.hintText.text = data.question
+                self.myNameLabel.text = "\(data.targetUser.userName) 님"
+                self.mySelectedPointLabel.text = "\(data.targetUser.votedMemberCnt) / \(data.targetUser.allVoteCnt)"
+                var selectedPeople = ""
+                var selectedPoint = ""
+                for i in 0..<data.members.count {
+                    selectedPeople += "\(i+1). \(data.members[i].userName)\n"
+                    selectedPoint += "\(data.members[i].votedMemberCnt) / \(data.members[i].allVoteCnt)\n"
+                }
+                self.selectedPeopleLabel.text = selectedPeople
+                self.selectedPointLabel.text = selectedPoint
+                self.notVotedMemberCnt = data.notNotedMemberCnt
+            })
+            .disposed(by: disposeBag)
+        
         
         
         viewModel.startTimer()
@@ -62,6 +95,7 @@ class ResultViewController: BaseViewController {
 //MARK: - UIComponents
     var scrollView: UIScrollView = {
         $0.bounces = false
+        $0.isScrollEnabled = true
         return $0
     }(UIScrollView())
     
@@ -87,6 +121,7 @@ class ResultViewController: BaseViewController {
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
+        $0.textAlignment = .right
         return $0
     }(UILabel())
     
@@ -130,8 +165,8 @@ class ResultViewController: BaseViewController {
         return $0
     }(UIButton())
     
-    var kokButton: UIButton = {
-        var attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!  4명")
+    lazy var kokButton: UIButton = {
+        var attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!  \(notVotedMemberCnt)명")
         attributedString.addAttribute(.font, value: UIFont.notoSansBold(size: 16), range: NSRange(location: 0, length: attributedString.length))
         attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 15))
         attributedString.addAttribute(.foregroundColor, value: UIColor.rgb(red: 121, green: 125, blue: 148), range: NSRange(location: 16, length: 3))
@@ -168,8 +203,6 @@ class ResultViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        
-        self.title = "룸 이름"
         // - navigation bar title 색상 변경
     }
     
@@ -206,7 +239,7 @@ class ResultViewController: BaseViewController {
         }
         myNameLabel.snp.makeConstraints { make in
             make.top.equalTo(selectedPeopleLabel.snp.bottom).inset(15)
-            make.leading.equalToSuperview().inset(60)
+            make.leading.equalToSuperview().inset(53)
         }
         mySelectedPointLabel.snp.makeConstraints { make in
             make.top.equalTo(selectedPointLabel.snp.bottom).inset(15)

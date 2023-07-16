@@ -11,30 +11,38 @@ import RxSwift
 import RxCocoa
 
 class MyResultViewController: BaseViewController {
-    
+//MARK: - properties
     let disposeBag = DisposeBag()
-    var viewModel = MyResultViewModel()
+    var viewModel: MyResultViewModel
+    
+//MARK: - Init
+    init(viewModel: MyResultViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //MARK: - Rx
     func bindViewModel() {
-        let myResult: [MyResultModel] = [
-            MyResultModel(hint: "한 20년 뒤 미래에 가장 돈을 잘 벌 것 같은 사람은 누구인가?최대 공백포함45", selectMe: 3, date: "23.03.25"),
-            MyResultModel(hint: "가장 친해지고 싶은 사람은?", selectMe: 5, date: "23.01.25"),
-            MyResultModel(hint: "테스트 입니다만?", selectMe: 2, date: "23.01.05")
-        ]
-        viewModel.myResultObservable.accept(myResult)
         
         viewModel.myResultObservable
             .observe(on: MainScheduler.instance)
-            .bind(to: hintTableView.rx.items(cellIdentifier: "MyResultTableViewCell", cellType: MyResultTableViewCell.self)) { index, item, cell in
-                cell.hintLabel.text = item.hint
-                cell.selectedMeNumber.text = "\(item.selectMe) / 20"
-                cell.hintDate.text = item.date
+            .bind(to: hintTableView.rx.items) { tableView, index, item in
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: MyResultTableViewCell.identifier, for: IndexPath(row: index, section: 0)) as? MyResultTableViewCell
+                else { return UITableViewCell() }
+                cell.selectionStyle = .none
+                cell.result = item
+                
+                return cell
+                
             }.disposed(by: disposeBag)
         
 //- tableView cell tapped
         Observable
-            .zip(hintTableView.rx.itemSelected, hintTableView.rx.modelSelected(MyResultModel.self))
+            .zip(hintTableView.rx.itemSelected, hintTableView.rx.modelSelected(TotalQuestionResultData.self))
             .bind { [weak self] indexPath, model in
                 self?.hintTableView.deselectRow(at: indexPath, animated: true)
                 print("Selected \(model) at \(indexPath)")

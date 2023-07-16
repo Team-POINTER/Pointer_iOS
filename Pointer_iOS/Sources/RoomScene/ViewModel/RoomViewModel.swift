@@ -10,9 +10,37 @@ import RxSwift
 import RxCocoa
 
 final class RoomViewModel: ViewModelType {
+    
+    //MARK: - Properties
+    let disposeBag = DisposeBag()
+    let roomResultObservable = PublishRelay<SearchRoomResultData>()
+    let roomResultMembersObservable = PublishRelay<[SearchRoomMembers]>()
+    var selectedUsers = BehaviorRelay<[SearchRoomMembers]>(value: [])
+    
+    var roomObservable = BehaviorRelay<[User]>(value: []) //
+    let allUsersInThisRoom = BehaviorRelay<[User]>(value: []) // 더미
+    
+    var roomId: Int
+    
+    // 투표용 properties
+    var questionId: Int = 0
+    var userId = TokenManager.getIntUserId()
+    var votedUsers: [Int] = []
+    var hintString: String = ""
+    
+    //MARK: - LifeCycle
+    init(roomId: Int) {
+        self.roomId = roomId
+        // 더미 User들 생성 !
+//        allUsersInThisRoom.accept(User.getDummyUsers())
+        searchRoomRequest(roomId)
+    }
+
     //MARK: - In/Out
     struct Input {
         let hintTextEditEvent: Observable<String>
+        let pointButtonTapEvent: Observable<Void>
+        let inviteButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -20,21 +48,10 @@ final class RoomViewModel: ViewModelType {
         var hintTextFieldLimitedString = PublishRelay<String>()
         var selectedUsersJoinedString = BehaviorRelay<String>(value: "")
         var pointButtonValid = PublishRelay<Bool>()
+        var pointButtonTap = PublishRelay<UIViewController>()
+        var inviteButtonTap = PublishRelay<UIViewController>()
     }
     
-    //MARK: - Properties
-    let disposeBag = DisposeBag()
-    var roomObservable = BehaviorRelay<[User]>(value: [])
-
-    let allUsersInThisRoom = BehaviorRelay<[User]>(value: [])
-    var selectedUsers = BehaviorRelay<[User]>(value: [])
-    
-    //MARK: - LifeCycle
-    init() {
-        // 더미 User들 생성 !
-        allUsersInThisRoom.accept(User.getDummyUsers())
-    }
-
     //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         
@@ -50,6 +67,7 @@ final class RoomViewModel: ViewModelType {
                    let self = self {
                     /// 1-1 글자수 제한
                     let limitedString = self.hintTextFieldLimitedString(text: text)
+                    self.hintString = limitedString
                     output.hintTextFieldLimitedString.accept(limitedString)
                     
                     /// 1-2 카운트 string값 방출
@@ -70,7 +88,7 @@ final class RoomViewModel: ViewModelType {
             .subscribe { users in
                 if let users = users.element {
                     /// 2-1 선택한 유저들을 합친 string 반환
-                    let joined = users.map { $0.userName }.joined(separator: " ・ ")
+                    let joined = users.map { $0.name }.joined(separator: " ・ ")
                     output.selectedUsersJoinedString.accept(joined)
                     /// 2-2 유저를 선택한 상태인지? 체크
                     if users.count > 0 {
@@ -89,25 +107,66 @@ final class RoomViewModel: ViewModelType {
                 output.pointButtonValid.accept($0)
             }.disposed(by: disposeBag)
         
+        /// 4. POINT 버튼 Tap 시
+        input.pointButtonTapEvent
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                // selected된 유저의 userId 값만 따로 배열 설정
+                self.selectedUsers
+                    .subscribe { selectedUsers in
+                        if let users = selectedUsers.element {
+                            self.votedUsers = users.map { $0.userId }
+                        }
+                    }
+                    .disposed(by: disposeBag)
+                
+                
+                let vote = VoteRequestModel(questionId: self.questionId,
+                                            userId: self.userId,
+                                            votedUserIds: self.votedUsers,
+                                            hint: self.hintString)
+
+                self.voteRequest(vote) { (error, model) in
+                    // 서버 연동 실패 시
+                    if let error = error {
+                        return
+                    }
+                    
+                    // 서버 연동 성공 시
+                    if let model = model {
+                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId)))
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.inviteButtonTapEvent
+            .subscribe(onNext: { _ in
+                print("초대하기 버튼 Tap")
+//                output.inviteButtonTap.accept(<#T##event: UIViewController##UIViewController#>)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
     //MARK: - Functions
     /// 유저 선택
-    func selectUser(_ user: User) {
+    func selectUser(_ user: SearchRoomMembers) {
         var currentSelectedUser = selectedUsers.value
         currentSelectedUser.append(user)
         selectedUsers.accept(currentSelectedUser)
-        print("DEBUG: \(user.userName) 이 선택됨")
+        print("DEBUG: \(user.name) 이 선택됨")
     }
     
     /// 유저 선택 해제
-    func deSelectUser(_ selectedUser: User) {
+    func deSelectUser(_ selectedUser: SearchRoomMembers) {
         var currentSelectedUser = selectedUsers.value
         currentSelectedUser.enumerated().forEach { (index, user) in
             // User의 고유값이 같으면 해당 Index 삭제
-            if selectedUser.uid == user.uid {
-                print("DEBUG: \(user.userID) 선택 해제")
+            if selectedUser.userId == user.userId {
+                print("DEBUG: \(user.name) 선택 해제")
                 currentSelectedUser.remove(at: index)
                 selectedUsers.accept(currentSelectedUser)
             }
@@ -122,10 +181,10 @@ final class RoomViewModel: ViewModelType {
     
     /// SelectedUser 배열 안에 있는 유저인지 확인
     /// reuse 시 체크하는 함수
-    func detectSelectedUser(_ selectedUser: User) -> Bool {
+    func detectSelectedUser(_ selectedUser: SearchRoomMembers) -> Bool {
         var isSelectedUser = false
         for user in selectedUsers.value {
-            if user.uid == selectedUser.uid {
+            if user.userId == selectedUser.userId {
                 isSelectedUser = true
                 break
             }
@@ -150,4 +209,48 @@ final class RoomViewModel: ViewModelType {
             return text
         }
     }
+    
+    //MARK: - Network
+    func searchRoomRequest(_ roomId: Int) {
+        // 룸 조회 API
+        RoomNetworkManager.shared.searchRoomRequest(roomId)
+            .subscribe(onNext: { [weak self] result in
+                self?.roomResultObservable.accept(result)
+                self?.roomResultMembersObservable.accept(result.roomMembers)
+                self?.questionId = result.questionId
+                print("🔥 RoomViewModel - searchRoomRequest 데이터: \(result)")
+            }, onError: { error in
+                print("RoomViewModel - searchRoomRequest 에러: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+//    func currentQuestionRequest(_ roomId: Int) {
+//        print("🔥 currentQuestionRequest")
+//        RoomNetworkManager.shared.currentQuestionRequest(roomId)
+//            .subscribe(onNext: { [weak self] result in
+//                self?.roomResultObservable.accept(result)
+//                self?.roomResultMembersObservable.accept(result.members)
+//                self?.questionId = result.questionId
+//                print("🔥RoomViewModel - currentQuestionRequest 데이터: \(result)")
+//            }, onError: { error in
+//                print("RoomViewModel - currentQuestionRequest 에러: \(error.localizedDescription)")
+//            })
+//            .disposed(by: disposeBag)
+//    }
+    
+    func voteRequest(_ voteRequestModel: VoteRequestModel, completion: @escaping(Error?, [VoteResultData]?) -> Void) {
+        RoomNetworkManager.shared.voteRequest(voteRequestModel) { (error, model) in
+            if let error = error {
+                print("RoomViewModel - voteRequest 에러: \(error.localizedDescription)")
+                completion(error,nil)
+            }
+            
+            if let model = model {
+                print("🔥투표 성공")
+                completion(nil, model)
+            }
+        }
+    }
+    
 }

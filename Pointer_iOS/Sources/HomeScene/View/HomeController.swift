@@ -113,9 +113,10 @@ class HomeController: BaseViewController {
     /// 👉 다음 뷰 구현할 부분
     private func roomCellTapped(model: PointerRoomModel) {
         // 룸 뷰 컨트롤러
-        let viewController = RoomViewController()
+        let viewController = RoomViewController(viewModel: RoomViewModel(roomId: model.roomId))
         print("🔥DEBUG: 선택한 룸 ID - \(model.roomId)")
         // ToDo - RoomViewController 의존성 주입해 다음 뷰 컨트롤러 push 하기
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func setupNavigationController() {

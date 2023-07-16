@@ -16,11 +16,7 @@ class HomeViewModel: ViewModelType {
     var disposeBag = DisposeBag()
     let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
     let network = HomeNetworkManager()
-//    private let homeNextworkProtocol: HomeNetworkProtocol
-//
-//    init( homeNextworkProtocol: HomeNetworkProtocol) {
-//        self.homeNextworkProtocol = homeNextworkProtocol
-//    }
+
     
 //MARK: - In/Out
     struct Input {

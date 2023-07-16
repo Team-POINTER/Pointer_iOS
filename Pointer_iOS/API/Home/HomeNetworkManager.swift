@@ -9,13 +9,7 @@ import Foundation
 import Alamofire
 import RxSwift
 
-protocol HomeNetworkProtocol {
-    func createRoomRequest(_ parameter: CreateRoomInputModel) -> Observable<CreateRoomResultModel>
-}
-
-
-class HomeNetworkManager: HomeNetworkProtocol {
-
+class HomeNetworkManager {
     
 //MARK: - shared
     static let shared = HomeNetworkManager()
@@ -91,7 +85,7 @@ class HomeNetworkManager: HomeNetworkProtocol {
                 // 성공인 경우
             case .success(let result):
                 // completion 전송
-                completion(result.roomList, nil)
+                completion(result.data.roomList, nil)
                 // 실패인 경우
             case .failure(let error):
                 // completion 전송
