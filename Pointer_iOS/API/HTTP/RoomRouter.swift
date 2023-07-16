@@ -77,7 +77,7 @@ extension RoomRouter: HttpRouter {
     
     var parameters: Parameters? {
         let parameters: [String: Any] = [
-            "userId": 4
+            "userId": 2
         ]
         return parameters
     }

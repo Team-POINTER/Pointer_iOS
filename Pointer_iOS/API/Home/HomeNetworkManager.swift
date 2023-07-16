@@ -75,7 +75,7 @@ class HomeNetworkManager {
         }
     }
     
-    private func requestRoomList(_ completion: @escaping ([PointerRoomModel]?, Error?) -> Void) {
+    func requestRoomList(_ completion: @escaping ([PointerRoomModel]?, Error?) -> Void) {
         let router = RoomRouter.getRoomList
         
         AF.request(router.url, method: router.method, parameters: router.parameters, encoding: JSONEncoding.default, headers: router.headers)
@@ -109,7 +109,7 @@ class HomeNetworkManager {
             }
     }
     
-    func requestCreateRoom(roomName: String, question: String) {
+    func requestCreateRoom(roomName: String, question: String, completion: @escaping (Bool) -> Void) {
         let router = RoomRouter.createRoom
         
         var param = [String: Any]()
@@ -120,7 +120,7 @@ class HomeNetworkManager {
         AF.request(router.url, method: router.method, parameters: param, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: CreateRoomResponse.self) { response in
-                print(response)
+                completion(true)
             }
     }
 }

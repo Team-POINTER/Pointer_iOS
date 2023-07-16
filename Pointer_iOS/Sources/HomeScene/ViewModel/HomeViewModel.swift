@@ -40,11 +40,16 @@ class HomeViewModel: ViewModelType {
     }
     
     func requestRoomList() {
-        network.requestRoomList()
-            .subscribe { [weak self] models in
+        network.requestRoomList { [weak self] models, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            if let models = models {
                 self?.roomModel.accept(models)
             }
-            .disposed(by: disposeBag)
+        }
     }
     
     //MARK: - API Request
@@ -67,7 +72,7 @@ class HomeViewModel: ViewModelType {
     func getCreateRoomNameAlert() -> PointerAlert {
         let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
         let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { changeTo in
-//            self?.requestCreateRoom(roomName: <#T##String#>, question: <#T##String#>)
+//            self?.requestCreateRoom(roomName: "", question: "")
         }
         let customView = CustomTextfieldView(roomName: "", withViewHeight: 50)
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 설정", description: "새로운 룸의 이름을 입력하세요", customView: customView)
@@ -82,12 +87,16 @@ class HomeViewModel: ViewModelType {
             if response.code == "J000" {
                 print("변경 성공")
                 // ToDo - 이녀석을 다시 부르는 방법은 .. ?
-                self?.network.requestRoomList()
+                self?.requestRoomList()
             }
         }
     }
     
     func requestCreateRoom(roomName: String, question: String) {
-//        network.requestCreateRoom(roomName: <#T##String#>, question: <#T##String#>)
+        network.requestCreateRoom(roomName: roomName, question: "첫 질문?") { [weak self] isSuccessed in
+            if isSuccessed {
+                self?.requestRoomList()
+            }
+        }
     }
 }
