@@ -50,6 +50,7 @@
 		478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FFE2A618483000FA196 /* QuestionRouter.swift */; };
 		478CA0012A61935F000FA196 /* VoteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0002A61935F000FA196 /* VoteRouter.swift */; };
 		478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0032A623EC4000FA196 /* ResultNetworkManager.swift */; };
+		478CA0062A62CEA3000FA196 /* HintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0052A62CEA3000FA196 /* HintViewModel.swift */; };
 		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
@@ -159,6 +160,7 @@
 		478C9FFE2A618483000FA196 /* QuestionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRouter.swift; sourceTree = "<group>"; };
 		478CA0002A61935F000FA196 /* VoteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteRouter.swift; sourceTree = "<group>"; };
 		478CA0032A623EC4000FA196 /* ResultNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultNetworkManager.swift; sourceTree = "<group>"; };
+		478CA0052A62CEA3000FA196 /* HintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintViewModel.swift; sourceTree = "<group>"; };
 		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
 		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 			children = (
 				47117CA629C72EC6001707C8 /* ResultViewModel.swift */,
 				473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */,
+				478CA0052A62CEA3000FA196 /* HintViewModel.swift */,
 				471145CF2A0E321800AED0DC /* NewQuestViewModel.swift */,
 			);
 			path = ViewModel;
@@ -998,6 +1001,7 @@
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
 				478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
+				478CA0062A62CEA3000FA196 /* HintViewModel.swift in Sources */,
 				47548E3C2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift in Sources */,
 				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,

@@ -27,6 +27,11 @@ class MyResultViewController: BaseViewController {
     
 //MARK: - Rx
     func bindViewModel() {
+        let input = MyResultViewModel.Input(
+            hintTableViewItemSelected: hintTableView.rx.itemSelected.asObservable(),
+            hintTableViewModelSelected: hintTableView.rx.modelSelected(TotalQuestionResultData.self).asObservable()
+        )
+        let output = viewModel.transform(input: input)
         
         viewModel.myResultObservable
             .observe(on: MainScheduler.instance)
@@ -37,19 +42,26 @@ class MyResultViewController: BaseViewController {
                 cell.result = item
                 
                 return cell
-                
-            }.disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
         
 //- tableView cell tapped
         Observable
             .zip(hintTableView.rx.itemSelected, hintTableView.rx.modelSelected(TotalQuestionResultData.self))
             .bind { [weak self] indexPath, model in
-                self?.hintTableView.deselectRow(at: indexPath, animated: true)
-                print("Selected \(model) at \(indexPath)")
-                let cell = self?.hintTableView.cellForRow(at: indexPath) as? MyResultTableViewCell
-                
-                
+                guard let cell = self?.hintTableView.cellForRow(at: indexPath) as? MyResultTableViewCell else { return }
+
+//                self?.viewModel.questId = model.questionId
+                print("tap")
+
             }
+            .disposed(by: disposeBag)
+        
+        output.hintTableViewSelected
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] viewController in
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -66,6 +78,7 @@ class MyResultViewController: BaseViewController {
         $0.backgroundColor = .clear
         $0.register(MyResultTableViewCell.self, forCellReuseIdentifier: MyResultTableViewCell.identifier)
         $0.bounces = false
+        $0.allowsSelection = true
         return $0
     }(UITableView())
 
@@ -114,7 +127,6 @@ class MyResultViewController: BaseViewController {
 
 
 extension MyResultViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 180
     }
