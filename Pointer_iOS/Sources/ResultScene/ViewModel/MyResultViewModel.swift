@@ -13,6 +13,11 @@ class MyResultViewModel: ViewModelType{
 //MARK: - Properties
     let disposeBag = DisposeBag()
     var myResultObservable = PublishRelay<[TotalQuestionResultData]>()
+    var questId = 0 {
+        didSet {
+            print("questId = \(questId)")
+        }
+    }
     
 //MARK: - Init
     init(roomId: Int) {
@@ -21,19 +26,31 @@ class MyResultViewModel: ViewModelType{
     
 //MARK: - In/Out
     struct Input {
-        
+        let hintTableViewItemSelected: Observable<IndexPath>
+        let hintTableViewModelSelected: Observable<TotalQuestionResultData>
     }
     
     struct Output {
-        
+        let hintTableViewSelected = PublishRelay<UIViewController>()
     }
     
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
+        let output = Output()
+// - tableView cell tapped
+        Observable
+            .zip(input.hintTableViewItemSelected, input.hintTableViewModelSelected)
+            .bind { indexPath, model in
+                print("myResultViewModel - tap: \(indexPath)")
+                output.hintTableViewSelected.accept(HintViewController(viewModel: HintViewModel(questionId: model.questionId)))
+            }
+            .disposed(by: disposeBag)
         
-        
-        return Output()
+        return output
     }
+    
+//MARK: - Functions
+
     
     
 //MARK: - Network
