@@ -36,7 +36,8 @@ class NewQuestViewController: BaseViewController {
 //MARK: - RX
     func bindViewModel() {
         
-        let input = NewQuestViewModel.Input(newQuestTextFieldEditEvent: newQuestTextField.rx.text.orEmpty.asObservable())
+        let input = NewQuestViewModel.Input(newQuestTextFieldEditEvent: newQuestTextField.rx.text.orEmpty.asObservable(),
+                                            newQuestButtonTapEvent: newQuestButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
         Observable

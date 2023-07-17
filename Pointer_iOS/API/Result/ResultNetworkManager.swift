@@ -194,6 +194,19 @@ struct VotedUser: Decodable {
     let votedMemberCnt: Int // 해당 유저가 받은 투표 수
 }
 
+//MARK: - #1-2 지목하지 않은 사람 조회
+struct NotVotedResultModel: Decodable {
+    let status: Int?
+    let code: String
+    let message: String
+    let result: [NotVotedResultData]?
+}
+
+struct NotVotedResultData: Decodable {
+    let userId: Int
+    let userName: String
+}
+
 //MARK: - #1-3 질문 전체 조회
 struct TotalQuestionResultModel: Decodable {
     let status: Int?
