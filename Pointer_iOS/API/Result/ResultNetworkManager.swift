@@ -98,7 +98,7 @@ class ResultNetworkManager {
             }
     }
     
-    private func totalQuestionRequest(_ roomId: Int, completion: @escaping(Error?, [TotalQuestionResultData]?) -> Void) {
+    private func totalQuestionRequest(_ roomId: Int, completion: @escaping (Error?, [TotalQuestionResultData]?) -> Void) {
         AF.request(questionRouter.totalSearchQuestion(userId, roomId).url,
                    method:questionRouter.totalSearchQuestion(userId, roomId).method,
                    headers: questionRouter.totalSearchQuestion(userId, roomId).headers)
@@ -120,12 +120,37 @@ class ResultNetworkManager {
             }
     }
     
-    private func showHintRequest(_ questionId: Int, completion: @escaping(Error?, ShowHintResultData?) -> Void) {
+    private func showHintRequest(_ questionId: Int, completion: @escaping (Error?, ShowHintResultData?) -> Void) {
         AF.request(voteRouter.showHint(userId, questionId).url,
                    method:voteRouter.showHint(userId, questionId).method,
                    headers: voteRouter.showHint(userId, questionId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: ShowHintResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    print(result)
+                    guard let data = result.result else { return }
+                    completion(nil, data)
+                // 실패인 경우
+                case .failure(let error):
+                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
+            }
+    }
+    
+    func newQuestionRequest(_ parameters: NewQuestionRequestModel,
+                                    completion: @escaping (Error?, NewQuestionResultData?) -> Void) {
+        AF.request(questionRouter.createQuestion.url,
+                   method:questionRouter.createQuestion.method,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default,
+                   headers: questionRouter.createQuestion.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: NewQuestionResultModel.self) { response in
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):
@@ -199,4 +224,23 @@ struct ShowHintResultData: Decodable {
     let allVoteCnt: Int // 모든 투표 수
     let targetVotedCnt: Int // 받은 투표 수
     let createdAt: String
+}
+
+//MARK: - #1-5 새 질문 등록
+struct NewQuestionRequestModel: Encodable {
+    let roomId: Int
+    let userId: Int
+    let content: String
+}
+
+struct NewQuestionResultModel: Decodable {
+    let status: Int?
+    let code: String
+    let message: String
+    let result: NewQuestionResultData?
+}
+
+struct NewQuestionResultData: Decodable {
+    let questionId: Int
+    let content: String
 }

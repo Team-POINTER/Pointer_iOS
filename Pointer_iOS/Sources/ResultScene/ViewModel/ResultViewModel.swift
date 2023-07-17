@@ -42,6 +42,8 @@ class ResultViewModel: ViewModelType{
     var limitedAt = ""
     var roomId = 0
     var userName = ""
+    var roomName = ""
+    var question = ""
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     let votedResultObservable = PublishRelay<VotedResultData>()
@@ -84,7 +86,7 @@ class ResultViewModel: ViewModelType{
         input.newQuestionButtonTap
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                output.newQuestionButtonTap.accept(NewQuestViewController())
+                output.newQuestionButtonTap.accept(NewQuestViewController(viewModel: NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId)))
             }
             .disposed(by: disposeBag)
         
@@ -134,6 +136,8 @@ class ResultViewModel: ViewModelType{
             .subscribe(onNext: { [weak self] data in
                 self?.votedResultObservable.accept(data)
                 self?.userName = data.targetUser.userName
+                self?.roomName = data.roomName
+                self?.question = data.question
             }, onError: { error in
                 print("DEBUG: ResultViewModel - resultRequest Error: \(error.localizedDescription)")
             } )

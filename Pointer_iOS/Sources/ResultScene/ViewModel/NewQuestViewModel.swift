@@ -9,6 +9,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+// MARK: 확인필요
+// 1. A와 B가 질문 등록 시 A가 먼저 질문 등록했다면 B에서는 에러가 떠야함(선착순 1명 24시간 카운트) -> UI 누군가 이미 질문 등록했어요. 표시 [구현 X]
+// 2. 질문 등록 성공 시 맨 처음부터 룸 다시 들어가야하는가?
 enum nextQuestButtonStyle: CaseIterable {
     case isEnable
     case disable
@@ -51,19 +54,36 @@ class NewQuestViewModel: ViewModelType{
     
 //MARK: - Properties
     
-    var limitedAt = ""
+    var limitedAt = "" {
+        didSet {
+            startTimer()
+        }
+    }
+    var roomName = ""
+    var roomId = 0
+    var userId = TokenManager.getIntUserId()
+    var questionInputString = "" // 텍스트필드 입력 값
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     private var timer: Timer?
     
     let disposeBag = DisposeBag()
     
+//MARK: - Init
+    init(limitedAt: String, roomName: String, roomId: Int) {
+        self.limitedAt = limitedAt
+        self.roomName = roomName
+        self.roomId = roomId
+    }
+    
 //MARK: - In/Out
     struct Input {
-        
+        let newQuestTextFieldEditEvent: Observable<String>
+        let newQuestButtonTapEvent: Observable<Void>
     }
     
     struct Output {
+        let timeLimited = BehaviorRelay<Bool>(value: false)
         let buttonIsEnable = PublishSubject<nextQuestButtonStyle>()
     }
     
@@ -72,18 +92,46 @@ class NewQuestViewModel: ViewModelType{
         
         let output = Output()
         
+        input.newQuestTextFieldEditEvent
+            .subscribe { [weak self] text in
+                self?.questionInputString = text
+            }
+            .disposed(by: disposeBag)
+        
+        input.newQuestButtonTapEvent
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let newQuestionRequestModel = NewQuestionRequestModel(roomId: self.roomId,
+                                                                      userId: self.userId,
+                                                                      content: self.questionInputString)
+                ResultNetworkManager.shared.newQuestionRequest(newQuestionRequestModel) { (error, model) in
+                    if let error = error {
+                        print("질문 등록 에러: \(error.localizedDescription)")
+                    }
+                    
+                    if let model = model {
+                        print("질문 등록 완료")
+                        // 뷰 스택 전부 지워야하는가?
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
         
         remainingTime
             .subscribe { time in
                 print("NewQuestViewModel function called \(time)")
                 guard let time = time.element else { return }
                 if time <= 0 {
-                    output.buttonIsEnable.onNext(.isEnable)
-                } else {
+                    output.timeLimited.accept(true)
                     output.buttonIsEnable.onNext(.disable)
+                } else {
+                    output.timeLimited.accept(false)
+                    output.buttonIsEnable.onNext(.isEnable)
                 }
             }
             .disposed(by: disposeBag)
+        
+        
         
         return output
     }

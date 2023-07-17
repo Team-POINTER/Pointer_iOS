@@ -18,13 +18,25 @@ import RxCocoa
 
 class NewQuestViewController: BaseViewController {
     
-    let viewModel = NewQuestViewModel()
+    let viewModel: NewQuestViewModel
     let disposeBag = DisposeBag()
+
+//MARK: - Init
+    init(viewModel: NewQuestViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.title = viewModel.roomName
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //MARK: - RX
     func bindViewModel() {
         
-        let input = NewQuestViewModel.Input()
+        let input = NewQuestViewModel.Input(newQuestTextFieldEditEvent: newQuestTextField.rx.text.orEmpty.asObservable())
         let output = viewModel.transform(input: input)
         
         Observable
@@ -39,7 +51,20 @@ class NewQuestViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        viewModel.startTimer()
+        output.timeLimited
+            .subscribe(onNext: { [weak self] b in
+                guard let self = self else { return}
+                // 시간 남았을 시(버튼 비활성화)
+                if b {
+                    self.newQuestTextField.isEnabled = false
+                    self.newQuestTextField.placeholder = "누군가 이미 질문을 등록했어요."
+                // 시간 0 시(버튼 활성화)
+                } else {
+                    self.newQuestTextField.isEnabled = true
+                    self.newQuestTextField.placeholder = "질문을 입력하세요."
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
 //MARK: - UI Components
@@ -52,14 +77,12 @@ class NewQuestViewController: BaseViewController {
         return $0
     }(UILabel())
     
-    var newQuestLabel: UILabel = {
-        $0.text = "질문을 입력하세요."
+    var newQuestTextField: UITextField = {
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 20)
         $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
         $0.textAlignment = .center
-        $0.numberOfLines = 0
         return $0
-    }(UILabel())
+    }(UITextField())
     
     lazy var newQuestButton: UIButton = {
         let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
@@ -67,7 +90,7 @@ class NewQuestViewController: BaseViewController {
         $0.layer.cornerRadius = 25
         $0.backgroundColor = UIColor.pointerRed.withAlphaComponent(0.6)
         $0.titleLabel?.textColor = UIColor.white.withAlphaComponent(0.6)
-//        self.newQuestButton.isEnabled = newQuestionButtonEnabled
+
         return $0
     }(UIButton())
     
@@ -85,7 +108,7 @@ class NewQuestViewController: BaseViewController {
 //MARK: - set UI
     func setUI(){
         view.addSubview(questAlertLabel)
-        view.addSubview(newQuestLabel)
+        view.addSubview(newQuestTextField)
         view.addSubview(newQuestButton)
         view.addSubview(inviteButton)
     }
@@ -96,7 +119,7 @@ class NewQuestViewController: BaseViewController {
             make.leading.trailing.equalToSuperview().inset(75)
             make.centerX.equalToSuperview()
         }
-        newQuestLabel.snp.makeConstraints { make in
+        newQuestTextField.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.leading.equalToSuperview().inset(45.5)
             make.trailing.equalToSuperview().inset(45.5)
