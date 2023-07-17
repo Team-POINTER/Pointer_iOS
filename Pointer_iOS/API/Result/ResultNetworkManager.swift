@@ -221,6 +221,7 @@ struct ShowHintResultModel: Decodable {
 
 struct ShowHintResultData: Decodable {
     let hint: [String]
+    let voterNm: [String]
     let allVoteCnt: Int // 모든 투표 수
     let targetVotedCnt: Int // 받은 투표 수
     let createdAt: String

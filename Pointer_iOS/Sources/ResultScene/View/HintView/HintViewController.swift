@@ -33,7 +33,11 @@ class HintViewController: BaseViewController {
         viewModel.showHintObservable
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
-                
+                var str = ""
+                for i in 0..<data.voterNm.count {
+                    str += "\(i+1). \(data.voterNm[i]) \n"
+                }
+                self.selectMePeopleLabel.text = str
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
                 self.hintDate.text = data.createdAt
             })
