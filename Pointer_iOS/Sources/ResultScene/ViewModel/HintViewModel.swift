@@ -14,9 +14,16 @@ class HintViewModel: ViewModelType{
     let disposeBag = DisposeBag()
     let showHintObservable = PublishRelay<ShowHintResultData>()
     
+    var roomName = ""
+    var question = ""
+    var userName = ""
+    
 //MARK: - Init
-    init(questionId: Int) {
+    init(questionId: Int, roomName: String, question: String, userName: String) {
         showHintRequest(questionId)
+        self.roomName = roomName
+        self.question = question
+        self.userName = userName
     }
     
 //MARK: - In/Out

@@ -9,49 +9,49 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class NewQuestViewModel: ViewModelType{
+enum nextQuestButtonStyle: CaseIterable {
+    case isEnable
+    case disable
     
-    enum nextQuestButtonStyle: CaseIterable {
-        case isEnable
-        case disable
-        
-        var isEnable: Bool {   
-            switch self {
-            case .isEnable: return true
-            case .disable: return false
-            }
-        }
-        
-        var backgroundColor: UIColor {
-            switch self {
-            case .isEnable:
-                return UIColor.pointerRed
-            case .disable:
-                return UIColor.pointerRed.withAlphaComponent(0.5)
-            }
-        }
-        
-        func getAttributedString(_ time: Int) -> NSMutableAttributedString {
-            switch self {
-            case .isEnable:
-                let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-                return attributedQuestionString
-            case .disable:
-                let hours = time / 3600
-                let minutes = (time % 3600) / 60
-                let seconds = time % 60
-                let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-                
-                let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-                attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
-                return attributedQuestionString
-            }
+    var isEnable: Bool {
+        switch self {
+        case .isEnable: return true
+        case .disable: return false
         }
     }
     
+    var backgroundColor: UIColor {
+        switch self {
+        case .isEnable:
+            return UIColor.pointerRed
+        case .disable:
+            return UIColor.pointerRed.withAlphaComponent(0.5)
+        }
+    }
+    
+    func getAttributedString(_ time: Int) -> NSMutableAttributedString {
+        switch self {
+        case .isEnable:
+            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+            return attributedQuestionString
+        case .disable:
+            let hours = time / 3600
+            let minutes = (time % 3600) / 60
+            let seconds = time % 60
+            let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            
+            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+            attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
+            return attributedQuestionString
+        }
+    }
+}
+
+class NewQuestViewModel: ViewModelType{
+    
 //MARK: - Properties
     
-    var timeString = "2023-05-23 14:25:15"
+    var limitedAt = ""
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     private var timer: Timer?
@@ -93,7 +93,7 @@ class NewQuestViewModel: ViewModelType{
     func startTimer() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        guard let endDate = formatter.date(from: timeString) else { return }
+        guard let endDate = formatter.date(from: limitedAt) else { return }
         let remainingTimeInterval = Int(endDate.timeIntervalSinceNow)
         self.remainingTime.onNext(remainingTimeInterval)
         
