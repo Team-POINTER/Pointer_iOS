@@ -14,7 +14,9 @@ class BaseTabBarController: UITabBarController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         configureAuth()
     }
     
@@ -22,7 +24,7 @@ class BaseTabBarController: UITabBarController {
     func configureAuth() {
         print("🔥ConfigureAuth")
         // 유저 토큰이 존재하면
-        if TokenManager.getUserToken() != nil {
+        if TokenManager.getUserAccessToken() != nil {
             // ToDo - 액세스 토큰 유효 검사
             configureViewControllers()
         } else {
@@ -50,7 +52,6 @@ class BaseTabBarController: UITabBarController {
         
         // 두번째 탭
         let secondVC = HomeController()
-//        let secondVC = TermsViewController(viewModel: TermsViewModel(authResultModel: AuthResultModel(status: 200, code: "abc", message: "abc", userId: 705)))
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭

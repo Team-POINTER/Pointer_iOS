@@ -10,8 +10,8 @@ import Alamofire
 
 enum AuthRouter {
     case login
-    case checkId
-    case saveId
+    case checkId(_ accessToken: String)
+    case saveId(_ accessToken: String)
 }
 
 extension AuthRouter: HttpRouter {
@@ -47,7 +47,17 @@ extension AuthRouter: HttpRouter {
     }
     
     var headers: HTTPHeaders? {
-        return ["Content-Type" : "application/json"]
+        switch self {
+        case .login:
+            return ["Content-Type" : "application/json"]
+        case .checkId(let accessToken):
+            return ["Content-Type" : "application/json",
+                    "Authorization" : "Bearer \(accessToken)"]
+        case .saveId(let accessToken):
+            return ["Content-Type" : "application/json",
+                    "Authorization" : "Bearer \(accessToken)"]
+        }
+        
     }
     
     var parameters: Parameters? {

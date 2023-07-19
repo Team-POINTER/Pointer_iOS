@@ -27,6 +27,7 @@ class LoginViewModel: NSObject, ViewModelType {
     
     struct Output {
         var nextViewController = PublishRelay<UIViewController>()
+        var dissMiss = BehaviorRelay<Bool>(value: false)
     }
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
@@ -38,9 +39,15 @@ class LoginViewModel: NSObject, ViewModelType {
                     switch loginResultType {
                     case .success:
                         let termsViewModel = TermsViewModel(authResultModel: model)
-                        self?.loginView.accept(TermsViewController(viewModel: termsViewModel))
+                        output.nextViewController.accept(TermsViewController(viewModel: termsViewModel))
                     case .existedUser:
-                        self?.loginView.accept(BaseTabBarController())
+                        guard let accessToken = model.tokenDto?.accessToken,
+                              let refreshToken = model.tokenDto?.refreshToken,
+                              let userId = model.tokenDto?.userId else { return}
+                        TokenManager.saveUserAccessToken(accessToken: accessToken)
+                        TokenManager.saveUserRefreshToken(refreshToken: refreshToken)
+                        TokenManager.saveUserId(userId: String(userId))
+                        output.dissMiss.accept(true)
                     default:
                         print(loginResultType.message)
                         return
@@ -178,9 +185,9 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                let tokenString = String(data: token, encoding: .utf8) {
                 
                 let appleToken = AuthInputModel(accessToken: tokenString)
-                AuthNetworkManager.shared.posts(appleToken) { model, loginResultType in
+                AuthNetworkManager.shared.posts(appleToken) { [weak self] model, loginResultType in
                     let termsViewModel = TermsViewModel(authResultModel: model)
-                    self.loginView.accept(TermsViewController(viewModel: termsViewModel))
+                    self?.loginView.accept(TermsViewController(viewModel: termsViewModel))
                 }
             }
         }
