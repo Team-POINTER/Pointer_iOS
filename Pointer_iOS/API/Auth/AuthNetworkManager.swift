@@ -117,6 +117,25 @@ struct AuthNetworkManager {
         }
     }
     
+    func reissuePost(_ refreshToken: String, _ completion: @escaping (AuthResultModel) -> Void) {
+        let router = router.reissue(refreshToken)
+        
+        AF.request(router.url,
+                   method: router.method,
+                   headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: AuthResultModel.self) { response in
+            switch response.result {
+            case .success(let result):
+                print("Token 재발급 데이터 전송 성공 - \(result)")
+                completion(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+                print(response.error ?? "")
+            }
+        }
+    }
+    
 }
 
 

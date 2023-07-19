@@ -12,6 +12,7 @@ enum AuthRouter {
     case login
     case checkId(_ accessToken: String)
     case saveId(_ accessToken: String)
+    case reissue(_ refreshToken: String)
 }
 
 extension AuthRouter: HttpRouter {
@@ -32,6 +33,8 @@ extension AuthRouter: HttpRouter {
             return "/auth/checkId"
         case .saveId:
             return "/auth/id"
+        case .reissue:
+            return "/user/reissue"
         }
     }
     
@@ -42,6 +45,8 @@ extension AuthRouter: HttpRouter {
         case .checkId:
             return .post
         case .saveId:
+            return .post
+        case .reissue:
             return .post
         }
     }
@@ -56,6 +61,9 @@ extension AuthRouter: HttpRouter {
         case .saveId(let accessToken):
             return ["Content-Type" : "application/json",
                     "Authorization" : "Bearer \(accessToken)"]
+        case .reissue(let refreshToken):
+            return ["Content-Type" : "application/json",
+                    "Authorization" : "Bearer \(refreshToken)"]
         }
         
     }
