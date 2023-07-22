@@ -16,11 +16,13 @@ class MyResultViewModel: ViewModelType{
     
     var questId = 0
     var userName = ""
+    var roomName = ""
     
 //MARK: - Init
-    init(_ roomId: Int, _ userName: String) {
+    init(_ roomId: Int, _ userName: String, _ roomName: String) {
         totalQuestionRequest(roomId)
         self.userName = userName
+        self.roomName = roomName
     }
     
 //MARK: - In/Out
@@ -41,7 +43,7 @@ class MyResultViewModel: ViewModelType{
             .zip(input.hintTableViewItemSelected, input.hintTableViewModelSelected)
             .bind { [weak self] indexPath, model in
                 guard let self = self else { return }
-                output.hintTableViewSelected.accept(HintViewController(viewModel: HintViewModel(questionId: model.questionId, roomName: model.roomName ?? "", question: model.question, userName: self.userName)))
+                output.hintTableViewSelected.accept(HintViewController(viewModel: HintViewModel(questionId: model.questionId, roomName: self.roomName, question: model.question, userName: self.userName)))
             }
             .disposed(by: disposeBag)
         

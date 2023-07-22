@@ -10,8 +10,9 @@ import Alamofire
 
 enum AuthRouter {
     case login
-    case checkId
-    case saveId
+    case checkId(_ accessToken: String)
+    case saveId(_ accessToken: String)
+    case reissue(_ refreshToken: String)
 }
 
 extension AuthRouter: HttpRouter {
@@ -32,6 +33,8 @@ extension AuthRouter: HttpRouter {
             return "/auth/checkId"
         case .saveId:
             return "/auth/id"
+        case .reissue:
+            return "/user/reissue"
         }
     }
     
@@ -43,11 +46,26 @@ extension AuthRouter: HttpRouter {
             return .post
         case .saveId:
             return .post
+        case .reissue:
+            return .post
         }
     }
     
     var headers: HTTPHeaders? {
-        return ["Content-Type" : "application/json"]
+        switch self {
+        case .login:
+            return ["Content-Type" : "application/json"]
+        case .checkId(let accessToken):
+            return ["Content-Type" : "application/json",
+                    "Authorization" : "Bearer \(accessToken)"]
+        case .saveId(let accessToken):
+            return ["Content-Type" : "application/json",
+                    "Authorization" : "Bearer \(accessToken)"]
+        case .reissue(let refreshToken):
+            return ["Content-Type" : "application/json",
+                    "Authorization" : "Bearer \(refreshToken)"]
+        }
+        
     }
     
     var parameters: Parameters? {

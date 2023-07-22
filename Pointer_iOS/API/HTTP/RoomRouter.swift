@@ -72,7 +72,10 @@ extension RoomRouter: HttpRouter {
     }
     
     var headers: HTTPHeaders? {
-        return ["Content-Type" : "application/json"]
+        guard let accessToken = TokenManager.getUserAccessToken() else { return HTTPHeaders() }
+        return ["Content-Type" : "application/json",
+                "Authorization" : "Bearer \(accessToken)"]
+        
     }
     
     var parameters: Parameters? {

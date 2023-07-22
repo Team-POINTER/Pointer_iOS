@@ -19,6 +19,7 @@ class MyResultViewController: BaseViewController {
     init(viewModel: MyResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.title = viewModel.roomName
     }
     
     required init?(coder: NSCoder) {
@@ -35,8 +36,7 @@ class MyResultViewController: BaseViewController {
         
         viewModel.myResultObservable
             .observe(on: MainScheduler.instance)
-            .bind(to: hintTableView.rx.items) { [weak self] tableView, index, item in
-                self?.title = item.roomName
+            .bind(to: hintTableView.rx.items) { tableView, index, item in
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: MyResultTableViewCell.identifier, for: IndexPath(row: index, section: 0)) as? MyResultTableViewCell
                 else { return UITableViewCell() }

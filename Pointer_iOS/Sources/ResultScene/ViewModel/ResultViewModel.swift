@@ -79,7 +79,7 @@ class ResultViewModel: ViewModelType{
         input.myResultButtonTap
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                output.myResultButtonTap.accept(MyResultViewController(viewModel: MyResultViewModel(self.roomId, self.userName)))
+                output.myResultButtonTap.accept(MyResultViewController(viewModel: MyResultViewModel(self.roomId, self.userName, self.roomName)))
             }
             .disposed(by: disposeBag)
         

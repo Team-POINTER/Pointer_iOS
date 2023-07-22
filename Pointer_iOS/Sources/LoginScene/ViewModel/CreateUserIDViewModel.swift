@@ -78,8 +78,10 @@ class CreateUserIDViewModel: ViewModelType {
             .withLatestFrom(output.idTextFieldLimitedString)
             .subscribe(onNext: { [weak self] text in
                 if let self = self {
-                    let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
-                    AuthNetworkManager.shared.idCheckPost(authIdInput) { authIdResultModel, loginResultType in
+                    guard let userId = self.authResultModel.tokenDto?.userId else { return }
+                    guard let accessToken = self.authResultModel.tokenDto?.accessToken else { return }
+                    let authCheckIdInput = AuthCheckIdInputModel(userId: userId, id: text)
+                    AuthNetworkManager.shared.idCheckPost(authCheckIdInput, accessToken) { authIdResultModel, loginResultType in
                         if loginResultType == LoginResultType.duplicatedId {
                             // ID 중복 시
                             output.duplicatedIdCheck.accept(false)
@@ -106,12 +108,16 @@ class CreateUserIDViewModel: ViewModelType {
             .withLatestFrom(output.idTextFieldLimitedString)
             .subscribe(onNext: { [weak self] text in
                 if let self = self {
-                    let authIdInput = AuthIdInputModel(userId: self.authResultModel.userId, id: text)
-                    AuthNetworkManager.shared.idSavePost(authIdInput) { authIdResultModel, loginResultType in
+                    guard let accessToken = self.authResultModel.tokenDto?.accessToken else { return }
+                    let authSaveIdInput = AuthSaveIdInputModel(id: text)
+                    
+                    AuthNetworkManager.shared.idSavePost(authSaveIdInput, accessToken) { authIdResultModel, loginResultType in
                         if loginResultType == LoginResultType.saveId {
-                            // ToDo - 추후 토큰으로 교체요
-                            guard let userID = authIdResultModel.userId else { return }
-                            self.saveTokenInDevice(string: String(userID))
+                            guard let userId = self.authResultModel.tokenDto?.userId else { return }
+                            guard let refreshToken = self.authResultModel.tokenDto?.refreshToken else { return }
+                            TokenManager.saveUserId(userId: String(userId))
+                            TokenManager.saveUserAccessToken(accessToken: accessToken)
+                            TokenManager.saveUserRefreshToken(refreshToken: refreshToken)
                             output.nextButtonTap.accept(BaseTabBarController())
                         }
                     }
@@ -123,11 +129,6 @@ class CreateUserIDViewModel: ViewModelType {
     }
     
 //MARK: - Helper Function
-    func saveTokenInDevice(string: String?) {
-        if let token = string {
-            TokenManager.saveUserToken(token: token)
-        }
-    }
     
     // idTextField 글자 수 제한 함수
     func hintTextFieldLimitedString(text: String) -> String {
