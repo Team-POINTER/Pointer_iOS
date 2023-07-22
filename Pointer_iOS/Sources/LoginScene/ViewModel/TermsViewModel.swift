@@ -14,6 +14,9 @@ class TermsViewModel: ViewModelType {
     let disposeBag = DisposeBag()
     let authResultModel: AuthResultModel
     
+    var serviceAgree = 0
+    var serviceAge = 0
+    var marketing = 0
     
     init(authResultModel: AuthResultModel) {
         self.authResultModel = authResultModel
@@ -74,16 +77,29 @@ class TermsViewModel: ViewModelType {
         
         output.allAllow
             .subscribe(onNext: { b in
-                output.marketingInfoAllow.accept(b)
                 output.overAgeAllow.accept(b)
-                output.privateInfoAllow.accept(b)
                 output.serviceAllow.accept(b)
+                output.privateInfoAllow.accept(b)
+                output.marketingInfoAllow.accept(b)
                 output.nextButtonValid.accept(b)
             })
             .disposed(by: disposeBag)
         
+        output.overAgeAllow
+            .subscribe(onNext: { [weak self] b in
+                b ? (self?.serviceAge = 1) : (self?.serviceAgree = 0)
+            })
+            .disposed(by: disposeBag)
+        
+        output.marketingInfoAllow
+            .subscribe(onNext: { [weak self] b in
+                b ? (self?.marketing = 1) : (self?.marketing = 0)
+            })
+            .disposed(by: disposeBag)
+        
         Observable.combineLatest(output.serviceAllow, output.privateInfoAllow, resultSelector: { $0 && $1 })
-            .subscribe(onNext: { b in
+            .subscribe(onNext: { [weak self] b in
+                b ? (self?.serviceAgree = 1) : (self?.serviceAgree = 0)
                 output.nextButtonValid.accept(b)
             })
             .disposed(by: disposeBag)
@@ -91,6 +107,8 @@ class TermsViewModel: ViewModelType {
         input.nextButtonTapEvent
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
+                
+                
                 let createUserIdViewModel = CreateUserIDViewModel(authResultModel: self.authResultModel)
                 let createUserIdViewController = CreateUserIDViewController(viewModel: createUserIdViewModel)
                 output.nextButtonTap.accept(createUserIdViewController)

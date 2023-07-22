@@ -66,6 +66,27 @@ struct AuthNetworkManager {
         }
     }
     
+    func agreePost(_ parameter: AuthAgreeInputModel, _ accessToken: String, _ completion: @escaping (AuthResultModel) -> Void) {
+        let router = router.agree(accessToken)
+        
+        AF.request(router.url,
+                   method: router.method,
+                   parameters: parameter,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: AuthResultModel.self) { response in
+            switch response.result {
+            case .success(let result):
+                print("동의 항목 전송 성공 - \(result)")
+                completion(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+                print(response.error ?? "")
+            }
+        }
+    }
+    
     func idCheckPost(_ parameter: AuthCheckIdInputModel, _ accessToken: String,
                      _ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         print("중복 확인 버튼 함수 시작")
@@ -156,6 +177,14 @@ struct PointerToken: Decodable {
     let accessToken: String
     let refreshToken: String
 }
+
+//MARK: - 동의 항목
+struct AuthAgreeInputModel: Encodable {
+    let serviceAgree: Int
+    let serviceAge: Int
+    let marketing: Int
+}
+
 
 //MARK: - ID 중복 체크, 저장 시
 struct AuthSaveIdInputModel: Encodable {
