@@ -15,6 +15,7 @@ class HomeViewModel: ViewModelType {
 //MARK: - Properties
     var disposeBag = DisposeBag()
     let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
+    let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
     let network = HomeNetworkManager()
 
     
@@ -52,6 +53,12 @@ class HomeViewModel: ViewModelType {
         }
     }
     
+    //MARK: - NextViewConfigure
+    func pushSingleRoomController(roomId: Int) {
+        let viewController = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
+        nextViewController.accept(viewController)
+    }
+    
     //MARK: - API Request
     // ToDo - 이름 최소 조건시 확인 버튼이 안눌리도록
     // ToDo - request 넘기는거 memory leak 나는건가..?
@@ -71,8 +78,9 @@ class HomeViewModel: ViewModelType {
     
     func getCreateRoomNameAlert() -> PointerAlert {
         let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
-        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { changeTo in
-//            self?.requestCreateRoom(roomName: "", question: "")
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
+            guard let roomName = changeTo else { return }
+            self?.requestCreateRoom(roomName: roomName)
         }
         let customView = CustomTextfieldView(roomName: "", withViewHeight: 50)
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 설정", description: "새로운 룸의 이름을 입력하세요", customView: customView)
@@ -92,10 +100,12 @@ class HomeViewModel: ViewModelType {
         }
     }
     
-    func requestCreateRoom(roomName: String, question: String) {
-        network.requestCreateRoom(roomName: roomName, question: "첫 질문?") { [weak self] isSuccessed in
-            if isSuccessed {
-                self?.requestRoomList()
+    func requestCreateRoom(roomName: String) {
+        network.requestCreateRoom(roomName: roomName) { [weak self] roomId in
+            if let id = roomId {
+                self?.pushSingleRoomController(roomId: id)
+            } else {
+                // 에러일 때
             }
         }
     }

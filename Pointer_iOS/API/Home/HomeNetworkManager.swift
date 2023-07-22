@@ -17,24 +17,6 @@ class HomeNetworkManager {
     
     
 //MARK: - Observable 변환
-    func createRoomRequest(_ parameter: CreateRoomInputModel) -> Observable<CreateRoomResultModel> {
-        return Observable.create { (observer) -> Disposable in
-            self.createRoomRequest(parameter) { error, createRoomResultModel in
-                if let error = error {
-                    observer.onError(error)
-                }
-                
-                if let model = createRoomResultModel {
-                    observer.onNext(model)
-                }
-                
-                observer.onCompleted()
-            }
-            
-            return Disposables.create()
-        }
-    }
-    
     /// Observable.create 뭔가 공통 함수로 뺼 수 있을듯
     func requestRoomList() -> Observable<[PointerRoomModel]> {
         return Observable.create { (observer) -> Disposable in
@@ -55,30 +37,11 @@ class HomeNetworkManager {
     }
     
 //MARK: - Function
-    private func createRoomRequest(_ parameter: CreateRoomInputModel,_ completion: @escaping (Error?, CreateRoomResultModel?) -> Void){
-        
-        AF.request(router.createRoom.url, method: router.createRoom.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.createRoom.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: CreateRoomResultModel.self) { response in
-            switch response.result {
-                // 성공인 경우
-            case .success(let result):
-                print("룸 생성 데이터 전송 성공 - \(result)")
-                // completion 전송
-                completion(nil, result)
-                // 실패인 경우
-            case .failure(let error):
-                print("룸 생성 데이터 전송 실패 - \(error.localizedDescription)")
-                // completion 전송
-                completion(error, nil)
-            }
-        }
-    }
-    
+    // 룸 리스트
     func requestRoomList(_ completion: @escaping ([PointerRoomModel]?, Error?) -> Void) {
         let router = RoomRouter.getRoomList
         
-        AF.request(router.url, method: router.method, parameters: router.parameters, encoding: JSONEncoding.default, headers: router.headers)
+        AF.request(router.url, method: router.method, parameters: nil, encoding: JSONEncoding.default, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: PointerHomeModel.self) { response in
             switch response.result {
@@ -94,6 +57,7 @@ class HomeNetworkManager {
         }
     }
     
+    // 룸 이름 변경
     func requestRoomNameChange(input: RoomNameChangeInput, completion: @escaping (PointerDefaultResponse) -> Void) {
         let router = RoomRouter.modifyRoomTitle
         
@@ -109,28 +73,37 @@ class HomeNetworkManager {
             }
     }
     
-    func requestCreateRoom(roomName: String, question: String, completion: @escaping (Bool) -> Void) {
+    // 룸 생성
+    func requestCreateRoom(roomName: String, completion: @escaping (_ roomId: Int?) -> Void) {
         let router = RoomRouter.createRoom
         
-        var param = [String: Any]()
-        param["userId"] = TokenManager.getUserToken()
-        param["roomNm"] = roomName
-        param["question"] = question
+        var param = ["roomNm": roomName]
         
-        AF.request(router.url, method: router.method, parameters: param, headers: router.headers)
-            .validate(statusCode: 200..<500)
+        AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default, headers: router.headers)
+//            .validate(statusCode: 200..<500)
             .responseDecodable(of: CreateRoomResponse.self) { response in
-                completion(true)
+                print(response)
+                print(param)
+                switch response.result {
+                    // 성공인 경우
+                case .success(let result):
+                    print("룸 생성 데이터 전송 성공 - \(result)")
+                    let status = CreateRoomResponse.Status(rawValue: result.code)
+                    if status == .success {
+                        completion(result.data?.detailResponse.roomId)
+                    } else {
+                        // ToDo - 에러처리
+                        completion(nil)
+                    }
+                    
+                case .failure(let error):
+                    print("룸 생성 데이터 전송 실패 - \(error.localizedDescription)")
+                    completion(nil)
+                }
             }
     }
 }
 
-
-//MARK: - 룸 생성 Input
-struct CreateRoomInputModel: Encodable {
-    let roomNm: String
-    let userId: Int
-}
 
 //MARK: - 룸 생성 Output
 struct CreateRoomResultModel: Decodable {

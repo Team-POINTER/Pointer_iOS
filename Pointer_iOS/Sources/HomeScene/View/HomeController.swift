@@ -63,7 +63,15 @@ class HomeController: BaseViewController {
         Observable
             .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(PointerRoomModel.self))
             .bind { [weak self] indexPath, model in
-                self?.roomCellTapped(model: model)
+                self?.viewModel.pushSingleRoomController(roomId: model.roomId)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.nextViewController
+            .bind { [weak self] viewController in
+                if let vc = viewController {
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
             }
             .disposed(by: disposeBag)
     }
@@ -86,10 +94,6 @@ class HomeController: BaseViewController {
         tabVc.configureAuth()
     }
     
-    @objc private func something() {
-        print(#function)
-    }
-    
     @objc private func handleActionButtonTapped() {
         let alert = viewModel.getCreateRoomNameAlert()
         present(alert, animated: true)
@@ -109,15 +113,6 @@ class HomeController: BaseViewController {
             actionButton.layer.cornerRadius = 62 / 2
             actionButton.clipsToBounds = true
         }
-    }
-    
-    /// 👉 다음 뷰 구현할 부분
-    private func roomCellTapped(model: PointerRoomModel) {
-        // 룸 뷰 컨트롤러
-        let viewController = RoomViewController(viewModel: RoomViewModel(roomId: model.roomId))
-        print("🔥DEBUG: 선택한 룸 ID - \(model.roomId)")
-        // ToDo - RoomViewController 의존성 주입해 다음 뷰 컨트롤러 push 하기
-        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func setupNavigationController() {
