@@ -39,10 +39,14 @@ struct AuthNetworkManager {
     let router = AuthRouter.self
     
 //MARK: - Function
-    func posts(_ parameter: AuthInputModel,_ completion: @escaping (AuthResultModel, LoginResultType) -> Void){
+    func posts(_ parameter: AuthInputModel, _ completion: @escaping (AuthResultModel, LoginResultType) -> Void){
         print("Login URL = \(AuthRouter.login.url)")
         
-        AF.request(router.login.url, method: router.login.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.login.headers)
+        AF.request(router.login.url,
+                   method: router.login.method,
+                   parameters: parameter,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.login.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
@@ -62,15 +66,21 @@ struct AuthNetworkManager {
         }
     }
     
-    func idCheckPost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
-        
+    func idCheckPost(_ parameter: AuthCheckIdInputModel, _ accessToken: String,
+                     _ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         print("중복 확인 버튼 함수 시작")
-        AF.request(router.checkId.url, method: router.checkId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.login.headers)
+        let router = router.checkId(accessToken)
+        
+        AF.request(router.url,
+                   method: router.method,
+                   parameters: parameter,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthIdResultModel.self) { response in
             switch response.result {
             case .success(let result):
-                print(result)
+                print("ID 중복 확인 데이터 전송 성공 - \(result)")
                 // rawValue로 resultType 생성
                 let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
                 // 핸들러로 전송
@@ -82,14 +92,21 @@ struct AuthNetworkManager {
         }
     }
     
-    func idSavePost(_ parameter: AuthIdInputModel,_ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
+    func idSavePost(_ parameter: AuthSaveIdInputModel, _ accessToken: String,
+                    _ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
         print("확인 버튼 함수 시작")
+        let router = router.saveId(accessToken)
         
-        AF.request(router.saveId.url, method: router.saveId.method, parameters: parameter, encoder: JSONParameterEncoder.default, headers: router.login.headers)
+        AF.request(router.url,
+                   method: router.method,
+                   parameters: parameter,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthIdResultModel.self) { response in
             switch response.result {
             case .success(let result):
+                print("ID 저장 데이터 전송 성공 - \(result)")
                 // rawValue로 resultType 생성
                 let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
                 completion(result, loginResultType)
@@ -100,36 +117,58 @@ struct AuthNetworkManager {
         }
     }
     
+    func reissuePost(_ refreshToken: String, _ completion: @escaping (AuthResultModel) -> Void) {
+        let router = router.reissue(refreshToken)
+        
+        AF.request(router.url,
+                   method: router.method,
+                   headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: AuthResultModel.self) { response in
+            switch response.result {
+            case .success(let result):
+                print("Token 재발급 데이터 전송 성공 - \(result)")
+                completion(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+                print(response.error ?? "")
+            }
+        }
+    }
+    
 }
 
 
-//MARK: - 로그인 시
+//MARK: - 회원가입 시
 struct AuthInputModel: Encodable {
     let accessToken: String
-}
-
-struct AuthIdInputModel: Encodable {
-    let userId: Int
-    let id: String
 }
 
 struct AuthResultModel: Decodable {
     let status: Int
     let code: String
     let message: String
+    let tokenDto: PointerToken?
+}
+
+struct PointerToken: Decodable {
     let userId: Int
+    let accessToken: String
+    let refreshToken: String
+}
+
+//MARK: - ID 중복 체크, 저장 시
+struct AuthSaveIdInputModel: Encodable {
+    let id: String
+}
+
+struct AuthCheckIdInputModel: Encodable {
+    let userId: Int
+    let id: String
 }
 
 struct AuthIdResultModel: Decodable {
     let status: Int
     let code: String
     let message: String
-    let userId: Int?
 }
-
-// 이후에
-struct PointerToken: Decodable {
-    let accessToken: String
-    let refreshToken: String
-}
-

@@ -12,6 +12,30 @@ import RxCocoa
 
 class HintViewController: BaseViewController {
 
+    let viewModel: HintViewModel
+    let disposeBag = DisposeBag()
+
+//MARK: - Init
+    init(viewModel: HintViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Rx
+    func bindViewModel() {
+        viewModel.showHintObservable
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.hintText.text = data.hint.first
+                self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
+                self.hintDate.text = data.createdAt
+            })
+            .disposed(by: disposeBag)
+    }
     
 //MARK: - UIComponents
     var hintText: UILabel = {
@@ -106,7 +130,7 @@ class HintViewController: BaseViewController {
         configureBar()
         setUI()
         setUIConstraints()
-        
+        bindViewModel()
     }
     
     func configureBar() {

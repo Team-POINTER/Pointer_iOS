@@ -55,6 +55,24 @@ class ResultNetworkManager {
         }
     }
     
+    func showHintRequest(_ questionId: Int) -> Observable<ShowHintResultData> {
+        return Observable.create { (observer) -> Disposable in
+            
+            self.showHintRequest(questionId) { error, showHintResultData in
+                if let error = error {
+                    observer.onError(error)
+                }
+                
+                if let data = showHintResultData {
+                    observer.onNext(data)
+                }
+                
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+    
 //MARK: - Function
     
     // 지목화면 결과 조회
@@ -86,6 +104,28 @@ class ResultNetworkManager {
                    headers: questionRouter.totalSearchQuestion(userId, roomId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: TotalQuestionResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    print(result)
+                    guard let data = result.result else { return }
+                    completion(nil, data)
+                // 실패인 경우
+                case .failure(let error):
+                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
+            }
+    }
+    
+    private func showHintRequest(_ questionId: Int, completion: @escaping(Error?, ShowHintResultData?) -> Void) {
+        AF.request(voteRouter.showHint(userId, questionId).url,
+                   method:voteRouter.showHint(userId, questionId).method,
+                   headers: voteRouter.showHint(userId, questionId).headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: ShowHintResultModel.self) { response in
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):
@@ -138,9 +178,25 @@ struct TotalQuestionResultModel: Decodable {
 }
 
 struct TotalQuestionResultData: Decodable {
+    let roomName: String?
     let questionId: Int
     let question: String
     let allVoteCnt: Int
     let votedMemberCnt: Int
+    let createdAt: String
+}
+
+//MARK: - #1-4 힌트 보기
+struct ShowHintResultModel: Decodable {
+    let status: Int?
+    let code: String
+    let message: String
+    let result: ShowHintResultData?
+}
+
+struct ShowHintResultData: Decodable {
+    let hint: [String]
+    let allVoteCnt: Int // 모든 투표 수
+    let targetVotedCnt: Int // 받은 투표 수
     let createdAt: String
 }

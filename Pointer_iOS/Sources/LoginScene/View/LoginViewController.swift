@@ -20,7 +20,8 @@ class LoginViewController: BaseViewController {
     
 //MARK: - RX
     func bindViewModel() {
-        let input = LoginViewModel.Input(kakaoLoginTap: kakaoButton.rx.tap.asObservable(), appleLoginTap: appleButton.rx.tap.asObservable())
+        let input = LoginViewModel.Input(kakaoLoginTap: kakaoButton.rx.tap.asObservable(),
+                                         appleLoginTap: appleButton.rx.tap.asObservable())
         let output = loginViewModel.transform(input: input)
         
         output.nextViewController
@@ -33,6 +34,14 @@ class LoginViewController: BaseViewController {
                     parentVc.present(nav, animated: true, completion: nil)
                 }
             })
+            .disposed(by: disposeBag)
+    
+        output.dissMiss
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                self.dismiss(animated: true)
+            }
             .disposed(by: disposeBag)
     }
     

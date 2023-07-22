@@ -52,6 +52,7 @@ class ResultViewModel: ViewModelType{
     
 //MARK: - init
     init(_ roomId: Int, _ questionId: Int) {
+        self.roomId = roomId
         resultRequest(questionId)
     }
     
