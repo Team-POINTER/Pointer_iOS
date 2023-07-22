@@ -80,7 +80,7 @@ class HomeNetworkManager {
         var param = ["roomNm": roomName]
         
         AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default, headers: router.headers)
-//            .validate(statusCode: 200..<500)
+            .validate(statusCode: 200..<500)
             .responseDecodable(of: CreateRoomResponse.self) { response in
                 print(response)
                 print(param)
@@ -99,6 +99,24 @@ class HomeNetworkManager {
                 case .failure(let error):
                     print("룸 생성 데이터 전송 실패 - \(error.localizedDescription)")
                     completion(nil)
+                }
+            }
+    }
+    
+    // 룸 나가기
+    func requestExitRoom(roomId: Int, completion: @escaping (Bool) -> Void) {
+        let router = RoomRouter.exitRoom(roomId)
+        
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: PointerDefaultResponse.self) { respose in
+                switch respose.result {
+                case .success(_):
+                    // ToDo - code 별로 에러 처리
+                    completion(true)
+                case .failure(let error):
+                    print(error)
+                    completion(false)
                 }
             }
     }

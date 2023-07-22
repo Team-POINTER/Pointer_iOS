@@ -55,7 +55,7 @@ extension RoomRouter: HttpRouter {
         case .createRoom:
             return .post
         case .exitRoom(_):
-            return .post
+            return .get
         case .inviteMemeber:
             return .post
         case .friendsListToAttend:

@@ -59,9 +59,9 @@ class HomeViewModel: ViewModelType {
         nextViewController.accept(viewController)
     }
     
-    //MARK: - API Request
-    // ToDo - 이름 최소 조건시 확인 버튼이 안눌리도록
-    // ToDo - request 넘기는거 memory leak 나는건가..?
+
+    //MARK: - AlertView
+    // ToDo - 알림 뷰 중복코드 정리
     func getModifyRoomNameAlert(_ currentName: String, roomId: Int) -> PointerAlert {
         // 0. 취소 Action
         let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
@@ -87,13 +87,24 @@ class HomeViewModel: ViewModelType {
         return alert
     }
     
+    func getExitRoomAlert(roomId: Int) -> PointerAlert {
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "나가기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] _ in
+            self?.requestExitRoom(roomId: roomId)
+        }
+        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 나가기", description: "정말로 나가시겠습니까?")
+        return alert
+    }
+    
+    //MARK: - API Request
+    // ToDo - 이름 최소 조건시 확인 버튼이 안눌리도록
+    // ToDo - request 넘기는거 memory leak 나는건가..?
     // ToDo - code 별로 에러처리, 래픽토링
     func requestChangeRoomName(changeTo: String?, roomId: Int) {
         guard let roomName = changeTo else { return }
         let input = RoomNameChangeInput(privateRoomNm: roomName, roomId: roomId, userId: TokenManager.getIntUserId())
         network.requestRoomNameChange(input: input) { [weak self] response in
             if response.code == "J000" {
-                print("변경 성공")
                 // ToDo - 이녀석을 다시 부르는 방법은 .. ?
                 self?.requestRoomList()
             }
@@ -106,6 +117,17 @@ class HomeViewModel: ViewModelType {
                 self?.pushSingleRoomController(roomId: id)
             } else {
                 // 에러일 때
+            }
+        }
+    }
+    
+    func requestExitRoom(roomId: Int) {
+        network.requestExitRoom(roomId: roomId) { [weak self] isSuccessed in
+            if isSuccessed {
+                self?.requestRoomList()
+                print("성공")
+            } else {
+                print("실패")
             }
         }
     }

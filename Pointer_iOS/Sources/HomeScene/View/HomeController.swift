@@ -157,8 +157,9 @@ extension HomeController: RoomPreviewCellDelegate {
         let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
             print("DEBUG - 링크로 룸 초대 눌림")
         }
-        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { _ in
-            print("DEBUG - 룸 나가기 눌림")
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { [weak self] _ in
+            guard let alert = self?.viewModel.getExitRoomAlert(roomId: roomId) else { return }
+            self?.present(alert, animated: true)
         }
         let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
         present(actionSheet, animated: true)
