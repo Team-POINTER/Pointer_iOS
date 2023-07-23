@@ -74,6 +74,15 @@ class HomeController: BaseViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        viewModel.expiredToken
+            .bind { [weak self] b in
+                if b {
+                    self?.handleNotiLogoutTapped()
+                }
+            }
+            .disposed(by: disposeBag)
+        
     }
     
     //MARK: - Selector

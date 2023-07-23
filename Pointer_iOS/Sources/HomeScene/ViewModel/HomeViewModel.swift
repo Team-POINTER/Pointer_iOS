@@ -16,6 +16,7 @@ class HomeViewModel: ViewModelType {
     var disposeBag = DisposeBag()
     let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
+    let expiredToken = BehaviorRelay<Bool>(value: false)
     let network = HomeNetworkManager()
 
     
@@ -25,7 +26,7 @@ class HomeViewModel: ViewModelType {
     }
     
     struct Output {
-        
+    
     }
     
 //MARK: - Rxswift Transform
@@ -41,14 +42,42 @@ class HomeViewModel: ViewModelType {
     }
     
     func requestRoomList() {
-        network.requestRoomList { [weak self] models, error in
+        network.requestRoomList { [weak self] model, error in
             if let error = error {
                 print(error)
                 return
             }
             
-            if let models = models {
-                self?.roomModel.accept(models)
+            if let model = model {
+                // 토큰 만료 시
+                if model.code == LoginResultType.expiredToken.rawValue {
+                    guard let refreshToken = TokenManager.getUserRefreshToken() else { return }
+                    // 토큰 재발급
+                    AuthNetworkManager.shared.reissuePost(refreshToken) { [weak self] reissueModel in
+                        // 성공
+                        if reissueModel.code == LoginResultType.reissuedToken.rawValue {
+                            guard let newAccessToken = reissueModel.tokenDto?.accessToken else { return }
+                            guard let newRefeshToken = reissueModel.tokenDto?.refreshToken else { return }
+                            guard let userId = reissueModel.tokenDto?.userId else { return }
+                            
+                            // 토큰 초기화 후 재설정
+                            TokenManager.resetUserToken()
+                            TokenManager.saveUserAccessToken(accessToken: newAccessToken)
+                            TokenManager.saveUserRefreshToken(refreshToken: newRefeshToken)
+                            TokenManager.saveUserId(userId: String(userId))
+                            // 다시 호출
+                            self?.requestRoomList()
+                        }
+                        // refresh도 만료된 경우
+                        if reissueModel.code == LoginResultType.expiredToken.rawValue {
+                            TokenManager.resetUserToken()
+                            self?.expiredToken.accept(true)
+                        }
+                    }
+                } else {
+                    // 정상일 시
+                    self?.roomModel.accept(model.data.roomList)
+                }
             }
         }
     }

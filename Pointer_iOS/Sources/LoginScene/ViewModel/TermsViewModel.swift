@@ -14,6 +14,9 @@ class TermsViewModel: ViewModelType {
     let disposeBag = DisposeBag()
     let authResultModel: AuthResultModel
     
+    var serviceAgree = 0
+    var serviceAge = 0
+    var marketing = 0
     
     init(authResultModel: AuthResultModel) {
         self.authResultModel = authResultModel
@@ -74,26 +77,51 @@ class TermsViewModel: ViewModelType {
         
         output.allAllow
             .subscribe(onNext: { b in
-                output.marketingInfoAllow.accept(b)
                 output.overAgeAllow.accept(b)
-                output.privateInfoAllow.accept(b)
                 output.serviceAllow.accept(b)
+                output.privateInfoAllow.accept(b)
+                output.marketingInfoAllow.accept(b)
                 output.nextButtonValid.accept(b)
             })
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(output.serviceAllow, output.privateInfoAllow, resultSelector: { $0 && $1 })
-            .subscribe(onNext: { b in
+        output.marketingInfoAllow
+            .subscribe(onNext: { [weak self] b in
+                b ? (self?.marketing = 1) : (self?.marketing = 0)
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.combineLatest(output.overAgeAllow, output.serviceAllow, output.privateInfoAllow, resultSelector: { $0 && $1 && $2 })
+            .subscribe(onNext: { [weak self] b in
+                if b {
+                    self?.serviceAgree = 1
+                    self?.serviceAge = 1
+                } else {
+                    self?.serviceAgree = 0
+                    self?.serviceAge = 0
+                }
                 output.nextButtonValid.accept(b)
             })
             .disposed(by: disposeBag)
         
         input.nextButtonTapEvent
             .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                let createUserIdViewModel = CreateUserIDViewModel(authResultModel: self.authResultModel)
-                let createUserIdViewController = CreateUserIDViewController(viewModel: createUserIdViewModel)
-                output.nextButtonTap.accept(createUserIdViewController)
+                guard let self = self,
+                      let accessToken = authResultModel.tokenDto?.accessToken else { return }
+                let authAgreeInputModel = AuthAgreeInputModel(serviceAgree: self.serviceAgree,
+                                                              serviceAge: self.serviceAge,
+                                                              marketing: self.marketing)
+                print("동의 내용: \(authAgreeInputModel)")
+                
+                AuthNetworkManager.shared.agreePost(authAgreeInputModel, accessToken) { authResultModel in
+                    if authResultModel.code == LoginResultType.serviceAgreeUser.rawValue {
+                        let createUserIdViewModel = CreateUserIDViewModel(authResultModel: self.authResultModel)
+                        let createUserIdViewController = CreateUserIDViewController(viewModel: createUserIdViewModel)
+                        output.nextButtonTap.accept(createUserIdViewController)
+                    } else {
+                        print("약관동의하지 않았습니다. 다시 확인해주세요.")
+                    }
+                }
             })
             .disposed(by: disposeBag)
         

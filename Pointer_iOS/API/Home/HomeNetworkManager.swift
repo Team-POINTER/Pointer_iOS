@@ -26,7 +26,7 @@ class HomeNetworkManager {
                 }
                 
                 if let models = models {
-                    observer.onNext(models)
+                    observer.onNext(models.data.roomList)
                 }
                 
                 observer.onCompleted()
@@ -38,7 +38,7 @@ class HomeNetworkManager {
     
 //MARK: - Function
     // 룸 리스트
-    func requestRoomList(_ completion: @escaping ([PointerRoomModel]?, Error?) -> Void) {
+    func requestRoomList(_ completion: @escaping (PointerHomeModel?, Error?) -> Void) {
         let router = RoomRouter.getRoomList
         
         AF.request(router.url, method: router.method, parameters: nil, encoding: JSONEncoding.default, headers: router.headers)
@@ -48,7 +48,7 @@ class HomeNetworkManager {
                 // 성공인 경우
             case .success(let result):
                 // completion 전송
-                completion(result.data.roomList, nil)
+                completion(result, nil)
                 // 실패인 경우
             case .failure(let error):
                 // completion 전송

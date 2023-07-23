@@ -11,23 +11,29 @@ import Alamofire
 enum LoginResultType: String, CaseIterable {
     case success = "A000"
     case existedUser = "A001"
+    case serviceAgreeUser = "C011"
     case doubleCheck = "C004"
     case duplicatedId = "A002"
     case saveId = "C003"
     case haveToCheckId = "C005"
     case notFoundId = "C001"
+    case reissuedToken = "H000"
+    case expiredToken = "G002"
     case unknownedError
     
     var message: String {
         switch self {
         case .success: return "회원가입 완료"
         case .existedUser: return "존재하는 유저"
+        case .serviceAgreeUser: return "약관에 동의한 유저"
         case .unknownedError: return "알 수 없는 에러"
         case .doubleCheck: return "아이디 사용 가능"
         case .duplicatedId: return "중복된 아이디"
         case .saveId: return "ID 저장 성공"
         case .haveToCheckId: return "ID 중복 확인 실패"
         case .notFoundId: return "회원 정보 없음"
+        case .reissuedToken: return "토큰 재발급"
+        case .expiredToken: return "만료된 JWT 토큰"
         }
     }
 }
@@ -60,6 +66,27 @@ struct AuthNetworkManager {
                 // 실패인 경우
             case .failure(let error):
                 print("소셜 로그인 데이터 전송 실패")
+                print(error.localizedDescription)
+                print(response.error ?? "")
+            }
+        }
+    }
+    
+    func agreePost(_ parameter: AuthAgreeInputModel, _ accessToken: String, _ completion: @escaping (AuthResultModel) -> Void) {
+        let router = router.agree(accessToken)
+        
+        AF.request(router.url,
+                   method: router.method,
+                   parameters: parameter,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: AuthResultModel.self) { response in
+            switch response.result {
+            case .success(let result):
+                print("동의 항목 전송 성공 - \(result)")
+                completion(result)
+            case .failure(let error):
                 print(error.localizedDescription)
                 print(response.error ?? "")
             }
@@ -156,6 +183,14 @@ struct PointerToken: Decodable {
     let accessToken: String
     let refreshToken: String
 }
+
+//MARK: - 동의 항목
+struct AuthAgreeInputModel: Encodable {
+    let serviceAgree: Int
+    let serviceAge: Int
+    let marketing: Int
+}
+
 
 //MARK: - ID 중복 체크, 저장 시
 struct AuthSaveIdInputModel: Encodable {
