@@ -63,9 +63,26 @@ class HomeController: BaseViewController {
         Observable
             .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(PointerRoomModel.self))
             .bind { [weak self] indexPath, model in
-                self?.roomCellTapped(model: model)
+                self?.viewModel.pushSingleRoomController(roomId: model.roomId)
             }
             .disposed(by: disposeBag)
+        
+        viewModel.nextViewController
+            .bind { [weak self] viewController in
+                if let vc = viewController {
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.expiredToken
+            .bind { [weak self] b in
+                if b {
+                    self?.handleNotiLogoutTapped()
+                }
+            }
+            .disposed(by: disposeBag)
+        
     }
     
     //MARK: - Selector
@@ -86,12 +103,9 @@ class HomeController: BaseViewController {
         tabVc.configureAuth()
     }
     
-    @objc private func something() {
-        print(#function)
-    }
-    
     @objc private func handleActionButtonTapped() {
-
+        let alert = viewModel.getCreateRoomNameAlert()
+        present(alert, animated: true)
     }
     
     //MARK: - Functions
@@ -110,15 +124,6 @@ class HomeController: BaseViewController {
         }
     }
     
-    /// 👉 다음 뷰 구현할 부분
-    private func roomCellTapped(model: PointerRoomModel) {
-        // 룸 뷰 컨트롤러
-        let viewController = RoomViewController(viewModel: RoomViewModel(roomId: model.roomId))
-        print("🔥DEBUG: 선택한 룸 ID - \(model.roomId)")
-        // ToDo - RoomViewController 의존성 주입해 다음 뷰 컨트롤러 push 하기
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
     private func setupNavigationController() {
         // 로고
         let logoImageView = UIImageView(image: UIImage(named: "pointer_logo_main"))
@@ -131,13 +136,13 @@ class HomeController: BaseViewController {
         let notiImage = UIImage(systemName: "bell")
         let searchImage = UIImage(systemName: "magnifyingglass")
 
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, handler: #selector(handleNotiButtonTapped))
-        let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, handler: #selector(handleSearchButtonTapped))
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(handleNotiButtonTapped))
+        let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(handleSearchButtonTapped))
         
         // (임시)로그아웃
         let logoutImage = UIImage(systemName: "arrow.up.forward")
 
-        let logoutButton = UIBarButtonItem.getPointerBarButton(withIconimage: logoutImage, size: 45, target: self, handler: #selector(handleNotiLogoutTapped))
+        let logoutButton = UIBarButtonItem.getPointerBarButton(withIconimage: logoutImage, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(handleNotiLogoutTapped))
 
         navigationItem.rightBarButtonItems = [notiButton, searchButton, logoutButton]
     }
@@ -161,8 +166,9 @@ extension HomeController: RoomPreviewCellDelegate {
         let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
             print("DEBUG - 링크로 룸 초대 눌림")
         }
-        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { _ in
-            print("DEBUG - 룸 나가기 눌림")
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { [weak self] _ in
+            guard let alert = self?.viewModel.getExitRoomAlert(roomId: roomId) else { return }
+            self?.present(alert, animated: true)
         }
         let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
         present(actionSheet, animated: true)

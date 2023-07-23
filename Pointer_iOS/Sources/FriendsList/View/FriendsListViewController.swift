@@ -129,14 +129,14 @@ class FriendsListViewController: BaseViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(backButtonTapped))
             
             let linkImage = UIImage(systemName: "link")
-            let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: linkImage, target: self, handler: #selector(linkButtonTapped))
+            let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: linkImage, target: self, color: UIColor.navBackColor, handler: #selector(linkButtonTapped))
             navigationItem.rightBarButtonItem = rightBarButton
         case .normal:
             navigationItem.title = "OOO님의 친구"
             navigationItem.leftBarButtonItem = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(backButtonTapped))
             
             let plusImage = UIImage(systemName: "plus")
-            let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: plusImage, target: self, handler: #selector(plusButtonTapped))
+            let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: plusImage, target: self, color: UIColor.navBackColor, handler: #selector(plusButtonTapped))
             navigationItem.rightBarButtonItem = rightBarButton
         }
     }

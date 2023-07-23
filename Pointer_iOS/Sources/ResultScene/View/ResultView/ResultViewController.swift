@@ -25,6 +25,7 @@ class ResultViewController: BaseViewController {
     init(viewModel: ResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.newQuestionTimerLabel.text = viewModel.limitedAt
         
     }
     
@@ -201,7 +202,7 @@ class ResultViewController: BaseViewController {
     
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
         // - navigation bar title 색상 변경
     }
@@ -279,7 +280,7 @@ class ResultViewController: BaseViewController {
         
     
     @objc func backButtonTap() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc func chatTaped() {

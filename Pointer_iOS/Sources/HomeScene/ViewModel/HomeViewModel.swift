@@ -15,6 +15,8 @@ class HomeViewModel: ViewModelType {
 //MARK: - Properties
     var disposeBag = DisposeBag()
     let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
+    let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
+    let expiredToken = BehaviorRelay<Bool>(value: false)
     let network = HomeNetworkManager()
 
     
@@ -24,7 +26,7 @@ class HomeViewModel: ViewModelType {
     }
     
     struct Output {
-        
+    
     }
     
 //MARK: - Rxswift Transform
@@ -40,18 +42,61 @@ class HomeViewModel: ViewModelType {
     }
     
     func requestRoomList() {
-        network.requestRoomList()
-            .subscribe { [weak self] models in
-                self?.roomModel.accept(models)
+        network.requestRoomList { [weak self] model, error in
+            if let error = error {
+                print(error)
+                return
             }
-            .disposed(by: disposeBag)
+            
+            if let model = model {
+                // 토큰 만료 시
+                if model.code == LoginResultType.expiredToken.rawValue {
+                    guard let refreshToken = TokenManager.getUserRefreshToken() else { return }
+                    // 토큰 재발급
+                    AuthNetworkManager.shared.reissuePost(refreshToken) { [weak self] reissueModel in
+                        // 성공
+                        if reissueModel.code == LoginResultType.reissuedToken.rawValue {
+                            guard let newAccessToken = reissueModel.tokenDto?.accessToken else { return }
+                            guard let newRefeshToken = reissueModel.tokenDto?.refreshToken else { return }
+                            guard let userId = reissueModel.tokenDto?.userId else { return }
+                            
+                            // 토큰 초기화 후 재설정
+                            TokenManager.resetUserToken()
+                            TokenManager.saveUserAccessToken(accessToken: newAccessToken)
+                            TokenManager.saveUserRefreshToken(refreshToken: newRefeshToken)
+                            TokenManager.saveUserId(userId: String(userId))
+                            // 다시 호출
+                            self?.requestRoomList()
+                        }
+                        // refresh도 만료된 경우
+                        if reissueModel.code == LoginResultType.expiredToken.rawValue {
+                            TokenManager.resetUserToken()
+                            self?.expiredToken.accept(true)
+                        }
+                    }
+                } else {
+                    // 정상일 시
+                    self?.roomModel.accept(model.data.roomList)
+                }
+            }
+        }
     }
     
-    // ToDo - 이름 최소 조건시 확인 버튼이 안눌리도록
-    // ToDo - request 넘기는거 memory leak 나는건가..?
+    //MARK: - NextViewConfigure
+    func pushSingleRoomController(roomId: Int) {
+        let viewController = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
+        nextViewController.accept(viewController)
+    }
+    
+
+    //MARK: - AlertView
+    // ToDo - 알림 뷰 중복코드 정리
     func getModifyRoomNameAlert(_ currentName: String, roomId: Int) -> PointerAlert {
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 18), handler: nil)
-        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 18)) { [weak self] changeTo in
+        // 0. 취소 Action
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        // 1. 확인 Action
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
+            // 2. 입력한 텍스트로 룸 이름 변경 API 호출
             self?.requestChangeRoomName(changeTo: changeTo, roomId: roomId)
         }
         let customView = CustomTextfieldView(roomName: currentName, withViewHeight: 50)
@@ -59,15 +104,59 @@ class HomeViewModel: ViewModelType {
         return alert
     }
     
+    
+    func getCreateRoomNameAlert() -> PointerAlert {
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
+            guard let roomName = changeTo else { return }
+            self?.requestCreateRoom(roomName: roomName)
+        }
+        let customView = CustomTextfieldView(roomName: "", withViewHeight: 50)
+        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 설정", description: "새로운 룸의 이름을 입력하세요", customView: customView)
+        return alert
+    }
+    
+    func getExitRoomAlert(roomId: Int) -> PointerAlert {
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "나가기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] _ in
+            self?.requestExitRoom(roomId: roomId)
+        }
+        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 나가기", description: "정말로 나가시겠습니까?")
+        return alert
+    }
+    
+    //MARK: - API Request
+    // ToDo - 이름 최소 조건시 확인 버튼이 안눌리도록
+    // ToDo - request 넘기는거 memory leak 나는건가..?
     // ToDo - code 별로 에러처리, 래픽토링
     func requestChangeRoomName(changeTo: String?, roomId: Int) {
         guard let roomName = changeTo else { return }
         let input = RoomNameChangeInput(privateRoomNm: roomName, roomId: roomId, userId: TokenManager.getIntUserId())
         network.requestRoomNameChange(input: input) { [weak self] response in
             if response.code == "J000" {
-                print("변경 성공")
                 // ToDo - 이녀석을 다시 부르는 방법은 .. ?
-                self?.network.requestRoomList()
+                self?.requestRoomList()
+            }
+        }
+    }
+    
+    func requestCreateRoom(roomName: String) {
+        network.requestCreateRoom(roomName: roomName) { [weak self] roomId in
+            if let id = roomId {
+                self?.pushSingleRoomController(roomId: id)
+            } else {
+                // 에러일 때
+            }
+        }
+    }
+    
+    func requestExitRoom(roomId: Int) {
+        network.requestExitRoom(roomId: roomId) { [weak self] isSuccessed in
+            if isSuccessed {
+                self?.requestRoomList()
+                print("성공")
+            } else {
+                print("실패")
             }
         }
     }

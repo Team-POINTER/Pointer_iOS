@@ -105,7 +105,7 @@ class MyResultViewController: BaseViewController {
     
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
         self.title = "룸 이름"
     }

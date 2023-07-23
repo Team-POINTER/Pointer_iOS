@@ -20,6 +20,7 @@ extension UIColor {
     static let pointerTextField = UIColor.rgb(red: 53, green: 56, blue: 65)
     static let myTextBoxColor = UIColor.rgb(red: 52, green: 53, blue: 64)
     static let otherTextBoxColor = UIColor.rgb(red: 226, green: 227, blue: 236)
+    static let navBackColor = UIColor.rgb(red: 86, green: 90, blue: 102)
 }
 
 // RGB값을 받아서 UIColor를 리턴하는 함수
