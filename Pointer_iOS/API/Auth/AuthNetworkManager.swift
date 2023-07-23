@@ -11,6 +11,7 @@ import Alamofire
 enum LoginResultType: String, CaseIterable {
     case success = "A000"
     case existedUser = "A001"
+    case serviceAgreeUser = "C011"
     case doubleCheck = "C004"
     case duplicatedId = "A002"
     case saveId = "C003"
@@ -24,6 +25,7 @@ enum LoginResultType: String, CaseIterable {
         switch self {
         case .success: return "회원가입 완료"
         case .existedUser: return "존재하는 유저"
+        case .serviceAgreeUser: return "약관에 동의한 유저"
         case .unknownedError: return "알 수 없는 에러"
         case .doubleCheck: return "아이디 사용 가능"
         case .duplicatedId: return "중복된 아이디"

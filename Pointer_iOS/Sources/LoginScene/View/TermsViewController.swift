@@ -134,7 +134,7 @@ class TermsViewController: BaseViewController {
     }(UIButton())
     
     private let Label1: UILabel = {
-        $0.text = "만 14세 이상입니다."
+        $0.text = "(필수) 만 14세 이상입니다."
         $0.textColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         return $0
