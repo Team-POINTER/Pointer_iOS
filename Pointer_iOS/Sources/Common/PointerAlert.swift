@@ -154,7 +154,7 @@ class PointerAlert: UIViewController {
         
         // Title / Description
         let titleLabel = makeAlertContentLabel(text: alertTitle,
-                                               font: .notoSansBold(size: 22))
+                                               font: .notoSansBold(size: 20))
         let descriptionLabel = makeAlertContentLabel(text: alertDescription,
                                                      font: .notoSansRegular(size: 15))
         

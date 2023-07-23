@@ -16,6 +16,8 @@ enum LoginResultType: String, CaseIterable {
     case saveId = "C003"
     case haveToCheckId = "C005"
     case notFoundId = "C001"
+    case reissuedToken = "H000"
+    case expiredToken = "G002"
     case unknownedError
     
     var message: String {
@@ -28,6 +30,8 @@ enum LoginResultType: String, CaseIterable {
         case .saveId: return "ID 저장 성공"
         case .haveToCheckId: return "ID 중복 확인 실패"
         case .notFoundId: return "회원 정보 없음"
+        case .reissuedToken: return "토큰 재발급"
+        case .expiredToken: return "만료된 JWT 토큰"
         }
     }
 }
