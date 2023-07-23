@@ -82,7 +82,7 @@ class PreferenceController: BaseViewController {
     private func setupNaviBar() {
         navigationItem.title = "설정"
         let backButtonImage = UIImage(systemName: "chevron.backward")
-        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, size: Device.navigationBarHeight, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTapped))
+        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, size: Device.navigationBarHeight, target: self, handler: #selector(backButtonTapped))
         navigationItem.leftBarButtonItem = backButton
     }
 }

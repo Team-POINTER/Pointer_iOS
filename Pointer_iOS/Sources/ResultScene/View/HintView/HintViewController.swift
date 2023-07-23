@@ -30,6 +30,9 @@ class HintViewController: BaseViewController {
     
     //MARK: - Rx
     func bindViewModel() {
+        let input = HintViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
         viewModel.showHintObservable
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
@@ -138,7 +141,7 @@ class HintViewController: BaseViewController {
     
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTap))
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
     }
     

@@ -23,10 +23,7 @@ class ReportViewController: UIViewController {
         reportTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                if (self.reportTextView.text == """
-                    포인터 팀이 조치를 취해드리겠습니다.
-                    문제 상황을 최대한 구체적으로 설명해주세요.
-                    """) {
+                if (self.reportTextView.text == "포인터 팀이 조치를 취해드릴 수 있게 문제 상황을 최대한 구체적으로 설명해주세요.") {
                     self.reportTextView.text = nil
                     self.reportTextView.textColor = .black
                 }
@@ -37,10 +34,7 @@ class ReportViewController: UIViewController {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 if (self.reportTextView.text.count == 0) {
-                    self.reportTextView.text = """
-                        포인터 팀이 조치를 취해드리겠습니다.
-                        문제 상황을 최대한 구체적으로 설명해주세요.
-                        """
+                    self.reportTextView.text = "포인터 팀이 조치를 취해드릴 수 있게 문제 상황을 최대한 구체적으로 설명해주세요."
                     self.reportTextView.textColor = UIColor.rgb(red: 179, green: 183, blue: 205)
                 }
             })
@@ -59,10 +53,7 @@ class ReportViewController: UIViewController {
     }(UILabel())
     
     let reportTextView: UITextView = {
-        $0.text = """
-                        포인터 팀이 조치를 취해드리겠습니다.
-                        문제 상황을 최대한 구체적으로 설명해주세요.
-                        """
+        $0.text = "포인터 팀이 조치를 취해드릴 수 있게 문제 상황을 최대한 구체적으로 설명해주세요."
         $0.backgroundColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         $0.textColor = UIColor.rgb(red: 179, green: 183, blue: 205)

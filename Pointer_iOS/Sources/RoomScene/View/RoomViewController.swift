@@ -163,8 +163,8 @@ class RoomViewController: BaseViewController {
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")
         let settingButton = UIImage(systemName: "line.horizontal.3")
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTap))
-        let menuButton = UIBarButtonItem.getPointerBarButton(withIconimage: settingButton, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(menuButtonTap))
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
+        let menuButton = UIBarButtonItem.getPointerBarButton(withIconimage: settingButton, size: 45, target: self, handler: #selector(menuButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
         self.navigationItem.rightBarButtonItem = menuButton
     }

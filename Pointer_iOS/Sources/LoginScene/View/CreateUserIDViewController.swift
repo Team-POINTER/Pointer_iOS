@@ -212,7 +212,7 @@ class CreateUserIDViewController: BaseViewController {
 //MARK: - NavigationBar
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTap))
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
         self.title = "사용자 아이디 생성"
     }

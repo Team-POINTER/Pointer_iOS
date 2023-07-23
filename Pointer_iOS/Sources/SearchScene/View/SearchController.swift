@@ -136,7 +136,7 @@ class SearchController: BaseViewController {
         searchBar.widthAnchor.constraint(equalToConstant: searchBarWidth).isActive = true
         
         let backButtonImage = UIImage(systemName: "chevron.backward")
-        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, size: Device.navigationBarHeight, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTapped))
+        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, size: Device.navigationBarHeight, target: self, handler: #selector(backButtonTapped))
         let titleView = UIBarButtonItem(customView: searchBar)
         
         navigationItem.leftBarButtonItems = [backButton, titleView]

@@ -136,13 +136,13 @@ class HomeController: BaseViewController {
         let notiImage = UIImage(systemName: "bell")
         let searchImage = UIImage(systemName: "magnifyingglass")
 
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(handleNotiButtonTapped))
-        let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(handleSearchButtonTapped))
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, handler: #selector(handleNotiButtonTapped))
+        let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, handler: #selector(handleSearchButtonTapped))
         
         // (임시)로그아웃
         let logoutImage = UIImage(systemName: "arrow.up.forward")
 
-        let logoutButton = UIBarButtonItem.getPointerBarButton(withIconimage: logoutImage, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(handleNotiLogoutTapped))
+        let logoutButton = UIBarButtonItem.getPointerBarButton(withIconimage: logoutImage, size: 45, target: self, handler: #selector(handleNotiLogoutTapped))
 
         navigationItem.rightBarButtonItems = [notiButton, searchButton, logoutButton]
     }
