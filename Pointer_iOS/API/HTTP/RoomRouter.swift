@@ -46,7 +46,7 @@ extension RoomRouter: HttpRouter {
         case .getSingleRoom(let roomId):
             return "/room/\(roomId)"
         case .getRoomList:
-            return "/room"
+            return "/room?kwd="
         }
     }
     
@@ -55,7 +55,7 @@ extension RoomRouter: HttpRouter {
         case .createRoom:
             return .post
         case .exitRoom(_):
-            return .post
+            return .get
         case .inviteMemeber:
             return .post
         case .friendsListToAttend:
@@ -67,19 +67,17 @@ extension RoomRouter: HttpRouter {
         case .getSingleRoom:
             return .get
         case .getRoomList:
-            return .post // get으로 변경 예정
+            return .get
         }
     }
     
     var headers: HTTPHeaders? {
-        return ["Content-Type" : "application/json"]
+        let token = TokenManager.getUserAccessToken() ?? ""
+        return ["Content-Type": "application/json", "Authorization": "Bearer \(token)"]
     }
     
     var parameters: Parameters? {
-        let parameters: [String: Any] = [
-            "userId": 4
-        ]
-        return parameters
+        return nil
     }
     
     func body() throws -> Data? {
