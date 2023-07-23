@@ -44,8 +44,6 @@ class NewQuestViewController: BaseViewController {
             .combineLatest(output.buttonIsEnable, viewModel.remainingTime)
             .bind { [weak self] style, time in
                 guard let self = self else { return }
-                print("DEBUG: Button Status - \(style)")
-                print("DEBUG: time - \(time)")
                 self.newQuestButton.isEnabled = style.isEnable
                 self.newQuestButton.backgroundColor = style.backgroundColor
                 self.newQuestButton.setAttributedTitle(style.getAttributedString(time), for: .normal)
@@ -55,14 +53,27 @@ class NewQuestViewController: BaseViewController {
         output.timeLimited
             .subscribe(onNext: { [weak self] b in
                 guard let self = self else { return}
+                
+                
                 // 시간 남았을 시(버튼 비활성화)
                 if b {
-                    self.newQuestTextField.isEnabled = false
-                    self.newQuestTextField.placeholder = "누군가 이미 질문을 등록했어요."
+                    self.newQuestTextField.isEnabled = true
+                    self.newQuestTextField.textColor = .white
+                    self.newQuestTextField.attributedPlaceholder = NSAttributedString(
+                        string: "질문을 입력하세요.",
+                        attributes: [
+                            .foregroundColor: UIColor.rgb(red: 121, green: 125, blue: 148)
+                        ]
+                    )
                 // 시간 0 시(버튼 활성화)
                 } else {
-                    self.newQuestTextField.isEnabled = true
-                    self.newQuestTextField.placeholder = "질문을 입력하세요."
+                    self.newQuestTextField.isEnabled = false
+                    self.newQuestTextField.attributedPlaceholder = NSAttributedString(
+                        string: "누군가 이미 질문을 등록했어요.",
+                        attributes: [
+                            .foregroundColor: UIColor.rgb(red: 121, green: 125, blue: 148)
+                        ]
+                    )
                 }
             })
             .disposed(by: disposeBag)
@@ -80,7 +91,6 @@ class NewQuestViewController: BaseViewController {
     
     var newQuestTextField: UITextField = {
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 20)
-        $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
         $0.textAlignment = .center
         return $0
     }(UITextField())
@@ -155,7 +165,6 @@ class NewQuestViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, color: UIColor.navBackColor, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        self.title = "룸 이름"
     }
     
     @objc func backButtonTap() {

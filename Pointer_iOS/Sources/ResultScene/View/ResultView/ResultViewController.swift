@@ -61,8 +61,6 @@ class ResultViewController: BaseViewController {
             .combineLatest(output.timeLabelIsHidden, viewModel.remainingTime)
             .bind { [weak self] style, time in
                 guard let self = self else { return }
-                print("DEBUG: label Status - \(style)")
-                print("DEBUG: time - \(time)")
                 self.newQuestionTimerLabel.text = style.getTimeString(time)
                 self.newQuestionTimerLabel.isHidden = false
             }

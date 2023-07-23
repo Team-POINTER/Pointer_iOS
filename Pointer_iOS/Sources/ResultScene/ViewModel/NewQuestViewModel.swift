@@ -35,7 +35,13 @@ enum nextQuestButtonStyle: CaseIterable {
     func getAttributedString(_ time: Int) -> NSMutableAttributedString {
         switch self {
         case .isEnable:
-            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+            let hours = time / 3600
+            let minutes = (time % 3600) / 60
+            let seconds = time % 60
+            let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            
+            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+            attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
             return attributedQuestionString
         case .disable:
             let hours = time / 3600
@@ -54,11 +60,7 @@ class NewQuestViewModel: ViewModelType{
     
 //MARK: - Properties
     
-    var limitedAt = "" {
-        didSet {
-            startTimer()
-        }
-    }
+    var limitedAt = ""
     var roomName = ""
     var roomId = 0
     var userId = TokenManager.getIntUserId()
@@ -74,6 +76,8 @@ class NewQuestViewModel: ViewModelType{
         self.limitedAt = limitedAt
         self.roomName = roomName
         self.roomId = roomId
+        self.startTimer()
+        print("NewQuestionViewModel limitedAt = \(limitedAt)")
     }
     
 //MARK: - In/Out
@@ -119,13 +123,12 @@ class NewQuestViewModel: ViewModelType{
         
         remainingTime
             .subscribe { time in
-                print("NewQuestViewModel function called \(time)")
                 guard let time = time.element else { return }
                 if time <= 0 {
-                    output.timeLimited.accept(true)
+                    output.timeLimited.accept(false)
                     output.buttonIsEnable.onNext(.disable)
                 } else {
-                    output.timeLimited.accept(false)
+                    output.timeLimited.accept(true)
                     output.buttonIsEnable.onNext(.isEnable)
                 }
             }
