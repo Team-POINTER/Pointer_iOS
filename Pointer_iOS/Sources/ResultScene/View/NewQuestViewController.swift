@@ -57,19 +57,19 @@ class NewQuestViewController: BaseViewController {
                 
                 // 시간 남았을 시(버튼 비활성화)
                 if b {
-                    self.newQuestTextField.isEnabled = true
-                    self.newQuestTextField.textColor = .white
+                    self.newQuestTextField.isEnabled = false
                     self.newQuestTextField.attributedPlaceholder = NSAttributedString(
-                        string: "질문을 입력하세요.",
+                        string: "누군가 이미 질문을 등록했어요.",
                         attributes: [
                             .foregroundColor: UIColor.rgb(red: 121, green: 125, blue: 148)
                         ]
                     )
                 // 시간 0 시(버튼 활성화)
                 } else {
-                    self.newQuestTextField.isEnabled = false
+                    self.newQuestTextField.isEnabled = true
+                    self.newQuestTextField.textColor = .white
                     self.newQuestTextField.attributedPlaceholder = NSAttributedString(
-                        string: "누군가 이미 질문을 등록했어요.",
+                        string: "질문을 입력하세요.",
                         attributes: [
                             .foregroundColor: UIColor.rgb(red: 121, green: 125, blue: 148)
                         ]

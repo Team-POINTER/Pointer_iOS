@@ -125,11 +125,11 @@ class NewQuestViewModel: ViewModelType{
             .subscribe { time in
                 guard let time = time.element else { return }
                 if time <= 0 {
-                    output.timeLimited.accept(false)
-                    output.buttonIsEnable.onNext(.disable)
-                } else {
                     output.timeLimited.accept(true)
                     output.buttonIsEnable.onNext(.isEnable)
+                } else {
+                    output.timeLimited.accept(false)
+                    output.buttonIsEnable.onNext(.disable)
                 }
             }
             .disposed(by: disposeBag)
