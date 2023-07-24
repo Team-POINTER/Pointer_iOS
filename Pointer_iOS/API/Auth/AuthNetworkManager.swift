@@ -144,7 +144,8 @@ struct AuthNetworkManager {
         }
     }
     
-    func reissuePost(_ refreshToken: String, _ completion: @escaping (AuthResultModel) -> Void) {
+    /// 리프레시 토큰으로 액세스 토큰 재발급
+    func reissuePost(_ refreshToken: String, _ completion: @escaping (Bool) -> Void) {
         let router = router.reissue(refreshToken)
         
         AF.request(router.url,
@@ -153,12 +154,30 @@ struct AuthNetworkManager {
             .validate(statusCode: 200..<500)
             .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
-            case .success(let result):
-                print("Token 재발급 데이터 전송 성공 - \(result)")
-                completion(result)
+            case .success(let model):
+                print("Token 재발급 데이터 전송 성공 - \(model)")
+                // 재발급 성공
+                if LoginResultType(rawValue: model.code) == .reissuedToken {
+                    
+                    // 토큰 모델 받아오기
+                    guard let tokens = model.tokenDto else { return }
+                    let newAccessToken = tokens.accessToken
+                    let newRefeshToken = tokens.refreshToken
+                    let userId = tokens.userId
+                    
+                    // 토큰 초기화 후 재설정
+                    TokenManager.resetUserToken()
+                    TokenManager.saveUserAccessToken(accessToken: newAccessToken)
+                    TokenManager.saveUserRefreshToken(refreshToken: newRefeshToken)
+                    TokenManager.saveUserId(userId: String(userId))
+                    completion(true)
+                } else {
+                    // 재발급 실패
+                    completion(false)
+                }
             case .failure(let error):
                 print(error.localizedDescription)
-                print(response.error ?? "")
+                completion(false)
             }
         }
     }

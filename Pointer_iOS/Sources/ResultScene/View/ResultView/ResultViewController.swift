@@ -25,6 +25,7 @@ class ResultViewController: BaseViewController {
     init(viewModel: ResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.newQuestionTimerLabel.text = viewModel.limitedAt
         
     }
     
@@ -60,8 +61,6 @@ class ResultViewController: BaseViewController {
             .combineLatest(output.timeLabelIsHidden, viewModel.remainingTime)
             .bind { [weak self] style, time in
                 guard let self = self else { return }
-                print("DEBUG: label Status - \(style)")
-                print("DEBUG: time - \(time)")
                 self.newQuestionTimerLabel.text = style.getTimeString(time)
                 self.newQuestionTimerLabel.isHidden = false
             }
@@ -279,7 +278,7 @@ class ResultViewController: BaseViewController {
         
     
     @objc func backButtonTap() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc func chatTaped() {

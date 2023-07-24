@@ -21,6 +21,7 @@ final class RoomViewModel: ViewModelType {
     let allUsersInThisRoom = BehaviorRelay<[User]>(value: []) // 더미
     
     var roomId: Int
+    var limitedAt = ""
     
     // 투표용 properties
     var questionId: Int = 0
@@ -119,7 +120,7 @@ final class RoomViewModel: ViewModelType {
                             self.votedUsers = users.map { $0.userId }
                         }
                     }
-                    .disposed(by: disposeBag)
+                    .disposed(by: self.disposeBag)
                 
                 
                 let vote = VoteRequestModel(questionId: self.questionId,
@@ -135,7 +136,7 @@ final class RoomViewModel: ViewModelType {
                     
                     // 서버 연동 성공 시
                     if let model = model {
-                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId)))
+                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId, self.limitedAt)))
                     }
                 }
             })
@@ -218,6 +219,7 @@ final class RoomViewModel: ViewModelType {
                 self?.roomResultObservable.accept(result)
                 self?.roomResultMembersObservable.accept(result.roomMembers)
                 self?.questionId = result.questionId
+                self?.limitedAt = result.limitedAt
                 print("🔥 RoomViewModel - searchRoomRequest 데이터: \(result)")
             }, onError: { error in
                 print("RoomViewModel - searchRoomRequest 에러: \(error.localizedDescription)")

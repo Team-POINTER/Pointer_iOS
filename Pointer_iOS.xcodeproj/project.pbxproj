@@ -51,6 +51,8 @@
 		478CA0012A61935F000FA196 /* VoteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0002A61935F000FA196 /* VoteRouter.swift */; };
 		478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0032A623EC4000FA196 /* ResultNetworkManager.swift */; };
 		478CA0062A62CEA3000FA196 /* HintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0052A62CEA3000FA196 /* HintViewModel.swift */; };
+		478CA00F2A6D246C000FA196 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA00E2A6D246C000FA196 /* ReportViewController.swift */; };
+		478CA0122A6D337B000FA196 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0112A6D337B000FA196 /* ReportViewModel.swift */; };
 		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
@@ -161,6 +163,8 @@
 		478CA0002A61935F000FA196 /* VoteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteRouter.swift; sourceTree = "<group>"; };
 		478CA0032A623EC4000FA196 /* ResultNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultNetworkManager.swift; sourceTree = "<group>"; };
 		478CA0052A62CEA3000FA196 /* HintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintViewModel.swift; sourceTree = "<group>"; };
+		478CA00E2A6D246C000FA196 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
+		478CA0112A6D337B000FA196 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
 		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
@@ -446,6 +450,15 @@
 			path = Result;
 			sourceTree = "<group>";
 		};
+		478CA0102A6D3366000FA196 /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				478CA00E2A6D246C000FA196 /* ReportViewController.swift */,
+				478CA0112A6D337B000FA196 /* ReportViewModel.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
 		47CC89562A4681950020246E /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
@@ -507,6 +520,7 @@
 		CD077F4B29BF8A61005A01A9 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				478CA0102A6D3366000FA196 /* Report */,
 				CD2DBEC829C631CC005E377C /* Cell */,
 				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 				CD90B48929BE327700772192 /* PointerAlert.swift */,
@@ -983,6 +997,7 @@
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
 				47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */,
 				CD5BCC5F29F5423700DD44F7 /* PreferenceItemCell.swift in Sources */,
+				478CA00F2A6D246C000FA196 /* ReportViewController.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				CD6BCDA629BB2D5B00DB024C /* HomeController.swift in Sources */,
 				CD0EE9292A0797660090BF48 /* EditProfileInfoView.swift in Sources */,
@@ -1015,6 +1030,7 @@
 				CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */,
 				478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
+				478CA0122A6D337B000FA196 /* ReportViewModel.swift in Sources */,
 				47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */,
 				CD2F79C42A0FCB860094F81F /* FriendsListCell.swift in Sources */,
 				CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */,

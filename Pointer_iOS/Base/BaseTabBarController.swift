@@ -25,6 +25,7 @@ class BaseTabBarController: UITabBarController {
         print("🔥ConfigureAuth")
         // 유저 토큰이 존재하면
         if TokenManager.getUserAccessToken() != nil {
+            print("🔥AccessToken = \(TokenManager.getUserAccessToken())")
             // ToDo - 액세스 토큰 유효 검사
             configureViewControllers()
         } else {

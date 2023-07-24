@@ -107,7 +107,7 @@ class TermsViewModel: ViewModelType {
         input.nextButtonTapEvent
             .subscribe(onNext: { [weak self] in
                 guard let self = self,
-                      let accessToken = authResultModel.tokenDto?.accessToken else { return }
+                      let accessToken = self.authResultModel.tokenDto?.accessToken else { return }
                 let authAgreeInputModel = AuthAgreeInputModel(serviceAgree: self.serviceAgree,
                                                               serviceAge: self.serviceAge,
                                                               marketing: self.marketing)

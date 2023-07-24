@@ -12,8 +12,8 @@ enum QuestionRouter {
     case createQuestion // 질문 생성
     case currentSearchQuestion(_ userId: Int ,_ roomId: Int) // 현재 질문 조회
     case totalSearchQuestion(_ userId: Int ,_ roomId: Int) // 전체 질문 조회
-    case modifyQuestion(_ userId: Int ,_ roomId: Int) // 질문 수정
-    case deleteQuestion(_ userId: Int ,_ roomId: Int) // 질문 삭제
+    case modifyQuestion(_ userId: Int ,_ questionId: Int) // 질문 수정
+    case deleteQuestion(_ userId: Int ,_ questionId: Int) // 질문 삭제
 }
 
 extension QuestionRouter: HttpRouter {
@@ -34,8 +34,8 @@ extension QuestionRouter: HttpRouter {
             return "/questions/current/\(userId)/\(roomId)"
         case .totalSearchQuestion(let userId, let roomId):
             return "/questions/\(userId)/\(roomId)"
-        case .modifyQuestion(let userId, let roomId):
-            return "/questions/\(userId)/\(roomId)"
+        case .modifyQuestion(let userId, let questionId):
+            return "/questions/\(userId)/\(questionId)"
         case .deleteQuestion(let userId, let roomId):
             return "/questions/\(userId)/\(roomId)"
         }
@@ -43,7 +43,6 @@ extension QuestionRouter: HttpRouter {
     
     var method: HTTPMethod {
         switch self {
-            
         case .createQuestion:
             return .post
         case .currentSearchQuestion:
@@ -58,7 +57,9 @@ extension QuestionRouter: HttpRouter {
     }
     
     var headers: HTTPHeaders? {
-        return ["Content-Type" : "application/json"]
+        guard let accessToken = TokenManager.getUserAccessToken() else { return HTTPHeaders() }
+        return ["Content-Type" : "application/json",
+                "Authorization" : "Bearer \(accessToken)"]
     }
     
     var parameters: Parameters? {

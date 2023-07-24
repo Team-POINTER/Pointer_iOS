@@ -17,7 +17,7 @@ extension UIBarButtonItem {
         return backButton
     }
     
-    static func getPointerBarButton(withIconimage image: UIImage?, size: CGFloat? = Device.navigationBarHeight, target: UIViewController, handler: Selector) -> UIBarButtonItem {
+    static func getPointerBarButton(withIconimage image: UIImage?, size: CGFloat? = Device.navigationBarHeight, target: UIViewController, color: UIColor = UIColor.navBackColor, handler: Selector) -> UIBarButtonItem {
         
         let containerView = UIView()
         let icon = UIButton(type: .system)
@@ -29,14 +29,15 @@ extension UIBarButtonItem {
         }
         
         icon.setImage(image, for: .normal)
-        icon.contentMode = .scaleAspectFit
+        icon.contentMode = .scaleAspectFill
         icon.addTarget(target, action: handler, for: .touchUpInside)
         
         if let size = size {
             containerView.widthAnchor.constraint(equalToConstant: size).isActive = true
+            containerView.heightAnchor.constraint(equalToConstant: size).isActive = true
             containerView.layer.cornerRadius = size / 2
         }
-        containerView.backgroundColor = UIColor.rgb(red: 86, green: 90, blue: 102)
+        containerView.backgroundColor = color
         containerView.clipsToBounds = true
         
         let iconBarButton = UIBarButtonItem(customView: containerView)

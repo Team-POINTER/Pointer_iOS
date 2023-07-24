@@ -19,6 +19,9 @@ class HintViewController: BaseViewController {
     init(viewModel: HintViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.title = viewModel.roomName
+        self.questionLabel.text = viewModel.question
+        self.selectMeLabel.text = "\(viewModel.userName) 님을 지목한 사람"
     }
     
     required init?(coder: NSCoder) {
@@ -27,10 +30,17 @@ class HintViewController: BaseViewController {
     
     //MARK: - Rx
     func bindViewModel() {
+        let input = HintViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
         viewModel.showHintObservable
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
-                self.hintText.text = data.hint.first
+                var str = ""
+                for i in 0..<data.voterNm.count {
+                    str += "\(i+1). \(data.voterNm[i]) \n"
+                }
+                self.selectMePeopleLabel.text = str
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
                 self.hintDate.text = data.createdAt
             })
@@ -38,8 +48,7 @@ class HintViewController: BaseViewController {
     }
     
 //MARK: - UIComponents
-    var hintText: UILabel = {
-        $0.text = "한 20년 뒤 미래에 가장 돈을 잘 벌 것 같은 사람은 누구인가? 최대 공백포함 45"
+    var questionLabel: UILabel = {
         $0.font = UIFont.notoSansRegular(size: 19)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
@@ -54,7 +63,6 @@ class HintViewController: BaseViewController {
     }(UIView())
     
     var selectMeLabel: UILabel = {
-        $0.text = "포인터 님을 지목한 사람"
         $0.font = UIFont.notoSansBold(size: 19)
         $0.textColor = UIColor.black
         $0.textAlignment = .center
@@ -72,14 +80,12 @@ class HintViewController: BaseViewController {
     
     
     var selectedMeNumber: UILabel = {
-        $0.text = "3 / 20"
         $0.font = UIFont.notoSansBold(size: 18)
         $0.textColor = UIColor.pointerRed
         return $0
     }(UILabel())
     
     var hintDate: UILabel = {
-        $0.text = "23.03.02"
         $0.font = UIFont.notoSansRegular(size: 13)
         $0.textColor = UIColor.black
         return $0
@@ -87,7 +93,7 @@ class HintViewController: BaseViewController {
     
 //MARK: - Set UI
     func setUI() {
-        view.addSubview(hintText)
+        view.addSubview(questionLabel)
         view.addSubview(hintBackgroundView)
         hintBackgroundView.addSubview(selectMeLabel)
         hintBackgroundView.addSubview(selectMePeopleLabel)
@@ -97,13 +103,13 @@ class HintViewController: BaseViewController {
 
     
     func setUIConstraints() {
-        hintText.snp.makeConstraints { make in
+        questionLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(25)
             make.leading.trailing.equalToSuperview().inset(37)
             make.centerX.equalToSuperview()
         }
         hintBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(hintText.snp.bottom).inset(-25)
+            make.top.equalTo(questionLabel.snp.bottom).inset(-25)
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(430)
         }
@@ -137,7 +143,6 @@ class HintViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        self.title = "룸 이름"
     }
     
     @objc func backButtonTap() {

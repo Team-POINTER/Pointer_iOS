@@ -80,6 +80,15 @@ extension RoomRouter: HttpRouter {
         return nil
     }
     
+    var successCode: String {
+        switch self {
+        case .getRoomList:
+            return "J0010"
+        default:
+            return ""
+        }
+    }
+    
     func body() throws -> Data? {
         return nil
     }

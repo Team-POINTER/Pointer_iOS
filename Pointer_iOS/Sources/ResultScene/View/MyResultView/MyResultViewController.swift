@@ -19,6 +19,7 @@ class MyResultViewController: BaseViewController {
     init(viewModel: MyResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.title = viewModel.roomName
     }
     
     required init?(coder: NSCoder) {
@@ -36,24 +37,13 @@ class MyResultViewController: BaseViewController {
         viewModel.myResultObservable
             .observe(on: MainScheduler.instance)
             .bind(to: hintTableView.rx.items) { tableView, index, item in
+                
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: MyResultTableViewCell.identifier, for: IndexPath(row: index, section: 0)) as? MyResultTableViewCell
                 else { return UITableViewCell() }
                 cell.selectionStyle = .none
                 cell.result = item
                 
                 return cell
-            }
-            .disposed(by: disposeBag)
-        
-//- tableView cell tapped
-        Observable
-            .zip(hintTableView.rx.itemSelected, hintTableView.rx.modelSelected(TotalQuestionResultData.self))
-            .bind { [weak self] indexPath, model in
-                guard let cell = self?.hintTableView.cellForRow(at: indexPath) as? MyResultTableViewCell else { return }
-
-//                self?.viewModel.questId = model.questionId
-                print("tap")
-
             }
             .disposed(by: disposeBag)
         
@@ -108,8 +98,9 @@ class MyResultViewController: BaseViewController {
         setUI()
         setUIConstraints()
         configureBar()
-        bindViewModel()
         hintTableView.delegate = self
+        bindViewModel()
+        
     }
     
     func configureBar() {

@@ -39,8 +39,11 @@ class ResultViewModel: ViewModelType{
 //MARK: - Properties
     // resultView에 맞는 모델 [X] -> API 연결 시
     
-    var timeString = "2023-05-23 14:25:15"
+    var limitedAt = ""
     var roomId = 0
+    var userName = ""
+    var roomName = ""
+    var question = ""
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     let votedResultObservable = PublishRelay<VotedResultData>()
@@ -51,9 +54,10 @@ class ResultViewModel: ViewModelType{
     
     
 //MARK: - init
-    init(_ roomId: Int, _ questionId: Int) {
+    init(_ roomId: Int, _ questionId: Int, _ limitedAt: String) {
         self.roomId = roomId
         resultRequest(questionId)
+        self.limitedAt = limitedAt
     }
     
 //MARK: - In/Out
@@ -75,14 +79,14 @@ class ResultViewModel: ViewModelType{
         input.myResultButtonTap
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                output.myResultButtonTap.accept(MyResultViewController(viewModel: MyResultViewModel(roomId: self.roomId)))
+                output.myResultButtonTap.accept(MyResultViewController(viewModel: MyResultViewModel(self.roomId, self.userName, self.roomName)))
             }
             .disposed(by: disposeBag)
         
         input.newQuestionButtonTap
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                output.newQuestionButtonTap.accept(NewQuestViewController())
+                output.newQuestionButtonTap.accept(NewQuestViewController(viewModel: NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId)))
             }
             .disposed(by: disposeBag)
         
@@ -105,7 +109,7 @@ class ResultViewModel: ViewModelType{
     func startTimer() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        guard let endDate = formatter.date(from: timeString) else { return }
+        guard let endDate = formatter.date(from: limitedAt) else { return }
         let remainingTimeInterval = Int(endDate.timeIntervalSinceNow)
         self.remainingTime.onNext(remainingTimeInterval)
 
@@ -131,6 +135,9 @@ class ResultViewModel: ViewModelType{
         ResultNetworkManager.shared.votedResultRequest(questionId)
             .subscribe(onNext: { [weak self] data in
                 self?.votedResultObservable.accept(data)
+                self?.userName = data.targetUser.userName
+                self?.roomName = data.roomName
+                self?.question = data.question
             }, onError: { error in
                 print("DEBUG: ResultViewModel - resultRequest Error: \(error.localizedDescription)")
             } )

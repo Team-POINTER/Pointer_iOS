@@ -136,7 +136,7 @@ struct SearchRoomResultModel: Decodable {
     let status: Int
     let code: String
     let message: String
-    let data: SearchRoomResultData
+    let data: SearchRoomResultData?
 }
 
 struct SearchRoomResultData: Decodable {
