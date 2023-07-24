@@ -92,7 +92,7 @@ class CreateUserIDViewController: BaseViewController {
             .subscribe(onNext: { [weak self] _ in
                 
                 guard let self = self,
-                      let tabBarVc = presentingViewController as? BaseTabBarController else { return }
+                      let tabBarVc = self.presentingViewController as? BaseTabBarController else { return }
                 self.dismiss(animated: true) {
                     tabBarVc.configureAuth()
                 }

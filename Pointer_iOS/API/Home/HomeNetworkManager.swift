@@ -17,24 +17,24 @@ class HomeNetworkManager {
     
     
 //MARK: - Observable 변환
-    /// Observable.create 뭔가 공통 함수로 뺼 수 있을듯
-    func requestRoomList() -> Observable<[PointerRoomModel]> {
-        return Observable.create { (observer) -> Disposable in
-            self.requestRoomList() { models, error in
-                if let error = error {
-                    observer.onError(error)
-                }
-                
-                if let models = models {
-                    observer.onNext(models.data.roomList)
-                }
-                
-                observer.onCompleted()
-            }
-            
-            return Disposables.create()
-        }
-    }
+//    /// Observable.create 뭔가 공통 함수로 뺼 수 있을듯
+//    func requestRoomList() -> Observable<[PointerRoomModel]> {
+//        return Observable.create { (observer) -> Disposable in
+//            self.requestRoomList() { models, error in
+//                if let error = error {
+//                    observer.onError(error)
+//                }
+//
+//                if let models = models {
+//                    observer.onNext(models.data.roomList)
+//                }
+//
+//                observer.onCompleted()
+//            }
+//
+//            return Disposables.create()
+//        }
+//    }
     
 //MARK: - Function
     // 룸 리스트

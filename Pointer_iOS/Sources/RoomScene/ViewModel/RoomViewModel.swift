@@ -120,7 +120,7 @@ final class RoomViewModel: ViewModelType {
                             self.votedUsers = users.map { $0.userId }
                         }
                     }
-                    .disposed(by: disposeBag)
+                    .disposed(by: self.disposeBag)
                 
                 
                 let vote = VoteRequestModel(questionId: self.questionId,

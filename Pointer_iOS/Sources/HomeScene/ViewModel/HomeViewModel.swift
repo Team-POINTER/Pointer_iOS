@@ -41,47 +41,6 @@ class HomeViewModel: ViewModelType {
         return RoomCellViewModel(roomModel: roomModel.value[index])
     }
     
-    func requestRoomList() {
-        network.requestRoomList { [weak self] model, error in
-            if let error = error {
-                print(error)
-                return
-            }
-            
-            if let model = model {
-                // 토큰 만료 시
-                if model.code == LoginResultType.expiredToken.rawValue {
-                    guard let refreshToken = TokenManager.getUserRefreshToken() else { return }
-                    // 토큰 재발급
-                    AuthNetworkManager.shared.reissuePost(refreshToken) { [weak self] reissueModel in
-                        // 성공
-                        if reissueModel.code == LoginResultType.reissuedToken.rawValue {
-                            guard let newAccessToken = reissueModel.tokenDto?.accessToken else { return }
-                            guard let newRefeshToken = reissueModel.tokenDto?.refreshToken else { return }
-                            guard let userId = reissueModel.tokenDto?.userId else { return }
-                            
-                            // 토큰 초기화 후 재설정
-                            TokenManager.resetUserToken()
-                            TokenManager.saveUserAccessToken(accessToken: newAccessToken)
-                            TokenManager.saveUserRefreshToken(refreshToken: newRefeshToken)
-                            TokenManager.saveUserId(userId: String(userId))
-                            // 다시 호출
-                            self?.requestRoomList()
-                        }
-                        // refresh도 만료된 경우
-                        if reissueModel.code == LoginResultType.expiredToken.rawValue {
-                            TokenManager.resetUserToken()
-                            self?.expiredToken.accept(true)
-                        }
-                    }
-                } else {
-                    // 정상일 시
-                    self?.roomModel.accept(model.data.roomList)
-                }
-            }
-        }
-    }
-    
     //MARK: - NextViewConfigure
     func pushSingleRoomController(roomId: Int) {
         let viewController = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
@@ -129,6 +88,42 @@ class HomeViewModel: ViewModelType {
     // ToDo - 이름 최소 조건시 확인 버튼이 안눌리도록
     // ToDo - request 넘기는거 memory leak 나는건가..?
     // ToDo - code 별로 에러처리, 래픽토링
+    // RoomList API 호출
+    func requestRoomList() {
+        network.requestRoomList { [weak self] model, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let model = model,
+                  let self = self else { return }
+            
+            // 성공한 경우 roomModel에 data 바인딩
+            if model.code == RoomRouter.getRoomList.successCode {
+                guard let data = model.data else { return }
+                self.roomModel.accept(data.roomList)
+            } else {
+                // 실패한 경우 - 현재는 액세스 토큰 만료 경우밖에 없음
+                self.requestNewAccessToken()
+            }
+        }
+    }
+    
+    // Refresh 토큰으로 Access 토큰 갱신(UserDefaults)
+    private func requestNewAccessToken() {
+        guard let refresh = TokenManager.getUserRefreshToken() else { return }
+        AuthNetworkManager.shared.reissuePost(refresh) { isSuccess in
+            // 성공일 경우 룸 리스트 다시 호출하기
+            if isSuccess {
+                self.requestRoomList()
+            } else {
+                self.expiredToken.accept(true)
+            }
+        }
+    }
+    
+    // 룸 이름 변경 API
     func requestChangeRoomName(changeTo: String?, roomId: Int) {
         guard let roomName = changeTo else { return }
         let input = RoomNameChangeInput(privateRoomNm: roomName, roomId: roomId, userId: TokenManager.getIntUserId())
@@ -140,16 +135,19 @@ class HomeViewModel: ViewModelType {
         }
     }
     
+    // 룸 생성
     func requestCreateRoom(roomName: String) {
         network.requestCreateRoom(roomName: roomName) { [weak self] roomId in
             if let id = roomId {
                 self?.pushSingleRoomController(roomId: id)
+                self?.requestRoomList()
             } else {
                 // 에러일 때
             }
         }
     }
     
+    // 룸 나가기
     func requestExitRoom(roomId: Int) {
         network.requestExitRoom(roomId: roomId) { [weak self] isSuccessed in
             if isSuccessed {

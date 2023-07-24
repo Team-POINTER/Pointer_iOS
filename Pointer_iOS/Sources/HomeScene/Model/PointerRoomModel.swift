@@ -12,7 +12,7 @@ struct PointerHomeModel: Codable {
     let status: Int
     let code: String
     let message: String
-    let data: PointerRoomListModel
+    let data: PointerRoomListModel?
 }
 
 struct PointerRoomListModel: Codable {
