@@ -157,6 +157,14 @@ class RoomViewController: BaseViewController {
                 print("invite 버튼 click")
             })
             .disposed(by: disposeBag)
+        
+        viewModel.dismissRoom
+            .subscribe { [weak self] b in
+                if b {
+                    self?.dismiss(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
 //MARK: - set UI
@@ -200,16 +208,40 @@ class RoomViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
     }
-
-    override func viewWillDisappear(_ animated: Bool) {
-//        disposeBag = DisposeBag()
-    }
     
+
+//MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func menuButtonTap() {
+        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
+            guard let self = self,
+                  let currentRoomName = self.title else { return }
+            let roomId = self.viewModel.roomId
+            
+            let modifyAlert = self.viewModel.getModifyRoomNameAlert(currentRoomName, roomId: roomId)
+            self.present(modifyAlert, animated: true)
+        }
+        let inviteFriend = PointerAlertActionConfig(title: "친구 초대하기", textColor: .black) { [weak self] _ in
+            print("DEBUG: 친구 초대하기")
+        }
+        let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
+            self?.reportTap()
+        }
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .red) { [weak self] _ in
+            guard let self = self else { return }
+            let roomId = self.viewModel.roomId
+            
+            let exit = self.viewModel.getExitRoomAlert(roomId: roomId)
+        }
+
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteFriend, report, exitRoom])
+        present(actionSheet, animated: true)
+    }
+    
+    func reportTap() {
         let spamContent = PointerAlertActionConfig(title: "스팸", textColor: .black) { [weak self] _ in
             self?.presentReportView("스팸")
         }

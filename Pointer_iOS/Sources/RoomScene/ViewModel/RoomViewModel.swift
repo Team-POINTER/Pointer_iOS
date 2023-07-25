@@ -16,9 +16,7 @@ final class RoomViewModel: ViewModelType {
     let roomResultObservable = PublishRelay<SearchRoomResultData>()
     let roomResultMembersObservable = PublishRelay<[SearchRoomMembers]>()
     var selectedUsers = BehaviorRelay<[SearchRoomMembers]>(value: [])
-    
-    var roomObservable = BehaviorRelay<[User]>(value: []) //
-    let allUsersInThisRoom = BehaviorRelay<[User]>(value: []) // 더미
+    let dismissRoom = BehaviorRelay<Bool>(value: false)
     
     var roomId: Int
     var limitedAt = ""
@@ -174,12 +172,6 @@ final class RoomViewModel: ViewModelType {
         }
     }
     
-    // 선택한 유저 반환
-    func getSelectedUser(indexPath: IndexPath) -> User {
-        let selectedUser = allUsersInThisRoom.value[indexPath.row]
-        return selectedUser
-    }
-    
     /// SelectedUser 배열 안에 있는 유저인지 확인
     /// reuse 시 체크하는 함수
     func detectSelectedUser(_ selectedUser: SearchRoomMembers) -> Bool {
@@ -209,6 +201,30 @@ final class RoomViewModel: ViewModelType {
         } else {
             return text
         }
+    }
+    
+    //MARK: - Alert
+    func getModifyRoomNameAlert(_ currentName: String, roomId: Int) -> PointerAlert {
+        // 0. 취소 Action
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        // 1. 확인 Action
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
+            // 2. 입력한 텍스트로 룸 이름 변경 API 호출
+            self?.requestChangeRoomName(changeTo: changeTo, roomId: roomId)
+        }
+        let customView = CustomTextfieldView(roomName: currentName, withViewHeight: 50)
+        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 편집", description: "'\(currentName)'의 새로운 이름을 입력하세요", customView: customView)
+        return alert
+    }
+    
+    
+    func getExitRoomAlert(roomId: Int) -> PointerAlert {
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "나가기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] _ in
+            self?.requestExitRoom(roomId: roomId)
+        }
+        let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 나가기", description: "정말로 나가시겠습니까?")
+        return alert
     }
     
     //MARK: - Network
@@ -255,4 +271,27 @@ final class RoomViewModel: ViewModelType {
         }
     }
     
+    // 룸 이름 변경 API
+    func requestChangeRoomName(changeTo: String?, roomId: Int) {
+        guard let roomName = changeTo else { return }
+        let input = RoomNameChangeInput(privateRoomNm: roomName, roomId: roomId, userId: TokenManager.getIntUserId())
+        HomeNetworkManager.shared.requestRoomNameChange(input: input) { [weak self] response in
+            if response.code == "J000" {
+                // ToDo - 이녀석을 다시 부르는 방법은 .. ?
+                self?.dismissRoom.accept(true)
+            }
+        }
+    }
+    
+    // 룸 나가기
+    func requestExitRoom(roomId: Int) {
+        HomeNetworkManager.shared.requestExitRoom(roomId: roomId) { [weak self] isSuccessed in
+            if isSuccessed {
+                print("룸 나가기 성공")
+                self?.dismissRoom.accept(true)
+            } else {
+                print("실패")
+            }
+        }
+    }
 }
