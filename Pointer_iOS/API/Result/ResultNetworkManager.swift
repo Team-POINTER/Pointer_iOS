@@ -91,7 +91,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("지목화면 결과 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -113,7 +113,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("질문 전체 조회 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -135,7 +135,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("힌트보기 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -160,7 +160,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }

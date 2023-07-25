@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxGesture
 
 class HintViewController: BaseViewController {
 
@@ -45,6 +46,14 @@ class HintViewController: BaseViewController {
                 self.hintDate.text = data.createdAt
             })
             .disposed(by: disposeBag)
+        
+        hintBackgroundView.rx.longPressGesture()
+            .when(.began)
+            .subscribe(onNext: { [weak self] _ in
+                self?.longPressShowSetting()
+            })
+            .disposed(by: disposeBag)
+            
     }
     
 //MARK: - UIComponents
@@ -145,6 +154,47 @@ class HintViewController: BaseViewController {
         self.navigationItem.leftBarButtonItem = notiButton
     }
     
+//MARK: - Helper
+    func longPressShowSetting() {
+        let report = PointerAlertActionConfig(title: "신고하기", textColor: .red) { [weak self] _ in
+            self?.reportTap()
+        }
+        let delete = PointerAlertActionConfig(title: "삭제하기", textColor: .black) { [weak self] _ in
+            print("DEBUG: 힌트 삭제")
+        }
+        
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete])
+        present(actionSheet, animated: true)
+    }
+
+    func reportTap() {
+        let spamContent = PointerAlertActionConfig(title: "스팸", textColor: .black) { [weak self] _ in
+            self?.presentReportView("스팸")
+        }
+        let insultingContent = PointerAlertActionConfig(title: "모욕적인 문장", textColor: .black) { [weak self] _ in
+            self?.presentReportView("모욕적인 문장")
+        }
+        let sexualHateContent = PointerAlertActionConfig(title: "성적 혐오 발언", textColor: .black) { [weak self] _ in
+            self?.presentReportView("성적 혐오 발언")
+        }
+        let violenceOrBullyingContent = PointerAlertActionConfig(title: "폭력 또는 따돌림", textColor: .black) { [weak self] _ in
+            self?.presentReportView("폭력 또는 따돌림")
+        }
+        let etcContent = PointerAlertActionConfig(title: "기타 사유", textColor: .black) { [weak self] _ in
+            self?.presentReportView("기타 사유")
+        }
+        
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [spamContent, insultingContent, sexualHateContent, violenceOrBullyingContent, etcContent])
+        present(actionSheet, animated: true)
+    }
+    
+    func presentReportView(_ reason: String) {
+        let reportVC = ReportViewController(reason: reason)
+        let nav = UINavigationController(rootViewController: reportVC)
+        present(nav, animated: true)
+    }
+    
+//MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
     }
