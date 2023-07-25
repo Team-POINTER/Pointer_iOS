@@ -89,19 +89,21 @@ class NewQuestViewModel: ViewModelType{
     struct Output {
         let timeLimited = BehaviorRelay<Bool>(value: false)
         let buttonIsEnable = PublishSubject<nextQuestButtonStyle>()
+        let backAlert = BehaviorRelay<Bool>(value: false)
     }
     
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         
         let output = Output()
-        
+        // 질문 입력 시
         input.newQuestTextFieldEditEvent
             .subscribe { [weak self] text in
                 self?.questionInputString = text
             }
             .disposed(by: disposeBag)
         
+        // 질문 등록하기 버튼 Tap
         input.newQuestButtonTapEvent
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
@@ -114,8 +116,10 @@ class NewQuestViewModel: ViewModelType{
                     }
                     
                     if let model = model {
+                        // 질문 등록 성공 시 if로
                         print("질문 등록 완료")
-                        // 뷰 스택 전부 지워야하는가?
+                        // 질문 생성 API code로 타인이 이미 질문 등록 시 alert 반환
+                        //output.backAlert.accept(true)
                     }
                 }
             }
@@ -133,8 +137,6 @@ class NewQuestViewModel: ViewModelType{
                 }
             }
             .disposed(by: disposeBag)
-        
-        
         
         return output
     }
@@ -164,6 +166,4 @@ class NewQuestViewModel: ViewModelType{
         self.timer?.invalidate()
         self.timer = nil
     }
-    
-    
 }

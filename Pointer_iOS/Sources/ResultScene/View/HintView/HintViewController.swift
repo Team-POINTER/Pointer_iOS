@@ -35,6 +35,7 @@ class HintViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         
         viewModel.showHintObservable
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 var str = ""
@@ -49,6 +50,7 @@ class HintViewController: BaseViewController {
         
         hintBackgroundView.rx.longPressGesture()
             .when(.began)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 self?.longPressShowSetting()
             })

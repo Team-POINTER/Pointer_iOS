@@ -51,6 +51,7 @@ class NewQuestViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.timeLimited
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] b in
                 guard let self = self else { return}
                 
@@ -74,6 +75,16 @@ class NewQuestViewController: BaseViewController {
                             .foregroundColor: UIColor.rgb(red: 121, green: 125, blue: 148)
                         ]
                     )
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        // 이미 질문 등록이 완료된 경우에 돌아가기 Alert
+        output.backAlert
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] b in
+                if b {
+                    self?.dismissAlert()
                 }
             })
             .disposed(by: disposeBag)
@@ -157,9 +168,6 @@ class NewQuestViewController: BaseViewController {
         setConstraints()
         bindViewModel()
     }
-    
-    
-   
 
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")
@@ -169,5 +177,15 @@ class NewQuestViewController: BaseViewController {
     
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    func dismissAlert() {
+        let backAction = PointerAlertActionConfig(title: "돌아가기", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
+            // 루트뷰로 dismiss를 해야하는가?
+            self?.dismiss(animated: true)
+        })
+    
+        let alert = PointerAlert(alertType: .alert, configs: [backAction], description: "다른 사람이 질문을 등록했습니다.")
+        present(alert, animated: true)
     }
 }

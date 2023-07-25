@@ -91,7 +91,6 @@ class RoomViewController: BaseViewController {
         
 // - tableView bind
         viewModel.roomResultMembersObservable
-            .observe(on: MainScheduler.instance)
             .bind(to: peopleTableView.rx.items) { [weak self] tableView, index, item in
                 guard let self = self,
                       let cell = tableView.dequeueReusableCell(withIdentifier: RoomPeopleTableViewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPeopleTableViewCell
@@ -159,6 +158,7 @@ class RoomViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.dismissRoom
+            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] b in
                 if b {
                     self?.dismiss(animated: true)
@@ -235,6 +235,7 @@ class RoomViewController: BaseViewController {
             let roomId = self.viewModel.roomId
             
             let exit = self.viewModel.getExitRoomAlert(roomId: roomId)
+            self.present(exit, animated: true)
         }
 
         let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteFriend, report, exitRoom])
