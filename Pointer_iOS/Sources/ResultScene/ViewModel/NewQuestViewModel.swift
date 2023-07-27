@@ -35,10 +35,7 @@ enum nextQuestButtonStyle: CaseIterable {
     func getAttributedString(_ time: Int) -> NSMutableAttributedString {
         switch self {
         case .isEnable:
-            let hours = time / 3600
-            let minutes = (time % 3600) / 60
-            let seconds = time % 60
-            let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            let changingTime = String("00:00:00")
             
             let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
             attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
@@ -50,7 +47,7 @@ enum nextQuestButtonStyle: CaseIterable {
             let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
             
             let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
-            attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white]))
+            attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white.withAlphaComponent(0.5)]))
             return attributedQuestionString
         }
     }
@@ -77,7 +74,6 @@ class NewQuestViewModel: ViewModelType{
         self.roomName = roomName
         self.roomId = roomId
         self.startTimer()
-        print("NewQuestionViewModel limitedAt = \(limitedAt)")
     }
     
 //MARK: - In/Out
@@ -88,7 +84,8 @@ class NewQuestViewModel: ViewModelType{
     
     struct Output {
         let timeLimited = BehaviorRelay<Bool>(value: false)
-        let buttonIsEnable = PublishSubject<nextQuestButtonStyle>()
+        let newQuestTextFieldText = BehaviorRelay<String>(value: "")
+        let buttonIsEnable = BehaviorRelay<nextQuestButtonStyle>(value: .disable)
         let backAlert = BehaviorRelay<Bool>(value: false)
     }
     
@@ -100,6 +97,7 @@ class NewQuestViewModel: ViewModelType{
         input.newQuestTextFieldEditEvent
             .subscribe { [weak self] text in
                 self?.questionInputString = text
+                output.newQuestTextFieldText.accept(text)
             }
             .disposed(by: disposeBag)
         
@@ -107,6 +105,7 @@ class NewQuestViewModel: ViewModelType{
         input.newQuestButtonTapEvent
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
+                print("짊문등록 버튼 Tap")
                 let newQuestionRequestModel = NewQuestionRequestModel(roomId: self.roomId,
                                                                       userId: self.userId,
                                                                       content: self.questionInputString)
@@ -128,12 +127,13 @@ class NewQuestViewModel: ViewModelType{
         remainingTime
             .subscribe { time in
                 guard let time = time.element else { return }
+                print("🔥NewQuestModel remainingTime = \(time)")
                 if time <= 0 {
                     output.timeLimited.accept(true)
-                    output.buttonIsEnable.onNext(.isEnable)
+                    output.buttonIsEnable.accept(.isEnable)
                 } else {
                     output.timeLimited.accept(false)
-                    output.buttonIsEnable.onNext(.disable)
+                    output.buttonIsEnable.accept(.disable)
                 }
             }
             .disposed(by: disposeBag)

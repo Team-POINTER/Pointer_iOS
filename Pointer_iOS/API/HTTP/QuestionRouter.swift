@@ -11,7 +11,7 @@ import Alamofire
 enum QuestionRouter {
     case createQuestion // 질문 생성
     case currentSearchQuestion(_ userId: Int ,_ roomId: Int) // 현재 질문 조회
-    case totalSearchQuestion(_ userId: Int ,_ roomId: Int) // 전체 질문 조회
+    case totalSearchQuestion(_ roomId: Int) // 전체 질문 조회
     case modifyQuestion(_ userId: Int ,_ questionId: Int) // 질문 수정
     case deleteQuestion(_ userId: Int ,_ questionId: Int) // 질문 삭제
 }
@@ -32,8 +32,8 @@ extension QuestionRouter: HttpRouter {
             return "/questions"
         case .currentSearchQuestion(let userId, let roomId):
             return "/questions/current/\(userId)/\(roomId)"
-        case .totalSearchQuestion(let userId, let roomId):
-            return "/questions/\(userId)/\(roomId)"
+        case .totalSearchQuestion(let roomId):
+            return "/questions/\(roomId)"
         case .modifyQuestion(let userId, let questionId):
             return "/questions/\(userId)/\(questionId)"
         case .deleteQuestion(let userId, let roomId):
@@ -63,10 +63,7 @@ extension QuestionRouter: HttpRouter {
     }
     
     var parameters: Parameters? {
-        let parameters: [String: Any] = [
-            "userId": 4
-        ]
-        return parameters
+        return nil
     }
     
     func body() throws -> Data? {

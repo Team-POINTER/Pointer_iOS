@@ -77,9 +77,9 @@ class ResultNetworkManager {
     
     // 지목화면 결과 조회
     private func votedResultRequest(_ questionId: Int, _ completion: @escaping (Error?, VotedResultData?) -> Void){
-        AF.request(voteRouter.votedResult(userId, questionId).url,
-                   method: voteRouter.votedResult(userId, questionId).method,
-                   headers: voteRouter.votedResult(userId, questionId).headers)
+        AF.request(voteRouter.votedResult(questionId).url,
+                   method: voteRouter.votedResult(questionId).method,
+                   headers: voteRouter.votedResult(questionId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: VotedResultModel.self) { response in
                 switch response.result {
@@ -99,9 +99,9 @@ class ResultNetworkManager {
     }
     
     private func totalQuestionRequest(_ roomId: Int, completion: @escaping (Error?, [TotalQuestionResultData]?) -> Void) {
-        AF.request(questionRouter.totalSearchQuestion(userId, roomId).url,
-                   method:questionRouter.totalSearchQuestion(userId, roomId).method,
-                   headers: questionRouter.totalSearchQuestion(userId, roomId).headers)
+        AF.request(questionRouter.totalSearchQuestion(roomId).url,
+                   method:questionRouter.totalSearchQuestion(roomId).method,
+                   headers: questionRouter.totalSearchQuestion(roomId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: TotalQuestionResultModel.self) { response in
                 switch response.result {
@@ -121,9 +121,9 @@ class ResultNetworkManager {
     }
     
     private func showHintRequest(_ questionId: Int, completion: @escaping (Error?, ShowHintResultData?) -> Void) {
-        AF.request(voteRouter.showHint(userId, questionId).url,
-                   method:voteRouter.showHint(userId, questionId).method,
-                   headers: voteRouter.showHint(userId, questionId).headers)
+        AF.request(voteRouter.showHint(questionId).url,
+                   method:voteRouter.showHint(questionId).method,
+                   headers: voteRouter.showHint(questionId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: ShowHintResultModel.self) { response in
                 switch response.result {

@@ -10,8 +10,8 @@ import Alamofire
 
 enum VoteRouter {
     case vote // 투표하기
-    case votedResult(_ userId: Int ,_ questionId: Int) // 지목화면 결과 조회
-    case showHint(_ userId: Int ,_ questionId: Int) // 힌트 보기
+    case votedResult(_ questionId: Int) // 지목화면 결과 조회
+    case showHint(_ questionId: Int) // 힌트 보기
     case searchNotVotedResult(_ questionId: Int) // 지목하지 않은 사람 조회
 
 }
@@ -30,10 +30,10 @@ extension VoteRouter: HttpRouter {
         switch self {
         case .vote:
             return "/votes"
-        case .votedResult(let userId, let questionId):
-            return "/votes/\(userId)/\(questionId)"
-        case .showHint(let userId, let questionId):
-            return "/votes/hint/\(userId)/\(questionId)"
+        case .votedResult(let questionId):
+            return "/votes/\(questionId)"
+        case .showHint(let questionId):
+            return "/votes/hint/\(questionId)"
         case .searchNotVotedResult(let questionId):
             return "/votes/not-noted/\(questionId)"
         }
@@ -59,10 +59,7 @@ extension VoteRouter: HttpRouter {
     }
     
     var parameters: Parameters? {
-        let parameters: [String: Any] = [
-            "userId": 4
-        ]
-        return parameters
+        return nil
     }
     
     func body() throws -> Data? {
