@@ -57,7 +57,6 @@
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
 		47CC89602A46844F0020246E /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* AuthRouter.swift */; };
-		47CC896F2A4EF51D0020246E /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC896E2A4EF51D0020246E /* Secret.swift */; };
 		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
 		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
 		CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */; };
@@ -116,6 +115,10 @@
 		CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */; };
 		F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90071982A60367500D1CDEE /* PointerRoomModel.swift */; };
 		F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F925EB5C2A604897008139FE /* RoomCellViewModel.swift */; };
+		F98555252A72B00300EB6247 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555242A72B00300EB6247 /* Secret.swift */; };
+		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
+		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
+		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
 		F9F120702A5922AD009A33F2 /* RoomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */; };
 		F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F120722A592D75009A33F2 /* TokenManager.swift */; };
 /* End PBXBuildFile section */
@@ -170,7 +173,6 @@
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
 		47CC895F2A46844F0020246E /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
 		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
-		47CC896E2A4EF51D0020246E /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
 		47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewModel.swift; sourceTree = "<group>"; };
 		CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -221,6 +223,10 @@
 		CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewController.swift; sourceTree = "<group>"; };
 		F90071982A60367500D1CDEE /* PointerRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerRoomModel.swift; sourceTree = "<group>"; };
 		F925EB5C2A604897008139FE /* RoomCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCellViewModel.swift; sourceTree = "<group>"; };
+		F98555242A72B00300EB6247 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
+		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
 		F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRouter.swift; sourceTree = "<group>"; };
 		F9F120722A592D75009A33F2 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -468,6 +474,7 @@
 				F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */,
 				478C9FFE2A618483000FA196 /* QuestionRouter.swift */,
 				478CA0002A61935F000FA196 /* VoteRouter.swift */,
+				F98555262A72B08B00EB6247 /* ProfileRouter.swift */,
 			);
 			path = HTTP;
 			sourceTree = "<group>";
@@ -482,6 +489,7 @@
 		CD0667772A04E8870003C7B4 /* ProfileScene */ = {
 			isa = PBXGroup;
 			children = (
+				F98555282A72B23B00EB6247 /* Model */,
 				CD0667782A04E8870003C7B4 /* ViewModel */,
 				CD06677A2A04E8870003C7B4 /* View */,
 			);
@@ -623,7 +631,7 @@
 				CD23208F29B8CFCB003D0B84 /* Util */,
 				CD23208D29B8CFC5003D0B84 /* Base */,
 				CD23209329B8D2AF003D0B84 /* API */,
-				CD23208E29B8CFC8003D0B84 /* Secret */,
+				F98555232A72AFF200EB6247 /* Secret */,
 				F9F120712A592D3A009A33F2 /* Authentication */,
 				CD23209029B8D253003D0B84 /* Sources */,
 				CD23207929B8C6EB003D0B84 /* AppDelegate.swift */,
@@ -643,14 +651,6 @@
 				CD23209D29B8DC0E003D0B84 /* BaseNavigationController.swift */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		CD23208E29B8CFC8003D0B84 /* Secret */ = {
-			isa = PBXGroup;
-			children = (
-				47CC896E2A4EF51D0020246E /* Secret.swift */,
-			);
-			path = Secret;
 			sourceTree = "<group>";
 		};
 		CD23208F29B8CFCB003D0B84 /* Util */ = {
@@ -690,6 +690,7 @@
 				478C9FED2A5EC274000FA196 /* Home */,
 				478C9FF72A60385D000FA196 /* Room */,
 				478CA0022A623EA7000FA196 /* Result */,
+				F985552B2A72B75200EB6247 /* Profile */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -860,6 +861,30 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		F98555232A72AFF200EB6247 /* Secret */ = {
+			isa = PBXGroup;
+			children = (
+				F98555242A72B00300EB6247 /* Secret.swift */,
+			);
+			path = Secret;
+			sourceTree = "<group>";
+		};
+		F98555282A72B23B00EB6247 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F98555292A72B24400EB6247 /* ProfileModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F985552B2A72B75200EB6247 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		F9F120712A592D3A009A33F2 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -973,6 +998,7 @@
 				F9F120702A5922AD009A33F2 /* RoomRouter.swift in Sources */,
 				F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */,
 				CD0667812A04E8870003C7B4 /* UserFriendCell.swift in Sources */,
+				F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */,
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
 				CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */,
@@ -1004,9 +1030,11 @@
 				CD0667842A04E8A60003C7B4 /* UserModel.swift in Sources */,
 				478C9FF92A603882000FA196 /* RoomNetworkManager.swift in Sources */,
 				473B73A629D0364000B33C77 /* AuthNetworkManager.swift in Sources */,
+				F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */,
 				CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
 				CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */,
+				F98555252A72B00300EB6247 /* Secret.swift in Sources */,
 				CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */,
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
@@ -1039,7 +1067,6 @@
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */,
 				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
-				47CC896F2A4EF51D0020246E /* Secret.swift in Sources */,
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
 				473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */,
@@ -1052,6 +1079,7 @@
 				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
 				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,
 				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
+				F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */,
 				47CC89602A46844F0020246E /* AuthRouter.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,

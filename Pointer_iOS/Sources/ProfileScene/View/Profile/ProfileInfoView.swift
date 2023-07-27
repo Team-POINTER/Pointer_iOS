@@ -103,7 +103,6 @@ class ProfileInfoView: ProfileInfoParentView {
         bind()
         setupCollectionView()
         setupUI()
-        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -129,6 +128,13 @@ class ProfileInfoView: ProfileInfoParentView {
             .subscribe { [weak self] _ in
                 self?.delegate?.messageButtonTapped()
             }.disposed(by: disposeBag)
+        
+        super.viewModel.profile
+            .bind { [weak self] model in
+                guard let model = model else { return }
+                self?.configure(model: model)
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Functions
@@ -198,37 +204,38 @@ class ProfileInfoView: ProfileInfoParentView {
         }
         
         // 유저 타입별 버튼 분기처리
-        switch viewModel.user.memberType {
-        case .myAccount:
-            stack.addArrangedSubview(editMyProfileButton)
-        case .following:
-            stack.addArrangedSubview(friendsActionButton)
-            stack.addArrangedSubview(messageButton)
-            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
-            friendsActionButton.tintColor = .white
-            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 ✓",
-                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
-        case .notFollowing:
-            stack.addArrangedSubview(friendsActionButton)
-            stack.addArrangedSubview(messageButton)
-            friendsActionButton.backgroundColor = .pointerRed
-            friendsActionButton.tintColor = .white
-            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 신청",
-                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
-        }
-        
-        // 버튼 Corner Radius
-        stack.subviews.forEach {
-            $0.layer.cornerRadius = 28 / 2
-            $0.clipsToBounds = true
-            $0.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        }
+//        switch viewModel.user.memberType {
+//        case .myAccount:
+//            stack.addArrangedSubview(editMyProfileButton)
+//        case .following:
+//            stack.addArrangedSubview(friendsActionButton)
+//            stack.addArrangedSubview(messageButton)
+//            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
+//            friendsActionButton.tintColor = .white
+//            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 ✓",
+//                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
+//        case .notFollowing:
+//            stack.addArrangedSubview(friendsActionButton)
+//            stack.addArrangedSubview(messageButton)
+//            friendsActionButton.backgroundColor = .pointerRed
+//            friendsActionButton.tintColor = .white
+//            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 신청",
+//                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
+//        }
+//
+//        // 버튼 Corner Radius
+//        stack.subviews.forEach {
+//            $0.layer.cornerRadius = 28 / 2
+//            $0.clipsToBounds = true
+//            $0.widthAnchor.constraint(equalToConstant: 80).isActive = true
+//        }
     }
     
-    private func configure() {
-        nameLabel.text = viewModel.user.userName
-        idLabel.text = viewModel.userIdText
-        friendsCountLabel.text = viewModel.friendsCountText
+    private func configure(model: ProfileModel) {
+        nameLabel.text = model.results?.userName
+        idLabel.text = model.results?.id
+        friendsCountLabel.text = "올"
+        collectionView.reloadData()
     }
 }
 

@@ -22,7 +22,7 @@ class EditProfileInfoView: ProfileInfoParentView {
     
     lazy var nameTextField: UITextField = {
         let tf = UITextField()
-        tf.text = viewModel.user.userName
+        tf.text = viewModel.userName
         tf.font = .notoSans(font: .notoSansKrMedium, size: 25)
         tf.textColor = .inactiveGray
         tf.textAlignment = .center

@@ -45,16 +45,16 @@ class EditUserIDViewModel: ViewModelType {
     }
     
     //MARK: - Properties
-    let user: User
+    let user: ProfileModel?
     
     //MARK: - Init
-    init(user: User) {
+    init(user: ProfileModel?) {
         self.user = user
     }
     
     //MARK: - Functions
     func transform(input: Input) -> Output {
-        let output = Output(checkIdStringCountString: BehaviorRelay(value: getIdStringCount(text: user.userID)))
+        let output = Output(checkIdStringCountString: BehaviorRelay(value: getIdStringCount(text: user?.results?.id ?? "오류")))
         
         input.idTextFieldEvent
             .subscribe { [weak self] string in
