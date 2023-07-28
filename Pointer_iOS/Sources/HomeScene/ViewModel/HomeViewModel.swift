@@ -42,9 +42,15 @@ class HomeViewModel: ViewModelType {
     }
     
     //MARK: - NextViewConfigure
-    func pushSingleRoomController(roomId: Int) {
-        let viewController = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
-        nextViewController.accept(viewController)
+    func pushSingleRoomController(voted: Bool = false, roomId: Int, questionId: Int = 0, limitedAt: String = "") {
+        // 룸 투표 여부에 따라
+        if voted {
+            let resultVC = ResultViewController(viewModel: ResultViewModel(roomId, questionId, limitedAt))
+            nextViewController.accept(resultVC)
+        } else {
+            let roomVC = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
+            nextViewController.accept(roomVC)
+        }
     }
     
 
