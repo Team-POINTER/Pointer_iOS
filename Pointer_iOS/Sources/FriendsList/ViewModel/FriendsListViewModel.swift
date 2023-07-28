@@ -20,12 +20,16 @@ class FriendsListViewModel: ViewModelType {
     //MARK: - Properties
     var disposeBag = DisposeBag()
     let listType: ListType
+    let friendsListObservable = PublishRelay<[InviteFriendsListResultData]>()
     let friendsList = BehaviorRelay<[SectionModel]>(value: [SectionModel(header: "header", items: User.getDummyUsers())])
     let selectedUser = BehaviorRelay<[User]>(value: [])
     
+    let roomId: Int
+    
+    
     //MARK: - Rx
     struct Input {
-        
+        let searchTextFieldEditEvent: Observable<String>
     }
     
     struct Output {
@@ -35,6 +39,17 @@ class FriendsListViewModel: ViewModelType {
     //MARK: - Transform
     func transform(input: Input) -> Output {
         let output = Output()
+        
+        input.searchTextFieldEditEvent
+            .subscribe { [weak self] text in
+                guard let self = self else { return }
+                print(text)
+                
+                //MARK: [FIX ME] lastPage 값이 어떤 값인가? - 무한 스크롤 시
+//                let model = InviteFriendsListRequestModel(keyword: text, lastPage: 0)
+//                self.inviteFriendsListRequest(self.roomId, model)
+            }
+            .disposed(by: disposeBag)
         
         selectedUser
             .subscribe { [weak self] users in
@@ -48,8 +63,9 @@ class FriendsListViewModel: ViewModelType {
     }
     
     //MARK: - LifeCycle
-    init(listType: ListType) {
+    init(listType: ListType, roomId: Int = 0) {
         self.listType = listType
+         self.roomId = roomId
     }
     
     //MARK: - DataSources
@@ -68,16 +84,6 @@ class FriendsListViewModel: ViewModelType {
             cell.isSelectedCell = self.detectSelectedUser(item)
             cell.delegate = self
             return cell
-        }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-            // Header
-            switch kind {
-            case UICollectionView.elementKindSectionHeader:
-                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FriendsListHeaderView.headerIdentifier, for: indexPath) as? FriendsListHeaderView else { return UICollectionReusableView() }
-                header.delegate = self
-                return header
-            default:
-                fatalError()
-            }
         })
         
         return dataSource
@@ -122,6 +128,21 @@ class FriendsListViewModel: ViewModelType {
         let attribute = makeButtonAttributeString(count: selectedUser.value.count)
         return attribute
     }
+    
+//MARK: - API
+    // 초대 가능한 친구 목록
+    func inviteFriendsListRequest(_ roomId: Int, _ model: InviteFriendsListRequestModel) {
+        RoomNetworkManager.shared.inviteFriendListRequest(roomId, model) { [weak self] error, model in
+            if let error = error {
+                print("DEBUG: 초대 가능한 친구 목록 조회 에러 - \(error.localizedDescription)")
+            }
+            
+            if let model = model {
+                self?.friendsListObservable.accept(model)
+            }
+        }
+    }
+    
 }
 
 //MARK: - FriendsListViewModel.SectionModel
@@ -134,12 +155,6 @@ extension FriendsListViewModel.SectionModel: SectionModelType {
     }
 }
 
-//MARK: - FriendsListHeaderSearchBarDelegate
-extension FriendsListViewModel: FriendsListHeaderSearchBarDelegate {
-    func textFieldDidChange(text: String) {
-        print(text)
-    }
-}
 
 //MARK: - FriendsListCellDelegate
 extension FriendsListViewModel: FriendsListCellDelegate {

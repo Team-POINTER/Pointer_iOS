@@ -10,14 +10,8 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-//MARK: - Delegate
-protocol FriendsListHeaderSearchBarDelegate: AnyObject {
-    func textFieldDidChange(text: String)
-}
-
-class FriendsListHeaderView: UICollectionReusableView {
+class FriendsListHeaderView: UIView {
     //MARK: - Properties
-    var delegate: FriendsListHeaderSearchBarDelegate?
     var disposeBag = DisposeBag()
     static let headerIdentifier = "FriendsListHeaderView"
     
@@ -32,9 +26,10 @@ class FriendsListHeaderView: UICollectionReusableView {
         return view
     }()
     
-    private let searchTextField: UITextField = {
+    let searchTextField: UITextField = {
         let tf = UITextField()
         tf.backgroundColor = .clear
+        tf.placeholder = "사용자 닉네임 또는 아이디로 검색"
         tf.font = .notoSans(font: .notoSansKrMedium, size: 15)
         return tf
     }()
@@ -42,30 +37,13 @@ class FriendsListHeaderView: UICollectionReusableView {
     //MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupUI()
-        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
-    //MARK: - Bind
-    func bind() {
-        searchTextField.rx.text
-            .asObservable()
-            .subscribe { [weak self] event in
-                if let element = event.element,
-                   let text = element,
-                   let self = self {
-                    self.delegate?.textFieldDidChange(text: text)
-                }
-            }
-            .disposed(by: disposeBag)
-    }
     
     //MARK: - Functions
     func setupUI() {

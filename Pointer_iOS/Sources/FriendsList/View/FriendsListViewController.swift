@@ -16,6 +16,8 @@ class FriendsListViewController: BaseViewController {
     var disposeBag = DisposeBag()
     let viewModel: FriendsListViewModel
     
+    let searchHeaderView = FriendsListHeaderView()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.sectionHeadersPinToVisibleBounds = true
@@ -23,7 +25,6 @@ class FriendsListViewController: BaseViewController {
         cv.backgroundColor = .clear
         cv.delegate = self
         cv.register(FriendsListCell.self, forCellWithReuseIdentifier: FriendsListCell.cellIdentifier)
-        cv.register(FriendsListHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: FriendsListHeaderView.headerIdentifier)
         return cv
     }()
     
@@ -53,9 +54,12 @@ class FriendsListViewController: BaseViewController {
     
     //MARK: - bind
     func bind() {
-        let input = FriendsListViewModel.Input()
+        let input = FriendsListViewModel.Input(
+            searchTextFieldEditEvent: searchHeaderView.searchTextField.rx.text.orEmpty.asObservable())
         let output = viewModel.transform(input: input)
 
+        
+        
         // CollectionView 바인딩
         viewModel.friendsList
             .bind(to: collectionView.rx.items(dataSource: viewModel.makeDataSource()))
@@ -95,23 +99,30 @@ class FriendsListViewController: BaseViewController {
     //MARK: - Functions
     func setupUI() {
         view.backgroundColor = .clear
+        view.addSubview(searchHeaderView)
         view.addSubview(collectionView)
         
         switch viewModel.listType {
         // 타입이 Select일 경우
         case .select:
+            searchHeaderView.snp.makeConstraints {
+                $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+                $0.height.equalTo(60)
+            }
+            
             // 버튼 추가
             view.addSubview(confirmButton)
             confirmButton.snp.makeConstraints {
                 $0.width.equalToSuperview()
                 $0.height.equalTo(60)
                 $0.bottom.equalTo(view.safeAreaLayoutGuide)
-                confirmButton.layer.cornerRadius = 60 / 2
+                confirmButton.layer.cornerRadius = 13
                 confirmButton.clipsToBounds = true
             }
             
             collectionView.snp.makeConstraints {
-                $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+                $0.top.equalTo(searchHeaderView.snp.bottom)
+                $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
                 $0.bottom.equalTo(confirmButton.snp.top)
             }
         // 타입이 Normal일 경우
@@ -146,9 +157,5 @@ class FriendsListViewController: BaseViewController {
 extension FriendsListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: collectionView.frame.width, height: 55)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 60)
     }
 }
