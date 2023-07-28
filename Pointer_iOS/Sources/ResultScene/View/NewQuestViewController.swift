@@ -179,6 +179,7 @@ class NewQuestViewController: BaseViewController {
         setUI()
         setConstraints()
         bindViewModel()
+        self.hideKeyboardWhenTappedAround()
     }
 
     func configureBar() {

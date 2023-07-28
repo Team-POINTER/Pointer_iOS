@@ -225,7 +225,8 @@ class RoomViewController: BaseViewController {
             self.present(modifyAlert, animated: true)
         }
         let inviteFriend = PointerAlertActionConfig(title: "친구 초대하기", textColor: .black) { [weak self] _ in
-            print("DEBUG: 친구 초대하기")
+            let viewController = FriendsListViewController(type: .select)
+            self?.navigationController?.pushViewController(viewController, animated: true)
         }
         let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
             self?.reportTap()
