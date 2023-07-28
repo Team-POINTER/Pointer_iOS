@@ -59,6 +59,19 @@ class HintViewController: BaseViewController {
     }
     
 //MARK: - UIComponents
+    lazy var scrollView: UIScrollView = {
+        $0.backgroundColor = .clear
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.showsVerticalScrollIndicator = true
+        $0.showsHorizontalScrollIndicator = false
+        $0.isScrollEnabled = true
+        // 이거 중요
+        $0.contentSize = contentView.bounds.size
+        return $0
+    }(UIScrollView())
+    
+    lazy var contentView = UIView()
+    
     var questionLabel: UILabel = {
         $0.font = UIFont.notoSansRegular(size: 19)
         $0.textColor = UIColor.white
@@ -104,8 +117,10 @@ class HintViewController: BaseViewController {
     
 //MARK: - Set UI
     func setUI() {
-        view.addSubview(questionLabel)
-        view.addSubview(hintBackgroundView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(questionLabel)
+        contentView.addSubview(hintBackgroundView)
         hintBackgroundView.addSubview(selectMeLabel)
         hintBackgroundView.addSubview(selectMePeopleLabel)
         hintBackgroundView.addSubview(selectedMeNumber)
@@ -114,15 +129,23 @@ class HintViewController: BaseViewController {
 
     
     func setUIConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.width.equalTo(UIScreen.main.bounds.width)
+        }
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
         questionLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(25)
+            make.top.equalToSuperview().inset(25)
             make.leading.trailing.equalToSuperview().inset(37)
             make.centerX.equalToSuperview()
         }
         hintBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(questionLabel.snp.bottom).inset(-25)
             make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(430)
+            make.bottom.equalTo(contentView.snp.bottom).inset(40)
         }
         selectMeLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(30)
@@ -131,6 +154,7 @@ class HintViewController: BaseViewController {
         selectMePeopleLabel.snp.makeConstraints { make in
             make.top.equalTo(selectMeLabel.snp.bottom).inset(-7)
             make.leading.equalToSuperview().inset(37)
+            make.bottom.equalTo(selectedMeNumber.snp.top).inset(-25)
         }
         selectedMeNumber.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(37)
