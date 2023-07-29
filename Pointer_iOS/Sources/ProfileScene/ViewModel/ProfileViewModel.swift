@@ -11,6 +11,7 @@ import RxRelay
 
 class ProfileViewModel {
     //MARK: - Properties
+    var isMyProfile = false
     let profile = BehaviorRelay<ProfileModel?>(value: nil)
     let userId: Int
     let cellItemSpacing = CGFloat(20)
@@ -44,6 +45,7 @@ class ProfileViewModel {
         // 자기 자신이라면 내 프로필, 아니라면 상대 프로필
         if TokenManager.getIntUserId() == self.userId {
             network.getMyProfile { [weak self] profile in
+                self?.isMyProfile = true
                 self?.profile.accept(profile)
             }
         } else {

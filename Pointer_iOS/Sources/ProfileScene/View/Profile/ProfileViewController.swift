@@ -41,15 +41,12 @@ class ProfileViewController: ProfileParentViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.requestUserProfile()
         setupUI()
+        bind(viewModel: viewModel)
+        viewModel.requestUserProfile()
     }
     
-    //MARK: - Bind
-    private func bind() {
-        viewModel.profile
-            
-    }
+
     
     //MARK: - Selector
     

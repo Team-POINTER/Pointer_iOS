@@ -70,31 +70,16 @@ class ProfileInfoView: ProfileInfoParentView {
         return cv
     }()
     
-    let editMyProfileButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .white
-        button.tintColor = .black
-        button.setAttributedTitle(NSAttributedString(string: "프로필 편집",
-                                                     attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
-        return button
-    }()
+    lazy var editMyProfileButton = getActionButton(title: "프로필 편집")
+    lazy var friendsActionButton = getActionButton(title: "읽는중")
+    lazy var messageButton = getActionButton(title: "메시지")
     
-    let friendsActionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .pointerRed
-        button.tintColor = .white
-        button.setAttributedTitle(NSAttributedString(string: "읽는중",
-                                                     attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
-        return button
-    }()
-    
-    let messageButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .white
-        button.tintColor = .black
-        button.setAttributedTitle(NSAttributedString(string: "메시지",
-                                                     attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
-        return button
+    let buttonStack: UIStackView = {
+        // 버튼을 담을 StackView 생성
+        let stack = UIStackView(arrangedSubviews: [])
+        stack.spacing = 10
+        stack.axis = .horizontal
+        return stack
     }()
     
     //MARK: - Lifecycle
@@ -133,6 +118,7 @@ class ProfileInfoView: ProfileInfoParentView {
             .bind { [weak self] model in
                 guard let model = model else { return }
                 self?.configure(model: model)
+                self?.configureActionButtonUI(model: model)
             }
             .disposed(by: disposeBag)
     }
@@ -186,56 +172,81 @@ class ProfileInfoView: ProfileInfoParentView {
             $0.bottom.equalToSuperview().inset(5)
         }
         
-        setupActionButtonUI()
-    }
-    
-    private func setupActionButtonUI() {
-        // 버튼을 담을 StackView 생성
-        let stack = UIStackView(arrangedSubviews: [])
-        stack.spacing = 10
-        stack.axis = .horizontal
-        
         // 버튼 Layout
-        addSubview(stack)
-        stack.snp.makeConstraints {
+        addSubview(buttonStack)
+        buttonStack.snp.makeConstraints {
             $0.trailing.equalTo(seperator.snp.trailing)
             $0.bottom.equalTo(idLabel.snp.bottom)
             $0.height.equalTo(28)
         }
-        
-        // 유저 타입별 버튼 분기처리
-//        switch viewModel.user.memberType {
-//        case .myAccount:
-//            stack.addArrangedSubview(editMyProfileButton)
-//        case .following:
-//            stack.addArrangedSubview(friendsActionButton)
-//            stack.addArrangedSubview(messageButton)
-//            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
-//            friendsActionButton.tintColor = .white
-//            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 ✓",
-//                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
-//        case .notFollowing:
-//            stack.addArrangedSubview(friendsActionButton)
-//            stack.addArrangedSubview(messageButton)
-//            friendsActionButton.backgroundColor = .pointerRed
-//            friendsActionButton.tintColor = .white
-//            friendsActionButton.setAttributedTitle(NSAttributedString(string: "친구 신청",
-//                                                                      attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)]), for: .normal)
-//        }
-//
-//        // 버튼 Corner Radius
-//        stack.subviews.forEach {
-//            $0.layer.cornerRadius = 28 / 2
-//            $0.clipsToBounds = true
-//            $0.widthAnchor.constraint(equalToConstant: 80).isActive = true
-//        }
     }
-    
+        
     private func configure(model: ProfileModel) {
         nameLabel.text = model.results?.userName
         idLabel.text = model.results?.id
-        friendsCountLabel.text = "올"
+        friendsCountLabel.text = "friend count ?"
         collectionView.reloadData()
+    }
+    
+    // 유저 타입별 분기 처리
+    private func configureActionButtonUI(model: ProfileModel) {
+        
+        if viewModel.isMyProfile == true {
+            buttonStack.addArrangedSubview(editMyProfileButton)
+            // 버튼 Corner Radius
+            buttonStack.subviews.forEach {
+                $0.layer.cornerRadius = 28 / 2
+                $0.clipsToBounds = true
+                $0.widthAnchor.constraint(equalToConstant: 80).isActive = true
+            }
+            return
+        }
+        
+        guard let relationship = model.results?.relationship,
+              let friendType = Relationship(rawValue: relationship) else { return }
+        
+        switch friendType {
+        case .none:
+            buttonStack.addArrangedSubview(friendsActionButton)
+            buttonStack.addArrangedSubview(messageButton)
+            friendsActionButton.backgroundColor = .pointerRed
+            friendsActionButton.tintColor = .white
+            friendsActionButton.setAttributedTitle(getButtonTitle(title: "친구 신청"), for: .normal)
+        case .friend:
+            buttonStack.addArrangedSubview(friendsActionButton)
+            buttonStack.addArrangedSubview(messageButton)
+            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
+            friendsActionButton.tintColor = .white
+            friendsActionButton.setAttributedTitle(getButtonTitle(title: "친구 ✓"), for: .normal)
+        case .friendRequested:
+            buttonStack.addArrangedSubview(friendsActionButton)
+            buttonStack.addArrangedSubview(messageButton)
+            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
+            friendsActionButton.tintColor = .white
+            friendsActionButton.setAttributedTitle(getButtonTitle(title: "친구 요청됨"), for: .normal)
+        }
+
+        // 버튼 Corner Radius
+        buttonStack.subviews.forEach {
+            $0.layer.cornerRadius = 28 / 2
+            $0.clipsToBounds = true
+            $0.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        }
+    }
+    
+    // 버튼 생성
+    private func getActionButton(title: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.setAttributedTitle(getButtonTitle(title: title), for: .normal)
+        return button
+    }
+    
+    // 버튼 Attributed Title
+    private func getButtonTitle(title: String) -> NSAttributedString {
+        let string = NSAttributedString(string: title, attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)])
+        return string
     }
 }
 

@@ -21,6 +21,7 @@ struct ProfileResults: Codable {
     let id: String
     let userName: String
     let point: Int
+    let relationship: Int?
     let imageUrls: ProfileImageUrls
 }
 
@@ -28,4 +29,10 @@ struct ProfileResults: Codable {
 struct ProfileImageUrls: Codable {
     let profileImageUrl: String
     let backgroundImageUrl: String
+}
+
+enum Relationship: Int {
+    case none = 0
+    case friend = 1
+    case friendRequested = 2
 }

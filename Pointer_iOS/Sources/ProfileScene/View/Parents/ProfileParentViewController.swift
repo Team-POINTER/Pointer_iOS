@@ -6,15 +6,18 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 import RxSwift
 
 class ProfileParentViewController: BaseViewController {
     //MARK: - Properties
+    let disposeBag = DisposeBag()
     var backgroundImageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = UIColor.rgb(red: 26, green: 26, blue: 28)
         iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -43,6 +46,30 @@ class ProfileParentViewController: BaseViewController {
         
         setupUI()
     }
+    
+    //MARK: - Bind
+    //MARK: - Bind
+    func bind(viewModel: ProfileViewModel) {
+        viewModel.profile
+            .bind { [weak self] model in
+                guard let model = model else { return }
+                self?.setProfileImage(model: model)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func setProfileImage(model: ProfileModel) {
+        guard let profileImageView = profileImageView as? UIImageView,
+              let urls = model.results?.imageUrls,
+              let profileUrl = URL(string: urls.profileImageUrl),
+              let backgroundUrl = URL(string: urls.backgroundImageUrl) else { return }
+        profileImageView.kf.indicatorType = .activity
+        profileImageView.kf.setImage(with: profileUrl)
+        
+        backgroundImageView.kf.indicatorType = .activity
+        backgroundImageView.kf.setImage(with: backgroundUrl)
+    }
+    
     //MARK: - Selector
     
     //MARK: - Functions

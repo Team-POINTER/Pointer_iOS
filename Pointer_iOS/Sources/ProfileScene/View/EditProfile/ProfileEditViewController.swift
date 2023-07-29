@@ -13,7 +13,6 @@ import SnapKit
 
 class ProfileEditViewController: ProfileParentViewController {
     //MARK: - Properties
-    var disposeBag = DisposeBag()
     let viewModel: ProfileViewModel
     let editProfileInfoView: EditProfileInfoView
     let cameraImageView: UIImageView = {
@@ -23,19 +22,22 @@ class ProfileEditViewController: ProfileParentViewController {
         return cameraImageView
     }()
     
-    lazy var editableProfileImageView: UIView = {
-        let view = UIView()
-        
+    let myProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "defaultProfile")
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 106 / 2
         imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    lazy var editableProfileImageView: UIView = {
+        let view = UIView()
         
-        view.addSubview(imageView)
+        view.addSubview(myProfileImageView)
         view.addSubview(cameraImageView)
         
-        imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        myProfileImageView.snp.makeConstraints { $0.edges.equalToSuperview() }
         cameraImageView.snp.makeConstraints {
             $0.trailing.bottom.equalToSuperview()
             $0.width.height.equalTo(30)
@@ -54,6 +56,7 @@ class ProfileEditViewController: ProfileParentViewController {
         self.editProfileInfoView = EditProfileInfoView(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
         editProfileInfoView.delegate = self
+        bind(viewModel: viewModel)
     }
     
     required init?(coder: NSCoder) {
@@ -88,6 +91,20 @@ class ProfileEditViewController: ProfileParentViewController {
         super.profileInfoView = editProfileInfoView
         super.backgroundImageView.backgroundColor = .systemIndigo
         super.setupUI()
+        
+        guard let profile = viewModel.profile.value else { return }
+        configureProfileImage(model: profile)
+    }
+    
+    private func configureProfileImage(model: ProfileModel) {
+        guard let urls = model.results?.imageUrls,
+              let profileUrl = URL(string: urls.profileImageUrl),
+              let backgroundUrl = URL(string: urls.backgroundImageUrl) else { return }
+        myProfileImageView.kf.indicatorType = .activity
+        myProfileImageView.kf.setImage(with: profileUrl)
+        
+        backgroundImageView.kf.indicatorType = .activity
+        backgroundImageView.kf.setImage(with: backgroundUrl)
     }
 }
 
