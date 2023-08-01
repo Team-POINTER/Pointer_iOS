@@ -39,8 +39,8 @@ class HintViewController: BaseViewController {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 var str = ""
-                for i in 0..<data.voterNm.count {
-                    str += "\(i+1). \(data.voterNm[i]) \n"
+                for i in 0..<data.voters.count {
+                    str += "\(i+1). \(data.voters[i].voterNm) \n"
                 }
                 self.selectMePeopleLabel.text = str
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
@@ -95,7 +95,7 @@ class HintViewController: BaseViewController {
     }(UILabel())
     
     var selectMePeopleLabel: UILabel = {
-        $0.text = "1. Jane Cooper \n2. Ronald Richard \n3. 내가 누구게"
+        $0.text = "1. 포인터"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         $0.textColor = UIColor.black
         $0.numberOfLines = 0

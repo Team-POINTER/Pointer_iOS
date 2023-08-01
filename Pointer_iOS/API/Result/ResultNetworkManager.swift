@@ -233,10 +233,15 @@ struct ShowHintResultModel: Decodable {
 
 struct ShowHintResultData: Decodable {
     let hint: [String]
-    let voterNm: [String]
+    let voters: [showHintResultVoters]
     let allVoteCnt: Int // 모든 투표 수
     let targetVotedCnt: Int // 받은 투표 수
     let createdAt: String
+}   
+
+struct showHintResultVoters: Decodable {
+    let voterId: Int
+    let voterNm: String
 }
 
 //MARK: - #1-5 새 질문 등록

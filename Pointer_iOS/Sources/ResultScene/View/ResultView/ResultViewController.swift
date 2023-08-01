@@ -65,6 +65,7 @@ class ResultViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.votedResultObservable
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 self.title = data.roomName
@@ -112,7 +113,6 @@ class ResultViewController: BaseViewController {
     }(UILabel())
     
     lazy var selectedPeopleLabel: UILabel = {
-        $0.text = " 1. Jane Cooper\n 2. Ronald Richaaaaaard\n 3. Bessie Cooper\n 4. Jane Cooper\n 5. Ronald Richaaaaaard\n 6. Bessie Cooper\n 6. Jane Cooper\n 7. Ronald Richaaaaaard\n 8. Bessie Cooper\n 9. Jane Cooper\n 10. Ronald Richaaaaaard\n 11. Bessie Cooper\n 12. Jane Cooper\n 13. Ronald Richaaaaaard\n 14. Bessie Cooper\n 15. Jane Cooper\n 16. Ronald Richaaaaaard\n 17. Bessie Cooper\n 18. Jane Cooper\n 19. Ronald Richaaaaaard\n 20. phj \n 21. jojejq \n"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
@@ -120,7 +120,6 @@ class ResultViewController: BaseViewController {
     }(UILabel())
     
     lazy var selectedPointLabel: UILabel = {
-        $0.text = "10 / 20\n  4 / 20\n  3 / 20\n  1 / 20\n  1 / 20\n  1 / 20\n 10 / 20\n  4 / 20\n  3 / 20\n  1 / 20\n  1 / 20\n  1 / 20\n 10 / 20\n  4 / 20\n  3 / 20\n  1 / 20\n  1 / 20\n  1 / 20\n 10 / 20\n  10 / 20\n 4 / 20\n  3 / 20\n"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0

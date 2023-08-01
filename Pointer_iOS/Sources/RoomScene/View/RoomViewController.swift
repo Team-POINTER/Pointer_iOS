@@ -14,14 +14,14 @@ import RxSwift
 // 1. hint 입력했을 시 글자수 20자 제한 [O]
 // 2. 테이블 뷰에서 셀들 선택 후 point 하는 부분 [O]
 // 3. 링크로 초대하기 부분 [O] -> API 연동 [X]
-// 4. Point 버튼 클릭 부분 [O] -> API 연동 [X]
+// 4. Point 버튼 클릭 부분 [O] -> API 연동 [O]
 
 //MARK: 처리해야할 부분
-// 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [X]
+// 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [O]
 // 2. 글씨체 적용 [O]
 // 3. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [O]
 // 4. navigationBar titleColor, LeftBarItem 추가 [O]
-// 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[X])
+// 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[O])
 
 class RoomViewController: BaseViewController {
     
@@ -30,6 +30,7 @@ class RoomViewController: BaseViewController {
     
     private let peopleTableView : UITableView = {
         $0.backgroundColor = .clear
+        $0.separatorStyle = .none
         $0.register(RoomPeopleTableViewCell.self, forCellReuseIdentifier: RoomPeopleTableViewCell.identifier)
         $0.bounces = false
         return $0
