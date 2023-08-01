@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import IQKeyboardManagerSwift
 
 class ReportViewController: UIViewController {
     let reason: String
@@ -57,6 +58,7 @@ class ReportViewController: UIViewController {
         $0.backgroundColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         $0.textColor = UIColor.rgb(red: 179, green: 183, blue: 205)
+        $0.isScrollEnabled = false
         return $0
     }(UITextView())
     
@@ -90,7 +92,7 @@ class ReportViewController: UIViewController {
         reportTextView.snp.makeConstraints { make in
             make.top.equalTo(reasonLabel.snp.bottom).inset(-16)
             make.leading.trailing.equalToSuperview().inset(26)
-            make.bottom.equalToSuperview().inset(10)
+            make.height.greaterThanOrEqualTo(250)
         }
     }
     

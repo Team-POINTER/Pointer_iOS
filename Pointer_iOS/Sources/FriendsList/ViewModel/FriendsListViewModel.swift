@@ -20,11 +20,11 @@ class FriendsListViewModel: ViewModelType {
     //MARK: - Properties
     var disposeBag = DisposeBag()
     let listType: ListType
-    let friendsListObservable = PublishRelay<[InviteFriendsListResultData]>()
-    let friendsList = BehaviorRelay<[SectionModel]>(value: [SectionModel(header: "header", items: User.getDummyUsers())])
-    let selectedUser = BehaviorRelay<[User]>(value: [])
+    let friendsListObservable = PublishRelay<[SectionModel]>()
+    let friendsList = BehaviorRelay<[SectionModel]>(value: [SectionModel(header: "header", items: [])])
+    let selectedUser = BehaviorRelay<[FriendsListResultData]>(value: [])
     
-    let roomId: Int
+    let roomId: Int?
     
     
     //MARK: - Rx
@@ -42,12 +42,13 @@ class FriendsListViewModel: ViewModelType {
         
         input.searchTextFieldEditEvent
             .subscribe { [weak self] text in
-                guard let self = self else { return }
+                guard let self = self,
+                      let text = text.element else { return }
                 print(text)
                 
                 //MARK: [FIX ME] lastPage 값이 어떤 값인가? - 무한 스크롤 시
-//                let model = InviteFriendsListRequestModel(keyword: text, lastPage: 0)
-//                self.inviteFriendsListRequest(self.roomId, model)
+                let model = InviteFriendsListReqeustInputModel(keyword: text, lastPage: 0)
+                self.inviteFriendsListRequest(model)
             }
             .disposed(by: disposeBag)
         
@@ -63,7 +64,7 @@ class FriendsListViewModel: ViewModelType {
     }
     
     //MARK: - LifeCycle
-    init(listType: ListType, roomId: Int = 0) {
+    init(listType: ListType, roomId: Int? = nil) {
         self.listType = listType
          self.roomId = roomId
     }
@@ -90,10 +91,10 @@ class FriendsListViewModel: ViewModelType {
     }
     
     // User가 선택된 상태인지 체크하는 메소드
-    private func detectSelectedUser(_ selectedUser: User) -> Bool {
+    private func detectSelectedUser(_ selectedUser: FriendsListResultData) -> Bool {
         var isSelectedUser = false
         for user in self.selectedUser.value {
-            if user.uid == selectedUser.uid {
+            if user.id == selectedUser.id {
                 isSelectedUser = true
                 break
             }
@@ -102,13 +103,13 @@ class FriendsListViewModel: ViewModelType {
     }
     
     // User Select 이벤트가 들어오면 실행하는 함수
-    private func processSelectedUser(selectedUser: User) {
+    private func processSelectedUser(selectedUser: FriendsListResultData) {
         var currentSelectedUser = self.selectedUser.value
         let isUserSelected = detectSelectedUser(selectedUser)
         switch isUserSelected {
         case true:
             currentSelectedUser.enumerated().forEach { index, user in
-                if selectedUser.uid == user.uid {
+                if selectedUser.id == user.id {
                     currentSelectedUser.remove(at: index)
                     self.selectedUser.accept(currentSelectedUser)
                 }
@@ -131,14 +132,16 @@ class FriendsListViewModel: ViewModelType {
     
 //MARK: - API
     // 초대 가능한 친구 목록
-    func inviteFriendsListRequest(_ roomId: Int, _ model: InviteFriendsListRequestModel) {
-        RoomNetworkManager.shared.inviteFriendListRequest(roomId, model) { [weak self] error, model in
+    func inviteFriendsListRequest(_ input: InviteFriendsListReqeustInputModel) {
+        guard let roomId = roomId else { return }
+        RoomNetworkManager.shared.inviteFriendListRequest(roomId, input) { [weak self] error, model in
             if let error = error {
                 print("DEBUG: 초대 가능한 친구 목록 조회 에러 - \(error.localizedDescription)")
             }
             
             if let model = model {
-                self?.friendsListObservable.accept(model)
+                let sectionModel = [SectionModel(header: "header", items: model)]
+                self?.friendsListObservable.accept(sectionModel)
             }
         }
     }
@@ -147,9 +150,9 @@ class FriendsListViewModel: ViewModelType {
 
 //MARK: - FriendsListViewModel.SectionModel
 extension FriendsListViewModel.SectionModel: SectionModelType {
-    typealias Item = User
+    typealias Item = FriendsListResultData
     
-    init(original: FriendsListViewModel.SectionModel, items: [User]) {
+    init(original: FriendsListViewModel.SectionModel, items: [FriendsListResultData]) {
         self = original
         self.items = items
     }
@@ -158,7 +161,7 @@ extension FriendsListViewModel.SectionModel: SectionModelType {
 
 //MARK: - FriendsListCellDelegate
 extension FriendsListViewModel: FriendsListCellDelegate {
-    func userSelected(user: User) {
+    func userSelected(user: FriendsListResultData) {
         processSelectedUser(selectedUser: user)
     }
 }

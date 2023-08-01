@@ -36,8 +36,8 @@ class FriendsListViewController: BaseViewController {
     }()
     
     //MARK: - Lifecycle
-    init(type: FriendsListViewModel.ListType) {
-        self.viewModel = FriendsListViewModel(listType: type)
+    init(viewModel: FriendsListViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     

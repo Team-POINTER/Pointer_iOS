@@ -48,7 +48,7 @@ class BaseTabBarController: UITabBarController {
     private func configureViewControllers() {
         tabBarSetting()
         // 첫번째 탭
-        let firstVC = FriendsListViewController(type: .normal)
+        let firstVC = UIViewController()
         let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭

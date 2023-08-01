@@ -11,7 +11,7 @@ import RxGesture
 import RxSwift
 
 protocol FriendsListCellDelegate: AnyObject {
-    func userSelected(user: User)
+    func userSelected(user: FriendsListResultData)
 }
 
 class FriendsListCell: UICollectionViewCell {
@@ -26,7 +26,7 @@ class FriendsListCell: UICollectionViewCell {
         }
     }
     
-    var user: User? {
+    var user: FriendsListResultData? {
         didSet {
             configure()
         }
@@ -112,8 +112,8 @@ class FriendsListCell: UICollectionViewCell {
     private func configure() {
         guard let user = user else { return }
         profileImageView.image = .defaultProfile
-        userIdLabel.text = user.userID
-        userNameLabel.text = user.userName
+        userIdLabel.text = user.id
+        userNameLabel.text = user.friendName
     }
     
     private func configureSelected() {

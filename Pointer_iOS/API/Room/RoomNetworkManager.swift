@@ -56,7 +56,7 @@ class RoomNetworkManager {
         }
     }
     
-    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListRequestModel) -> Observable<[InviteFriendsListResultData]> {
+    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel) -> Observable<[FriendsListResultData]> {
         return Observable.create { (observer) -> Disposable in
             
             self.inviteFriendListRequest(roomId, parameters) { error, friendsListResultData in
@@ -151,8 +151,8 @@ class RoomNetworkManager {
     }
     
     // 초대 가능한 친구 목록
-    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListRequestModel,
-                                 completion: @escaping (Error?, [InviteFriendsListResultData]?) -> Void) {
+    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel,
+                                 completion: @escaping (Error?, [FriendsListResultData]?) -> Void) {
         let inviteFriendsList = roomRouter.avaliableInviteFriendList(roomId)
         
         AF.request(inviteFriendsList.url,
@@ -161,7 +161,7 @@ class RoomNetworkManager {
                    encoder: JSONParameterEncoder.default,
                    headers: inviteFriendsList.headers)
             .validate(statusCode: 200..<500)
-            .responseDecodable(of: InviteFriendsListResultModel.self) { response in
+            .responseDecodable(of: FriendsListResultModel.self) { response in
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):
@@ -252,23 +252,24 @@ struct VoteResultData: Decodable {
 }
 
 //MARK: - 초대 가능한 친구 목록
-struct InviteFriendsListRequestModel: Encodable {
+struct InviteFriendsListReqeustInputModel: Encodable {
     let keyword: String
     let lastPage: Int
 }
 
-struct InviteFriendsListResultModel: Decodable {
+struct FriendsListResultModel: Decodable {
     let status: Int
     let code: String
     let message: String
-    let friendList: [InviteFriendsListResultData]
+    let friendList: [FriendsListResultData]
     let total: Int
 }
 
-struct InviteFriendsListResultData: Decodable {
+struct FriendsListResultData: Decodable {
     let friendId: Int
     let id: String
     let friendName: String
     let file: String?
-    let status: Int
+    let status: Int?
+    let relationship: Int?
 }
