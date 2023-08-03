@@ -21,7 +21,16 @@ final class ReportViewController: UIViewController {
         let input = ReportViewModel.Input(reportText: reportTextView.rx.text.orEmpty.asObservable())
         let output = viewModel.transform(input: input)
 
+        output.limitText
+            .bind(to: reportTextView.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.reportTextCount
+            .bind(to: textCountLabel.rx.text)
+            .disposed(by: disposeBag)
+        
         reportTextView.rx.didBeginEditing
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] text in
                 guard let self = self else { return }
                 if (self.reportTextView.text == "포인터 팀이 조치를 취해드릴 수 있게 문제 상황을 최대한 구체적으로 설명해주세요.") {
@@ -32,6 +41,7 @@ final class ReportViewController: UIViewController {
             .disposed(by: disposeBag)
         
         reportTextView.rx.didEndEditing
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 if (self.reportTextView.text.count == 0) {
@@ -108,7 +118,7 @@ final class ReportViewController: UIViewController {
     
     let reportTextView: UITextView = {
         $0.text = "포인터 팀이 조치를 취해드릴 수 있게 문제 상황을 최대한 구체적으로 설명해주세요."
-        $0.backgroundColor = .brown
+        $0.backgroundColor = .white
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         $0.textColor = UIColor.rgb(red: 179, green: 183, blue: 205)
         $0.isScrollEnabled = false
@@ -186,7 +196,7 @@ final class ReportViewController: UIViewController {
         reportTextView.snp.makeConstraints { make in
             make.top.equalTo(reasonLabel.snp.bottom).inset(-16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(contentView.snp.bottom).inset(25)
+            make.bottom.equalTo(contentView.snp.bottom).inset(15)
         }
     }
 

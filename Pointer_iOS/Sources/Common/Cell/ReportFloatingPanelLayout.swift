@@ -12,7 +12,7 @@ class ReportFloatingPanelLayout: FloatingPanelLayout {
 
     init() {
         // 각 상태별 높이를 지정
-        fullHeight = Device.height * 0.8
+        fullHeight = Device.height * 0.93
         halfHeight = Device.height * 0.4
         tipHeight = 100.0
 
@@ -20,13 +20,13 @@ class ReportFloatingPanelLayout: FloatingPanelLayout {
         initialState = .full
 
         // 지원하는 상태를 지정
-        supportedStates = [.full]
+        supportedStates = [.full, .half]
 
         // Position을 지정 (위에서 어떻게 뜰지 설정)
         position = .bottom
 
         // Anchors를 지정 (FloatingPanel의 상태별 앵커를 설정)
-        anchors = [.full: FloatingPanelLayoutAnchor(absoluteInset: Device.height * 0.1, edge: .top, referenceGuide: .superview),
+        anchors = [.full: FloatingPanelLayoutAnchor(absoluteInset: Device.height * 0.07, edge: .top, referenceGuide: .superview),
                    .half: FloatingPanelLayoutAnchor(absoluteInset: Device.height * 0.6, edge: .bottom, referenceGuide: .superview)]
     }
     
