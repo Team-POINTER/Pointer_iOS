@@ -95,8 +95,8 @@ class EditProfileInfoView: ProfileInfoParentView {
     }()
     
     //MARK: - Lifecycle
-    override init(viewModel: ProfileViewModel) {
-        super.init(viewModel: viewModel)
+    override init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
+        super.init(viewModel: viewModel, delegate: delegate)
         setupUI()
         bind()
     }

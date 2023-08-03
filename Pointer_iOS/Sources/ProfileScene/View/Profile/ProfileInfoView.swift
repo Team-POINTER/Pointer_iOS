@@ -20,8 +20,6 @@ protocol ProfileInfoViewDelegate: AnyObject {
 
 class ProfileInfoView: ProfileInfoParentView {
     //MARK: - Properties
-    var delegate: ProfileInfoViewDelegate?
-
     let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .notoSans(font: .notoSansKrMedium, size: 25)
@@ -70,9 +68,18 @@ class ProfileInfoView: ProfileInfoParentView {
         return cv
     }()
     
-    lazy var editMyProfileButton = getActionButton(title: "프로필 편집")
-    lazy var friendsActionButton = getActionButton(title: "읽는중")
-    lazy var messageButton = getActionButton(title: "메시지")
+    // 자기 자신일 때
+    lazy var editMyProfileButton = getActionButton("프로필 편집")
+    
+    // 상대방 프로필일 때
+    lazy var cancelBlockButton = getActionButton() // 0 - 차단 해제 버튼
+    lazy var friendRequestCancelButton = getActionButton() // 1 - 친구 요청 취소 버튼
+    lazy var confirmRequestFriendButton = getActionButton() // 2 - 친구 요청 수락 버튼
+    lazy var friendCancelButton = getActionButton() // 3 - 친구 해제 버튼
+    lazy var friendRequestButton = getActionButton() // 4 - 친구 요청 버튼
+    
+    lazy var messageButton = getActionButton()
+//    lazy var
     
     let buttonStack: UIStackView = {
         // 버튼을 담을 StackView 생성
@@ -83,8 +90,8 @@ class ProfileInfoView: ProfileInfoParentView {
     }()
     
     //MARK: - Lifecycle
-    override init(viewModel: ProfileViewModel) {
-        super.init(viewModel: viewModel)
+    override init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
+        super.init(viewModel: viewModel, delegate: delegate)
         bind()
         setupCollectionView()
         setupUI()
@@ -96,24 +103,18 @@ class ProfileInfoView: ProfileInfoParentView {
     
     //MARK: - Bind
     private func bind() {
-        // 프로필 편집 버튼
-        editMyProfileButton.rx.tap
-            .subscribe { [weak self] _ in
-                self?.delegate?.editMyProfileButtonTapped()
-            }.disposed(by: disposeBag)
+        let input = ProfileViewModel.Input(
+            editMyProfile: editMyProfileButton.rx.tap,
+            cancelBlockAction: cancelBlockButton.rx.tap,
+            friendRequestCancelAction: friendRequestCancelButton.rx.tap,
+            confirmRequestFriendAction: confirmRequestFriendButton.rx.tap,
+            friendCancelAction: friendCancelButton.rx.tap,
+            friendRequestAction: friendRequestButton.rx.tap
+        )
         
-        // 친구 액션 버튼
-        friendsActionButton.rx.tap
-            .subscribe { [weak self] _ in
-                self?.delegate?.friendsActionButtonTapped()
-            }.disposed(by: disposeBag)
+        let output = viewModel.transform(input: input)
         
-        // 메시지 버튼
-        messageButton.rx.tap
-            .subscribe { [weak self] _ in
-                self?.delegate?.messageButtonTapped()
-            }.disposed(by: disposeBag)
-        
+        // 모델 바인딩
         super.viewModel.profile
             .bind { [weak self] model in
                 guard let model = model else { return }
@@ -126,7 +127,6 @@ class ProfileInfoView: ProfileInfoParentView {
     //MARK: - Functions
     private func setupCollectionView() {
         collectionView.register(UserFriendCell.self, forCellWithReuseIdentifier: cellIdentifier)
-        collectionView.dataSource = self
         collectionView.delegate = self
     }
     
@@ -206,25 +206,34 @@ class ProfileInfoView: ProfileInfoParentView {
               let friendType = Relationship(rawValue: relationship) else { return }
         
         switch friendType {
-        case .none:
-            buttonStack.addArrangedSubview(friendsActionButton)
-            buttonStack.addArrangedSubview(messageButton)
-            friendsActionButton.backgroundColor = .pointerRed
-            friendsActionButton.tintColor = .white
-            friendsActionButton.setAttributedTitle(getButtonTitle(title: "친구 신청"), for: .normal)
-        case .friend:
-            buttonStack.addArrangedSubview(friendsActionButton)
-            buttonStack.addArrangedSubview(messageButton)
-            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
-            friendsActionButton.tintColor = .white
-            friendsActionButton.setAttributedTitle(getButtonTitle(title: "친구 ✓"), for: .normal)
+        case .block:
+            buttonStack.addArrangedSubview(cancelBlockButton)
+            cancelBlockButton.backgroundColor = friendType.backgroundColor
+            cancelBlockButton.tintColor = friendType.tintColor
+            cancelBlockButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
         case .friendRequested:
-            buttonStack.addArrangedSubview(friendsActionButton)
-            buttonStack.addArrangedSubview(messageButton)
-            friendsActionButton.backgroundColor = .rgb(red: 121, green: 125, blue: 148)
-            friendsActionButton.tintColor = .white
-            friendsActionButton.setAttributedTitle(getButtonTitle(title: "친구 요청됨"), for: .normal)
+            buttonStack.addArrangedSubview(friendRequestCancelButton)
+            friendRequestCancelButton.backgroundColor = friendType.backgroundColor
+            friendRequestCancelButton.tintColor = friendType.tintColor
+            friendRequestCancelButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
+        case .friendRequestReceived:
+            buttonStack.addArrangedSubview(confirmRequestFriendButton)
+            confirmRequestFriendButton.backgroundColor = friendType.backgroundColor
+            confirmRequestFriendButton.tintColor = friendType.tintColor
+            confirmRequestFriendButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
+        case .friend:
+            buttonStack.addArrangedSubview(friendCancelButton)
+            friendCancelButton.backgroundColor = friendType.backgroundColor
+            friendCancelButton.tintColor = friendType.tintColor
+            friendCancelButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
+        case .friendRejected:
+            buttonStack.addArrangedSubview(friendRequestButton)
+            friendRequestButton.backgroundColor = friendType.backgroundColor
+            friendRequestButton.tintColor = friendType.tintColor
+            friendRequestButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
         }
+        
+        buttonStack.addArrangedSubview(messageButton)
 
         // 버튼 Corner Radius
         buttonStack.subviews.forEach {
@@ -235,18 +244,13 @@ class ProfileInfoView: ProfileInfoParentView {
     }
     
     // 버튼 생성
-    private func getActionButton(title: String) -> UIButton {
+    private func getActionButton(_ title: String = "읽는중") -> UIButton {
         let button = UIButton(type: .system)
         button.backgroundColor = .white
         button.tintColor = .black
-        button.setAttributedTitle(getButtonTitle(title: title), for: .normal)
-        return button
-    }
-    
-    // 버튼 Attributed Title
-    private func getButtonTitle(title: String) -> NSAttributedString {
         let string = NSAttributedString(string: title, attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)])
-        return string
+        button.setAttributedTitle(string, for: .normal)
+        return button
     }
 }
 

@@ -8,9 +8,26 @@
 import Foundation
 import RxSwift
 import RxRelay
+import RxCocoa
 
-class ProfileViewModel {
+class ProfileViewModel: ViewModelType {
+    //MARK: - In/Out
+    struct Input {
+        let editMyProfile: ControlEvent<Void>
+        let cancelBlockAction: ControlEvent<Void>
+        let friendRequestCancelAction: ControlEvent<Void>
+        let confirmRequestFriendAction: ControlEvent<Void>
+        let friendCancelAction: ControlEvent<Void>
+        let friendRequestAction: ControlEvent<Void>
+    }
+    
+    struct Output {
+        
+    }
+    
     //MARK: - Properties
+    weak var delegate: ProfileInfoViewDelegate?
+    let disposeBag = DisposeBag()
     var isMyProfile = false
     let profile = BehaviorRelay<ProfileModel?>(value: nil)
     let userId: Int
@@ -38,6 +55,18 @@ class ProfileViewModel {
     //MARK: - LifeCycle
     init(userId: Int) {
         self.userId = userId
+    }
+    
+    //MARK: - RxTransform
+    func transform(input: Input) -> Output {
+        
+        input.editMyProfile
+            .subscribe { [weak self] _ in
+                self?.delegate?.editMyProfileButtonTapped()
+            }
+            .disposed(by: disposeBag)
+        
+        return Output()
     }
     
     //MARK: - Functions

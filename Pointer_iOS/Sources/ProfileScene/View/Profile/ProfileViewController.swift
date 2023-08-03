@@ -24,8 +24,7 @@ class ProfileViewController: ProfileParentViewController {
     }()
     
     lazy var profileInfoViewChild: ProfileInfoView = {
-        let view = ProfileInfoView(viewModel: viewModel)
-        view.delegate = self
+        let view = ProfileInfoView(viewModel: viewModel, delegate: self)
         return view
     }()
     

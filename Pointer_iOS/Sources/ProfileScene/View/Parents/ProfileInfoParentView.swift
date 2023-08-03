@@ -27,8 +27,9 @@ class ProfileInfoParentView: UIView {
     }
     
     //MARK: - Lifecycle
-    init(viewModel: ProfileViewModel) {
+    init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
         self.viewModel = viewModel
+        self.viewModel.delegate = delegate
         super.init(frame: .zero)
         setupUI()
     }
