@@ -37,11 +37,16 @@ class HintViewModel: ViewModelType{
     
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
+        let output = Output()
         
-        
-        return Output()
+        return output
     }
     
+//MARK: - Alert
+    func alertRequest() {
+
+    }
+
     
 //MARK: - Network
     func showHintRequest(_ questionId: Int) {

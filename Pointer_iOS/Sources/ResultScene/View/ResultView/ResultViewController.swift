@@ -12,8 +12,6 @@ import RxCocoa
 import FloatingPanel
 import SendbirdUIKit
 
-// 1. 현재 타이머 시간을 viewModel에 있는 timeString으로 시작
-
 class ResultViewController: BaseViewController {
 //MARK: - properties
     var viewModel: ResultViewModel
@@ -67,6 +65,7 @@ class ResultViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.votedResultObservable
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 self.title = data.roomName
@@ -92,13 +91,19 @@ class ResultViewController: BaseViewController {
     }
     
 //MARK: - UIComponents
-    var scrollView: UIScrollView = {
-        $0.bounces = false
+    lazy var scrollView: UIScrollView = {
+        $0.backgroundColor = .clear
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.showsVerticalScrollIndicator = true
+        $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = true
+        $0.contentSize = contentView.bounds.size
         return $0
     }(UIScrollView())
     
-    var hintText: UILabel = {
+    lazy var contentView = UIView()
+    
+    lazy var hintText: UILabel = {
         $0.text = "한 20년 뒤 미래에 가장 돈을 잘 벌 것 같은 사람은 누구인가? 최대 공백포함 45"
         $0.font = UIFont.notoSansRegular(size: 18)
         $0.textColor = UIColor.white
@@ -107,16 +112,14 @@ class ResultViewController: BaseViewController {
         return $0
     }(UILabel())
     
-    var selectedPeopleLabel: UILabel = {
-        $0.text = " 1. Jane Cooper\n 2. Ronald Richaaaaaard\n 3. Bessie Cooper\n 4. Jane Cooper\n 5. Ronald Richaaaaaard\n 6. Bessie Cooper\n"
+    lazy var selectedPeopleLabel: UILabel = {
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
         return $0
     }(UILabel())
     
-    var selectedPointLabel: UILabel = {
-        $0.text = "10 / 20\n  4 / 20\n  3 / 20\n  1 / 20\n  1 / 20\n  1 / 20\n"
+    lazy var selectedPointLabel: UILabel = {
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
@@ -124,14 +127,14 @@ class ResultViewController: BaseViewController {
         return $0
     }(UILabel())
     
-    var myNameLabel: UILabel = {
+    lazy var myNameLabel: UILabel = {
         $0.text = "포인터 님"
         $0.font = UIFont.notoSansBold(size: 18)
         $0.textColor = UIColor.white
         return $0
     }(UILabel())
     
-    var mySelectedPointLabel: UILabel = {
+    lazy var mySelectedPointLabel: UILabel = {
         $0.text = "3 / 20"
         $0.font = UIFont.notoSansBold(size: 18)
         $0.textColor = UIColor.pointerRed
@@ -148,7 +151,6 @@ class ResultViewController: BaseViewController {
     }(UIButton())
     
     var newQuestionTimerLabel: UILabel = {
-        $0.text = "22:23:34"
         $0.font = UIFont.notoSansRegular(size: 14)
         $0.textColor = UIColor.white
         $0.textAlignment = .center
@@ -202,30 +204,35 @@ class ResultViewController: BaseViewController {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        // - navigation bar title 색상 변경
     }
     
 //MARK: - Set UI
     func setUI() {
         view.addSubview(scrollView)
-        scrollView.addSubview(hintText)
-        scrollView.addSubview(selectedPeopleLabel)
-        scrollView.addSubview(selectedPointLabel)
-        scrollView.addSubview(myNameLabel)
-        scrollView.addSubview(mySelectedPointLabel)
-        scrollView.addSubview(myResultButton)
-        scrollView.addSubview(newQuestionTimerLabel)
-        scrollView.addSubview(newQuestionButton)
-        scrollView.addSubview(kokButton)
-        view.addSubview(resultChatView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(hintText)
+        contentView.addSubview(selectedPeopleLabel)
+        contentView.addSubview(selectedPointLabel)
+        contentView.addSubview(myNameLabel)
+        contentView.addSubview(mySelectedPointLabel)
+        contentView.addSubview(myResultButton)
+        contentView.addSubview(newQuestionTimerLabel)
+        contentView.addSubview(newQuestionButton)
+        contentView.addSubview(kokButton)
+        contentView.addSubview(resultChatView)
     }
     
     func setUIConstraints() {
         scrollView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.width.equalTo(UIScreen.main.bounds.width)
+        }
+        contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
         }
         hintText.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(33)
+            make.top.equalToSuperview().inset(33)
             make.leading.trailing.equalToSuperview().inset(45)
         }
         selectedPeopleLabel.snp.makeConstraints { make in
@@ -269,7 +276,8 @@ class ResultViewController: BaseViewController {
 
         resultChatView.snp.makeConstraints { make in
             make.top.equalTo(kokButton.snp.bottom).inset(-30)
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(70)
             make.width.equalTo(UIScreen.main.bounds.width - 32)
             make.height.equalTo(135)
         }

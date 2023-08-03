@@ -23,10 +23,12 @@ struct PointerRoomListModel: Codable {
 struct PointerRoomModel: Codable {
     let roomId: Int
     let roomNm: String
+    let questionId: Int
     let question: String
     let memberCnt: Int
     let topUserName: String?
     let voted: Bool
+    let limitedAt: String
 }
 
 struct RoomNameChangeInput: Codable {

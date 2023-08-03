@@ -9,19 +9,20 @@ import UIKit
 import SnapKit
 import RxCocoa
 import RxSwift
+import FloatingPanel
 
 //MARK: 비동기로 처리해야할 부분
 // 1. hint 입력했을 시 글자수 20자 제한 [O]
 // 2. 테이블 뷰에서 셀들 선택 후 point 하는 부분 [O]
 // 3. 링크로 초대하기 부분 [O] -> API 연동 [X]
-// 4. Point 버튼 클릭 부분 [O] -> API 연동 [X]
+// 4. Point 버튼 클릭 부분 [O] -> API 연동 [O]
 
 //MARK: 처리해야할 부분
-// 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [X]
+// 1. 테이블 뷰 더미데이터 만들기 [O] -> API 연동 [O]
 // 2. 글씨체 적용 [O]
 // 3. Point 버튼 이미지로 처리함[O] -> tableView 셀 클릭후 데이터 입력 시 point 버튼 활성화 [O]
 // 4. navigationBar titleColor, LeftBarItem 추가 [O]
-// 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[X])
+// 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[O])
 
 class RoomViewController: BaseViewController {
     
@@ -30,12 +31,22 @@ class RoomViewController: BaseViewController {
     
     private let peopleTableView : UITableView = {
         $0.backgroundColor = .clear
+        $0.separatorStyle = .none
         $0.register(RoomPeopleTableViewCell.self, forCellReuseIdentifier: RoomPeopleTableViewCell.identifier)
         $0.bounces = false
         return $0
     }(UITableView())
     
     private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 200))
+    
+    private lazy var fpc: FloatingPanelController = {
+        let controller = FloatingPanelController(delegate: self)
+        controller.isRemovalInteractionEnabled = true
+        controller.changePanelStyle()
+        controller.layout = ReportFloatingPanelLayout()
+        
+        return controller
+    }()
     
     let disposeBag = DisposeBag()
     let viewModel: RoomViewModel
@@ -91,7 +102,6 @@ class RoomViewController: BaseViewController {
         
 // - tableView bind
         viewModel.roomResultMembersObservable
-            .observe(on: MainScheduler.instance)
             .bind(to: peopleTableView.rx.items) { [weak self] tableView, index, item in
                 guard let self = self,
                       let cell = tableView.dequeueReusableCell(withIdentifier: RoomPeopleTableViewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPeopleTableViewCell
@@ -157,6 +167,15 @@ class RoomViewController: BaseViewController {
                 print("invite 버튼 click")
             })
             .disposed(by: disposeBag)
+        
+        viewModel.dismissRoom
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] b in
+                if b {
+                    self?.dismiss(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
 //MARK: - set UI
@@ -200,16 +219,43 @@ class RoomViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
     }
-
-    override func viewWillDisappear(_ animated: Bool) {
-//        disposeBag = DisposeBag()
-    }
     
+
+//MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func menuButtonTap() {
+        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
+            guard let self = self,
+                  let currentRoomName = self.title else { return }
+            let roomId = self.viewModel.roomId
+            
+            let modifyAlert = self.viewModel.getModifyRoomNameAlert(currentRoomName, roomId: roomId)
+            self.present(modifyAlert, animated: true)
+        }
+        let inviteFriend = PointerAlertActionConfig(title: "친구 초대하기", textColor: .black) { [weak self] _ in
+            let viewModel = FriendsListViewModel(listType: .select, roomId: self?.viewModel.roomId)
+            let viewController = FriendsListViewController(viewModel: viewModel)
+            self?.navigationController?.pushViewController(viewController, animated: true)
+        }
+        let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
+            self?.reportTap()
+        }
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .red) { [weak self] _ in
+            guard let self = self else { return }
+            let roomId = self.viewModel.roomId
+            
+            let exit = self.viewModel.getExitRoomAlert(roomId: roomId)
+            self.present(exit, animated: true)
+        }
+
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteFriend, report, exitRoom])
+        present(actionSheet, animated: true)
+    }
+    
+    func reportTap() {
         let spamContent = PointerAlertActionConfig(title: "스팸", textColor: .black) { [weak self] _ in
             self?.presentReportView("스팸")
         }
@@ -232,8 +278,9 @@ class RoomViewController: BaseViewController {
     
     func presentReportView(_ reason: String) {
         let reportVC = ReportViewController(reason: reason)
-        let nav = UINavigationController(rootViewController: reportVC)
-        present(nav, animated: true)
+        fpc.set(contentViewController: reportVC)
+        fpc.track(scrollView: reportVC.scrollView)
+        self.present(fpc, animated: true)
     }
 }
 
@@ -241,5 +288,16 @@ class RoomViewController: BaseViewController {
 extension RoomViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
+    }
+}
+
+//MARK: - FloatingPanelControllerDelegate
+extension RoomViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangePosition(_ fpc: FloatingPanelController) {
+        if fpc.state == .full {
+            
+        } else {
+            fpc.move(to: .full, animated: true)
+        }
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxGesture
 
 class HintViewController: BaseViewController {
 
@@ -34,20 +35,43 @@ class HintViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         
         viewModel.showHintObservable
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 var str = ""
-                for i in 0..<data.voterNm.count {
-                    str += "\(i+1). \(data.voterNm[i]) \n"
+                for i in 0..<data.voters.count {
+                    str += "\(i+1). \(data.voters[i].voterNm) \n"
                 }
                 self.selectMePeopleLabel.text = str
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
                 self.hintDate.text = data.createdAt
             })
             .disposed(by: disposeBag)
+        
+        hintBackgroundView.rx.longPressGesture()
+            .when(.began)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.longPressShowSetting()
+            })
+            .disposed(by: disposeBag)
+            
     }
     
 //MARK: - UIComponents
+    lazy var scrollView: UIScrollView = {
+        $0.backgroundColor = .clear
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.showsVerticalScrollIndicator = true
+        $0.showsHorizontalScrollIndicator = false
+        $0.isScrollEnabled = true
+        // 이거 중요
+        $0.contentSize = contentView.bounds.size
+        return $0
+    }(UIScrollView())
+    
+    lazy var contentView = UIView()
+    
     var questionLabel: UILabel = {
         $0.font = UIFont.notoSansRegular(size: 19)
         $0.textColor = UIColor.white
@@ -71,7 +95,7 @@ class HintViewController: BaseViewController {
     }(UILabel())
     
     var selectMePeopleLabel: UILabel = {
-        $0.text = "1. Jane Cooper \n2. Ronald Richard \n3. 내가 누구게"
+        $0.text = "1. 포인터"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
         $0.textColor = UIColor.black
         $0.numberOfLines = 0
@@ -93,8 +117,10 @@ class HintViewController: BaseViewController {
     
 //MARK: - Set UI
     func setUI() {
-        view.addSubview(questionLabel)
-        view.addSubview(hintBackgroundView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(questionLabel)
+        contentView.addSubview(hintBackgroundView)
         hintBackgroundView.addSubview(selectMeLabel)
         hintBackgroundView.addSubview(selectMePeopleLabel)
         hintBackgroundView.addSubview(selectedMeNumber)
@@ -103,15 +129,23 @@ class HintViewController: BaseViewController {
 
     
     func setUIConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.width.equalTo(UIScreen.main.bounds.width)
+        }
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
         questionLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(25)
+            make.top.equalToSuperview().inset(25)
             make.leading.trailing.equalToSuperview().inset(37)
             make.centerX.equalToSuperview()
         }
         hintBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(questionLabel.snp.bottom).inset(-25)
             make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(430)
+            make.bottom.equalTo(contentView.snp.bottom).inset(40)
         }
         selectMeLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(30)
@@ -120,6 +154,7 @@ class HintViewController: BaseViewController {
         selectMePeopleLabel.snp.makeConstraints { make in
             make.top.equalTo(selectMeLabel.snp.bottom).inset(-7)
             make.leading.equalToSuperview().inset(37)
+            make.bottom.equalTo(selectedMeNumber.snp.top).inset(-25)
         }
         selectedMeNumber.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(37)
@@ -145,6 +180,47 @@ class HintViewController: BaseViewController {
         self.navigationItem.leftBarButtonItem = notiButton
     }
     
+//MARK: - Helper
+    func longPressShowSetting() {
+        let report = PointerAlertActionConfig(title: "신고하기", textColor: .red) { [weak self] _ in
+            self?.reportTap()
+        }
+        let delete = PointerAlertActionConfig(title: "삭제하기", textColor: .black) { [weak self] _ in
+            print("DEBUG: 힌트 삭제")
+        }
+        
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete])
+        present(actionSheet, animated: true)
+    }
+
+    func reportTap() {
+        let spamContent = PointerAlertActionConfig(title: "스팸", textColor: .black) { [weak self] _ in
+            self?.presentReportView("스팸")
+        }
+        let insultingContent = PointerAlertActionConfig(title: "모욕적인 문장", textColor: .black) { [weak self] _ in
+            self?.presentReportView("모욕적인 문장")
+        }
+        let sexualHateContent = PointerAlertActionConfig(title: "성적 혐오 발언", textColor: .black) { [weak self] _ in
+            self?.presentReportView("성적 혐오 발언")
+        }
+        let violenceOrBullyingContent = PointerAlertActionConfig(title: "폭력 또는 따돌림", textColor: .black) { [weak self] _ in
+            self?.presentReportView("폭력 또는 따돌림")
+        }
+        let etcContent = PointerAlertActionConfig(title: "기타 사유", textColor: .black) { [weak self] _ in
+            self?.presentReportView("기타 사유")
+        }
+        
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [spamContent, insultingContent, sexualHateContent, violenceOrBullyingContent, etcContent])
+        present(actionSheet, animated: true)
+    }
+    
+    func presentReportView(_ reason: String) {
+        let reportVC = ReportViewController(reason: reason)
+        let nav = UINavigationController(rootViewController: reportVC)
+        present(nav, animated: true)
+    }
+    
+//MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
     }

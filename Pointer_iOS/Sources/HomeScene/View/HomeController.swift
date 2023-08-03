@@ -63,7 +63,10 @@ class HomeController: BaseViewController {
         Observable
             .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(PointerRoomModel.self))
             .bind { [weak self] indexPath, model in
-                self?.viewModel.pushSingleRoomController(roomId: model.roomId)
+                self?.viewModel.pushSingleRoomController(voted: model.voted,
+                                                         roomId: model.roomId,
+                                                         questionId: model.questionId,
+                                                         limitedAt: model.limitedAt)
             }
             .disposed(by: disposeBag)
         

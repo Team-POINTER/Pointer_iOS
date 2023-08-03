@@ -77,9 +77,9 @@ class ResultNetworkManager {
     
     // 지목화면 결과 조회
     private func votedResultRequest(_ questionId: Int, _ completion: @escaping (Error?, VotedResultData?) -> Void){
-        AF.request(voteRouter.votedResult(userId, questionId).url,
-                   method: voteRouter.votedResult(userId, questionId).method,
-                   headers: voteRouter.votedResult(userId, questionId).headers)
+        AF.request(voteRouter.votedResult(questionId).url,
+                   method: voteRouter.votedResult(questionId).method,
+                   headers: voteRouter.votedResult(questionId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: VotedResultModel.self) { response in
                 switch response.result {
@@ -91,7 +91,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("지목화면 결과 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -99,9 +99,9 @@ class ResultNetworkManager {
     }
     
     private func totalQuestionRequest(_ roomId: Int, completion: @escaping (Error?, [TotalQuestionResultData]?) -> Void) {
-        AF.request(questionRouter.totalSearchQuestion(userId, roomId).url,
-                   method:questionRouter.totalSearchQuestion(userId, roomId).method,
-                   headers: questionRouter.totalSearchQuestion(userId, roomId).headers)
+        AF.request(questionRouter.totalSearchQuestion(roomId).url,
+                   method:questionRouter.totalSearchQuestion(roomId).method,
+                   headers: questionRouter.totalSearchQuestion(roomId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: TotalQuestionResultModel.self) { response in
                 switch response.result {
@@ -113,7 +113,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("질문 전체 조회 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -121,9 +121,9 @@ class ResultNetworkManager {
     }
     
     private func showHintRequest(_ questionId: Int, completion: @escaping (Error?, ShowHintResultData?) -> Void) {
-        AF.request(voteRouter.showHint(userId, questionId).url,
-                   method:voteRouter.showHint(userId, questionId).method,
-                   headers: voteRouter.showHint(userId, questionId).headers)
+        AF.request(voteRouter.showHint(questionId).url,
+                   method:voteRouter.showHint(questionId).method,
+                   headers: voteRouter.showHint(questionId).headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: ShowHintResultModel.self) { response in
                 switch response.result {
@@ -135,7 +135,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("힌트보기 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -160,7 +160,7 @@ class ResultNetworkManager {
                     completion(nil, data)
                 // 실패인 경우
                 case .failure(let error):
-                    print("투표하기 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -233,10 +233,15 @@ struct ShowHintResultModel: Decodable {
 
 struct ShowHintResultData: Decodable {
     let hint: [String]
-    let voterNm: [String]
+    let voters: [showHintResultVoters]
     let allVoteCnt: Int // 모든 투표 수
     let targetVotedCnt: Int // 받은 투표 수
     let createdAt: String
+}   
+
+struct showHintResultVoters: Decodable {
+    let voterId: Int
+    let voterNm: String
 }
 
 //MARK: - #1-5 새 질문 등록

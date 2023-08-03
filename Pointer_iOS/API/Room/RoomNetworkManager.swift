@@ -56,11 +56,33 @@ class RoomNetworkManager {
         }
     }
     
+    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel) -> Observable<[FriendsListResultData]> {
+        return Observable.create { (observer) -> Disposable in
+            
+            self.inviteFriendListRequest(roomId, parameters) { error, friendsListResultData in
+                if let error = error {
+                    observer.onError(error)
+                }
+                
+                if let data = friendsListResultData {
+                    observer.onNext(data)
+                }
+                
+                observer.onCompleted()
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
 //MARK: - Function
     // 룸 하나 조회 - 이거 적용 중
     private func searchRoomRequest(_ roomId: Int,_ completion: @escaping (Error?, SearchRoomResultData?) -> Void){
+        let singleRoom = roomRouter.getSingleRoom(roomId)
         
-        AF.request(roomRouter.getSingleRoom(roomId).url, method: roomRouter.getSingleRoom(roomId).method, headers: roomRouter.getSingleRoom(roomId).headers)
+        AF.request(singleRoom.url,
+                   method: singleRoom.method,
+                   headers: singleRoom.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: SearchRoomResultModel.self) { response in
                 switch response.result {
@@ -79,11 +101,11 @@ class RoomNetworkManager {
     
     // 현재 질문 조회
     private func currentQuestionRequest(_ roomId: Int, completion: @escaping (Error?, SearchQuestionResultData?) -> Void){
-        let userId = TokenManager.getIntUserId()
+        let currentQuestion = questionRouter.currentSearchQuestion(roomId)
         
-        AF.request(questionRouter.currentSearchQuestion(userId, roomId).url,
-                   method: questionRouter.currentSearchQuestion(userId, roomId).method,
-                   headers: questionRouter.currentSearchQuestion(userId, roomId).headers)
+        AF.request(currentQuestion.url,
+                   method: currentQuestion.method,
+                   headers: currentQuestion.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: SearchQuestionResultModel.self) { response in
                 switch response.result {
@@ -103,12 +125,13 @@ class RoomNetworkManager {
     
     // 투표하기
     func voteRequest(_ parameters: VoteRequestModel, completion: @escaping (Error?, [VoteResultData]?) -> Void){
+        let vote = voteRouter.vote
         
-        AF.request(voteRouter.vote.url,
-                   method: voteRouter.vote.method,
+        AF.request(vote.url,
+                   method: vote.method,
                    parameters: parameters,
                    encoder: JSONParameterEncoder.default,
-                   headers: voteRouter.vote.headers)
+                   headers: vote.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: VoteResultModel.self) { response in
                 switch response.result {
@@ -124,7 +147,34 @@ class RoomNetworkManager {
                     // completion 전송
                     completion(error, nil)
                 }
-                
+            }
+    }
+    
+    // 초대 가능한 친구 목록
+    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel,
+                                 completion: @escaping (Error?, [FriendsListResultData]?) -> Void) {
+        let inviteFriendsList = roomRouter.avaliableInviteFriendList(roomId)
+        
+        AF.request(inviteFriendsList.url,
+                   method: inviteFriendsList.method,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default,
+                   headers: inviteFriendsList.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: FriendsListResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    print(result)
+                    let data = result.friendList
+                    completion(nil, data)
+                // 실패인 경우
+                case .failure(let error):
+                    print("친구 목록 조회 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
             }
     }
     
@@ -199,4 +249,27 @@ struct VoteResultData: Decodable {
     let userId: Int
     let votedUserId: Int
     let hint: String
+}
+
+//MARK: - 초대 가능한 친구 목록
+struct InviteFriendsListReqeustInputModel: Encodable {
+    let keyword: String
+    let lastPage: Int
+}
+
+struct FriendsListResultModel: Decodable {
+    let status: Int
+    let code: String
+    let message: String
+    let friendList: [FriendsListResultData]
+    let total: Int
+}
+
+struct FriendsListResultData: Decodable {
+    let friendId: Int
+    let id: String
+    let friendName: String
+    let file: String?
+    let status: Int?
+    let relationship: Int?
 }

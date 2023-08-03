@@ -1,5 +1,5 @@
 //
-//  FloatingChatViewController.swift
+//  FloatingViewController.swift
 //  Pointer_iOS
 //
 //  Created by 박현준 on 2023/03/22.
@@ -13,7 +13,7 @@ protocol ScrollableViewController where Self: UIViewController {
     var scrollView: UIScrollView { get }
 }
 
-final class FloatingChatViewController: FloatingPanelController {
+final class FloatingViewController: FloatingPanelController {
 
     init(contentViewController: ScrollableViewController) {
             super.init(delegate: nil)
@@ -57,7 +57,7 @@ final class FloatingChatViewController: FloatingPanelController {
     }
 }
 
-extension FloatingChatViewController: FloatingPanelControllerDelegate {
+extension FloatingViewController: FloatingPanelControllerDelegate {
     func floatingPanelDidMove(_ fpc: FloatingPanelController) {
         let loc = fpc.surfaceLocation
         let minY = fpc.surfaceLocation(for: .full).y
