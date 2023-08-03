@@ -12,9 +12,10 @@ import RxCocoa
 class ReportViewModel: ViewModelType {
     
     //MARK: - Properties
+    let disposeBag = DisposeBag()
     
     struct Input {
-        
+        let reportText: Observable<String>
     }
     
     struct Output {
@@ -23,6 +24,12 @@ class ReportViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let output = Output()
+        
+        input.reportText
+            .subscribe { text in
+                print(text)
+            }
+            .disposed(by: disposeBag)
         
         return output
     }

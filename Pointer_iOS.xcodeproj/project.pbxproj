@@ -7,15 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		471145CE2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471145CD2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift */; };
 		471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471145CF2A0E321800AED0DC /* NewQuestViewModel.swift */; };
 		47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117C9E29C2F391001707C8 /* RoomModel.swift */; };
 		47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA429C72EB3001707C8 /* ResultViewController.swift */; };
 		47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CA629C72EC6001707C8 /* ResultViewModel.swift */; };
 		47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAA29C74DCB001707C8 /* ResultChatView.swift */; };
 		47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CAD29CB0367001707C8 /* FloatingPanel */; };
-		47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */; };
-		47117CB229CB1E83001707C8 /* FloatingChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CB129CB1E83001707C8 /* FloatingChatTableViewCell.swift */; };
 		47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */; };
 		47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE329CD92C9001707C8 /* LoginViewController.swift */; };
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
@@ -53,6 +50,8 @@
 		478CA0062A62CEA3000FA196 /* HintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0052A62CEA3000FA196 /* HintViewModel.swift */; };
 		478CA00F2A6D246C000FA196 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA00E2A6D246C000FA196 /* ReportViewController.swift */; };
 		478CA0122A6D337B000FA196 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0112A6D337B000FA196 /* ReportViewModel.swift */; };
+		47CB4A862A7B789300E001D2 /* FloatingPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */; };
+		47CB4A882A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CB4A872A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift */; };
 		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
@@ -121,14 +120,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		471145CD2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomFloatingChatViewController.swift; sourceTree = "<group>"; };
 		471145CF2A0E321800AED0DC /* NewQuestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestViewModel.swift; sourceTree = "<group>"; };
 		47117C9E29C2F391001707C8 /* RoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomModel.swift; sourceTree = "<group>"; };
 		47117CA429C72EB3001707C8 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		47117CA629C72EC6001707C8 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
 		47117CAA29C74DCB001707C8 /* ResultChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultChatView.swift; sourceTree = "<group>"; };
-		47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingChatViewController.swift; sourceTree = "<group>"; };
-		47117CB129CB1E83001707C8 /* FloatingChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingChatTableViewCell.swift; sourceTree = "<group>"; };
 		47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -165,6 +161,8 @@
 		478CA0052A62CEA3000FA196 /* HintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintViewModel.swift; sourceTree = "<group>"; };
 		478CA00E2A6D246C000FA196 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		478CA0112A6D337B000FA196 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
+		47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelController.swift; sourceTree = "<group>"; };
+		47CB4A872A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFloatingPanelLayout.swift; sourceTree = "<group>"; };
 		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
 		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 			isa = PBXGroup;
 			children = (
 				473B738F29CEDB7E00B33C77 /* ResultView */,
-				473B739029CEDB9B00B33C77 /* FloatChatView */,
 				473B739129CEDBB100B33C77 /* MyResultView */,
 				473B739229CEDBCC00B33C77 /* HintView */,
 				47194E7B29D94D6200671360 /* NewQuestView */,
@@ -334,15 +331,6 @@
 				47117CAA29C74DCB001707C8 /* ResultChatView.swift */,
 			);
 			path = ResultView;
-			sourceTree = "<group>";
-		};
-		473B739029CEDB9B00B33C77 /* FloatChatView */ = {
-			isa = PBXGroup;
-			children = (
-				471145CD2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift */,
-				47117CB129CB1E83001707C8 /* FloatingChatTableViewCell.swift */,
-			);
-			path = FloatChatView;
 			sourceTree = "<group>";
 		};
 		473B739129CEDBB100B33C77 /* MyResultView */ = {
@@ -524,7 +512,6 @@
 				CD2DBEC829C631CC005E377C /* Cell */,
 				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 				CD90B48929BE327700772192 /* PointerAlert.swift */,
-				47117CAF29CB0487001707C8 /* FloatingChatViewController.swift */,
 				473B739929CEE41100B33C77 /* ViewModelType.swift */,
 			);
 			path = Common;
@@ -702,6 +689,7 @@
 				CD23209929B8D8F4003D0B84 /* UIView.swift */,
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
+				47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -720,6 +708,7 @@
 			children = (
 				CD6BCDAB29BB97B300DB024C /* RoomPreviewCell.swift */,
 				CD2DBEC529C62BDE005E377C /* AccountInfoCell.swift */,
+				47CB4A872A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -974,10 +963,10 @@
 				F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */,
 				CD0667812A04E8870003C7B4 /* UserFriendCell.swift in Sources */,
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
+				47CB4A862A7B789300E001D2 /* FloatingPanelController.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
 				CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */,
 				473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */,
-				47117CB229CB1E83001707C8 /* FloatingChatTableViewCell.swift in Sources */,
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,
 				CD5BCC5D29F53B8500DD44F7 /* PreferenceViewModel.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
@@ -1010,7 +999,6 @@
 				CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */,
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
-				47117CB029CB0487001707C8 /* FloatingChatViewController.swift in Sources */,
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
@@ -1034,6 +1022,7 @@
 				47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */,
 				CD2F79C42A0FCB860094F81F /* FriendsListCell.swift in Sources */,
 				CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */,
+				47CB4A882A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift in Sources */,
 				F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */,
 				473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
@@ -1047,7 +1036,6 @@
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD5BCC5629F5384300DD44F7 /* PreferenceController.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
-				471145CE2A0E23CC00AED0DC /* RoomFloatingChatViewController.swift in Sources */,
 				CD5BCC6329F571D700DD44F7 /* PreferenceSectionBackgroundView.swift in Sources */,
 				CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */,
 				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,

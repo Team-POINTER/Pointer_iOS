@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxCocoa
 import RxSwift
+import FloatingPanel
 
 //MARK: 비동기로 처리해야할 부분
 // 1. hint 입력했을 시 글자수 20자 제한 [O]
@@ -37,6 +38,15 @@ class RoomViewController: BaseViewController {
     }(UITableView())
     
     private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 200))
+    
+    private lazy var fpc: FloatingPanelController = {
+        let controller = FloatingPanelController(delegate: self)
+        controller.isRemovalInteractionEnabled = true
+        controller.changePanelStyle()
+        controller.layout = ReportFloatingPanelLayout()
+        
+        return controller
+    }()
     
     let disposeBag = DisposeBag()
     let viewModel: RoomViewModel
@@ -268,8 +278,9 @@ class RoomViewController: BaseViewController {
     
     func presentReportView(_ reason: String) {
         let reportVC = ReportViewController(reason: reason)
-        let nav = UINavigationController(rootViewController: reportVC)
-        present(nav, animated: true)
+        fpc.set(contentViewController: reportVC)
+        fpc.track(scrollView: reportVC.scrollView)
+        self.present(fpc, animated: true)
     }
 }
 
@@ -277,5 +288,16 @@ class RoomViewController: BaseViewController {
 extension RoomViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
+    }
+}
+
+//MARK: - FloatingPanelControllerDelegate
+extension RoomViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangePosition(_ fpc: FloatingPanelController) {
+        if fpc.state == .full {
+            
+        } else {
+            fpc.move(to: .full, animated: true)
+        }
     }
 }
