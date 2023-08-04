@@ -76,6 +76,7 @@ class HintViewController: BaseViewController {
         $0.font = UIFont.notoSansRegular(size: 19)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
+        $0.textAlignment = .center
         return $0
     }(UILabel())
     
@@ -96,8 +97,9 @@ class HintViewController: BaseViewController {
     
     var selectMePeopleLabel: UILabel = {
         $0.text = "1. 포인터"
-        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
+        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 17)
         $0.textColor = UIColor.black
+        $0.setLineSpacing(lineSpacing: 7)
         $0.numberOfLines = 0
         return $0
     }(UILabel())
@@ -148,11 +150,11 @@ class HintViewController: BaseViewController {
             make.bottom.equalTo(contentView.snp.bottom).inset(40)
         }
         selectMeLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(30)
+            make.top.equalToSuperview().inset(26)
             make.leading.equalToSuperview().inset(37)
         }
         selectMePeopleLabel.snp.makeConstraints { make in
-            make.top.equalTo(selectMeLabel.snp.bottom).inset(-7)
+            make.top.equalTo(selectMeLabel.snp.bottom).inset(-10)
             make.leading.equalToSuperview().inset(37)
             make.bottom.equalTo(selectedMeNumber.snp.top).inset(-25)
         }
