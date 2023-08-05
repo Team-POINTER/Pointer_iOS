@@ -35,6 +35,8 @@ class ProfileViewModel: ViewModelType {
     let horizonItemCount: Int = 5
     let network = ProfileNetworkManager()
     
+    lazy var userNameToEdit = ""
+    
     //MARK: - Computed Properties
     var userIdText: String {
         return "@\(profile.value?.results?.userId ?? 0)"
@@ -70,6 +72,8 @@ class ProfileViewModel: ViewModelType {
     }
     
     //MARK: - Functions
+    
+    //MARK: - Call API
     func requestUserProfile() {
         // 자기 자신이라면 내 프로필, 아니라면 상대 프로필
         if TokenManager.getIntUserId() == self.userId {
@@ -82,6 +86,10 @@ class ProfileViewModel: ViewModelType {
                 self?.profile.accept(profile)
             }
         }
+    }
+    
+    func requestSaveEditProfile() {
+        
     }
     
     func getCellSize() -> CGSize {

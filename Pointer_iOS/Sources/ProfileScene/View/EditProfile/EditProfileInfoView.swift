@@ -26,6 +26,7 @@ class EditProfileInfoView: ProfileInfoParentView {
         tf.font = .notoSans(font: .notoSansKrMedium, size: 25)
         tf.textColor = .inactiveGray
         tf.textAlignment = .center
+        tf.delegate = self
         return tf
     }()
     
@@ -163,5 +164,15 @@ class EditProfileInfoView: ProfileInfoParentView {
         userIDGuideLabel.snp.makeConstraints {
             $0.width.equalTo(self.snp.width).multipliedBy(0.45)
         }
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension EditProfileInfoView: UITextFieldDelegate {
+    
+    // 텍스트 필드 수정이 끝나면 값 저장
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        viewModel.userNameToEdit = text
     }
 }

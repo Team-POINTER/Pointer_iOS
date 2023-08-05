@@ -69,3 +69,21 @@ enum Relationship: Int {
         return string
     }
 }
+
+//MARK: - Friends Response
+struct FriendsResponseModel: Codable {
+    let status: Int
+    let code: String
+    let message: String
+    let friendsLists: [FriendsModel]
+    let total: Int
+}
+
+// MARK: - UserList
+struct FriendsModel: Codable {
+    let userId: Int
+    let id: String
+    let userName: String
+    let file: String
+}
+

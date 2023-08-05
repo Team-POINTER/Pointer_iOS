@@ -47,7 +47,7 @@ class ProfileEditViewController: ProfileParentViewController {
     
     //MARK: - Selector
     @objc private func saveButtonTapped() {
-        print(#function)
+        viewModel.requestSaveEditProfile()
     }
     
     //MARK: - Lifecycle
