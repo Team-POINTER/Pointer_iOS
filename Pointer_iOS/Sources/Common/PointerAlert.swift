@@ -61,11 +61,12 @@ class PointerAlert: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupGesture()
     }
     
     //MARK: - Selector
-    @objc private func anyButtonTapped(_ handler: (() -> Void)?) {
-        self.dismiss(animated: true, completion: handler)
+    @objc private func emptyButtonTapped() {
+        self.dismiss(animated: true)
     }
     
     //MARK: - Fuctions
@@ -92,12 +93,22 @@ class PointerAlert: UIViewController {
         }
     }
     
+    private func setupGesture() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(emptyButtonTapped))
+        view.addGestureRecognizer(gesture)
+    }
+    
     //MARK: - Action Sheet Setup View
     private func setupActionSheetViews() {
         
+        appendSheetTitleView()
+
         // 버튼 생성
-        configs.enumerated().forEach {
-            let button = makeInnerView(title: $1.title, font: $1.font, textColor: $1.textColor, backgroundColor: $1.backgroundColor, index: $0, height: 70, handler: $1.handler)
+        configs.enumerated().forEach { index, config in
+            // alertTitle이 nil이 아니라면 ?
+            let index = alertTitle != nil ? index + 1 : index
+            
+            let button = makeInnerView(title: config.title, font: config.font, textColor: config.textColor, backgroundColor: config.backgroundColor, index: index, height: 70, handler: config.handler)
             self.topStack.addArrangedSubview(button)
         }
         // 취소버튼
@@ -217,7 +228,9 @@ class PointerAlert: UIViewController {
         
         // 마지막 index가 아니라면 divider 추가 (ActionSheet의 경우)
         
-        if index != configs.count - 1 {
+        let configCount = alertTitle != nil ? configs.count + 1 : configs.count
+        
+        if index != configCount - 1 {
             let divider = makeDivider()
             view.addSubview(divider)
             
@@ -237,6 +250,40 @@ class PointerAlert: UIViewController {
         }
         
         return view
+    }
+    
+    private func appendSheetTitleView() {
+        if let title = alertTitle {
+            let titleLabel: UILabel = {
+                let label = UILabel()
+                label.font = .systemFont(ofSize: 14)
+                label.textAlignment = .center
+                label.textColor  = .black
+                label.text = title
+                return label
+            }()
+            
+            let divider = makeDivider()
+            
+            let containerView = UIView()
+            
+            containerView.addSubview(titleLabel)
+            containerView.addSubview(divider)
+            
+            titleLabel.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            divider.snp.makeConstraints {
+                $0.leading.trailing.bottom.equalToSuperview()
+                $0.height.equalTo(1)
+            }
+            
+            containerView.snp.makeConstraints {
+                $0.height.equalTo(40)
+            }
+            
+            self.topStack.addArrangedSubview(containerView)
+        }
     }
     
     private func makeDivider() -> UIView {
