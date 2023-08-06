@@ -195,7 +195,7 @@ class PointerAlert: UIViewController {
     //MARK: - Common
     private func makeButtonStack(addSubViews: [UIView]) -> UIStackView {
         let view = UIStackView(arrangedSubviews: addSubViews)
-        view.backgroundColor = .pointerGray
+        view.backgroundColor = UIColor.rgb(red: 232, green: 233, blue: 242).withAlphaComponent(0.6)
         view.layer.cornerRadius = 25
         view.isLayoutMarginsRelativeArrangement = true
         view.layoutMargins = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 19)
@@ -288,7 +288,7 @@ class PointerAlert: UIViewController {
     
     private func makeDivider() -> UIView {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .darkGray.withAlphaComponent(0.8)
         return view
     }
     
