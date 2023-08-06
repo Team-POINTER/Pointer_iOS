@@ -24,6 +24,15 @@ import FloatingPanel
 // 4. navigationBar titleColor, LeftBarItem 추가 [O]
 // 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[O])
 
+enum ReportType: String, CaseIterable {
+    case spam = "스팸"
+    case swear = "모욕적인 문장"
+    case gender = "성적 혐오 발언"
+    case violence = "폭력 또는 따돌림"
+    case etc = "기타 사유"
+}
+
+
 class RoomViewController: BaseViewController {
     
 //MARK: - properties
@@ -256,23 +265,16 @@ class RoomViewController: BaseViewController {
     }
     
     func reportTap() {
-        let spamContent = PointerAlertActionConfig(title: "스팸", textColor: .black) { [weak self] _ in
-            self?.presentReportView("스팸")
-        }
-        let insultingContent = PointerAlertActionConfig(title: "모욕적인 문장", textColor: .black) { [weak self] _ in
-            self?.presentReportView("모욕적인 문장")
-        }
-        let sexualHateContent = PointerAlertActionConfig(title: "성적 혐오 발언", textColor: .black) { [weak self] _ in
-            self?.presentReportView("성적 혐오 발언")
-        }
-        let violenceOrBullyingContent = PointerAlertActionConfig(title: "폭력 또는 따돌림", textColor: .black) { [weak self] _ in
-            self?.presentReportView("폭력 또는 따돌림")
-        }
-        let etcContent = PointerAlertActionConfig(title: "기타 사유", textColor: .black) { [weak self] _ in
-            self?.presentReportView("기타 사유")
+        var sheetConfig = [PointerAlertActionConfig]()
+        
+        ReportType.allCases.forEach { type in
+            let config = PointerAlertActionConfig(title: type.rawValue, textColor: .black) { [weak self] _ in
+                self?.presentReportView(type.rawValue)
+            }
+            sheetConfig.append(config)
         }
         
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [spamContent, insultingContent, sexualHateContent, violenceOrBullyingContent, etcContent])
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: sheetConfig)
         present(actionSheet, animated: true)
     }
     
