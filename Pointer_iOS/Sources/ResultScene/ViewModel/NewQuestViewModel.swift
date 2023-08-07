@@ -9,10 +9,14 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-// MARK: 확인필요
-// 1. A와 B가 질문 등록 시 A가 먼저 질문 등록했다면 B에서는 에러가 떠야함(선착순 1명 24시간 카운트) -> UI 누군가 이미 질문 등록했어요. 표시 [구현 X]
-// 2. 질문 등록 성공 시 맨 처음부터 룸 다시 들어가야하는가?
-enum nextQuestButtonStyle: CaseIterable {
+enum NewQuestResponse: String, CaseIterable {
+    case success = "A200"
+    case roomError = "J004"
+    case accountError = "C001"
+    case questionError = "K000"
+}
+
+enum NextQuestButtonStyle: CaseIterable {
     case isEnable
     case disable
     
@@ -85,8 +89,8 @@ class NewQuestViewModel: ViewModelType{
     struct Output {
         let timeLimited = BehaviorRelay<Bool>(value: false)
         let newQuestTextFieldText = BehaviorRelay<String>(value: "")
-        let buttonIsEnable = BehaviorRelay<nextQuestButtonStyle>(value: .disable)
-        let backAlert = BehaviorRelay<Bool>(value: false)
+        let buttonIsEnable = BehaviorRelay<NextQuestButtonStyle>(value: .disable)
+        let backAlert = BehaviorRelay<NewQuestResponse?>(value: nil)
     }
     
 //MARK: - Rxswift Transform
@@ -107,7 +111,6 @@ class NewQuestViewModel: ViewModelType{
                 guard let self = self else { return }
                 print("짊문등록 버튼 Tap")
                 let newQuestionRequestModel = NewQuestionRequestModel(roomId: self.roomId,
-                                                                      userId: self.userId,
                                                                       content: self.questionInputString)
                 ResultNetworkManager.shared.newQuestionRequest(newQuestionRequestModel) { (error, model) in
                     if let error = error {
@@ -115,10 +118,19 @@ class NewQuestViewModel: ViewModelType{
                     }
                     
                     if let model = model {
-                        // 질문 등록 성공 시 if로
-                        print("질문 등록 완료")
-                        // 질문 생성 API code로 타인이 이미 질문 등록 시 alert 반환
-                        //output.backAlert.accept(true)
+                        // 질문 생성 실패
+                        if NewQuestResponse.questionError.rawValue == model.code {
+                            output.backAlert.accept(NewQuestResponse.questionError)
+                        // 질문 생성 성공
+                        } else if NewQuestResponse.success.rawValue == model.code {
+                            output.backAlert.accept(NewQuestResponse.success)
+                        // 회원 정보 없음
+                        } else if NewQuestResponse.accountError.rawValue == model.code {
+                            output.backAlert.accept(NewQuestResponse.accountError)
+                        // 룸 조회 실패
+                        } else {
+                            output.backAlert.accept(NewQuestResponse.roomError)
+                        }
                     }
                 }
             }
