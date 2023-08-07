@@ -69,7 +69,7 @@ class EditUserIDViewController: UIViewController {
     
     //MARK: - Lifecycle
     init(viewModel: ProfileViewModel) {
-        self.viewModel = EditUserIDViewModel(user: viewModel.user)
+        self.viewModel = EditUserIDViewModel(user: viewModel.profile.value)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -201,7 +201,7 @@ class EditUserIDViewController: UIViewController {
     }
     
     private func configure() {
-        userIDTextField.text = viewModel.user.userID
+        userIDTextField.text = viewModel.user?.results?.id
     }
     
     private func getPolicyString() -> String {

@@ -13,7 +13,6 @@ import SnapKit
 
 class ProfileEditViewController: ProfileParentViewController {
     //MARK: - Properties
-    var disposeBag = DisposeBag()
     let viewModel: ProfileViewModel
     let editProfileInfoView: EditProfileInfoView
     let cameraImageView: UIImageView = {
@@ -23,19 +22,22 @@ class ProfileEditViewController: ProfileParentViewController {
         return cameraImageView
     }()
     
-    lazy var editableProfileImageView: UIView = {
-        let view = UIView()
-        
+    let myProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "defaultProfile")
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 106 / 2
         imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    lazy var editableProfileImageView: UIView = {
+        let view = UIView()
         
-        view.addSubview(imageView)
+        view.addSubview(myProfileImageView)
         view.addSubview(cameraImageView)
         
-        imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        myProfileImageView.snp.makeConstraints { $0.edges.equalToSuperview() }
         cameraImageView.snp.makeConstraints {
             $0.trailing.bottom.equalToSuperview()
             $0.width.height.equalTo(30)
@@ -45,7 +47,7 @@ class ProfileEditViewController: ProfileParentViewController {
     
     //MARK: - Selector
     @objc private func saveButtonTapped() {
-        print(#function)
+        viewModel.requestSaveEditProfile()
     }
     
     //MARK: - Lifecycle
@@ -54,6 +56,7 @@ class ProfileEditViewController: ProfileParentViewController {
         self.editProfileInfoView = EditProfileInfoView(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
         editProfileInfoView.delegate = self
+        bind(viewModel: viewModel)
     }
     
     required init?(coder: NSCoder) {
@@ -72,8 +75,8 @@ class ProfileEditViewController: ProfileParentViewController {
     //MARK: - Functions
     func bind() {
         cameraImageView.rx.tapGesture().when(.recognized)
-            .bind { _ in
-                print("프로필 이미지 변경 뷰 눌림")
+            .bind { [weak self] _ in
+                self?.modifyProfileImage()
             }.disposed(by: disposeBag)
     }
     
@@ -83,11 +86,33 @@ class ProfileEditViewController: ProfileParentViewController {
         navigationItem.rightBarButtonItem = saveButton
     }
     
+    // 프로필 이미지 변경 뷰 Sheet
+    func modifyProfileImage() {
+        let selectConfig = PointerAlertActionConfig(title: "앨범에서 사진/동영상 선택", textColor: .pointerRed) { _ in }
+        let setDefaultConfig = PointerAlertActionConfig(title: "기본 이미지로 변경", textColor: .pointerRed) { _ in }
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [selectConfig, setDefaultConfig], title: "프로필 사진 편집")
+        self.present(actionSheet, animated: true)
+    }
+    
     override func setupUI() {
         super.profileImageView = editableProfileImageView
         super.profileInfoView = editProfileInfoView
         super.backgroundImageView.backgroundColor = .systemIndigo
         super.setupUI()
+        
+        guard let profile = viewModel.profile.value else { return }
+        configureProfileImage(model: profile)
+    }
+    
+    private func configureProfileImage(model: ProfileModel) {
+        guard let urls = model.results?.imageUrls,
+              let profileUrl = URL(string: urls.profileImageUrl),
+              let backgroundUrl = URL(string: urls.backgroundImageUrl) else { return }
+        myProfileImageView.kf.indicatorType = .activity
+        myProfileImageView.kf.setImage(with: profileUrl)
+        
+        backgroundImageView.kf.indicatorType = .activity
+        backgroundImageView.kf.setImage(with: backgroundUrl)
     }
 }
 

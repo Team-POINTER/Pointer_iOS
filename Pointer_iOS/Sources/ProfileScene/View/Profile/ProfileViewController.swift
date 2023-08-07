@@ -12,7 +12,7 @@ import RxSwift
 class ProfileViewController: ProfileParentViewController {
     //MARK: - Properties
     //더미!
-    let viewModel = ProfileViewModel(user: User(memberType: .myAccount, userName: "김지수", userID: "jisu.kim", friendsCount: 10))
+    let viewModel: ProfileViewModel
     
     lazy var profileImageViewChild: UIView = {
         let imageView = UIImageView()
@@ -24,16 +24,30 @@ class ProfileViewController: ProfileParentViewController {
     }()
     
     lazy var profileInfoViewChild: ProfileInfoView = {
-        let view = ProfileInfoView(viewModel: viewModel)
-        view.delegate = self
+        let view = ProfileInfoView(viewModel: viewModel, delegate: self)
         return view
     }()
     
     //MARK: - Lifecycle
+    init(viewModel: ProfileViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNavigation(viewModel: viewModel)
+        bind(viewModel: viewModel)
+        viewModel.requestUserProfile()
     }
+    
+
+    
     //MARK: - Selector
     
     //MARK: - Functions

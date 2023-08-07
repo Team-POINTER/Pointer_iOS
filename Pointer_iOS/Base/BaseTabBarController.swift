@@ -56,7 +56,8 @@ class BaseTabBarController: UITabBarController {
         let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
-        let thirdVC = ProfileViewController()
+        let viewModel = ProfileViewModel(userId: TokenManager.getIntUserId())
+        let thirdVC = ProfileViewController(viewModel: viewModel)
         let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup
