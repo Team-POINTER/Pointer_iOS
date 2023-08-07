@@ -236,9 +236,10 @@ class RoomViewController: BaseViewController {
     }
     
     @objc func menuButtonTap() {
+        guard let currentRoomName = title else { return }
+        
         let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
-            guard let self = self,
-                  let currentRoomName = self.title else { return }
+            guard let self = self else { return }
             let roomId = self.viewModel.roomId
             
             let modifyAlert = self.viewModel.getModifyRoomNameAlert(currentRoomName, roomId: roomId)
@@ -259,7 +260,9 @@ class RoomViewController: BaseViewController {
             self.present(exit, animated: true)
         }
 
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteFriend, report, exitRoom])
+        let actionSheet = PointerAlert(alertType: .actionSheet,
+                                       configs: [modifyRoomName, inviteFriend, report, exitRoom],
+                                       title: "룸 '\(currentRoomName)'에 대해")
         present(actionSheet, animated: true)
     }
     
@@ -273,7 +276,7 @@ class RoomViewController: BaseViewController {
             sheetConfig.append(config)
         }
         
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: sheetConfig)
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: sheetConfig, title: "신고 사유")
         present(actionSheet, animated: true)
     }
     
