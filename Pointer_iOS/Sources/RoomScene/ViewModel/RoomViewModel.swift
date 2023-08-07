@@ -43,12 +43,12 @@ final class RoomViewModel: ViewModelType {
     }
     
     struct Output {
-        var hintTextFieldCountString = BehaviorRelay<String>(value: "0/20")
-        var hintTextFieldLimitedString = PublishRelay<String>()
-        var selectedUsersJoinedString = BehaviorRelay<String>(value: "")
-        var pointButtonValid = PublishRelay<Bool>()
-        var pointButtonTap = PublishRelay<UIViewController>()
-        var inviteButtonTap = PublishRelay<UIViewController>()
+        let hintTextFieldCountString = BehaviorRelay<String>(value: "0/20")
+        let hintTextFieldLimitedString = PublishRelay<String>()
+        let selectedUsersJoinedString = BehaviorRelay<String>(value: "")
+        let pointButtonValid = PublishRelay<Bool>()
+        let pointButtonTap = PublishRelay<UIViewController>()
+        let inviteButtonTap = PublishRelay<UIViewController>()
     }
     
     //MARK: - Rxswift Transform

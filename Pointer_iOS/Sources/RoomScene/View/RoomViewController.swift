@@ -181,7 +181,7 @@ class RoomViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] b in
                 if b {
-                    self?.dismiss(animated: true)
+                    self?.navigationController?.popViewController(animated: true)
                 }
             }
             .disposed(by: disposeBag)
@@ -255,7 +255,6 @@ class RoomViewController: BaseViewController {
         let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .red) { [weak self] _ in
             guard let self = self else { return }
             let roomId = self.viewModel.roomId
-            
             let exit = self.viewModel.getExitRoomAlert(roomId: roomId)
             self.present(exit, animated: true)
         }
