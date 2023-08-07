@@ -173,6 +173,6 @@ extension EditProfileInfoView: UITextFieldDelegate {
     // 텍스트 필드 수정이 끝나면 값 저장
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        viewModel.userNameToEdit = text
+        self.viewModel.userNameToEdit = text
     }
 }

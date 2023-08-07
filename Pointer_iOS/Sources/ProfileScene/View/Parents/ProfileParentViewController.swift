@@ -56,6 +56,13 @@ class ProfileParentViewController: BaseViewController {
                 self?.setProfileImage(model: model)
             }
             .disposed(by: disposeBag)
+        
+        viewModel.nextViewController
+            .bind { [weak self] nextVc in
+                guard let vc = nextVc else { return }
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     func setProfileImage(model: ProfileModel) {
@@ -92,5 +99,17 @@ class ProfileParentViewController: BaseViewController {
             $0.bottom.equalTo(backgroundImageView.snp.bottom).inset(-106 / 2)
             $0.leading.equalToSuperview().inset(20)
         }
+    }
+    
+    //MARK: - SetupNavigation Controller
+    func setupNavigation(viewModel: ProfileViewModel) {
+        let preferenceButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "gearshape"), target: self, handler: #selector(preferneceButtonTapped))
+        self.navigationItem.rightBarButtonItem = preferenceButton
+    }
+    
+    // 설정 버튼 눌렸을 때
+    @objc func preferneceButtonTapped() {
+        let preferenceVc = PreferenceController()
+        self.navigationController?.pushViewController(preferenceVc, animated: true)
     }
 }

@@ -5,7 +5,7 @@
 //  Created by 김지수 on 2023/04/08.
 //
 
-import Foundation
+import UIKit
 import RxSwift
 import RxRelay
 import RxCocoa
@@ -34,6 +34,7 @@ class ProfileViewModel: ViewModelType {
     let cellItemSpacing = CGFloat(20)
     let horizonItemCount: Int = 5
     let network = ProfileNetworkManager()
+    let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
     
     lazy var userNameToEdit = ""
     

@@ -41,6 +41,7 @@ class ProfileViewController: ProfileParentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNavigation(viewModel: viewModel)
         bind(viewModel: viewModel)
         viewModel.requestUserProfile()
     }

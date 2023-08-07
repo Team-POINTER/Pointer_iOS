@@ -75,8 +75,8 @@ class ProfileEditViewController: ProfileParentViewController {
     //MARK: - Functions
     func bind() {
         cameraImageView.rx.tapGesture().when(.recognized)
-            .bind { _ in
-                print("프로필 이미지 변경 뷰 눌림")
+            .bind { [weak self] _ in
+                self?.modifyProfileImage()
             }.disposed(by: disposeBag)
     }
     
@@ -84,6 +84,14 @@ class ProfileEditViewController: ProfileParentViewController {
         let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(saveButtonTapped))
         saveButton.tintColor = .red
         navigationItem.rightBarButtonItem = saveButton
+    }
+    
+    // 프로필 이미지 변경 뷰 Sheet
+    func modifyProfileImage() {
+        let selectConfig = PointerAlertActionConfig(title: "앨범에서 사진/동영상 선택", textColor: .pointerRed) { _ in }
+        let setDefaultConfig = PointerAlertActionConfig(title: "기본 이미지로 변경", textColor: .pointerRed) { _ in }
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [selectConfig, setDefaultConfig], title: "프로필 사진 편집")
+        self.present(actionSheet, animated: true)
     }
     
     override func setupUI() {
