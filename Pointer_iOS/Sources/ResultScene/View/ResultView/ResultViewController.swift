@@ -116,6 +116,7 @@ class ResultViewController: BaseViewController {
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
+        $0.setLineSpacing(lineSpacing: 7)
         return $0
     }(UILabel())
     
@@ -124,6 +125,7 @@ class ResultViewController: BaseViewController {
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
         $0.textAlignment = .right
+        $0.setLineSpacing(lineSpacing: 7)
         return $0
     }(UILabel())
     

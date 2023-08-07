@@ -52,6 +52,7 @@
 		478CA0122A6D337B000FA196 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478CA0112A6D337B000FA196 /* ReportViewModel.swift */; };
 		47CB4A862A7B789300E001D2 /* FloatingPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */; };
 		47CB4A882A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CB4A872A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift */; };
+		47CB4A8A2A7BB77000E001D2 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CB4A892A7BB77000E001D2 /* UILabel.swift */; };
 		47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89542A41D1C30020246E /* NextTestViewController.swift */; };
 		47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89572A4681BA0020246E /* HttpRouter.swift */; };
 		47CC895A2A46829B0020246E /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89592A46829B0020246E /* HttpService.swift */; };
@@ -167,6 +168,7 @@
 		478CA0112A6D337B000FA196 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelController.swift; sourceTree = "<group>"; };
 		47CB4A872A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFloatingPanelLayout.swift; sourceTree = "<group>"; };
+		47CB4A892A7BB77000E001D2 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		47CC89542A41D1C30020246E /* NextTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTestViewController.swift; sourceTree = "<group>"; };
 		47CC89572A4681BA0020246E /* HttpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRouter.swift; sourceTree = "<group>"; };
 		47CC89592A46829B0020246E /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
@@ -694,6 +696,7 @@
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
 				47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */,
+				47CB4A892A7BB77000E001D2 /* UILabel.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1002,6 +1005,7 @@
 				47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */,
+				47CB4A8A2A7BB77000E001D2 /* UILabel.swift in Sources */,
 				CD0EE9272A0788510090BF48 /* ProfileEditViewController.swift in Sources */,
 				473B73A129CEF15E00B33C77 /* HintViewController.swift in Sources */,
 				CD23209C29B8D9C1003D0B84 /* BaseTabBarController.swift in Sources */,

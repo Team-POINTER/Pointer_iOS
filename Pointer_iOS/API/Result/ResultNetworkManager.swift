@@ -143,7 +143,7 @@ class ResultNetworkManager {
     }
     
     func newQuestionRequest(_ parameters: NewQuestionRequestModel,
-                                    completion: @escaping (Error?, NewQuestionResultData?) -> Void) {
+                                    completion: @escaping (Error?, NewQuestionResultModel?) -> Void) {
         AF.request(questionRouter.createQuestion.url,
                    method:questionRouter.createQuestion.method,
                    parameters: parameters,
@@ -156,8 +156,7 @@ class ResultNetworkManager {
                 case .success(let result):
                     // completion 전송
                     print(result)
-                    guard let data = result.result else { return }
-                    completion(nil, data)
+                    completion(nil, result)
                 // 실패인 경우
                 case .failure(let error):
                     print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
@@ -247,7 +246,6 @@ struct showHintResultVoters: Decodable {
 //MARK: - #1-5 새 질문 등록
 struct NewQuestionRequestModel: Encodable {
     let roomId: Int
-    let userId: Int
     let content: String
 }
 

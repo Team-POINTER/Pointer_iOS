@@ -54,11 +54,11 @@ class NewQuestViewController: BaseViewController {
             .subscribe(onNext: { [weak self] text in
                 guard let self = self else { return }
                 if text == "" {
-                    self.newQuestButton.backgroundColor = nextQuestButtonStyle.disable.backgroundColor
-                    self.newQuestButton.isEnabled = nextQuestButtonStyle.disable.isEnable
+                    self.newQuestButton.backgroundColor = NextQuestButtonStyle.disable.backgroundColor
+                    self.newQuestButton.isEnabled = NextQuestButtonStyle.disable.isEnable
                 } else {
-                    self.newQuestButton.backgroundColor = nextQuestButtonStyle.isEnable.backgroundColor
-                    self.newQuestButton.isEnabled = nextQuestButtonStyle.isEnable.isEnable
+                    self.newQuestButton.backgroundColor = NextQuestButtonStyle.isEnable.backgroundColor
+                    self.newQuestButton.isEnabled = NextQuestButtonStyle.isEnable.isEnable
                 }
             })
             .disposed(by: disposeBag)
@@ -94,9 +94,18 @@ class NewQuestViewController: BaseViewController {
         // 이미 질문 등록이 완료된 경우에 돌아가기 Alert
         output.backAlert
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] b in
-                if b {
-                    self?.dismissAlert()
+            .subscribe(onNext: { [weak self] type in
+                if type == .questionError {
+                    self?.dismissAlert(title: "돌아가기", description: "다른 사람이 질문을 등록했습니다.")
+                }
+                else if type == .success {
+                    self?.dismissAlert(title: "돌아가기", description: "질문을 등록하였습니다.")
+                }
+                else if type == .accountError {
+                    self?.dismissAlert(title: "돌아가기", description: "회원 정보가 없습니다.")
+                }
+                else {
+                    self?.dismissAlert(title: "돌아가기", description: "룸 조회에 실패하였습니다.")
                 }
             })
             .disposed(by: disposeBag)
@@ -192,13 +201,13 @@ class NewQuestViewController: BaseViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func dismissAlert() {
-        let backAction = PointerAlertActionConfig(title: "돌아가기", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
+    func dismissAlert(title: String, description: String) {
+        let backAction = PointerAlertActionConfig(title: title, textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
             // 루트뷰로 dismiss를 해야하는가?
             self?.dismiss(animated: true)
         })
     
-        let alert = PointerAlert(alertType: .alert, configs: [backAction], description: "다른 사람이 질문을 등록했습니다.")
+        let alert = PointerAlert(alertType: .alert, configs: [backAction], description: description)
         present(alert, animated: true)
     }
 }
