@@ -22,10 +22,11 @@ class EditProfileInfoView: ProfileInfoParentView {
     
     lazy var nameTextField: UITextField = {
         let tf = UITextField()
-        tf.text = viewModel.user.userName
+        tf.text = viewModel.userName
         tf.font = .notoSans(font: .notoSansKrMedium, size: 25)
         tf.textColor = .inactiveGray
         tf.textAlignment = .center
+        tf.delegate = self
         return tf
     }()
     
@@ -95,8 +96,8 @@ class EditProfileInfoView: ProfileInfoParentView {
     }()
     
     //MARK: - Lifecycle
-    override init(viewModel: ProfileViewModel) {
-        super.init(viewModel: viewModel)
+    override init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
+        super.init(viewModel: viewModel, delegate: delegate)
         setupUI()
         bind()
     }
@@ -163,5 +164,15 @@ class EditProfileInfoView: ProfileInfoParentView {
         userIDGuideLabel.snp.makeConstraints {
             $0.width.equalTo(self.snp.width).multipliedBy(0.45)
         }
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension EditProfileInfoView: UITextFieldDelegate {
+    
+    // 텍스트 필드 수정이 끝나면 값 저장
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        self.viewModel.userNameToEdit = text
     }
 }

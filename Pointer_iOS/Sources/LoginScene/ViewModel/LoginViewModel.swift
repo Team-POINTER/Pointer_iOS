@@ -180,10 +180,10 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
             let familyName = appleIDCredential.fullName?.familyName
             let givenName = appleIDCredential.fullName?.givenName
             let email = appleIDCredential.email
-            
+            appleIDCredential.user
             if let token = appleIDCredential.identityToken, // JWT token
                let tokenString = String(data: token, encoding: .utf8) {
-                
+                print(tokenString)
                 let appleToken = AuthInputModel(accessToken: tokenString)
                 AuthNetworkManager.shared.posts(appleToken) { [weak self] model, loginResultType in
                     let termsViewModel = TermsViewModel(authResultModel: model)
