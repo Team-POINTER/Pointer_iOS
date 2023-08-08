@@ -19,7 +19,7 @@ class MyResultViewController: BaseViewController {
     init(viewModel: MyResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.title = viewModel.roomName
+        title = viewModel.roomName
     }
     
     required init?(coder: NSCoder) {
@@ -100,14 +100,12 @@ class MyResultViewController: BaseViewController {
         configureBar()
         hintTableView.delegate = self
         bindViewModel()
-        
     }
     
     func configureBar() {
         let backButton = UIImage(systemName: "chevron.backward")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
-        self.title = "룸 이름"
     }
     
     @objc func backButtonTap() {

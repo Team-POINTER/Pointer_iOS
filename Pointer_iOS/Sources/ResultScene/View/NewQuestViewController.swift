@@ -98,6 +98,7 @@ class NewQuestViewController: BaseViewController {
                 if type == .questionError {
                     self?.dismissAlert(title: "돌아가기", description: "다른 사람이 질문을 등록했습니다.") {
                         self?.navigationController?.popToRootViewController(animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
                     }
                 }
                 if type == .success {
@@ -106,16 +107,19 @@ class NewQuestViewController: BaseViewController {
                         let roomViewModel = RoomViewModel(roomId: self?.viewModel.roomId ?? 0)
                         let room = RoomViewController(viewModel: roomViewModel)
                         self?.navigationController?.setViewControllers([home, room], animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
                     }
                 }
                 if type == .accountError {
                     self?.dismissAlert(title: "돌아가기", description: "회원 정보가 없습니다.") {
                         self?.navigationController?.popToRootViewController(animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
                     }
                 }
                 if type == .roomError {
                     self?.dismissAlert(title: "돌아가기", description: "룸 조회에 실패하였습니다.") {
                         self?.navigationController?.popToRootViewController(animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
                     }
                 }
             })

@@ -289,6 +289,7 @@ class ResultViewController: BaseViewController {
     
     @objc func backButtonTap() {
         self.navigationController?.popToRootViewController(animated: true)
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     @objc func chatTaped() {
