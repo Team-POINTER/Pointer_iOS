@@ -115,6 +115,8 @@ class EditProfileInfoView: ProfileInfoParentView {
         
         userIDView.rx.tapGesture().when(.recognized)
             .bind { [weak self] _ in
+                // 유저 ID View 탭 할 때 초기값 저장
+                self?.viewModel.userIdToEdit = self?.viewModel.profile.value?.results?.id
                 self?.delegate?.editUserIDViewTapped()
             }.disposed(by: disposeBag)
         

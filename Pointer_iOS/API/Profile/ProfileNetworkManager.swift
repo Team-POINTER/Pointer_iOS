@@ -73,4 +73,26 @@ class ProfileNetworkManager {
                 }
             }
     }
+    
+    func requestChangeUserId(changeTo userID: String, completion: @escaping (Bool) -> Void) {
+        let router = ProfileRouter.updateUserId
+        let param: [String: String] = ["id": userID]
+        
+        print("🔥URL: \(router.url)")
+        AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: PointerDefaultResponse.self) { response in
+                switch response.result {
+                case .success(let result):
+                    if result.code == "D000" {
+                        completion(true)
+                    } else {
+                        completion(false)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+                }
+            }
+    }
 }

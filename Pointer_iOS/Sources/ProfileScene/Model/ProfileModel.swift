@@ -87,3 +87,7 @@ struct FriendsModel: Codable {
     let file: String
 }
 
+//MARK: - 중복확인 결과
+enum UserIdValidationResult {
+    
+}

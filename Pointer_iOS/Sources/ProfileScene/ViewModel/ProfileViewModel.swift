@@ -37,10 +37,11 @@ class ProfileViewModel: ViewModelType {
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
     
     lazy var userNameToEdit = ""
+    lazy var userIdToEdit: String? = ""
     
     //MARK: - Computed Properties
     var userIdText: String {
-        return "@\(profile.value?.results?.userId ?? 0)"
+        return "@\(profile.value?.results?.id ?? "")"
     }
     
     var userName: String? {

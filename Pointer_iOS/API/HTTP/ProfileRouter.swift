@@ -34,13 +34,13 @@ extension ProfileRouter: HttpRouter {
         case .userProfile(let userId):
             return "/users/\(userId)/info"
         case .updateName:
-            return "users/update/name"
+            return "/users/update/name"
         case .updateUserId:
-            return "users/update/id"
+            return "/users/update/id"
         case .getPoints:
-            return "users/get/points"
+            return "/users/get/points"
         case .getFriendsList:
-            return "users/friend"
+            return "/users/friend"
         }
     }
     

@@ -116,6 +116,8 @@ class ProfileEditViewController: ProfileParentViewController {
     }
 }
 
+//MARK: - EditProfileInfoViewDelegate
+// 수정 뷰 각 컴포넌트들의 이벤트
 extension ProfileEditViewController: EditProfileInfoViewDelegate {
     func editBackgroundButtonTapped() {
         print(#function)
@@ -123,6 +125,13 @@ extension ProfileEditViewController: EditProfileInfoViewDelegate {
     
     func editUserIDViewTapped() {
         let vc = EditUserIDViewController(viewModel: viewModel)
+        vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension ProfileEditViewController: EditUserIdDelegate {
+    func editUserIdSuccessed() {
+        viewModel.requestUserProfile()
     }
 }
