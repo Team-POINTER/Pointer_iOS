@@ -104,12 +104,12 @@ class ProfileInfoView: ProfileInfoParentView {
     //MARK: - Bind
     private func bind() {
         let input = ProfileViewModel.Input(
-            editMyProfile: editMyProfileButton.rx.tap,
-            cancelBlockAction: cancelBlockButton.rx.tap,
-            friendRequestCancelAction: friendRequestCancelButton.rx.tap,
-            confirmRequestFriendAction: confirmRequestFriendButton.rx.tap,
-            friendCancelAction: friendCancelButton.rx.tap,
-            friendRequestAction: friendRequestButton.rx.tap
+            editMyProfile: editMyProfileButton.rx.tapGesture().asObservable(),
+            cancelBlockAction: cancelBlockButton.rx.tap.asObservable(),
+            friendRequestCancelAction: friendRequestCancelButton.rx.tap.asObservable(),
+            confirmRequestFriendAction: confirmRequestFriendButton.rx.tap.asObservable(),
+            friendCancelAction: friendCancelButton.rx.tap.asObservable(),
+            friendRequestAction: friendRequestButton.rx.tap.asObservable()
         )
         
         let output = viewModel.transform(input: input)
@@ -143,7 +143,7 @@ class ProfileInfoView: ProfileInfoParentView {
         idLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom)
             $0.leading.equalTo(nameLabel.snp.leading)
-            $0.width.equalTo(106)
+            $0.width.greaterThanOrEqualTo(106)
         }
         
         addSubview(seperator)
@@ -183,7 +183,7 @@ class ProfileInfoView: ProfileInfoParentView {
         
     private func configure(model: ProfileModel) {
         nameLabel.text = model.results?.userName
-        idLabel.text = model.results?.id
+        idLabel.text = "@" + (model.results?.id ?? "")
         friendsCountLabel.text = "friend count ?"
         collectionView.reloadData()
     }

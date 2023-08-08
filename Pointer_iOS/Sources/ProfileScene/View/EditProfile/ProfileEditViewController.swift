@@ -56,7 +56,6 @@ class ProfileEditViewController: ProfileParentViewController {
         self.editProfileInfoView = EditProfileInfoView(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
         editProfileInfoView.delegate = self
-        bind(viewModel: viewModel)
     }
     
     required init?(coder: NSCoder) {
@@ -77,7 +76,8 @@ class ProfileEditViewController: ProfileParentViewController {
         cameraImageView.rx.tapGesture().when(.recognized)
             .bind { [weak self] _ in
                 self?.modifyProfileImage()
-            }.disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
     }
     
     func setupNavigationBar() {

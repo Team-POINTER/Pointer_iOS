@@ -58,8 +58,10 @@ class ProfileParentViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.nextViewController
+            .throttle(.microseconds(500), scheduler: MainScheduler.instance)
             .bind { [weak self] nextVc in
                 guard let vc = nextVc else { return }
+                print("🔥푸시")
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
             .disposed(by: disposeBag)

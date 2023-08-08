@@ -24,7 +24,7 @@ class ProfileViewController: ProfileParentViewController {
     }()
     
     lazy var profileInfoViewChild: ProfileInfoView = {
-        let view = ProfileInfoView(viewModel: viewModel, delegate: self)
+        let view = ProfileInfoView(viewModel: viewModel)
         return view
     }()
     
@@ -32,6 +32,7 @@ class ProfileViewController: ProfileParentViewController {
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -45,8 +46,6 @@ class ProfileViewController: ProfileParentViewController {
         bind(viewModel: viewModel)
         viewModel.requestUserProfile()
     }
-    
-
     
     //MARK: - Selector
     

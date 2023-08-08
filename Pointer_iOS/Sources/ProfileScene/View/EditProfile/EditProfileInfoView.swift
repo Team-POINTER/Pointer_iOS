@@ -61,22 +61,25 @@ class EditProfileInfoView: ProfileInfoParentView {
         return label
     }()
     
-    lazy var userIDView: UIView = {
-        let container = UIView()
-        
+    lazy var userIdLabel: UILabel = {
         let userIDLabel = UILabel()
         userIDLabel.textColor = .inactiveGray
         userIDLabel.font = .notoSansRegular(size: 18)
         userIDLabel.textAlignment = .center
         userIDLabel.text = viewModel.userIdText
-        
+        return userIDLabel
+    }()
+    
+    lazy var userIDView: UIView = {
+        let container = UIView()
+
         let line = UIView()
         line.backgroundColor = .inactiveGray
         
-        container.addSubview(userIDLabel)
+        container.addSubview(self.userIdLabel)
         container.addSubview(line)
         
-        userIDLabel.snp.makeConstraints { $0.edges.equalToSuperview() }
+        self.userIdLabel.snp.makeConstraints { $0.edges.equalToSuperview() }
         line.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(2)
@@ -108,6 +111,14 @@ class EditProfileInfoView: ProfileInfoParentView {
     
     //MARK: - Functions
     func bind() {
+        //프로필
+        viewModel.profile
+            .bind { [weak self] model in
+                guard let model = model else { return }
+                self?.userIdLabel.text = model.results?.id
+            }
+            .disposed(by: disposeBag)
+        
         editBackgroundImageButton.rx.tap
             .bind { [weak self] _ in
                 self?.delegate?.editBackgroundButtonTapped()

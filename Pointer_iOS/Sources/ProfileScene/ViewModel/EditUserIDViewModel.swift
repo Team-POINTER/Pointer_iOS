@@ -110,8 +110,9 @@ class EditUserIDViewModel: ViewModelType {
             .subscribe { [weak self] text in
                 guard let self = self,
                       let text = text.element else { return }
-                self.profileNetwork.requestChangeUserId(changeTo: text) { isSuccess in
-                    if isSuccess {
+                self.authNetwork.idSavePost(AuthSaveIdInputModel(id: text),
+                                            TokenManager.getUserAccessToken() ?? "") { result, type in
+                    if type == .saveId {
                         print("👉변경 성공")
                         output.isSuccessSaveUserId.accept(true)
                     } else {

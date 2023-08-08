@@ -13,12 +13,12 @@ import RxCocoa
 class ProfileViewModel: ViewModelType {
     //MARK: - In/Out
     struct Input {
-        let editMyProfile: ControlEvent<Void>
-        let cancelBlockAction: ControlEvent<Void>
-        let friendRequestCancelAction: ControlEvent<Void>
-        let confirmRequestFriendAction: ControlEvent<Void>
-        let friendCancelAction: ControlEvent<Void>
-        let friendRequestAction: ControlEvent<Void>
+        let editMyProfile: Observable<UITapGestureRecognizer>
+        let cancelBlockAction: Observable<Void>
+        let friendRequestCancelAction: Observable<Void>
+        let confirmRequestFriendAction: Observable<Void>
+        let friendCancelAction: Observable<Void>
+        let friendRequestAction: Observable<Void>
     }
     
     struct Output {
@@ -65,8 +65,12 @@ class ProfileViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         
         input.editMyProfile
+            .when(.recognized)
             .subscribe { [weak self] _ in
-                self?.delegate?.editMyProfileButtonTapped()
+                guard let self = self else { return }
+                print("👉")
+                let editVc = ProfileEditViewController(viewModel: self)
+                self.nextViewController.accept(editVc)
             }
             .disposed(by: disposeBag)
         
@@ -79,8 +83,10 @@ class ProfileViewModel: ViewModelType {
     func requestUserProfile() {
         // 자기 자신이라면 내 프로필, 아니라면 상대 프로필
         if TokenManager.getIntUserId() == self.userId {
+            print("🔥내 프로필 업데이트")
             network.getMyProfile { [weak self] profile in
                 self?.isMyProfile = true
+                print("🔥프로필 업데이트 됨 : \(profile)")
                 self?.profile.accept(profile)
             }
         } else {
