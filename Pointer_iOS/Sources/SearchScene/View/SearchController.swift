@@ -14,6 +14,7 @@ import BetterSegmentedControl
 class SearchController: BaseViewController {
     //MARK: - Properties
     var disposeBag = DisposeBag()
+    let viewModel: SearchViewModel
     
     let searchBar: UITextField = {
         let tf = UITextField()
@@ -47,26 +48,18 @@ class SearchController: BaseViewController {
         }
     }
     
-    lazy var roomResultController = SearchResultController(withResultType: .room)
-    lazy var accountResultController = SearchResultController(withResultType: .account)
+    lazy var roomResultController = SearchResultController(withResultType: .room, viewModel: viewModel)
+    lazy var accountResultController = SearchResultController(withResultType: .account, viewModel: viewModel)
     lazy var viewControllers = [roomResultController, accountResultController]
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         return vc
     }()
-    
-    lazy var actionButton: UIButton = {
-        let button = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .thin, scale: .default)
-        button.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
-        button.backgroundColor = .pointerRed
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(handleActionButtonTapped), for: .touchUpInside)
-        return button
-    }()
+
     
     //MARK: - Lifecycle
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -84,35 +77,26 @@ class SearchController: BaseViewController {
     
     //MARK: - Bind
     private func bind() {
+        let input = SearchViewModel.Input(searchBarTextEditEvent: searchBar.rx.text.orEmpty.asObservable())
+        let output = viewModel.transform(input: input)
+        
         resultTypeSegmentControl.rx
             .controlEvent(.valueChanged)
-            .map { [weak self] in return self?.resultTypeSegmentControl.index }
+            .map { [weak self] in
+                return self?.resultTypeSegmentControl.index
+            }
             .subscribe { [weak self] event in
                 if let index = event.element?.flatMap({ $0 }) {
                     self?.currentPage = index
                 }
             }.disposed(by: disposeBag)
+        
+        
     }
     
     //MARK: - Selector
     @objc func backButtonTapped() {
         navigationController?.popViewController(animated: true)
-    }
-    
-    // 액션 버튼 핸들러 (임시)
-    @objc private func handleActionButtonTapped() {
-        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .pointerAlertFontColor) { [weak self] _ in
-            print("DEBUG - 룸 이름 편집 눌림")
-            self?.modifyRoomNameAction()
-        }
-        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .pointerAlertFontColor) { _ in
-            print("DEBUG - 링크로 룸 초대 눌림")
-        }
-        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { _ in
-            print("DEBUG - 룸 나가기 눌림")
-        }
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
-        present(actionSheet, animated: true)
     }
     
     //MARK: - Functionse
@@ -160,30 +144,6 @@ class SearchController: BaseViewController {
             $0.leading.trailing.bottom.equalToSuperview()
         }
         pageViewController.didMove(toParent: self)
-        
-        // 액션 버튼
-        view.addSubview(actionButton)
-        actionButton.snp.makeConstraints {
-            $0.width.height.equalTo(62)
-            $0.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(13)
-            actionButton.layer.cornerRadius = 62 / 2
-            actionButton.clipsToBounds = true
-        }
-    }
-    
-    // 룸 이름 변경 액션 (임시)
-    private func modifyRoomNameAction() {
-        let confirmAction = PointerAlertActionConfig(title: "확인", textColor: .white, backgroundColor: .pointerRed, font: .notoSansBold(size: 18)) {
-            if let text = $0 {
-                print("DEBUG - 방이름 : \(text)")
-            } else {
-                print("변경 내역 없음")
-            }
-        }
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .pointerAlertFontColor, backgroundColor: .clear, font: .notoSansBold(size: 18), handler: nil)
-        let customView = CustomTextfieldView(roomName: "임시 방 이름", withViewHeight: 50)
-        let alert = PointerAlert(alertType: .alert, configs: [confirmAction, cancelAction], title: "방 이름 변경", description: "변경할 이름을 입력해주세요", customView: customView)
-        self.present(alert, animated: true)
     }
 }
 

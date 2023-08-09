@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 private let roomCellReuseIdentifier = "RoomPreviewCell"
 private let accountCellReuseIdentifier = "AccountInfoCell"
@@ -23,6 +25,14 @@ class SearchResultController: UIViewController {
     
     //MARK: - Properties
     private let resultType: ResultType
+    private let viewModel: SearchViewModel
+    private let disposeBag = DisposeBag()
+    
+    private var roomData: [PointerRoomModel] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -34,8 +44,9 @@ class SearchResultController: UIViewController {
 
     
     //MARK: - Lifecycle
-    init(withResultType type: ResultType) {
+    init(withResultType type: ResultType, viewModel: SearchViewModel) {
         self.resultType = type
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,9 +58,17 @@ class SearchResultController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupCollectionView()
+        bind()
     }
     
-    //MARK: - Selector
+    //MARK: - Bind
+    func bind() {
+        viewModel.searchRoomResult
+            .subscribe(onNext: { [weak self] data in
+                self?.roomData = data.roomList
+            })
+            .disposed(by: disposeBag)
+    }
     
     //MARK: - Functions
     private func setupCollectionView() {
@@ -71,7 +90,7 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch resultType {
         case .room:
-            return 10
+            return roomData.count
         case .account:
             return 5
         }
@@ -81,6 +100,11 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
         switch resultType {
         case .room:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: roomCellReuseIdentifier, for: indexPath) as? RoomPreviewCell else { return UICollectionViewCell() }
+            
+            let model = RoomCellViewModel(roomModel: roomData[indexPath.row])
+            
+            cell.roomViewModel = model
+            
             return cell
         case .account:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: accountCellReuseIdentifier, for: indexPath) as? AccountInfoCell else { return UICollectionViewCell() }

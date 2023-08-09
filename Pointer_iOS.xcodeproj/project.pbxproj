@@ -59,6 +59,7 @@
 		47CC89602A46844F0020246E /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* AuthRouter.swift */; };
 		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
 		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
+		47FD24A52A83705600529342 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A42A83705600529342 /* SearchViewModel.swift */; };
 		CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */; };
 		CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */; };
 		CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */; };
@@ -176,6 +177,7 @@
 		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
 		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
 		47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewModel.swift; sourceTree = "<group>"; };
+		47FD24A42A83705600529342 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -706,6 +708,7 @@
 			children = (
 				CDC51EC829C4EB0C00E8BC58 /* SearchController.swift */,
 				CD2DBEC129C62234005E377C /* SearchResultController.swift */,
+				47FD24A42A83705600529342 /* SearchViewModel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -997,6 +1000,7 @@
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
 				47CB4A862A7B789300E001D2 /* FloatingPanelController.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
+				47FD24A52A83705600529342 /* SearchViewModel.swift in Sources */,
 				CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */,
 				473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */,
 				4749D48429BDEECE00011E06 /* RoomViewController.swift in Sources */,

@@ -90,7 +90,7 @@ class HomeController: BaseViewController {
     
     //MARK: - Selector
     @objc private func handleSearchButtonTapped() {
-        let vc = SearchController()
+        let vc = SearchController(viewModel: SearchViewModel())
         navigationController?.pushViewController(vc, animated: true)
     }
     

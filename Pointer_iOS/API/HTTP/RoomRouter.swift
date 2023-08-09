@@ -16,7 +16,7 @@ enum RoomRouter {
     case roomMembers(_ roomId: Int) // 룸 내부 멤버 조회
     case modifyRoomTitle // 룸 이름 변경
     case getSingleRoom(_ roomId: Int) // 룸(하나) 조회
-    case getRoomList // 룸 리스트 조회
+    case getRoomList(_ word: String) // 룸 리스트 조회
     case avaliableInviteFriendList(_ roomId: Int) // 초대 가능한 친구 조회
 }
 
@@ -46,8 +46,8 @@ extension RoomRouter: HttpRouter {
             return "/room/verify/room-name"
         case .getSingleRoom(let roomId):
             return "/room/\(roomId)"
-        case .getRoomList:
-            return "/room?kwd="
+        case .getRoomList(let word):
+            return "/room?kwd=\(word)"
         case .avaliableInviteFriendList(let roomId):
             return "/room/\(roomId)/friends"
         }

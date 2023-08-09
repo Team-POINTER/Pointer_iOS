@@ -96,6 +96,8 @@ class HomeViewModel: ViewModelType {
     // ToDo - code 별로 에러처리, 래픽토링
     // RoomList API 호출
     func requestRoomList() {
+        let word = ""
+        
         network.requestRoomList { [weak self] model, error in
             if let error = error {
                 print(error)
@@ -106,7 +108,7 @@ class HomeViewModel: ViewModelType {
                   let self = self else { return }
             
             // 성공한 경우 roomModel에 data 바인딩
-            if model.code == RoomRouter.getRoomList.successCode {
+            if model.code == RoomRouter.getRoomList(word).successCode {
                 guard let data = model.data else { return }
                 self.roomModel.accept(data.roomList)
             } else {
