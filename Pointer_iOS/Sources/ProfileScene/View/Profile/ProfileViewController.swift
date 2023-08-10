@@ -32,7 +32,6 @@ class ProfileViewController: ProfileParentViewController {
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -43,8 +42,30 @@ class ProfileViewController: ProfileParentViewController {
         super.viewDidLoad()
         setupUI()
         setupNavigation(viewModel: viewModel)
-        bind(viewModel: viewModel)
+        bind()
         viewModel.requestUserProfile()
+    }
+    
+    //MARK: - Bind
+    func bind() {
+        viewModel.profile
+            .bind { [weak self] model in
+                guard let model = model else { return }
+                self?.setProfileImage(model: model)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.nextViewController
+            .throttle(.microseconds(500), scheduler: MainScheduler.instance)
+            .bind { [weak self] nextVc in
+                guard let vc = nextVc else { return }
+                // EditViewController라면 delegate 주입
+                if let editVc = vc as? ProfileEditViewController {
+                    editVc.delegate = self
+                }
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Selector
@@ -62,18 +83,9 @@ class ProfileViewController: ProfileParentViewController {
     }
 }
 
-extension ProfileViewController: ProfileInfoViewDelegate {
-    func editMyProfileButtonTapped() {
-        print("DEBUG - 프로필 수정 버튼 눌림")
-        let vc = ProfileEditViewController(viewModel: viewModel)
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func friendsActionButtonTapped() {
-        print("DEBUG - 친구 액션 버튼 눌림")
-    }
-    
-    func messageButtonTapped() {
-        print("DEBUG - 메시지 버튼 눌림")
+extension ProfileViewController: ProfileEditDelegate {
+    func profileEditSuccessed() {
+        print("프로필 변경 성공")
+        viewModel.requestUserProfile()
     }
 }

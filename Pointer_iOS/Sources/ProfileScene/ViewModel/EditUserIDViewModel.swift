@@ -45,7 +45,7 @@ class EditUserIDViewModel: ViewModelType {
         let checkValidateResult = PublishRelay<CheckValidateResult>()
         let checkIdStringCountString: BehaviorRelay<String>
         let isSaveButtonActive = BehaviorRelay<Bool>(value: false)
-        let isSuccessSaveUserId = BehaviorRelay<Bool>(value: false)
+        let isSuccessSaveUserId = BehaviorRelay<(Bool, String?)>(value: (false, nil))
     }
     
     //MARK: - Properties
@@ -114,10 +114,10 @@ class EditUserIDViewModel: ViewModelType {
                                             TokenManager.getUserAccessToken() ?? "") { result, type in
                     if type == .saveId {
                         print("👉변경 성공")
-                        output.isSuccessSaveUserId.accept(true)
+                        output.isSuccessSaveUserId.accept((true, text))
                     } else {
                         print("👉변경 실패")
-                        output.isSuccessSaveUserId.accept(false)
+                        output.isSuccessSaveUserId.accept((false, nil))
                     }
                 }
             }

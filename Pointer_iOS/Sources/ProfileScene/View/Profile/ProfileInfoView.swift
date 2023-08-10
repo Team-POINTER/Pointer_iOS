@@ -61,7 +61,7 @@ class ProfileInfoView: ProfileInfoParentView {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = viewModel.cellItemSpacing
+        layout.minimumLineSpacing = viewModel?.cellItemSpacing ?? 12
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.showsHorizontalScrollIndicator = false
         cv.backgroundColor = .clear
@@ -90,7 +90,7 @@ class ProfileInfoView: ProfileInfoParentView {
     }()
     
     //MARK: - Lifecycle
-    override init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
+    override init(viewModel: ProfileViewModel?, delegate: ProfileInfoViewDelegate? = nil) {
         super.init(viewModel: viewModel, delegate: delegate)
         bind()
         setupCollectionView()
@@ -112,10 +112,12 @@ class ProfileInfoView: ProfileInfoParentView {
             friendRequestAction: friendRequestButton.rx.tap.asObservable()
         )
         
+        guard let viewModel = viewModel else { return }
+        
         let output = viewModel.transform(input: input)
         
         // 모델 바인딩
-        super.viewModel.profile
+        viewModel.profile
             .bind { [weak self] model in
                 guard let model = model else { return }
                 self?.configure(model: model)
@@ -190,7 +192,7 @@ class ProfileInfoView: ProfileInfoParentView {
     
     // 유저 타입별 분기 처리
     private func configureActionButtonUI(model: ProfileModel) {
-        
+        guard let viewModel = viewModel else { return }
         if viewModel.isMyProfile == true {
             buttonStack.addArrangedSubview(editMyProfileButton)
             // 버튼 Corner Radius
@@ -256,6 +258,7 @@ class ProfileInfoView: ProfileInfoParentView {
 
 extension ProfileInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let viewModel = viewModel else { return 0 }
         return viewModel.numberOfFriendsCellCount
     }
     
@@ -267,6 +270,7 @@ extension ProfileInfoView: UICollectionViewDelegate, UICollectionViewDataSource 
 
 extension ProfileInfoView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let viewModel = viewModel else { return CGSize(width: 0, height: 0) }
         return viewModel.getCellSize()
     }
 }

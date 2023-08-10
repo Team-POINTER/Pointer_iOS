@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 protocol EditUserIdDelegate: AnyObject {
-    func editUserIdSuccessed()
+    func editUserIdSuccessed(id: String)
 }
 
 class EditUserIDViewController: UIViewController {
@@ -76,8 +76,8 @@ class EditUserIDViewController: UIViewController {
     }()
     
     //MARK: - Lifecycle
-    init(viewModel: ProfileViewModel) {
-        self.viewModel = EditUserIDViewModel(user: viewModel.profile.value)
+    init(profile: ProfileModel) {
+        self.viewModel = EditUserIDViewModel(user: profile)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -145,9 +145,9 @@ class EditUserIDViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.isSuccessSaveUserId
-            .bind { [weak self] isSuccess in
+            .bind { [weak self] isSuccess, id in
                 if isSuccess {
-                    self?.delegate?.editUserIdSuccessed()
+                    self?.delegate?.editUserIdSuccessed(id: id ?? "")
                     self?.navigationController?.popViewController(animated: true)
                 }
             }

@@ -12,6 +12,10 @@ import RxGesture
 import SnapKit
 import YPImagePicker
 
+protocol ProfileEditDelegate: AnyObject {
+    func profileEditSuccessed()
+}
+
 class ProfileEditViewController: ProfileParentViewController {
     // Photo Edit Type
     enum PhotoEditType: String {
@@ -19,7 +23,8 @@ class ProfileEditViewController: ProfileParentViewController {
         case background = "배경 이미지 편집"
     }
     //MARK: - Properties
-    let viewModel: ProfileViewModel
+    weak var delegate: ProfileEditDelegate?
+    let editViewModel: EditProfileViewModel
     let editProfileInfoView: EditProfileInfoView
     let cameraImageView: UIImageView = {
         let cameraImageView = UIImageView()
@@ -52,16 +57,22 @@ class ProfileEditViewController: ProfileParentViewController {
     }()
     
     //MARK: - Selector
+    // 저장 버튼 클릭 이벤트
     @objc private func saveButtonTapped() {
-        viewModel.requestSaveEditProfile()
+        // request !
+        print("🔥프로필 편집 버튼 눌림")
+        editViewModel.requestSaveEditProfile { [weak self] in
+            print("🔥프로필 편집 성공")
+            self?.delegate?.profileEditSuccessed()
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
     //MARK: - Lifecycle
-    init(viewModel: ProfileViewModel) {
-        self.viewModel = viewModel
-        self.editProfileInfoView = EditProfileInfoView(viewModel: viewModel)
+    init(viewModel: EditProfileViewModel) {
+        self.editViewModel = viewModel
+        self.editProfileInfoView = EditProfileInfoView(editViewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
-        editProfileInfoView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -85,8 +96,23 @@ class ProfileEditViewController: ProfileParentViewController {
             }
             .disposed(by: disposeBag)
         
+        editViewModel.editBackgroundImageTapped
+            .bind { [weak self] _ in
+                self?.modifyImageButtonTapped(type: .background)
+            }
+            .disposed(by: disposeBag)
+        
+        editViewModel.editUserIdViewTapped
+            .bind { [weak self] in
+                guard let self = self else { return }
+                let vc = EditUserIDViewController(profile: self.editViewModel.profile)
+                vc.delegate = self
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
         // 유저가 선택한 프로필 뷰에 바인딩
-        viewModel.userSelectedProfileImage
+        editViewModel.userSelectedProfileImage
             .bind { [weak self] image in
                 guard let image = image else { return }
                 self?.myProfileImageView.image = image
@@ -94,7 +120,7 @@ class ProfileEditViewController: ProfileParentViewController {
             .disposed(by: disposeBag)
         
         // 유저가 선택한 배경 이미지 뷰에 바인딩
-        viewModel.userSelectedBackgroundImage
+        editViewModel.userSelectedBackgroundImage
             .bind { [weak self] image in
                 guard let image = image else { return }
                 self?.backgroundImageView.image = image
@@ -121,13 +147,13 @@ class ProfileEditViewController: ProfileParentViewController {
     
     // 이미지 Picker
     func presentImagePicker(type: PhotoEditType) {
-        let picker = YPImagePicker(configuration: viewModel.getImagePickerConfig())
+        let picker = YPImagePicker(configuration: editViewModel.getImagePickerConfig())
         picker.didFinishPicking { [weak self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 if type == .profile {
-                    self?.viewModel.userSelectedProfileImage.accept(photo.image)
+                    self?.editViewModel.userSelectedProfileImage.accept(photo.image)
                 } else {
-                    self?.viewModel.userSelectedBackgroundImage.accept(photo.image)
+                    self?.editViewModel.userSelectedBackgroundImage.accept(photo.image)
                 }
                 
             }
@@ -142,9 +168,8 @@ class ProfileEditViewController: ProfileParentViewController {
         super.profileInfoView = editProfileInfoView
         super.backgroundImageView.backgroundColor = .systemIndigo
         super.setupUI()
-        
-        guard let profile = viewModel.profile.value else { return }
-        configureProfileImage(model: profile)
+
+        configureProfileImage(model: editViewModel.profile)
     }
     
     // Configure
@@ -160,22 +185,8 @@ class ProfileEditViewController: ProfileParentViewController {
     }
 }
 
-//MARK: - EditProfileInfoViewDelegate
-// 수정 뷰 각 컴포넌트들의 이벤트
-extension ProfileEditViewController: EditProfileInfoViewDelegate {
-    func editBackgroundButtonTapped() {
-        modifyImageButtonTapped(type: .background)
-    }
-    
-    func editUserIDViewTapped() {
-        let vc = EditUserIDViewController(viewModel: viewModel)
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
 extension ProfileEditViewController: EditUserIdDelegate {
-    func editUserIdSuccessed() {
-        viewModel.requestUserProfile()
+    func editUserIdSuccessed(id: String) {
+        editProfileInfoView.userIdLabel.text = id
     }
 }

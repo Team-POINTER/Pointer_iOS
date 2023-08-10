@@ -12,14 +12,14 @@ struct ProfileModel: Codable {
     let status: Int
     let code: String
     let message: String
-    let results: ProfileResults?
+    var results: ProfileResults?
 }
 
 // MARK: - Results
 struct ProfileResults: Codable {
     let userId: Int
     let id: String
-    let userName: String
+    var userName: String
     let point: Int
     let relationship: Int?
     let imageUrls: ProfileImageUrls

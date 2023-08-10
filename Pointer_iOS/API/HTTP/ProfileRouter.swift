@@ -34,7 +34,7 @@ extension ProfileRouter: HttpRouter {
         case .userProfile(let userId):
             return "/users/\(userId)/info"
         case .updateName:
-            return "/users/update/name"
+            return "/users/update/info"
         case .updateUserId:
             return "/users/update/id"
         case .getPoints:

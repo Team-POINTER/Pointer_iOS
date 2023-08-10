@@ -27,7 +27,6 @@ class ProfileViewModel: ViewModelType {
     }
     
     //MARK: - Properties
-    weak var delegate: ProfileInfoViewDelegate?
     let disposeBag = DisposeBag()
     var isMyProfile = false
     let userId: Int
@@ -37,8 +36,6 @@ class ProfileViewModel: ViewModelType {
     
     let profile = BehaviorRelay<ProfileModel?>(value: nil)
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
-    let userSelectedProfileImage = BehaviorRelay<UIImage?>(value: nil)
-    let userSelectedBackgroundImage = BehaviorRelay<UIImage?>(value: nil)
     
     lazy var userNameToEdit = ""
     lazy var userIdToEdit: String? = ""
@@ -71,9 +68,10 @@ class ProfileViewModel: ViewModelType {
         input.editMyProfile
             .when(.recognized)
             .subscribe { [weak self] _ in
-                guard let self = self else { return }
-                print("👉")
-                let editVc = ProfileEditViewController(viewModel: self)
+                guard let self = self,
+                      let profile = self.profile.value else { return }
+                let editViewModel = EditProfileViewModel(profile: profile)
+                let editVc = ProfileEditViewController(viewModel: editViewModel)
                 self.nextViewController.accept(editVc)
             }
             .disposed(by: disposeBag)
@@ -82,16 +80,7 @@ class ProfileViewModel: ViewModelType {
     }
     
     //MARK: - Functions
-    func getImagePickerConfig() -> YPImagePickerConfiguration {
-        var config = YPImagePickerConfiguration()
-        config.screens = [.library]
-        config.showsPhotoFilters = false
-        config.wordings.libraryTitle = "앨범"
-        config.wordings.cameraTitle = "카메라"
-        config.wordings.next = "확인"
-        config.colors.tintColor = .pointerRed
-        return config
-    }
+
     
     //MARK: - Call API
     func requestUserProfile() {
@@ -107,10 +96,7 @@ class ProfileViewModel: ViewModelType {
             }
         }
     }
-    
-    func requestSaveEditProfile() {
-        
-    }
+
     
     func getCellSize() -> CGSize {
         let width = (Device.width - (cellItemSpacing * CGFloat(horizonItemCount))) / 5
