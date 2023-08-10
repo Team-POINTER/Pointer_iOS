@@ -13,7 +13,9 @@ final class SearchViewModel: ViewModelType {
 //MARK: - Properties
     let disposeBag = DisposeBag()
     let searchRoomResult = PublishRelay<PointerRoomListModel>()
-//    let searchaccountResult = PublishRelay<>()
+    let searchAccountResult = PublishRelay<[SearchUserListModel]>()
+    
+    private var currentPage = 0
  
 //MARK: - In/Out
     struct Input {
@@ -33,10 +35,18 @@ final class SearchViewModel: ViewModelType {
                 guard let text = text.element,
                       let self = self else { return }
                 self.requestRoomList("\(text)")
+                self.requestAccountList(word: "\(text)", lastPage: currentPage)
             }
             .disposed(by: disposeBag)
         
-        searchRoomResult.subscribe { data in
+        searchRoomResult
+            .subscribe { data in
+//            print("DEBUG: 들어간 데이터 \(data)")
+        }
+        .disposed(by: disposeBag)
+        
+        searchAccountResult
+            .subscribe { data in
             print("DEBUG: 들어간 데이터 \(data)")
         }
         .disposed(by: disposeBag)
@@ -49,25 +59,55 @@ final class SearchViewModel: ViewModelType {
     
     
 //MARK: - Network
+    // 룸 목록 조회
     func requestRoomList(_ word: String) {
         HomeNetworkManager.shared.requestRoomList(word) { [weak self] model, error in
             guard let self = self else { return }
             
             if let error = error {
-                print(error)
+                print(error.localizedDescription)
                 return
             }
             
             if let data = model?.data {
-                print(data)
                 self.searchRoomResult.accept(data)
             }
         }
     }
     
-    func requestAccountList(_ word: String) {
-        
+    // 유저 검색
+    func requestAccountList(word: String, lastPage: Int) {
+        let input = SearchUserRequestModel(keyword: word, lastPage: lastPage)
+        FriendNetworkManager.shared.searchUserListRequest(input) { [weak self] (model, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            if let model = model {
+                print(model.userList)
+                self.searchAccountResult.accept(model.userList)
+                self.currentPage = model.currentPage
+            }
+        }
     }
     
+    // 친구 신청, 취소, 수락, 삭제, 거절, 차단, 차단 해제
+    func requestChangingFriendRelation(relation: FriendRelation, memberId: Int) {
+        FriendNetworkManager.shared.changeFriendRelationRequest(relation: relation, memberId: memberId) { [weak self] (model, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            if let model = model {
+                print(model)
+            }
+        }
+    }
 }
 

@@ -94,7 +94,7 @@ struct AuthNetworkManager {
     }
     
     func idCheckPost(_ parameter: AuthCheckIdInputModel, _ accessToken: String,
-                     _ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
+                     _ completion: @escaping (PointerResultModel, LoginResultType) -> Void) {
         print("중복 확인 버튼 함수 시작")
         let router = router.checkId(accessToken)
         
@@ -104,7 +104,7 @@ struct AuthNetworkManager {
                    encoder: JSONParameterEncoder.default,
                    headers: router.headers)
             .validate(statusCode: 200..<500)
-            .responseDecodable(of: AuthIdResultModel.self) { response in
+            .responseDecodable(of: PointerResultModel.self) { response in
             switch response.result {
             case .success(let result):
                 print("ID 중복 확인 데이터 전송 성공 - \(result)")
@@ -120,7 +120,7 @@ struct AuthNetworkManager {
     }
     
     func idSavePost(_ parameter: AuthSaveIdInputModel, _ accessToken: String,
-                    _ completion: @escaping (AuthIdResultModel, LoginResultType) -> Void) {
+                    _ completion: @escaping (PointerResultModel, LoginResultType) -> Void) {
         print("확인 버튼 함수 시작")
         let router = router.saveId(accessToken)
         
@@ -130,7 +130,7 @@ struct AuthNetworkManager {
                    encoder: JSONParameterEncoder.default,
                    headers: router.headers)
             .validate(statusCode: 200..<500)
-            .responseDecodable(of: AuthIdResultModel.self) { response in
+            .responseDecodable(of: PointerResultModel.self) { response in
             switch response.result {
             case .success(let result):
                 print("ID 저장 데이터 전송 성공 - \(result)")
@@ -221,7 +221,7 @@ struct AuthCheckIdInputModel: Encodable {
     let id: String
 }
 
-struct AuthIdResultModel: Decodable {
+struct PointerResultModel: Decodable {
     let status: Int
     let code: String
     let message: String
