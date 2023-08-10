@@ -14,10 +14,11 @@ class BaseTabBarController: UITabBarController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureAuth()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        configureAuth()
+//        configureAuth()
     }
     
     //MARK: - Auth 상태에 따라 View 변경
@@ -82,6 +83,8 @@ class BaseTabBarController: UITabBarController {
         nav.navigationBar.tintColor = .white
         return nav
     }
+    
+    
     
     func tabBarSetting() {
         if #available(iOS 15.0, *){

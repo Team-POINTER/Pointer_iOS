@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import YPImagePicker
 import RxSwift
 import RxRelay
 import RxCocoa
@@ -29,12 +30,15 @@ class ProfileViewModel: ViewModelType {
     weak var delegate: ProfileInfoViewDelegate?
     let disposeBag = DisposeBag()
     var isMyProfile = false
-    let profile = BehaviorRelay<ProfileModel?>(value: nil)
     let userId: Int
     let cellItemSpacing = CGFloat(20)
     let horizonItemCount: Int = 5
     let network = ProfileNetworkManager()
+    
+    let profile = BehaviorRelay<ProfileModel?>(value: nil)
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
+    let userSelectedProfileImage = BehaviorRelay<UIImage?>(value: nil)
+    let userSelectedBackgroundImage = BehaviorRelay<UIImage?>(value: nil)
     
     lazy var userNameToEdit = ""
     lazy var userIdToEdit: String? = ""
@@ -78,15 +82,23 @@ class ProfileViewModel: ViewModelType {
     }
     
     //MARK: - Functions
+    func getImagePickerConfig() -> YPImagePickerConfiguration {
+        var config = YPImagePickerConfiguration()
+        config.screens = [.library]
+        config.showsPhotoFilters = false
+        config.wordings.libraryTitle = "앨범"
+        config.wordings.cameraTitle = "카메라"
+        config.wordings.next = "확인"
+        config.colors.tintColor = .pointerRed
+        return config
+    }
     
     //MARK: - Call API
     func requestUserProfile() {
-        // 자기 자신이라면 내 프로필, 아니라면 상대 프로필
+        // 자기 자신이라면 내 프로필, 아니라면 상대 프로필 요청
         if TokenManager.getIntUserId() == self.userId {
-            print("🔥내 프로필 업데이트")
             network.getMyProfile { [weak self] profile in
                 self?.isMyProfile = true
-                print("🔥프로필 업데이트 됨 : \(profile)")
                 self?.profile.accept(profile)
             }
         } else {

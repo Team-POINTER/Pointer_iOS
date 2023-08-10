@@ -116,6 +116,7 @@
 		F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90071982A60367500D1CDEE /* PointerRoomModel.swift */; };
 		F912D7F92A7E830500178651 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F912D7F82A7E830500178651 /* EditProfileViewModel.swift */; };
 		F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F925EB5C2A604897008139FE /* RoomCellViewModel.swift */; };
+		F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F94CD6C12A85169E00A808B9 /* YPImagePicker */; };
 		F98555252A72B00300EB6247 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555242A72B00300EB6247 /* Secret.swift */; };
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
@@ -246,6 +247,7 @@
 				CD2F79C72A0FD34B0094F81F /* RxDataSources in Frameworks */,
 				CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */,
 				CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */,
+				F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */,
 				47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */,
 				CD0EE9322A0804C00090BF48 /* RxSwift in Frameworks */,
 				CD15E17A2A1BC13C00A8E643 /* SendbirdUIKit in Frameworks */,
@@ -918,6 +920,7 @@
 				CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */,
 				CD2F79C62A0FD34B0094F81F /* RxDataSources */,
 				CD15E1792A1BC13C00A8E643 /* SendbirdUIKit */,
+				F94CD6C12A85169E00A808B9 /* YPImagePicker */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -958,6 +961,7 @@
 				CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				CD2F79C52A0FD34B0094F81F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				CD15E1782A1BC13C00A8E643 /* XCRemoteSwiftPackageReference "sendbird-uikit-ios-spm" */,
+				F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -1376,6 +1380,14 @@
 				minimumVersion = 6.5.0;
 			};
 		};
+		F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Yummypets/YPImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1438,6 +1450,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
 			productName = IQKeyboardManagerSwift;
+		};
+		F94CD6C12A85169E00A808B9 /* YPImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */;
+			productName = YPImagePicker;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
