@@ -86,7 +86,7 @@ struct SearchUserRequestModel: Encodable {
 }
 
 struct SearchUserResultModel: Decodable {
-    let status: Int?
+    let status: Int
     let code: String
     let message: String
     let userList: [SearchUserListModel]

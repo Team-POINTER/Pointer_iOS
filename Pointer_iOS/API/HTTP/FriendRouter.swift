@@ -73,11 +73,11 @@ extension FriendRouter: HttpRouter {
         case .friendBlockCancel:
             return .put
         case .userSearch:
-            return .get
+            return .post
         case .friendSearch:
-            return .get
+            return .post
         case .blockedFriendSearch:
-            return .get
+            return .post
         }
     }
 

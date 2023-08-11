@@ -33,6 +33,11 @@ class SearchResultController: UIViewController {
             collectionView.reloadData()
         }
     }
+    private var accountData: [SearchUserListModel] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -68,6 +73,12 @@ class SearchResultController: UIViewController {
                 self?.roomData = data.roomList
             })
             .disposed(by: disposeBag)
+        
+        viewModel.searchAccountResult
+            .subscribe(onNext: { [weak self] data in
+                self?.accountData = data
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Functions
@@ -92,7 +103,7 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
         case .room:
             return roomData.count
         case .account:
-            return 5
+            return accountData.count
         }
     }
     
@@ -108,6 +119,11 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
             return cell
         case .account:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: accountCellReuseIdentifier, for: indexPath) as? AccountInfoCell else { return UICollectionViewCell() }
+            
+            let model = accountData[indexPath.row]
+            
+            cell.accountModel = model
+            
             return cell
         }
     }

@@ -39,18 +39,6 @@ final class SearchViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
         
-        searchRoomResult
-            .subscribe { data in
-//            print("DEBUG: 들어간 데이터 \(data)")
-        }
-        .disposed(by: disposeBag)
-        
-        searchAccountResult
-            .subscribe { data in
-            print("DEBUG: 들어간 데이터 \(data)")
-        }
-        .disposed(by: disposeBag)
-        
         return output
     }
     
