@@ -8,3 +8,8 @@
 import Foundation
 
 let SAMPLE_CONSTANT = ""
+
+enum DefaultConfig {
+    static let defaultProfileImageUrl = "https://res.cloudinary.com/dazzzimsm/image/upload/default/default-profile.png"
+    static let defaultBackgroundImageUrl = "https://res.cloudinary.com/dazzzimsm/image/upload/default/default-background.png"
+}

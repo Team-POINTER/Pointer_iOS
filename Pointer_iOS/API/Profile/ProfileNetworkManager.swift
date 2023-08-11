@@ -131,13 +131,13 @@ class ProfileNetworkManager {
             guard let self = self else { return }
             // profile이 있다면 append
             if let profile = profileImageData {
-                print("👉업로드하는 profile: \(profile)")
+//                print("👉업로드하는 profile: \(profile)")
                 multipartFormData.append(profile, withName: "profile-image", fileName: self.getImageName(type: .profile), mimeType: "image/jpeg")
             }
             
             // background가 있다면 append
             if let background = backgroundImageData {
-                print("👉업로드하는 background: \(background)")
+//                print("👉업로드하는 background: \(background)")
                 multipartFormData.append(background, withName: "background-image", fileName: self.getImageName(type: .background), mimeType: "image/jpeg")
             }
             
@@ -150,6 +150,7 @@ class ProfileNetworkManager {
         .responseDecodable(of: PointerDefaultResponse.self) { response in
             switch response.result {
             case .success(let data):
+                print("🔥업로드 response: \(data)")
                 if data.code == "D000" {
                     completion(true)
                 } else {

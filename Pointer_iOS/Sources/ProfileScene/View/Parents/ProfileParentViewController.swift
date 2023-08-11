@@ -59,7 +59,7 @@ class ProfileParentViewController: BaseViewController {
                 if let data = value.image.pngData() {
                     let sizeInBytes = data.count
                     let sizeInKilobytes = Double(sizeInBytes) / 1024.0
-                    print("🔥프사 용량: \(sizeInKilobytes) KB")
+//                    print("🔥프사 용량: \(sizeInKilobytes) KB")
                 }
             case .failure(let error):
                 print(error)
@@ -73,7 +73,7 @@ class ProfileParentViewController: BaseViewController {
                 if let data = value.image.pngData() {
                     let sizeInBytes = data.count
                     let sizeInKilobytes = Double(sizeInBytes) / 1024.0
-                    print("🔥배경사진 용량: \(sizeInKilobytes) KB")
+//                    print("🔥배경사진 용량: \(sizeInKilobytes) KB")
                 }
             case .failure(let error):
                 print(error)

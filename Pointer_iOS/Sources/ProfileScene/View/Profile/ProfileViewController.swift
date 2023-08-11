@@ -42,8 +42,13 @@ class ProfileViewController: ProfileParentViewController {
         super.viewDidLoad()
         setupUI()
         setupNavigation(viewModel: viewModel)
-        bind()
         viewModel.requestUserProfile()
+        bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     //MARK: - Bind
@@ -78,7 +83,7 @@ class ProfileViewController: ProfileParentViewController {
     override func setupUI() {
         super.profileImageView = profileImageViewChild
         super.profileInfoView = profileInfoViewChild
-        super.backgroundImageView.backgroundColor = .systemIndigo
+        super.backgroundImageView.backgroundColor = .clear
         super.setupUI()
     }
 }

@@ -10,6 +10,7 @@ import RxCocoa
 import RxSwift
 import RxGesture
 import SnapKit
+import Kingfisher
 import YPImagePicker
 
 protocol ProfileEditDelegate: AnyObject {
@@ -56,16 +57,23 @@ class ProfileEditViewController: ProfileParentViewController {
         return view
     }()
     
+    lazy var saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(saveButtonTapped))
+    
     //MARK: - Selector
     // 저장 버튼 클릭 이벤트
     @objc private func saveButtonTapped() {
-        // request !
-        print("🔥프로필 편집 버튼 눌림")
+        saveButton.isEnabled = false
         editViewModel.requestSaveEditProfile { [weak self] in
-            print("🔥프로필 편집 성공")
             self?.delegate?.profileEditSuccessed()
             self?.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    override func navigationBarBackButtonTapped() {
+        if editViewModel.isProfileEditied {
+            self.delegate?.profileEditSuccessed()
+        }
+        super.navigationBarBackButtonTapped()
     }
     
     //MARK: - Lifecycle
@@ -81,6 +89,9 @@ class ProfileEditViewController: ProfileParentViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 이 뷰에서는 pop 제스처 막기
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        
         setNavigationBarPointerBackButton()
         setupNavigationBar()
         setupUI()
@@ -130,7 +141,6 @@ class ProfileEditViewController: ProfileParentViewController {
     
     // 네비게이션바 셋업
     func setupNavigationBar() {
-        let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(saveButtonTapped))
         saveButton.tintColor = .red
         navigationItem.rightBarButtonItem = saveButton
     }
@@ -140,20 +150,24 @@ class ProfileEditViewController: ProfileParentViewController {
         let selectConfig = PointerAlertActionConfig(title: "앨범에서 사진/동영상 선택", textColor: .pointerRed) { [weak self] _ in
             self?.presentImagePicker(type: type)
         }
-        let setDefaultConfig = PointerAlertActionConfig(title: "기본 이미지로 변경", textColor: .pointerRed) { _ in }
+        let setDefaultConfig = PointerAlertActionConfig(title: "기본 이미지로 변경", textColor: .pointerRed) { [weak self] _ in
+            self?.resetToDefaultImage(type: type)
+        }
         let actionSheet = PointerAlert(alertType: .actionSheet, configs: [selectConfig, setDefaultConfig], title: type.rawValue)
         self.present(actionSheet, animated: true)
     }
     
-    // 이미지 Picker
+    // 앨범에서 사진/동영상 선택 - 이미지 Picker
     func presentImagePicker(type: PhotoEditType) {
         let picker = YPImagePicker(configuration: editViewModel.getImagePickerConfig())
         picker.didFinishPicking { [weak self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 if type == .profile {
                     self?.editViewModel.userSelectedProfileImage.accept(photo.image)
+                    self?.editViewModel.isUserProfileDefault = false
                 } else {
                     self?.editViewModel.userSelectedBackgroundImage.accept(photo.image)
+                    self?.editViewModel.isUserBackgroundDefault = false
                 }
                 
             }
@@ -162,11 +176,25 @@ class ProfileEditViewController: ProfileParentViewController {
         self.tabBarController!.present(picker, animated: true, completion: nil)
     }
     
+    // 기본 이미지로 변경
+    func resetToDefaultImage(type: PhotoEditType) {
+        switch type {
+        case .profile:
+            self.editViewModel.isUserProfileDefault = true
+            self.myProfileImageView.kf.indicatorType = .activity
+            self.myProfileImageView.kf.setImage(with: URL(string: DefaultConfig.defaultProfileImageUrl))
+        case .background:
+            self.editViewModel.isUserBackgroundDefault = true
+            self.backgroundImageView.kf.indicatorType = .activity
+            self.backgroundImageView.kf.setImage(with: URL(string: DefaultConfig.defaultBackgroundImageUrl))
+        }
+    }
+    
     // 이미지 셋업
     override func setupUI() {
         super.profileImageView = editableProfileImageView
         super.profileInfoView = editProfileInfoView
-        super.backgroundImageView.backgroundColor = .systemIndigo
+        super.backgroundImageView.backgroundColor = .clear
         super.setupUI()
 
         configureProfileImage(model: editViewModel.profile)
@@ -188,5 +216,6 @@ class ProfileEditViewController: ProfileParentViewController {
 extension ProfileEditViewController: EditUserIdDelegate {
     func editUserIdSuccessed(id: String) {
         editProfileInfoView.userIdLabel.text = id
+        editViewModel.isUserIdChanged = true
     }
 }

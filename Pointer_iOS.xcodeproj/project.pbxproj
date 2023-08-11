@@ -116,6 +116,10 @@
 		F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90071982A60367500D1CDEE /* PointerRoomModel.swift */; };
 		F912D7F92A7E830500178651 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F912D7F82A7E830500178651 /* EditProfileViewModel.swift */; };
 		F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F925EB5C2A604897008139FE /* RoomCellViewModel.swift */; };
+		F948AEFA2A86041D00DDC698 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AEF92A86041D00DDC698 /* IndicatorManager.swift */; };
+		F948AEFC2A86059E00DDC698 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AEFB2A86059E00DDC698 /* UIWindow.swift */; };
+		F948AEFF2A860A7400DDC698 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */; };
+		F948AF012A860A7400DDC698 /* NVActivityIndicatorViewExtended in Frameworks */ = {isa = PBXBuildFile; productRef = F948AF002A860A7400DDC698 /* NVActivityIndicatorViewExtended */; };
 		F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F94CD6C12A85169E00A808B9 /* YPImagePicker */; };
 		F98555252A72B00300EB6247 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555242A72B00300EB6247 /* Secret.swift */; };
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
@@ -226,6 +230,8 @@
 		F90071982A60367500D1CDEE /* PointerRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerRoomModel.swift; sourceTree = "<group>"; };
 		F912D7F82A7E830500178651 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		F925EB5C2A604897008139FE /* RoomCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCellViewModel.swift; sourceTree = "<group>"; };
+		F948AEF92A86041D00DDC698 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
+		F948AEFB2A86059E00DDC698 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		F98555242A72B00300EB6247 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
@@ -241,12 +247,14 @@
 			files = (
 				CD0EE92E2A0804C00090BF48 /* RxCocoa in Frameworks */,
 				CD0EE9352A08050B0090BF48 /* RxGesture in Frameworks */,
+				F948AEFF2A860A7400DDC698 /* NVActivityIndicatorView in Frameworks */,
 				47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */,
 				CD0EE9302A0804C00090BF48 /* RxRelay in Frameworks */,
 				CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */,
 				CD2F79C72A0FD34B0094F81F /* RxDataSources in Frameworks */,
 				CDEC90512A0A80B100EA437D /* IQKeyboardManagerSwift in Frameworks */,
 				CDD1DEEE29B9FFFE00B03973 /* Kingfisher in Frameworks */,
+				F948AF012A860A7400DDC698 /* NVActivityIndicatorViewExtended in Frameworks */,
 				F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */,
 				47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */,
 				CD0EE9322A0804C00090BF48 /* RxSwift in Frameworks */,
@@ -528,6 +536,7 @@
 				47117CB329CB2E0B001707C8 /* SelfSizingTableView.swift */,
 				CD90B48929BE327700772192 /* PointerAlert.swift */,
 				473B739929CEE41100B33C77 /* ViewModelType.swift */,
+				F948AEF92A86041D00DDC698 /* IndicatorManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -699,6 +708,7 @@
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
 				47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */,
 				47CB4A892A7BB77000E001D2 /* UILabel.swift */,
+				F948AEFB2A86059E00DDC698 /* UIWindow.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -921,6 +931,8 @@
 				CD2F79C62A0FD34B0094F81F /* RxDataSources */,
 				CD15E1792A1BC13C00A8E643 /* SendbirdUIKit */,
 				F94CD6C12A85169E00A808B9 /* YPImagePicker */,
+				F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */,
+				F948AF002A860A7400DDC698 /* NVActivityIndicatorViewExtended */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -962,6 +974,7 @@
 				CD2F79C52A0FD34B0094F81F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				CD15E1782A1BC13C00A8E643 /* XCRemoteSwiftPackageReference "sendbird-uikit-ios-spm" */,
 				F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
+				F948AEFD2A860A7400DDC698 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -1085,8 +1098,10 @@
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
+				F948AEFC2A86059E00DDC698 /* UIWindow.swift in Sources */,
 				478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */,
 				CD2F79C92A0FDFC30094F81F /* FriendsListHeaderView.swift in Sources */,
+				F948AEFA2A86041D00DDC698 /* IndicatorManager.swift in Sources */,
 				CD94B8C92A0BEF4300D0BC7F /* EditUserIDViewModel.swift in Sources */,
 				47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */,
 				CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */,
@@ -1380,6 +1395,14 @@
 				minimumVersion = 6.5.0;
 			};
 		};
+		F948AEFD2A860A7400DDC698 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Yummypets/YPImagePicker.git";
@@ -1450,6 +1473,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
 			productName = IQKeyboardManagerSwift;
+		};
+		F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F948AEFD2A860A7400DDC698 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorView;
+		};
+		F948AF002A860A7400DDC698 /* NVActivityIndicatorViewExtended */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F948AEFD2A860A7400DDC698 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorViewExtended;
 		};
 		F94CD6C12A85169E00A808B9 /* YPImagePicker */ = {
 			isa = XCSwiftPackageProductDependency;

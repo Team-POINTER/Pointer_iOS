@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - Properties
     
@@ -15,10 +15,10 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    @objc private func navigationBarBackButtonTapped() {
+    @objc func navigationBarBackButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
     

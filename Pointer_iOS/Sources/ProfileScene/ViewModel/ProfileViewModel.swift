@@ -85,14 +85,17 @@ class ProfileViewModel: ViewModelType {
     //MARK: - Call API
     func requestUserProfile() {
         // 자기 자신이라면 내 프로필, 아니라면 상대 프로필 요청
-        if TokenManager.getIntUserId() == self.userId {
-            network.getMyProfile { [weak self] profile in
-                self?.isMyProfile = true
-                self?.profile.accept(profile)
-            }
-        } else {
-            network.getUserProfile(userId: userId) { [weak self] profile in
-                self?.profile.accept(profile)
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            if TokenManager.getIntUserId() == self.userId {
+                self.network.getMyProfile { profile in
+                    self.isMyProfile = true
+                    self.profile.accept(profile)
+                }
+            } else {
+                self.network.getUserProfile(userId: self.userId) { profile in
+                    self.profile.accept(profile)
+                }
             }
         }
     }
