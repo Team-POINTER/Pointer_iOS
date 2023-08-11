@@ -10,8 +10,6 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-private let cellIdentifier = "UserFriendCell"
-
 protocol ProfileInfoViewDelegate: AnyObject {
     func editMyProfileButtonTapped()
     func friendsActionButtonTapped()
@@ -79,7 +77,6 @@ class ProfileInfoView: ProfileInfoParentView {
     lazy var friendRequestButton = getActionButton() // 4 - 친구 요청 버튼
     
     lazy var messageButton = getActionButton()
-//    lazy var
     
     let buttonStack: UIStackView = {
         // 버튼을 담을 StackView 생성
@@ -92,8 +89,8 @@ class ProfileInfoView: ProfileInfoParentView {
     //MARK: - Lifecycle
     override init(viewModel: ProfileViewModel?, delegate: ProfileInfoViewDelegate? = nil) {
         super.init(viewModel: viewModel, delegate: delegate)
-        bind()
         setupCollectionView()
+        bind()
         setupUI()
     }
     
@@ -109,12 +106,14 @@ class ProfileInfoView: ProfileInfoParentView {
             friendRequestCancelAction: friendRequestCancelButton.rx.tap.asObservable(),
             confirmRequestFriendAction: confirmRequestFriendButton.rx.tap.asObservable(),
             friendCancelAction: friendCancelButton.rx.tap.asObservable(),
-            friendRequestAction: friendRequestButton.rx.tap.asObservable()
+            friendRequestAction: friendRequestButton.rx.tap.asObservable(),
+            friendsItemSelected: collectionView.rx.itemSelected.asObservable(),
+            friendsModelSelected: collectionView.rx.modelSelected(FriendsModel.self).asObservable()
         )
         
         guard let viewModel = viewModel else { return }
         
-        let output = viewModel.transform(input: input)
+        _ = viewModel.transform(input: input)
         
         // 모델 바인딩
         viewModel.profile
@@ -124,11 +123,28 @@ class ProfileInfoView: ProfileInfoParentView {
                 self?.configureActionButtonUI(model: model)
             }
             .disposed(by: disposeBag)
+        
+        // 친구 리스트 바인딩
+        viewModel.friendsArray
+            .bind(to: collectionView.rx.items) { collectionView, indexPath, item in
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserFriendCell.cellIdentifier, for: IndexPath(row: indexPath, section: 0)) as? UserFriendCell else { return UICollectionViewCell() }
+                cell.userData = item
+                return cell
+            }
+            .disposed(by: disposeBag)
+        
+        // 친구 카운트
+        viewModel.friendsCount
+            .bind { [weak self] count in
+                self?.friendsCountLabel.text = "\(count)명"
+            }
+            .disposed(by: disposeBag)
+        
     }
     
     //MARK: - Functions
     private func setupCollectionView() {
-        collectionView.register(UserFriendCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        collectionView.register(UserFriendCell.self, forCellWithReuseIdentifier: UserFriendCell.cellIdentifier)
         collectionView.delegate = self
     }
     
@@ -186,7 +202,6 @@ class ProfileInfoView: ProfileInfoParentView {
     private func configure(model: ProfileModel) {
         nameLabel.text = model.results?.userName
         idLabel.text = "@" + (model.results?.id ?? "")
-        friendsCountLabel.text = "friend count ?"
         collectionView.reloadData()
     }
     
@@ -256,16 +271,8 @@ class ProfileInfoView: ProfileInfoParentView {
     }
 }
 
-extension ProfileInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else { return 0 }
-        return viewModel.numberOfFriendsCellCount
-    }
+extension ProfileInfoView: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? UserFriendCell else { return UICollectionViewCell() }
-        return cell
-    }
 }
 
 extension ProfileInfoView: UICollectionViewDelegateFlowLayout {

@@ -75,8 +75,9 @@ struct FriendsResponseModel: Codable {
     let status: Int
     let code: String
     let message: String
-    let friendsLists: [FriendsModel]
+    let userList: [FriendsModel]
     let total: Int
+    let currentPage: Int
 }
 
 // MARK: - UserList
@@ -84,7 +85,7 @@ struct FriendsModel: Codable {
     let userId: Int
     let id: String
     let userName: String
-    let file: String
+    let file: String?
 }
 
 //MARK: - 중복확인 결과

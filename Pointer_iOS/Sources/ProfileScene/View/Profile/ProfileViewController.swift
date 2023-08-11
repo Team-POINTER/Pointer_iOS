@@ -43,6 +43,7 @@ class ProfileViewController: ProfileParentViewController {
         setupUI()
         setupNavigation(viewModel: viewModel)
         viewModel.requestUserProfile()
+        viewModel.requestUserFriendsList()
         bind()
     }
     
@@ -53,6 +54,7 @@ class ProfileViewController: ProfileParentViewController {
     
     //MARK: - Bind
     func bind() {
+        // 프로필 정보 바인딩
         viewModel.profile
             .bind { [weak self] model in
                 guard let model = model else { return }
@@ -60,6 +62,7 @@ class ProfileViewController: ProfileParentViewController {
             }
             .disposed(by: disposeBag)
         
+        // 다음 뷰
         viewModel.nextViewController
             .throttle(.microseconds(500), scheduler: MainScheduler.instance)
             .bind { [weak self] nextVc in

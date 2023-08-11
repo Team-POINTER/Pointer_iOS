@@ -51,26 +51,23 @@ class ProfileNetworkManager {
             }
     }
     
-    func getUserFriendList(userId: Int, lastPage: Int, completion: @escaping ([FriendsModel]) -> Void) {
-        let router = ProfileRouter.getFriendsList
+    func getUserFriendList(userId: Int, lastPage: Int, completion: @escaping (FriendsResponseModel?) -> Void) {
+        let router = ProfileRouter.getFriendsList(userId: userId, lastPage: lastPage)
         
-        var param = [String: Any]()
-        param["userId"] = userId
-        param["lastPage"] = lastPage
-        
-        AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default, headers: router.headers)
+        AF.request(router.url, method: router.method, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: FriendsResponseModel.self) { response in
+                print("url: \(router.url)")
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):
                     // completion 전송
-                    completion(result.friendsLists)
+                    completion(result)
                 // 실패인 경우
                 case .failure(let error):
                     print("프로필 조회 실패 - \(error.localizedDescription)")
                     // completion 전송
-                    completion([])
+                    completion(nil)
                 }
             }
     }

@@ -9,7 +9,16 @@ import UIKit
 import SnapKit
 
 class UserFriendCell: UICollectionViewCell {
+    //MARK: - Identifier
+    static let cellIdentifier = "UserFriendCell"
+    
     //MARK: - Properties
+    var userData: FriendsModel? {
+        didSet {
+            configure()
+        }
+    }
+    
     let profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "defaultProfile")
@@ -19,7 +28,6 @@ class UserFriendCell: UICollectionViewCell {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "김지수"
         label.textColor = .white
         label.font = .notoSans(font: .notoSansKrMedium, size: 13)
         label.textAlignment = .center
@@ -50,6 +58,15 @@ class UserFriendCell: UICollectionViewCell {
         nameLabel.snp.makeConstraints {
             $0.top.equalTo(profileImageView.snp.bottom).inset(-5)
             $0.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    // data fetch
+    private func configure() {
+        guard let data = userData else { return }
+        nameLabel.text = data.userName
+        if let url = data.file {
+            profileImageView.kf.setImage(with: URL(string: url))
         }
     }
 }

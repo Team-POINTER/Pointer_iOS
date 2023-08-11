@@ -14,7 +14,7 @@ enum ProfileRouter {
     case updateName // 유저 이름 업데이트
     case updateUserId // 유저 아이디 업데이트
     case getPoints
-    case getFriendsList
+    case getFriendsList(userId: Int, lastPage: Int)
 }
 
 extension ProfileRouter: HttpRouter {
@@ -39,8 +39,8 @@ extension ProfileRouter: HttpRouter {
             return "/users/update/id"
         case .getPoints:
             return "/users/get/points"
-        case .getFriendsList:
-            return "/users/friend"
+        case .getFriendsList(let userId, let lastPage):
+            return "/users/friend?userId=\(userId)&lastPage=\(lastPage)"
         }
     }
     
