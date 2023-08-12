@@ -10,11 +10,13 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import RxGesture
+import FloatingPanel
 
 class HintViewController: BaseViewController {
 
     let viewModel: HintViewModel
     let disposeBag = DisposeBag()
+    var longPressName = ""
 
 //MARK: - Init
     init(viewModel: HintViewModel) {
@@ -38,27 +40,41 @@ class HintViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
-                var str = ""
+
                 for i in 0..<data.voters.count {
-                    str += "\(i+1). \(data.voters[i].voterNm) \n"
+                    let label: UILabel = {
+                        $0.text = "\(i+1). \(data.voters[i].voterNm)"
+                        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 17)
+                        $0.textColor = UIColor.black
+                        return $0
+                    }(UILabel())
+                    
+                    label.rx.longPressGesture()
+                        .when(.began)
+                        .observe(on: MainScheduler.instance)
+                        .subscribe(onNext: { [weak self] _ in
+                            self?.longPressShowSetting(name: data.voters[i].voterNm)
+                        })
+                        .disposed(by: self.disposeBag)
+                    
+                    selectMePeopleStackView.addArrangedSubview(label)
                 }
-                self.selectMePeopleLabel.text = str
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
                 self.hintDate.text = data.createdAt
             })
             .disposed(by: disposeBag)
-        
-        hintBackgroundView.rx.longPressGesture()
-            .when(.began)
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                self?.longPressShowSetting()
-            })
-            .disposed(by: disposeBag)
-            
     }
     
 //MARK: - UIComponents
+    private lazy var fpc: FloatingPanelController = {
+        let controller = FloatingPanelController(delegate: self)
+        controller.isRemovalInteractionEnabled = true
+        controller.changePanelStyle()
+        controller.layout = ReportFloatingPanelLayout()
+        
+        return controller
+    }()
+    
     lazy var scrollView: UIScrollView = {
         $0.backgroundColor = .clear
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -95,15 +111,11 @@ class HintViewController: BaseViewController {
         return $0
     }(UILabel())
     
-    var selectMePeopleLabel: UILabel = {
-        $0.text = "1. 포인터"
-        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 17)
-        $0.textColor = UIColor.black
-        $0.setLineSpacing(lineSpacing: 7)
-        $0.numberOfLines = 0
+    lazy var selectMePeopleStackView: UIStackView = {
+        $0.spacing = 7
+        $0.axis = .vertical
         return $0
-    }(UILabel())
-    
+    }(UIStackView())
     
     var selectedMeNumber: UILabel = {
         $0.font = UIFont.notoSansBold(size: 18)
@@ -124,7 +136,7 @@ class HintViewController: BaseViewController {
         contentView.addSubview(questionLabel)
         contentView.addSubview(hintBackgroundView)
         hintBackgroundView.addSubview(selectMeLabel)
-        hintBackgroundView.addSubview(selectMePeopleLabel)
+        hintBackgroundView.addSubview(selectMePeopleStackView)
         hintBackgroundView.addSubview(selectedMeNumber)
         hintBackgroundView.addSubview(hintDate)
     }
@@ -153,7 +165,7 @@ class HintViewController: BaseViewController {
             make.top.equalToSuperview().inset(26)
             make.leading.equalToSuperview().inset(37)
         }
-        selectMePeopleLabel.snp.makeConstraints { make in
+        selectMePeopleStackView.snp.makeConstraints { make in
             make.top.equalTo(selectMeLabel.snp.bottom).inset(-10)
             make.leading.equalToSuperview().inset(37)
             make.bottom.equalTo(selectedMeNumber.snp.top).inset(-25)
@@ -183,7 +195,7 @@ class HintViewController: BaseViewController {
     }
     
 //MARK: - Helper
-    func longPressShowSetting() {
+    func longPressShowSetting(name: String) {
         let report = PointerAlertActionConfig(title: "신고하기", textColor: .red) { [weak self] _ in
             self?.reportTap()
         }
@@ -191,41 +203,46 @@ class HintViewController: BaseViewController {
             print("DEBUG: 힌트 삭제")
         }
         
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete])
+        longPressName = name
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete], title: longPressName)
         present(actionSheet, animated: true)
     }
 
     func reportTap() {
-        let spamContent = PointerAlertActionConfig(title: "스팸", textColor: .black) { [weak self] _ in
-            self?.presentReportView("스팸")
-        }
-        let insultingContent = PointerAlertActionConfig(title: "모욕적인 문장", textColor: .black) { [weak self] _ in
-            self?.presentReportView("모욕적인 문장")
-        }
-        let sexualHateContent = PointerAlertActionConfig(title: "성적 혐오 발언", textColor: .black) { [weak self] _ in
-            self?.presentReportView("성적 혐오 발언")
-        }
-        let violenceOrBullyingContent = PointerAlertActionConfig(title: "폭력 또는 따돌림", textColor: .black) { [weak self] _ in
-            self?.presentReportView("폭력 또는 따돌림")
-        }
-        let etcContent = PointerAlertActionConfig(title: "기타 사유", textColor: .black) { [weak self] _ in
-            self?.presentReportView("기타 사유")
+        var reportConfig = [PointerAlertActionConfig]()
+        
+        ReportType.allCases.forEach { type in
+            let config = PointerAlertActionConfig(title: type.rawValue, textColor: .black) { [weak self] _ in
+                self?.presentReportView(type.rawValue)
+            }
+            reportConfig.append(config)
         }
         
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [spamContent, insultingContent, sexualHateContent, violenceOrBullyingContent, etcContent])
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: reportConfig, title: "신고 사유")
         present(actionSheet, animated: true)
     }
     
+    // MARK: [FIX ME] 신고 하는 이름 - longPressName
     func presentReportView(_ reason: String) {
         let reportVC = ReportViewController(reason: reason)
-        let nav = UINavigationController(rootViewController: reportVC)
-        present(nav, animated: true)
+        fpc.set(contentViewController: reportVC)
+        fpc.track(scrollView: reportVC.scrollView)
+        self.present(fpc, animated: true)
     }
     
 //MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
     }
-    
+}
 
+//MARK: - FloatingPanelControllerDelegate
+extension HintViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangePosition(_ fpc: FloatingPanelController) {
+        if fpc.state == .full {
+            
+        } else {
+            fpc.move(to: .full, animated: true)
+        }
+    }
 }

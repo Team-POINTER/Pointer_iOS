@@ -38,10 +38,12 @@ class HomeNetworkManager {
     
 //MARK: - Function
     // 룸 리스트
-    func requestRoomList(_ completion: @escaping (PointerHomeModel?, Error?) -> Void) {
-        let router = RoomRouter.getRoomList
+    func requestRoomList(_ word: String? = "", _ completion: @escaping (PointerHomeModel?, Error?) -> Void) {
+        guard let word = word else { return }
+        let router = RoomRouter.getRoomList(word)
+        guard let url = router.url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
         
-        AF.request(router.url, method: router.method, parameters: nil, encoding: JSONEncoding.default, headers: router.headers)
+        AF.request(url, method: router.method, parameters: nil, encoding: JSONEncoding.default, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: PointerHomeModel.self) { response in
             switch response.result {

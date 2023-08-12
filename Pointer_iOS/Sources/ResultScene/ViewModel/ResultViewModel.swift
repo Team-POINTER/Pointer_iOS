@@ -45,6 +45,9 @@ class ResultViewModel: ViewModelType{
     var roomName = ""
     var question = ""
     
+    // 룸 인원이 전부 투표 했는지 여부
+    var notVotedMeberCnt = 0
+    
     let remainingTime = BehaviorSubject<Int>(value: 0)
     let votedResultObservable = PublishRelay<VotedResultData>()
     private var timer: Timer?
@@ -86,17 +89,25 @@ class ResultViewModel: ViewModelType{
         input.newQuestionButtonTap
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                output.newQuestionButtonTap.accept(NewQuestViewController(viewModel: NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId)))
+                output.newQuestionButtonTap.accept(NewQuestViewController(viewModel: NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId, notVotedMemberCnt: self.notVotedMeberCnt)))
             }
             .disposed(by: disposeBag)
         
         remainingTime
-            .subscribe { time in
-                guard let time = time.element else { return }
-                if time <= 0 {
-                    output.timeLabelIsHidden.onNext(.isHidden)
+            .subscribe { [weak self] time in
+                guard let time = time.element,
+                      let self = self else { return }
+                
+                // 룸의 인원이 전부 투표하지 않았을 경우에만
+                if self.notVotedMeberCnt > 0 {
+                    if time <= 0 {
+                        output.timeLabelIsHidden.onNext(.isHidden)
+                    } else {
+                        output.timeLabelIsHidden.onNext(.isNotHidden)
+                    }
+                // 전부 투표한 경우
                 } else {
-                    output.timeLabelIsHidden.onNext(.isNotHidden)
+                    output.timeLabelIsHidden.onNext(.isHidden)
                 }
             }
             .disposed(by: disposeBag)
@@ -135,6 +146,7 @@ class ResultViewModel: ViewModelType{
         ResultNetworkManager.shared.votedResultRequest(questionId)
             .subscribe(onNext: { [weak self] data in
                 self?.votedResultObservable.accept(data)
+                self?.notVotedMeberCnt = data.notNotedMemberCnt
                 self?.userName = data.targetUser.userName
                 self?.roomName = data.roomName
                 self?.question = data.question

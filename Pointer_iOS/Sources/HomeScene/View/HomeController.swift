@@ -90,7 +90,7 @@ class HomeController: BaseViewController {
     
     //MARK: - Selector
     @objc private func handleSearchButtonTapped() {
-        let vc = SearchController()
+        let vc = SearchController(viewModel: SearchViewModel())
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -173,7 +173,9 @@ extension HomeController: RoomPreviewCellDelegate {
             guard let alert = self?.viewModel.getExitRoomAlert(roomId: roomId) else { return }
             self?.present(alert, animated: true)
         }
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [modifyRoomName, inviteRoomWithLink, exitRoom])
+        let actionSheet = PointerAlert(alertType: .actionSheet,
+                                       configs: [modifyRoomName, inviteRoomWithLink, exitRoom],
+                                       title: "룸 '\(currentName)'에 대해")
         present(actionSheet, animated: true)
     }
 }

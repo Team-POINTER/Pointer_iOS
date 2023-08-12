@@ -67,16 +67,20 @@ class NewQuestViewModel: ViewModelType{
     var userId = TokenManager.getIntUserId()
     var questionInputString = "" // 텍스트필드 입력 값
     
+    // 룸 인원이 전부 투표 했는지 여부
+    var notVotedMemberCnt = 0
+    
     let remainingTime = BehaviorSubject<Int>(value: 0)
     private var timer: Timer?
     
     let disposeBag = DisposeBag()
     
 //MARK: - Init
-    init(limitedAt: String, roomName: String, roomId: Int) {
+    init(limitedAt: String, roomName: String, roomId: Int, notVotedMemberCnt: Int) {
         self.limitedAt = limitedAt
         self.roomName = roomName
         self.roomId = roomId
+        self.notVotedMemberCnt = notVotedMemberCnt
         self.startTimer()
     }
     
@@ -109,7 +113,7 @@ class NewQuestViewModel: ViewModelType{
         input.newQuestButtonTapEvent
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                print("짊문등록 버튼 Tap")
+                print("질문 등록 버튼 Tap")
                 let newQuestionRequestModel = NewQuestionRequestModel(roomId: self.roomId,
                                                                       content: self.questionInputString)
                 ResultNetworkManager.shared.newQuestionRequest(newQuestionRequestModel) { (error, model) in
@@ -137,10 +141,12 @@ class NewQuestViewModel: ViewModelType{
             .disposed(by: disposeBag)
         
         remainingTime
-            .subscribe { time in
-                guard let time = time.element else { return }
-                print("🔥NewQuestModel remainingTime = \(time)")
-                if time <= 0 {
+            .subscribe { [weak self] time in
+                guard let time = time.element,
+                      let self = self else { return }
+                
+                // 남아있는 시간이 0보다 작거나 룸 인원이 전부 투표한 경우
+                if time <= 0 || self.notVotedMemberCnt == 0 {
                     output.timeLimited.accept(true)
                     output.buttonIsEnable.accept(.isEnable)
                 } else {

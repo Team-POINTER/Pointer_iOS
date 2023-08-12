@@ -96,16 +96,31 @@ class NewQuestViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] type in
                 if type == .questionError {
-                    self?.dismissAlert(title: "돌아가기", description: "다른 사람이 질문을 등록했습니다.")
+                    self?.dismissAlert(title: "돌아가기", description: "다른 사람이 질문을 등록했습니다.") {
+                        self?.navigationController?.popToRootViewController(animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
+                    }
                 }
-                else if type == .success {
-                    self?.dismissAlert(title: "돌아가기", description: "질문을 등록하였습니다.")
+                if type == .success {
+                    self?.dismissAlert(title: "투표하기", description: "질문을 등록하였습니다.") {
+                        let home = HomeController()
+                        let roomViewModel = RoomViewModel(roomId: self?.viewModel.roomId ?? 0)
+                        let room = RoomViewController(viewModel: roomViewModel)
+                        self?.navigationController?.setViewControllers([home, room], animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
+                    }
                 }
-                else if type == .accountError {
-                    self?.dismissAlert(title: "돌아가기", description: "회원 정보가 없습니다.")
+                if type == .accountError {
+                    self?.dismissAlert(title: "돌아가기", description: "회원 정보가 없습니다.") {
+                        self?.navigationController?.popToRootViewController(animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
+                    }
                 }
-                else {
-                    self?.dismissAlert(title: "돌아가기", description: "룸 조회에 실패하였습니다.")
+                if type == .roomError {
+                    self?.dismissAlert(title: "돌아가기", description: "룸 조회에 실패하였습니다.") {
+                        self?.navigationController?.popToRootViewController(animated: true)
+                        self?.tabBarController?.tabBar.isHidden = false
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -201,10 +216,10 @@ class NewQuestViewController: BaseViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func dismissAlert(title: String, description: String) {
+    func dismissAlert(title: String, description: String, completion: @escaping() -> Void) {
         let backAction = PointerAlertActionConfig(title: title, textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
-            // 루트뷰로 dismiss를 해야하는가?
             self?.dismiss(animated: true)
+            completion()
         })
     
         let alert = PointerAlert(alertType: .alert, configs: [backAction], description: description)

@@ -9,6 +9,13 @@ import UIKit
 import SnapKit
 
 class AccountInfoCell: UICollectionViewCell {
+    
+    var accountModel: SearchUserListModel? {
+        didSet {
+            configure()
+        }
+    }
+    
     //MARK: - Properties
     let userProfilImageView: UIImageView = {
         let iv = UIImageView()
@@ -80,5 +87,11 @@ class AccountInfoCell: UICollectionViewCell {
             actionButton.layer.cornerRadius = 12
             actionButton.clipsToBounds = true
         }
+    }
+    
+    func configure() {
+        guard let model = accountModel else { return }
+        userAccountLabel.text = model.id
+        userNameLabel.text = model.userName
     }
 }

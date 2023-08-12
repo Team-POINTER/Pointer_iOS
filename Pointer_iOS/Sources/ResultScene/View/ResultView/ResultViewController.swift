@@ -17,8 +17,6 @@ class ResultViewController: BaseViewController {
     var viewModel: ResultViewModel
     let disposeBag = DisposeBag()
     
-    var notVotedMemberCnt = 0 // 지목하지 않은 멤버 수
-    
 //MARK: - Init
     init(viewModel: ResultViewModel) {
         self.viewModel = viewModel
@@ -72,15 +70,33 @@ class ResultViewController: BaseViewController {
                 self.hintText.text = data.question
                 self.myNameLabel.text = "\(data.targetUser.userName) 님"
                 self.mySelectedPointLabel.text = "\(data.targetUser.votedMemberCnt) / \(data.targetUser.allVoteCnt)"
-                var selectedPeople = ""
-                var selectedPoint = ""
+                
                 for i in 0..<data.members.count {
-                    selectedPeople += "\(i+1). \(data.members[i].userName)\n"
-                    selectedPoint += "\(data.members[i].votedMemberCnt) / \(data.members[i].allVoteCnt)\n"
+                    let person: UILabel = {
+                        $0.text = "\(i+1). \(data.members[i].userName)"
+                        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
+                        $0.textColor = UIColor.white
+                        return $0
+                    }(UILabel())
+                    
+                    let num: UILabel = {
+                        $0.text = "\(data.members[i].votedMemberCnt) / \(data.members[i].allVoteCnt)"
+                        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
+                        $0.textColor = UIColor.white
+                        return $0
+                    }(UILabel())
+                    
+                    self.peopleStackView.addArrangedSubview(person)
+                    self.peopleNumStackView.addArrangedSubview(num)
                 }
-                self.selectedPeopleLabel.text = selectedPeople
-                self.selectedPointLabel.text = selectedPoint
-                self.notVotedMemberCnt = data.notNotedMemberCnt
+            
+                let attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!  \(data.notNotedMemberCnt)명")
+                let strCount = String(data.notNotedMemberCnt).count
+                
+                attributedString.addAttribute(.font, value: UIFont.notoSansBold(size: 16), range: NSRange(location: 0, length: attributedString.length))
+                attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 16))
+                attributedString.addAttribute(.foregroundColor, value: UIColor.rgb(red: 121, green: 125, blue: 148), range: NSRange(location: 17, length: strCount+1))
+                self.kokButton.setAttributedTitle(attributedString, for: .normal)
             })
             .disposed(by: disposeBag)
         
@@ -104,7 +120,6 @@ class ResultViewController: BaseViewController {
     lazy var contentView = UIView()
     
     lazy var hintText: UILabel = {
-        $0.text = "한 20년 뒤 미래에 가장 돈을 잘 벌 것 같은 사람은 누구인가? 최대 공백포함 45"
         $0.font = UIFont.notoSansRegular(size: 18)
         $0.textColor = UIColor.white
         $0.textAlignment = .center
@@ -112,32 +127,25 @@ class ResultViewController: BaseViewController {
         return $0
     }(UILabel())
     
-    lazy var selectedPeopleLabel: UILabel = {
-        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
-        $0.textColor = UIColor.white
-        $0.numberOfLines = 0
-        $0.setLineSpacing(lineSpacing: 7)
+    lazy var peopleStackView: UIStackView = {
+        $0.spacing = 4
+        $0.axis = .vertical
         return $0
-    }(UILabel())
+    }(UIStackView())
     
-    lazy var selectedPointLabel: UILabel = {
-        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
-        $0.textColor = UIColor.white
-        $0.numberOfLines = 0
-        $0.textAlignment = .right
-        $0.setLineSpacing(lineSpacing: 7)
+    lazy var peopleNumStackView: UIStackView = {
+        $0.spacing = 4
+        $0.axis = .vertical
         return $0
-    }(UILabel())
+    }(UIStackView())
     
     lazy var myNameLabel: UILabel = {
-        $0.text = "포인터 님"
         $0.font = UIFont.notoSansBold(size: 18)
         $0.textColor = UIColor.white
         return $0
     }(UILabel())
     
     lazy var mySelectedPointLabel: UILabel = {
-        $0.text = "3 / 20"
         $0.font = UIFont.notoSansBold(size: 18)
         $0.textColor = UIColor.pointerRed
         return $0
@@ -169,10 +177,9 @@ class ResultViewController: BaseViewController {
     }(UIButton())
     
     lazy var kokButton: UIButton = {
-        var attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!  \(notVotedMemberCnt)명")
+        var attributedString = NSMutableAttributedString(string: "지목하지 않은 사람에게 콕!")
         attributedString.addAttribute(.font, value: UIFont.notoSansBold(size: 16), range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 15))
-        attributedString.addAttribute(.foregroundColor, value: UIColor.rgb(red: 121, green: 125, blue: 148), range: NSRange(location: 16, length: 3))
+        attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: attributedString.length))
         $0.setAttributedTitle(attributedString, for: .normal)
         $0.backgroundColor = .clear
         $0.layer.cornerRadius = 22
@@ -182,7 +189,7 @@ class ResultViewController: BaseViewController {
     }(UIButton())
 
     
-    var resultChatView = ResultChatView()
+//    var resultChatView = ResultChatView()
     
 //MARK: - Life Cycles
     override func viewDidLoad() {
@@ -191,11 +198,6 @@ class ResultViewController: BaseViewController {
         setUI()
         setUIConstraints()
         bindViewModel()
-        
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(chatTaped))
-        resultChatView.view.addGestureRecognizer(tapGesture)
-        resultChatView.view.isUserInteractionEnabled = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -213,15 +215,14 @@ class ResultViewController: BaseViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(hintText)
-        contentView.addSubview(selectedPeopleLabel)
-        contentView.addSubview(selectedPointLabel)
+        contentView.addSubview(peopleStackView)
+        contentView.addSubview(peopleNumStackView)
         contentView.addSubview(myNameLabel)
         contentView.addSubview(mySelectedPointLabel)
         contentView.addSubview(myResultButton)
         contentView.addSubview(newQuestionTimerLabel)
         contentView.addSubview(newQuestionButton)
         contentView.addSubview(kokButton)
-        contentView.addSubview(resultChatView)
     }
     
     func setUIConstraints() {
@@ -233,24 +234,25 @@ class ResultViewController: BaseViewController {
             make.edges.equalToSuperview()
             make.centerX.equalToSuperview()
         }
+        
         hintText.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(33)
             make.leading.trailing.equalToSuperview().inset(45)
         }
-        selectedPeopleLabel.snp.makeConstraints { make in
+        peopleStackView.snp.makeConstraints { make in
             make.top.equalTo(hintText.snp.bottom).inset(-30)
             make.leading.equalToSuperview().inset(53)
         }
-        selectedPointLabel.snp.makeConstraints { make in
+        peopleNumStackView.snp.makeConstraints { make in
             make.top.equalTo(hintText.snp.bottom).inset(-30)
             make.trailing.equalToSuperview().inset(55)
         }
         myNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(selectedPeopleLabel.snp.bottom).inset(15)
+            make.top.equalTo(peopleStackView.snp.bottom).inset(-20)
             make.leading.equalToSuperview().inset(53)
         }
         mySelectedPointLabel.snp.makeConstraints { make in
-            make.top.equalTo(selectedPointLabel.snp.bottom).inset(15)
+            make.top.equalTo(peopleNumStackView.snp.bottom).inset(-20)
             make.trailing.equalToSuperview().inset(55)
         }
         myResultButton.snp.makeConstraints { make in
@@ -274,32 +276,13 @@ class ResultViewController: BaseViewController {
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(34.5)
             make.height.equalTo(50)
-        }
-
-        resultChatView.snp.makeConstraints { make in
-            make.top.equalTo(kokButton.snp.bottom).inset(-30)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(70)
-            make.width.equalTo(UIScreen.main.bounds.width - 32)
-            make.height.equalTo(135)
+            make.bottom.equalTo(contentView.snp.bottom).inset(15)
         }
     }
-    
-        
-    
+
+//MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popToRootViewController(animated: true)
+        self.tabBarController?.tabBar.isHidden = false
     }
-    
-    @objc func chatTaped() {
-//        let resultChatViewController = FloatingChatViewController(contentViewController: RoomFloatingChatViewController())
-//        present(NextTestViewController(), animated: true)
-        let testViewController = NextTestViewController()
-        let resultChatViewController = ChattingRoomViewController(channelURL: "sendbird_group_channel_121580584_0a41445ba95f50f74241bb813d7d0cc9fcf68576")
-//        resultChatViewController.modalPresentationStyle = .pageSheet
-//        present(resultChatViewController, animated: true)
-        self.navigationController?.pushViewController(resultChatViewController, animated: true)
-    }
-    
-    
 }
