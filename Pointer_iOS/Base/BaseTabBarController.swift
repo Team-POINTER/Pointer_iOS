@@ -10,15 +10,19 @@ import SendbirdUIKit
 
 class BaseTabBarController: UITabBarController {
     //MARK: - Properties
+    private var hasFirstLoaded = false
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureAuth()
+//        configureAuth()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        configureAuth()
+        if hasFirstLoaded == false {
+            configureAuth()
+            hasFirstLoaded = true
+        }
     }
     
     //MARK: - Auth 상태에 따라 View 변경
@@ -67,20 +71,24 @@ class BaseTabBarController: UITabBarController {
     }
     
     // 네비게이션 컨트롤러 만들기
-    private func templateNavigationController(_ image: UIImage?, title: String,  viewController:UIViewController) -> UINavigationController {
-        let nav = BaseNavigationController(rootViewController: viewController)
-        nav.tabBarItem.image = image
-        nav.tabBarItem.title = title
+    private func templateNavigationController(_ image: UIImage?, title: String, viewController: UIViewController) -> UINavigationController {
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .clear
+        appearance.backgroundColor = .systemIndigo
         appearance.shadowColor = nil
-        nav.navigationBar.standardAppearance = appearance;
-        nav.navigationBar.scrollEdgeAppearance = nav.navigationBar.standardAppearance
-        nav.navigationItem.largeTitleDisplayMode = .never
+        
+        let nav = BaseNavigationController(rootViewController: viewController)
+        
+        nav.navigationBar.standardAppearance = appearance
+//        nav.navigationBar.scrollEdgeAppearance = UIna
+        nav.navigationItem.largeTitleDisplayMode = .automatic
         
         nav.navigationBar.tintColor = .white
+        
+        nav.tabBarItem.image = image
+        nav.tabBarItem.title = title
+        
         return nav
     }
     

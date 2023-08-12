@@ -113,10 +113,8 @@ class EditUserIDViewModel: ViewModelType {
                 self.authNetwork.idSavePost(AuthSaveIdInputModel(id: text),
                                             TokenManager.getUserAccessToken() ?? "") { result, type in
                     if type == .saveId {
-                        print("👉변경 성공")
                         output.isSuccessSaveUserId.accept((true, text))
                     } else {
-                        print("👉변경 실패")
                         output.isSuccessSaveUserId.accept((false, nil))
                     }
                 }

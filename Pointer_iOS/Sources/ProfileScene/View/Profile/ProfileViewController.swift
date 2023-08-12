@@ -41,6 +41,7 @@ class ProfileViewController: ProfileParentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNavigationBar()
         setupNavigation(viewModel: viewModel)
         viewModel.requestUserProfile()
         viewModel.requestUserFriendsList()
@@ -74,13 +75,23 @@ class ProfileViewController: ProfileParentViewController {
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
             .disposed(by: disposeBag)
+        
+        // AlertView 바인딩
+        viewModel.showAlertView
+            .bind { [weak self] alert in
+                self?.navigationController?.present(alert, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Selector
     
     //MARK: - Functions
     private func setupNavigationBar() {
-        
+        // rootViewController가 아닌경우에만 backbutton활성화
+        if navigationController?.viewControllers.first != self {
+            super.setNavigationBarPointerBackButton()
+        }
     }
     
     override func setupUI() {

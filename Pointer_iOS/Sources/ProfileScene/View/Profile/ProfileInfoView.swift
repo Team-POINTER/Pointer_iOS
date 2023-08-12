@@ -70,13 +70,8 @@ class ProfileInfoView: ProfileInfoParentView {
     lazy var editMyProfileButton = getActionButton("프로필 편집")
     
     // 상대방 프로필일 때
-    lazy var cancelBlockButton = getActionButton() // 0 - 차단 해제 버튼
-    lazy var friendRequestCancelButton = getActionButton() // 1 - 친구 요청 취소 버튼
-    lazy var confirmRequestFriendButton = getActionButton() // 2 - 친구 요청 수락 버튼
-    lazy var friendCancelButton = getActionButton() // 3 - 친구 해제 버튼
-    lazy var friendRequestButton = getActionButton() // 4 - 친구 요청 버튼
-    
-    lazy var messageButton = getActionButton()
+    lazy var friendActionButton = getActionButton()
+    lazy var messageButton = getActionButton("메시지")
     
     let buttonStack: UIStackView = {
         // 버튼을 담을 StackView 생성
@@ -102,18 +97,15 @@ class ProfileInfoView: ProfileInfoParentView {
     private func bind() {
         let input = ProfileViewModel.Input(
             editMyProfile: editMyProfileButton.rx.tapGesture().asObservable(),
-            cancelBlockAction: cancelBlockButton.rx.tap.asObservable(),
-            friendRequestCancelAction: friendRequestCancelButton.rx.tap.asObservable(),
-            confirmRequestFriendAction: confirmRequestFriendButton.rx.tap.asObservable(),
-            friendCancelAction: friendCancelButton.rx.tap.asObservable(),
-            friendRequestAction: friendRequestButton.rx.tap.asObservable(),
+            friendActionButtonTapped: friendActionButton.rx.tapGesture().asObservable(),
+            messageButtonTapped: messageButton.rx.tapGesture().asObservable(),
             friendsItemSelected: collectionView.rx.itemSelected.asObservable(),
             friendsModelSelected: collectionView.rx.modelSelected(FriendsModel.self).asObservable()
         )
         
         guard let viewModel = viewModel else { return }
         
-        _ = viewModel.transform(input: input)
+        let output = viewModel.transform(input: input)
         
         // 모델 바인딩
         viewModel.profile
@@ -139,7 +131,6 @@ class ProfileInfoView: ProfileInfoParentView {
                 self?.friendsCountLabel.text = "\(count)명"
             }
             .disposed(by: disposeBag)
-        
     }
     
     //MARK: - Functions
@@ -219,36 +210,10 @@ class ProfileInfoView: ProfileInfoParentView {
             return
         }
         
-        guard let relationship = model.results?.relationship,
-              let friendType = Relationship(rawValue: relationship) else { return }
-        
-        switch friendType {
-        case .block:
-            buttonStack.addArrangedSubview(cancelBlockButton)
-            cancelBlockButton.backgroundColor = friendType.backgroundColor
-            cancelBlockButton.tintColor = friendType.tintColor
-            cancelBlockButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friendRequested:
-            buttonStack.addArrangedSubview(friendRequestCancelButton)
-            friendRequestCancelButton.backgroundColor = friendType.backgroundColor
-            friendRequestCancelButton.tintColor = friendType.tintColor
-            friendRequestCancelButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friendRequestReceived:
-            buttonStack.addArrangedSubview(confirmRequestFriendButton)
-            confirmRequestFriendButton.backgroundColor = friendType.backgroundColor
-            confirmRequestFriendButton.tintColor = friendType.tintColor
-            confirmRequestFriendButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friend:
-            buttonStack.addArrangedSubview(friendCancelButton)
-            friendCancelButton.backgroundColor = friendType.backgroundColor
-            friendCancelButton.tintColor = friendType.tintColor
-            friendCancelButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friendRejected:
-            buttonStack.addArrangedSubview(friendRequestButton)
-            friendRequestButton.backgroundColor = friendType.backgroundColor
-            friendRequestButton.tintColor = friendType.tintColor
-            friendRequestButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        }
+        buttonStack.addArrangedSubview(friendActionButton)
+        friendActionButton.tintColor = viewModel.relationShip.tintColor
+        friendActionButton.backgroundColor = viewModel.relationShip.backgroundColor
+        friendActionButton.setAttributedTitle(viewModel.relationShip.attributedTitle, for: .normal)
         
         buttonStack.addArrangedSubview(messageButton)
 

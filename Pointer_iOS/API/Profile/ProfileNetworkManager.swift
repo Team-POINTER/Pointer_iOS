@@ -11,8 +11,9 @@ import UIKit
 
 class ProfileNetworkManager {
     
-    func getMyProfile(completion: @escaping (ProfileModel?) -> Void) {
-        let router = ProfileRouter.selfProfile
+    //MARK: - 프로필 데이터 조회
+    func requestProfileData(isMyProfile: Bool, userId: Int, completion: @escaping (ProfileModel?) -> Void) {
+        let router: ProfileRouter = isMyProfile ? .selfProfile : .userProfile(userId)
         
         AF.request(router.url, method: router.method, headers: router.headers)
             .validate(statusCode: 200..<500)
@@ -31,26 +32,7 @@ class ProfileNetworkManager {
             }
     }
     
-    func getUserProfile(userId: Int, completion: @escaping (ProfileModel?) -> Void) {
-        let router = ProfileRouter.userProfile(userId)
-        
-        AF.request(router.url, method: router.method, headers: router.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: ProfileModel.self) { response in
-                switch response.result {
-                // 성공인 경우
-                case .success(let result):
-                    // completion 전송
-                    completion(result)
-                // 실패인 경우
-                case .failure(let error):
-                    print("프로필 조회 실패 - \(error.localizedDescription)")
-                    // completion 전송
-                    completion(nil)
-                }
-            }
-    }
-    
+    //MARK: - 친구 리스트 조회
     func getUserFriendList(userId: Int, lastPage: Int, completion: @escaping (FriendsResponseModel?) -> Void) {
         let router = ProfileRouter.getFriendsList(userId: userId, lastPage: lastPage)
         
@@ -72,7 +54,7 @@ class ProfileNetworkManager {
             }
     }
     
-    // 유저 아이디 변경
+    //MARK: - 프로필 편집: 유저 아이디 변경
     func requestChangeUserId(changeTo userID: String, completion: @escaping (Bool) -> Void) {
         let router = ProfileRouter.updateUserId
         let param: [String: String] = ["id": userID]
@@ -95,6 +77,7 @@ class ProfileNetworkManager {
             }
     }
     
+    //MARK: - 프로필 편집: 프로필 이미지, 이름 등 변경
     // 프로퍼티를 받아 이미지와 JSON 데이터를 서버에 전송하는 함수
     func uploadImages(profileImage: UIImage?,
                       backgroundImage: UIImage?,
@@ -161,6 +144,7 @@ class ProfileNetworkManager {
         }
     }
     
+    // JsonData로 변경
     func getModifyRequestJsonData(name: String,
                                   profileImageDefaultChange: Bool,
                                   backgroundImageDefaultChange: Bool) -> Data? {
@@ -180,6 +164,7 @@ class ProfileNetworkManager {
         }
     }
     
+    // 이미지 이름 생성
     func getImageName(type: ProfileEditViewController.PhotoEditType) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMddHHmmss"
@@ -191,4 +176,7 @@ class ProfileNetworkManager {
         let imageName = "pointer_\(userId)_\(type)_\(now).jpeg"
         return imageName
     }
+    
+    //MARK: - 친구 액션 버튼 탭 이벤트
+    
 }
