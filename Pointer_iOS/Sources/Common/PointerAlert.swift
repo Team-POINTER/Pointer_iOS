@@ -27,7 +27,7 @@ class PointerAlert: UIViewController {
     private var configs: [PointerAlertActionConfig]
     private var customView: UIView?
     
-    lazy var tabBarHeight = getTabBarHeight()
+//    lazy var tabBarHeight = getTabBarHeight()
     
     private var backgroundBlurView = UIView()
     private var viewBlurEffect = UIVisualEffectView(effect: UIVisualEffect())
@@ -82,7 +82,7 @@ class PointerAlert: UIViewController {
         
         backgroundBlurView.snp.makeConstraints {
             $0.leading.top.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(tabBarHeight)
+            $0.bottom.equalToSuperview()
         }
         
         switch alertType {
@@ -128,7 +128,7 @@ class PointerAlert: UIViewController {
         view.addSubview(buttonsStack)
         buttonsStack.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(14)
-            $0.bottom.equalToSuperview().inset(tabBarHeight)
+            $0.bottom.equalToSuperview()
         }
         
         UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseIn) {
@@ -160,7 +160,7 @@ class PointerAlert: UIViewController {
         }
         divider.snp.makeConstraints {
             $0.leading.trailing.top.equalToSuperview()
-            $0.height.equalTo(0.5)
+            $0.height.equalTo(1)
         }
         
         // Title / Description
@@ -186,7 +186,7 @@ class PointerAlert: UIViewController {
         let alertStack = makeAlertStackView(views: viewStacksArray)
         view.addSubview(alertStack)
         alertStack.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(40)
             $0.centerY.equalToSuperview()
         }
     }
@@ -288,7 +288,7 @@ class PointerAlert: UIViewController {
     
     private func makeDivider() -> UIView {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .alertGray
         return view
     }
     
@@ -296,6 +296,7 @@ class PointerAlert: UIViewController {
     private func makeAlertContentLabel(text: String?, font: UIFont) -> UIView {
         let label = UILabel()
         label.textAlignment = .center
+        label.numberOfLines = 0
         label.text = text
         label.font = font
         label.textColor = .black
@@ -307,7 +308,7 @@ class PointerAlert: UIViewController {
         alertStack.backgroundColor = .pointerGray
         alertStack.axis = .vertical
         alertStack.spacing = 15
-        alertStack.layer.cornerRadius = 25
+        alertStack.layer.cornerRadius = 15
         alertStack.clipsToBounds = true
         alertStack.layoutMargins = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         alertStack.isLayoutMarginsRelativeArrangement = true

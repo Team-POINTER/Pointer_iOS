@@ -16,8 +16,6 @@ import SendbirdUIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         IQKeyboardManager.shared.enable = true
@@ -25,16 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         KakaoSDK.initSDK(appKey: Secret.kakaoNativeKey)
         
-        SendbirdUI.initialize(applicationId: Secret.sendbird_App) {
-            // Do something to display the start of the SendbirdUIKit initialization.
-        } migrationHandler: {
-            // Do something to display the progress of the DB migration.
-        } completionHandler: { error in
-            // Do something to display the completion of the SendbirdChat initialization.
-        }
-        
+//        SendbirdUI.initialize(applicationId: Secret.sendbird_App) {
+//            // Do something to display the start of the SendbirdUIKit initialization.
+//        } migrationHandler: {
+//            // Do something to display the progress of the DB migration.
+//        } completionHandler: { error in
+//            // Do something to display the completion of the SendbirdChat initialization.
+//        }
+//
         // set current user
-        SBUGlobals.currentUser = SBUUser(userId: "userA")
+//        SBUGlobals.currentUser = SBUUser(userId: "userA")
     
         return true
     }

@@ -47,34 +47,38 @@ class ProfileParentViewController: BaseViewController {
         setupUI()
     }
     
-    //MARK: - Bind
-    //MARK: - Bind
-    func bind(viewModel: ProfileViewModel) {
-        viewModel.profile
-            .bind { [weak self] model in
-                guard let model = model else { return }
-                self?.setProfileImage(model: model)
-            }
-            .disposed(by: disposeBag)
-        
-        viewModel.nextViewController
-            .bind { [weak self] nextVc in
-                guard let vc = nextVc else { return }
-                self?.navigationController?.pushViewController(vc, animated: true)
-            }
-            .disposed(by: disposeBag)
-    }
-    
     func setProfileImage(model: ProfileModel) {
         guard let profileImageView = profileImageView as? UIImageView,
               let urls = model.results?.imageUrls,
               let profileUrl = URL(string: urls.profileImageUrl),
               let backgroundUrl = URL(string: urls.backgroundImageUrl) else { return }
         profileImageView.kf.indicatorType = .activity
-        profileImageView.kf.setImage(with: profileUrl)
+        profileImageView.kf.setImage(with: profileUrl) { result in
+//            switch result {
+//            case .success(let value):
+//                if let data = value.image.pngData() {
+//                    let sizeInBytes = data.count
+//                    let sizeInKilobytes = Double(sizeInBytes) / 1024.0
+////                    print("🔥프사 용량: \(sizeInKilobytes) KB")
+//                }
+//            case .failure(let error):
+//                print(error)
+//            }
+        }
         
         backgroundImageView.kf.indicatorType = .activity
-        backgroundImageView.kf.setImage(with: backgroundUrl)
+        backgroundImageView.kf.setImage(with: backgroundUrl) { result in
+//            switch result {
+//            case .success(let value):
+//                if let data = value.image.pngData() {
+//                    let sizeInBytes = data.count
+//                    let sizeInKilobytes = Double(sizeInBytes) / 1024.0
+////                    print("🔥배경사진 용량: \(sizeInKilobytes) KB")
+//                }
+//            case .failure(let error):
+//                print(error)
+//            }
+        }
     }
     
     //MARK: - Selector
@@ -103,8 +107,10 @@ class ProfileParentViewController: BaseViewController {
     
     //MARK: - SetupNavigation Controller
     func setupNavigation(viewModel: ProfileViewModel) {
-        let preferenceButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "gearshape"), target: self, handler: #selector(preferneceButtonTapped))
-        self.navigationItem.rightBarButtonItem = preferenceButton
+        if viewModel.isMyProfile {
+            let preferenceButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "gearshape"), target: self, handler: #selector(preferneceButtonTapped))
+            self.navigationItem.rightBarButtonItem = preferenceButton
+        }
     }
     
     // 설정 버튼 눌렸을 때
