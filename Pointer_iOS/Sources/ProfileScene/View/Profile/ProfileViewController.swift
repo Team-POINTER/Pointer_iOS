@@ -11,7 +11,6 @@ import RxSwift
 
 class ProfileViewController: ProfileParentViewController {
     //MARK: - Properties
-    //더미!
     let viewModel: ProfileViewModel
     
     lazy var profileImageViewChild: UIView = {
@@ -81,6 +80,26 @@ class ProfileViewController: ProfileParentViewController {
             .bind { [weak self] alert in
                 self?.navigationController?.present(alert, animated: true)
             }
+            .disposed(by: disposeBag)
+        
+        backgroundImageView.rx.tapGesture()
+            .when(.recognized)
+            .asDriver{ _ in .never() }
+            .drive(onNext: { [weak self] _ in
+                let photoView = PointerFullScreenPhotoView(image: self?.backgroundImageView.image)
+                self?.present(photoView, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        profileImageView.rx.tapGesture()
+            .when(.recognized)
+            .asDriver{ _ in .never() }
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      let profileImageView = self.profileImageView as? UIImageView else { return }
+                let photoView = PointerFullScreenPhotoView(image: profileImageView.image)
+                self.present(photoView, animated: true)
+            })
             .disposed(by: disposeBag)
     }
     

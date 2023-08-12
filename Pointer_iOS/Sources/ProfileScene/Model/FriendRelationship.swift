@@ -40,6 +40,43 @@ enum Relationship: Int {
         }
     }
     
+    // alert title
+    var alertTitle: String {
+        switch self {
+        case .block: return "차단 해제"
+        case .friendRequested: return "요청 취소"
+        case .friendRequestReceived: return "요청 수락"
+        case .friend: return "친구 해제"
+        case .friendRejected, .none: return "친구 요청"
+        }
+    }
+    
+    // alert title
+    var alertActionTitle: String {
+        switch self {
+        case .block: return "해제"
+        case .friendRequested: return "확인"
+        case .friendRequestReceived: return "수락"
+        case .friend: return "해제"
+        case .friendRejected, .none: return "요청"
+        }
+    }
+    
+    // alert 메시지
+    func getAlertMessage(targetName: String?, targetId: String?) -> String {
+        
+        let targetName = targetName ?? ""
+        let targetId = targetId ?? ""
+        
+        switch self {
+        case .block: return "\(targetName)(\(targetId))님과 친구를\n해제하시겠어요?"
+        case .friendRequested: return "친구 요청을\n취소하시겠어요?"
+        case .friendRequestReceived: return "\(targetName)(\(targetId))님의 친구 요청을\n수락하시겠어요?"
+        case .friend: return "\(targetName)(\(targetId))님과\n친구를 해제하시겠어요?"
+        case .friendRejected, .none: return "\(targetName)(\(targetId))님에게 친구를 요청하시겠어요?"
+        }
+    }
+    
     // 네트워크 요청 라우터
     var router: FriendRouter {
         switch self {

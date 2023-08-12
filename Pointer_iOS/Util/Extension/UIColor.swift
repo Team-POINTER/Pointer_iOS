@@ -21,6 +21,7 @@ extension UIColor {
     static let myTextBoxColor = UIColor.rgb(red: 52, green: 53, blue: 64)
     static let otherTextBoxColor = UIColor.rgb(red: 226, green: 227, blue: 236)
     static let navBackColor = UIColor.rgb(red: 86, green: 90, blue: 102)
+    static let alertGray = UIColor.rgb(red: 87, green: 90, blue: 107)
 }
 
 // RGB값을 받아서 UIColor를 리턴하는 함수

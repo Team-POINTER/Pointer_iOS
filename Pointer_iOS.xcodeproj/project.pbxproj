@@ -119,6 +119,7 @@
 		F93C44992A877B15009B04F3 /* FriendNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C44982A877B15009B04F3 /* FriendNetworkManager.swift */; };
 		F93C449B2A877DAF009B04F3 /* FriendRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C449A2A877DAF009B04F3 /* FriendRelationship.swift */; };
 		F93C449D2A877F55009B04F3 /* PointerAlert+Wrapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C449C2A877F55009B04F3 /* PointerAlert+Wrapping.swift */; };
+		F93C449F2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */; };
 		F948AEFA2A86041D00DDC698 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AEF92A86041D00DDC698 /* IndicatorManager.swift */; };
 		F948AEFC2A86059E00DDC698 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AEFB2A86059E00DDC698 /* UIWindow.swift */; };
 		F948AEFF2A860A7400DDC698 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */; };
@@ -237,6 +238,7 @@
 		F93C44982A877B15009B04F3 /* FriendNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendNetworkManager.swift; sourceTree = "<group>"; };
 		F93C449A2A877DAF009B04F3 /* FriendRelationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationship.swift; sourceTree = "<group>"; };
 		F93C449C2A877F55009B04F3 /* PointerAlert+Wrapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointerAlert+Wrapping.swift"; sourceTree = "<group>"; };
+		F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerFullScreenPhotoView.swift; sourceTree = "<group>"; };
 		F948AEF92A86041D00DDC698 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
 		F948AEFB2A86059E00DDC698 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		F948AF022A87787500DDC698 /* FriendRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRouter.swift; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 				F93C449C2A877F55009B04F3 /* PointerAlert+Wrapping.swift */,
 				473B739929CEE41100B33C77 /* ViewModelType.swift */,
 				F948AEF92A86041D00DDC698 /* IndicatorManager.swift */,
+				F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1118,6 +1121,7 @@
 				F93C44992A877B15009B04F3 /* FriendNetworkManager.swift in Sources */,
 				47CC89602A46844F0020246E /* AuthRouter.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
+				F93C449F2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,

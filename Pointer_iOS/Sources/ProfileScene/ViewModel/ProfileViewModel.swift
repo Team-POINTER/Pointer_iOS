@@ -11,6 +11,10 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
+protocol ProfileDelegate: AnyObject {
+    func profileChanged()
+}
+
 class ProfileViewModel: ViewModelType {
     //MARK: - In/Out
     struct Input {
@@ -27,6 +31,7 @@ class ProfileViewModel: ViewModelType {
     }
     
     //MARK: - Properties
+    weak var delegate: ProfileDelegate?
     let disposeBag = DisposeBag()
     let userId: Int
     let cellItemSpacing = CGFloat(20)
@@ -88,7 +93,15 @@ class ProfileViewModel: ViewModelType {
             .asDriver{ _ in .never() }
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.requestFriendAction()
+                let alert = PointerAlert.getActionAlert(
+                    title: self.relationShip.alertTitle,
+                    message: self.relationShip.getAlertMessage(targetName: self.userName,
+                                                               targetId: self.userIdText),
+                    actionTitle: self.relationShip.alertActionTitle) { _ in
+                        self.requestFriendAction()
+                    }
+                
+                self.showAlertView.accept(alert)
             })
             .disposed(by: disposeBag)
         
@@ -108,6 +121,7 @@ class ProfileViewModel: ViewModelType {
             .subscribe { [weak self] indexPath, user in
                 let profileViewModel = ProfileViewModel(userId: user.userId)
                 let userProfileVc = ProfileViewController(viewModel: profileViewModel)
+                profileViewModel.delegate = self
                 self?.nextViewController.accept(userProfileVc)
             }
             .disposed(by: disposeBag)
@@ -130,6 +144,7 @@ class ProfileViewModel: ViewModelType {
             if isSuccess {
                 self.requestUserProfile()
                 self.requestUserFriendsList()
+                self.delegate?.profileChanged()
             } else {
                 let alert = PointerAlert.getSimpleAlert(title: "오류", message: "통신중에 오류가 발생했습니다🥲 다시 시도해주세요.")
                 self.showAlertView.accept(alert)
@@ -149,11 +164,19 @@ class ProfileViewModel: ViewModelType {
     }
     
     //MARK: - Functions
-
-
     // Cell의 사이즈를 계산해서 return합니다.
     func getCellSize() -> CGSize {
         let width = (Device.width - (cellItemSpacing * CGFloat(horizonItemCount))) / 5
         return CGSize(width: width + 5, height: width + 30)
+    }
+}
+
+extension ProfileViewModel: ProfileDelegate {
+    func profileChanged() {
+        if let delegate = self.delegate {
+            delegate.profileChanged()
+        }
+        self.requestUserProfile()
+        self.requestUserFriendsList()
     }
 }

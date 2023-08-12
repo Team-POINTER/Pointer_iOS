@@ -75,13 +75,12 @@ class BaseTabBarController: UITabBarController {
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .systemIndigo
+        appearance.backgroundColor = .clear
         appearance.shadowColor = nil
         
         let nav = BaseNavigationController(rootViewController: viewController)
         
         nav.navigationBar.standardAppearance = appearance
-//        nav.navigationBar.scrollEdgeAppearance = UIna
         nav.navigationItem.largeTitleDisplayMode = .automatic
         
         nav.navigationBar.tintColor = .white
