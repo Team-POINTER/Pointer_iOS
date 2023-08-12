@@ -99,6 +99,7 @@ class ProfileInfoView: ProfileInfoParentView {
             editMyProfile: editMyProfileButton.rx.tapGesture().asObservable(),
             friendActionButtonTapped: friendActionButton.rx.tapGesture().asObservable(),
             messageButtonTapped: messageButton.rx.tapGesture().asObservable(),
+            moreFriendLabelTapped: moreFriendsLabel.rx.tapGesture().asObservable(),
             friendsItemSelected: collectionView.rx.itemSelected.asObservable(),
             friendsModelSelected: collectionView.rx.modelSelected(FriendsModel.self).asObservable()
         )
@@ -131,6 +132,8 @@ class ProfileInfoView: ProfileInfoParentView {
                 self?.friendsCountLabel.text = "\(count)명"
             }
             .disposed(by: disposeBag)
+        
+        // 더보기 누르기
     }
     
     //MARK: - Functions

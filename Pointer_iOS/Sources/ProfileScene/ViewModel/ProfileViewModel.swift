@@ -18,9 +18,11 @@ protocol ProfileDelegate: AnyObject {
 class ProfileViewModel: ViewModelType {
     //MARK: - In/Out
     struct Input {
+        // 액션 버튼
         let editMyProfile: Observable<UITapGestureRecognizer>
         let friendActionButtonTapped: Observable<UITapGestureRecognizer>
         let messageButtonTapped: Observable<UITapGestureRecognizer>
+        let moreFriendLabelTapped: Observable<UITapGestureRecognizer>
         // collectionView
         let friendsItemSelected: Observable<IndexPath>
         let friendsModelSelected: Observable<FriendsModel>
@@ -111,6 +113,15 @@ class ProfileViewModel: ViewModelType {
             .asDriver{ _ in .never() }
             .drive(onNext: { _ in
                 print("메시지 버튼 클릭")
+            })
+            .disposed(by: disposeBag)
+        
+        // 더보기 텍스트 클릭 (친구 리스트)
+        input.moreFriendLabelTapped
+            .when(.recognized)
+            .asDriver{ _ in .never() }
+            .drive(onNext: { _ in
+                // 친구 리스트로 이동
             })
             .disposed(by: disposeBag)
         

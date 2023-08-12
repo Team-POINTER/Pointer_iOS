@@ -53,8 +53,8 @@ class BaseTabBarController: UITabBarController {
     private func configureViewControllers() {
         tabBarSetting()
         // 첫번째 탭
-        let firstVC = UIViewController()
-        let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
+//        let firstVC = UIViewController()
+//        let nav1 = templateNavigationController(UIImage(systemName: "message.fill"), title: "메시지", viewController: firstVC)
         
         // 두번째 탭
         let secondVC = HomeController()
@@ -66,8 +66,8 @@ class BaseTabBarController: UITabBarController {
         let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup
-        viewControllers = [nav1, nav2, nav3]
-        selectedIndex = 1
+        viewControllers = [nav2, nav3]
+//        selectedIndex = 0
     }
     
     // 네비게이션 컨트롤러 만들기
