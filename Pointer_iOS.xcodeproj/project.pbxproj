@@ -59,8 +59,8 @@
 		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
 		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
 		47FD24A52A83705600529342 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A42A83705600529342 /* SearchViewModel.swift */; };
-		47FD24A72A8395A200529342 /* FriendRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A62A8395A200529342 /* FriendRouter.swift */; };
-		47FD24AA2A83E67900529342 /* FriendNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A92A83E67900529342 /* FriendNetworkManager.swift */; };
+		47FD24A72A8395A200529342 /* FriendSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A62A8395A200529342 /* FriendSearchRouter.swift */; };
+		47FD24AA2A83E67900529342 /* FriendSearchNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A92A83E67900529342 /* FriendSearchNetworkManager.swift */; };
 		CD06677E2A04E8870003C7B4 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */; };
 		CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */; };
 		CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */; };
@@ -178,8 +178,8 @@
 		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
 		47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewModel.swift; sourceTree = "<group>"; };
 		47FD24A42A83705600529342 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		47FD24A62A8395A200529342 /* FriendRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRouter.swift; sourceTree = "<group>"; };
-		47FD24A92A83E67900529342 /* FriendNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendNetworkManager.swift; sourceTree = "<group>"; };
+		47FD24A62A8395A200529342 /* FriendSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSearchRouter.swift; sourceTree = "<group>"; };
+		47FD24A92A83E67900529342 /* FriendSearchNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSearchNetworkManager.swift; sourceTree = "<group>"; };
 		CD0667792A04E8870003C7B4 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -471,7 +471,7 @@
 				478C9FFE2A618483000FA196 /* QuestionRouter.swift */,
 				478CA0002A61935F000FA196 /* VoteRouter.swift */,
 				F98555262A72B08B00EB6247 /* ProfileRouter.swift */,
-				47FD24A62A8395A200529342 /* FriendRouter.swift */,
+				47FD24A62A8395A200529342 /* FriendSearchRouter.swift */,
 			);
 			path = HTTP;
 			sourceTree = "<group>";
@@ -486,7 +486,7 @@
 		47FD24A82A83E63A00529342 /* Friend */ = {
 			isa = PBXGroup;
 			children = (
-				47FD24A92A83E67900529342 /* FriendNetworkManager.swift */,
+				47FD24A92A83E67900529342 /* FriendSearchNetworkManager.swift */,
 			);
 			path = Friend;
 			sourceTree = "<group>";
@@ -1043,7 +1043,7 @@
 				473B73A629D0364000B33C77 /* AuthNetworkManager.swift in Sources */,
 				F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */,
 				CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */,
-				47FD24A72A8395A200529342 /* FriendRouter.swift in Sources */,
+				47FD24A72A8395A200529342 /* FriendSearchRouter.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
 				CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */,
 				F98555252A72B00300EB6247 /* Secret.swift in Sources */,
@@ -1070,7 +1070,7 @@
 				478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
 				478CA0122A6D337B000FA196 /* ReportViewModel.swift in Sources */,
-				47FD24AA2A83E67900529342 /* FriendNetworkManager.swift in Sources */,
+				47FD24AA2A83E67900529342 /* FriendSearchNetworkManager.swift in Sources */,
 				47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */,
 				CD2F79C42A0FCB860094F81F /* FriendsListCell.swift in Sources */,
 				CD0667802A04E8870003C7B4 /* ProfileViewController.swift in Sources */,
