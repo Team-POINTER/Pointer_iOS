@@ -33,6 +33,7 @@ class SearchResultController: UIViewController {
             collectionView.reloadData()
         }
     }
+    
     private var accountData: [SearchUserListModel] = [] {
         didSet {
             collectionView.reloadData()
@@ -126,6 +127,14 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
             
             return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let model = accountData[indexPath.row]
+        let viewModel = ProfileViewModel(userId: model.userId)
+        let profileVC = ProfileViewController(viewModel: viewModel)
+        
+        self.navigationController?.pushViewController(profileVC, animated: true)
     }
 }
 

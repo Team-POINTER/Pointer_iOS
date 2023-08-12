@@ -19,14 +19,15 @@ protocol EditProfileInfoViewDelegate: AnyObject {
 class EditProfileInfoView: ProfileInfoParentView {
     //MARK: - Properties
     var delegate: EditProfileInfoViewDelegate?
+    let editViewModel: EditProfileViewModel
     
     lazy var nameTextField: UITextField = {
         let tf = UITextField()
-        tf.text = viewModel.userName
+        tf.text = editViewModel.profile.results?.userName
         tf.font = .notoSans(font: .notoSansKrMedium, size: 25)
         tf.textColor = .inactiveGray
         tf.textAlignment = .center
-        tf.delegate = self
+//        tf.delegate = self
         return tf
     }()
     
@@ -61,22 +62,25 @@ class EditProfileInfoView: ProfileInfoParentView {
         return label
     }()
     
-    lazy var userIDView: UIView = {
-        let container = UIView()
-        
+    lazy var userIdLabel: UILabel = {
         let userIDLabel = UILabel()
         userIDLabel.textColor = .inactiveGray
         userIDLabel.font = .notoSansRegular(size: 18)
         userIDLabel.textAlignment = .center
-        userIDLabel.text = viewModel.userIdText
-        
+        userIDLabel.text = editViewModel.profile.results?.id
+        return userIDLabel
+    }()
+    
+    lazy var userIDView: UIView = {
+        let container = UIView()
+
         let line = UIView()
         line.backgroundColor = .inactiveGray
         
-        container.addSubview(userIDLabel)
+        container.addSubview(self.userIdLabel)
         container.addSubview(line)
         
-        userIDLabel.snp.makeConstraints { $0.edges.equalToSuperview() }
+        self.userIdLabel.snp.makeConstraints { $0.edges.equalToSuperview() }
         line.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(2)
@@ -96,8 +100,9 @@ class EditProfileInfoView: ProfileInfoParentView {
     }()
     
     //MARK: - Lifecycle
-    override init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
-        super.init(viewModel: viewModel, delegate: delegate)
+    init(editViewModel: EditProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
+        self.editViewModel = editViewModel
+        super.init(viewModel: nil, delegate: delegate)
         setupUI()
         bind()
     }
@@ -108,14 +113,16 @@ class EditProfileInfoView: ProfileInfoParentView {
     
     //MARK: - Functions
     func bind() {
+        
         editBackgroundImageButton.rx.tap
-            .bind { [weak self] _ in
-                self?.delegate?.editBackgroundButtonTapped()
-            }.disposed(by: disposeBag)
+            .subscribe { [weak self] _ in
+                self?.editViewModel.editBackgroundImageTapped.onNext(())
+            }
+            .disposed(by: disposeBag)
         
         userIDView.rx.tapGesture().when(.recognized)
             .bind { [weak self] _ in
-                self?.delegate?.editUserIDViewTapped()
+                self?.editViewModel.editUserIdViewTapped.onNext(())
             }.disposed(by: disposeBag)
         
         nameTextField.rx.controlEvent(.editingDidBegin)
@@ -131,6 +138,12 @@ class EditProfileInfoView: ProfileInfoParentView {
                 self?.nameTextField.textColor = .inactiveGray
                 self?.nameTextFieldUnderLine.backgroundColor = .inactiveGray
             }.disposed(by: disposeBag)
+        
+        nameTextField.rx.text.orEmpty.asObservable()
+            .subscribe(onNext: { [weak self] text in
+                self?.editViewModel.profile.results?.userName = text
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupUI() {
@@ -165,14 +178,18 @@ class EditProfileInfoView: ProfileInfoParentView {
             $0.width.equalTo(self.snp.width).multipliedBy(0.45)
         }
     }
-}
-
-//MARK: - UITextFieldDelegate
-extension EditProfileInfoView: UITextFieldDelegate {
     
-    // 텍스트 필드 수정이 끝나면 값 저장
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        self.viewModel.userNameToEdit = text
+    private func configure() {
+        
     }
 }
+
+////MARK: - UITextFieldDelegate
+//extension EditProfileInfoView: UITextFieldDelegate {
+//
+//    // 텍스트 필드 수정이 끝나면 값 저장
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        guard let text = textField.text else { return }
+//        self.viewModel.userNameToEdit = text
+//    }
+//}

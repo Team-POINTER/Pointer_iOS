@@ -66,7 +66,7 @@ final class SearchViewModel: ViewModelType {
     // 유저 검색
     func requestAccountList(word: String, lastPage: Int) {
         let input = SearchUserRequestModel(keyword: word, lastPage: lastPage)
-        FriendNetworkManager.shared.searchUserListRequest(input) { [weak self] (model, error) in
+        FriendSearchNetworkManager.shared.searchUserListRequest(input) { [weak self] (model, error) in
             guard let self = self else { return }
             
             if let error = error {
@@ -82,20 +82,20 @@ final class SearchViewModel: ViewModelType {
         }
     }
     
-    // 친구 신청, 취소, 수락, 삭제, 거절, 차단, 차단 해제
-    func requestChangingFriendRelation(relation: FriendRelation, memberId: Int) {
-        FriendNetworkManager.shared.changeFriendRelationRequest(relation: relation, memberId: memberId) { [weak self] (model, error) in
-            guard let self = self else { return }
-            
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            
-            if let model = model {
-                print(model)
-            }
-        }
-    }
+    // 친구 신청, 취소, 수락, 삭제, 거절, 차단, 차단 해제 - 지수님거로 변경 예정
+//    func requestChangingFriendRelation(relation: FriendRelation, memberId: Int) {
+//        FriendNetworkManager.shared.changeFriendRelationRequest(relation: relation, memberId: memberId) { [weak self] (model, error) in
+//            guard let self = self else { return }
+//
+//            if let error = error {
+//                print(error.localizedDescription)
+//                return
+//            }
+//
+//            if let model = model {
+//                print(model)
+//            }
+//        }
+//    }
 }
 

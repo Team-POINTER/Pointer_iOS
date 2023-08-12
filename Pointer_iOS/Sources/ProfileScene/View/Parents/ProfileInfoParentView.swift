@@ -14,7 +14,7 @@ import SnapKit
 
 class ProfileInfoParentView: UIView {
     //MARK: - Properties
-    let viewModel: ProfileViewModel
+    let viewModel: ProfileViewModel?
     var disposeBag = DisposeBag()
     
     var _nameView = UIView()
@@ -27,9 +27,8 @@ class ProfileInfoParentView: UIView {
     }
     
     //MARK: - Lifecycle
-    init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
+    init(viewModel: ProfileViewModel?, delegate: ProfileInfoViewDelegate? = nil) {
         self.viewModel = viewModel
-        self.viewModel.delegate = delegate
         super.init(frame: .zero)
         setupUI()
     }

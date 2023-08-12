@@ -10,6 +10,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+protocol EditUserIdDelegate: AnyObject {
+    func editUserIdSuccessed(id: String)
+}
+
 class EditUserIDViewController: UIViewController {
     enum IDPolicy {
         static let policy: [String] = [
@@ -19,8 +23,12 @@ class EditUserIDViewController: UIViewController {
     }
     
     //MARK: - Properties
+    weak var delegate: EditUserIdDelegate?
     var disposeBag = DisposeBag()
     let viewModel: EditUserIDViewModel
+    
+    // 저장하기 버튼
+    lazy var saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(saveButtonTapped))
     
     let userIDTextField: UITextField = {
         let tf = UITextField()
@@ -68,8 +76,8 @@ class EditUserIDViewController: UIViewController {
     }()
     
     //MARK: - Lifecycle
-    init(viewModel: ProfileViewModel) {
-        self.viewModel = EditUserIDViewModel(user: viewModel.profile.value)
+    init(profile: ProfileModel) {
+        self.viewModel = EditUserIDViewModel(user: profile)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -108,38 +116,47 @@ class EditUserIDViewController: UIViewController {
     
     // Input 바인딩 및 Transform
     private func bindInput() -> EditUserIDViewModel.Input {
-        let input = EditUserIDViewModel.Input()
-        userIDTextField.rx.text
-            .orEmpty
-            .asObservable()
-            .subscribe { string in
-                if let text = string.element {
-                    input.idTextFieldEvent.accept(text)
-                }
-            }.disposed(by: disposeBag)
+        let input = EditUserIDViewModel.Input(
+            idTextFieldEvent: userIDTextField.rx.text.orEmpty.asObservable(),
+            idValidationButtonTapped: checkValidateButton.rx.tap.asObservable(),
+            saveButtonTapped: saveButton.rx.tap.asObservable())
         return input
     }
     
     // Output 바인딩
     private func bindOutput(output: EditUserIDViewModel.Output) {
+        output.checkLimitedIdString
+            .bind(to: userIDTextField.rx.text)
+            .disposed(by: disposeBag)
+        
         output.checkIdStringCountString
-            .subscribe { [weak self] string in
-                if let text = string.element {
-                    self?.checkIdStringCountLabel.text = text
-                }
-            }.disposed(by: disposeBag)
+            .bind(to: checkIdStringCountLabel.rx.text)
+            .disposed(by: disposeBag)
         
         output.checkValidateResult
             .bind { [weak self] result in
                 self?.checkValidateResultLabel.text = result.resultString
                 self?.checkValidateResultLabel.textColor = result.textColor
-            }.disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
+        output.isSaveButtonActive
+            .bind(to: saveButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        output.isSuccessSaveUserId
+            .bind { [weak self] isSuccess, id in
+                if isSuccess {
+                    self?.delegate?.editUserIdSuccessed(id: id ?? "")
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Functions
     private func setupNavigationBar() {
         let backButton = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(backButtonTapped))
-        let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(saveButtonTapped))
         saveButton.tintColor = .red
         
         navigationItem.leftBarButtonItem = backButton

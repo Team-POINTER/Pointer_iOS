@@ -72,6 +72,37 @@ struct AuthNetworkManager {
         }
     }
     
+    func appleLogin(appleToken: String, completion: @escaping (AuthResultModel, LoginResultType) -> Void) {
+        let router = AuthRouter.appleLogin
+        let param: [String: String] = ["identityToken": appleToken]
+        
+        AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default)
+//            .response { response in
+//                switch response.result {
+//                case .success(let data):
+//                    print("Image uploaded successfully: \(String(data: data!, encoding: .utf8) ?? "")")
+//                case .failure(let error):
+//                    print("Error uploading image: \(error)")
+//                }
+//            }
+            .responseDecodable(of: AuthResultModel.self) { response in
+                switch response.result {
+                    // 성공인 경우
+                case .success(let result):
+                    print("소셜 로그인 데이터 전송 성공 - \(result)")
+                    // rawValue로 resultType 생성
+                    let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
+                    // completion 전송
+                    completion(result, loginResultType)
+                    // 실패인 경우
+                case .failure(let error):
+                    print("소셜 로그인 데이터 전송 실패")
+                    print(error.localizedDescription)
+                    print(response.error ?? "")
+                }
+            }
+    }
+    
     func agreePost(_ parameter: AuthAgreeInputModel, _ accessToken: String, _ completion: @escaping (AuthResultModel) -> Void) {
         let router = router.agree(accessToken)
         

@@ -11,7 +11,6 @@ import RxSwift
 
 class ProfileViewController: ProfileParentViewController {
     //MARK: - Properties
-    //더미!
     let viewModel: ProfileViewModel
     
     lazy var profileImageViewChild: UIView = {
@@ -24,7 +23,7 @@ class ProfileViewController: ProfileParentViewController {
     }()
     
     lazy var profileInfoViewChild: ProfileInfoView = {
-        let view = ProfileInfoView(viewModel: viewModel, delegate: self)
+        let view = ProfileInfoView(viewModel: viewModel)
         return view
     }()
     
@@ -41,40 +40,90 @@ class ProfileViewController: ProfileParentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNavigationBar()
         setupNavigation(viewModel: viewModel)
-        bind(viewModel: viewModel)
         viewModel.requestUserProfile()
+        viewModel.requestUserFriendsList()
+        bind()
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+    
+    //MARK: - Bind
+    func bind() {
+        // 프로필 정보 바인딩
+        viewModel.profile
+            .bind { [weak self] model in
+                guard let model = model else { return }
+                self?.setProfileImage(model: model)
+            }
+            .disposed(by: disposeBag)
+        
+        // 다음 뷰
+        viewModel.nextViewController
+            .throttle(.microseconds(500), scheduler: MainScheduler.instance)
+            .bind { [weak self] nextVc in
+                guard let vc = nextVc else { return }
+                // EditViewController라면 delegate 주입
+                if let editVc = vc as? ProfileEditViewController {
+                    editVc.delegate = self
+                }
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        // AlertView 바인딩
+        viewModel.showAlertView
+            .bind { [weak self] alert in
+                self?.navigationController?.present(alert, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        backgroundImageView.rx.tapGesture()
+            .when(.recognized)
+            .asDriver{ _ in .never() }
+            .drive(onNext: { [weak self] _ in
+                let photoView = PointerFullScreenPhotoView(image: self?.backgroundImageView.image)
+                self?.present(photoView, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        profileImageView.rx.tapGesture()
+            .when(.recognized)
+            .asDriver{ _ in .never() }
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      let profileImageView = self.profileImageView as? UIImageView else { return }
+                let photoView = PointerFullScreenPhotoView(image: profileImageView.image)
+                self.present(photoView, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
     
     //MARK: - Selector
     
     //MARK: - Functions
     private func setupNavigationBar() {
-        
+        // rootViewController가 아닌경우에만 backbutton활성화
+        if navigationController?.viewControllers.first != self {
+            super.setNavigationBarPointerBackButton()
+        }
     }
     
     override func setupUI() {
         super.profileImageView = profileImageViewChild
         super.profileInfoView = profileInfoViewChild
-        super.backgroundImageView.backgroundColor = .systemIndigo
+        super.backgroundImageView.backgroundColor = .clear
         super.setupUI()
     }
 }
 
-extension ProfileViewController: ProfileInfoViewDelegate {
-    func editMyProfileButtonTapped() {
-        print("DEBUG - 프로필 수정 버튼 눌림")
-        let vc = ProfileEditViewController(viewModel: viewModel)
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func friendsActionButtonTapped() {
-        print("DEBUG - 친구 액션 버튼 눌림")
-    }
-    
-    func messageButtonTapped() {
-        print("DEBUG - 메시지 버튼 눌림")
+extension ProfileViewController: ProfileEditDelegate {
+    func profileEditSuccessed() {
+        print("프로필 변경 성공")
+        viewModel.requestUserProfile()
     }
 }

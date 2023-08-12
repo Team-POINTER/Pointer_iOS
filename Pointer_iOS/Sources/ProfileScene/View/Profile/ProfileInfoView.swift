@@ -10,8 +10,6 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-private let cellIdentifier = "UserFriendCell"
-
 protocol ProfileInfoViewDelegate: AnyObject {
     func editMyProfileButtonTapped()
     func friendsActionButtonTapped()
@@ -61,7 +59,7 @@ class ProfileInfoView: ProfileInfoParentView {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = viewModel.cellItemSpacing
+        layout.minimumLineSpacing = viewModel?.cellItemSpacing ?? 12
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.showsHorizontalScrollIndicator = false
         cv.backgroundColor = .clear
@@ -72,14 +70,8 @@ class ProfileInfoView: ProfileInfoParentView {
     lazy var editMyProfileButton = getActionButton("프로필 편집")
     
     // 상대방 프로필일 때
-    lazy var cancelBlockButton = getActionButton() // 0 - 차단 해제 버튼
-    lazy var friendRequestCancelButton = getActionButton() // 1 - 친구 요청 취소 버튼
-    lazy var confirmRequestFriendButton = getActionButton() // 2 - 친구 요청 수락 버튼
-    lazy var friendCancelButton = getActionButton() // 3 - 친구 해제 버튼
-    lazy var friendRequestButton = getActionButton() // 4 - 친구 요청 버튼
-    
-    lazy var messageButton = getActionButton()
-//    lazy var
+    lazy var friendActionButton = getActionButton()
+    lazy var messageButton = getActionButton("메시지")
     
     let buttonStack: UIStackView = {
         // 버튼을 담을 StackView 생성
@@ -90,10 +82,10 @@ class ProfileInfoView: ProfileInfoParentView {
     }()
     
     //MARK: - Lifecycle
-    override init(viewModel: ProfileViewModel, delegate: ProfileInfoViewDelegate? = nil) {
+    override init(viewModel: ProfileViewModel?, delegate: ProfileInfoViewDelegate? = nil) {
         super.init(viewModel: viewModel, delegate: delegate)
-        bind()
         setupCollectionView()
+        bind()
         setupUI()
     }
     
@@ -104,29 +96,49 @@ class ProfileInfoView: ProfileInfoParentView {
     //MARK: - Bind
     private func bind() {
         let input = ProfileViewModel.Input(
-            editMyProfile: editMyProfileButton.rx.tap,
-            cancelBlockAction: cancelBlockButton.rx.tap,
-            friendRequestCancelAction: friendRequestCancelButton.rx.tap,
-            confirmRequestFriendAction: confirmRequestFriendButton.rx.tap,
-            friendCancelAction: friendCancelButton.rx.tap,
-            friendRequestAction: friendRequestButton.rx.tap
+            editMyProfile: editMyProfileButton.rx.tapGesture().asObservable(),
+            friendActionButtonTapped: friendActionButton.rx.tapGesture().asObservable(),
+            messageButtonTapped: messageButton.rx.tapGesture().asObservable(),
+            moreFriendLabelTapped: moreFriendsLabel.rx.tapGesture().asObservable(),
+            friendsItemSelected: collectionView.rx.itemSelected.asObservable(),
+            friendsModelSelected: collectionView.rx.modelSelected(FriendsModel.self).asObservable()
         )
+        
+        guard let viewModel = viewModel else { return }
         
         let output = viewModel.transform(input: input)
         
         // 모델 바인딩
-        super.viewModel.profile
+        viewModel.profile
             .bind { [weak self] model in
                 guard let model = model else { return }
                 self?.configure(model: model)
                 self?.configureActionButtonUI(model: model)
             }
             .disposed(by: disposeBag)
+        
+        // 친구 리스트 바인딩
+        viewModel.friendsArray
+            .bind(to: collectionView.rx.items) { collectionView, indexPath, item in
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserFriendCell.cellIdentifier, for: IndexPath(row: indexPath, section: 0)) as? UserFriendCell else { return UICollectionViewCell() }
+                cell.userData = item
+                return cell
+            }
+            .disposed(by: disposeBag)
+        
+        // 친구 카운트
+        viewModel.friendsCount
+            .bind { [weak self] count in
+                self?.friendsCountLabel.text = "\(count)명"
+            }
+            .disposed(by: disposeBag)
+        
+        // 더보기 누르기
     }
     
     //MARK: - Functions
     private func setupCollectionView() {
-        collectionView.register(UserFriendCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        collectionView.register(UserFriendCell.self, forCellWithReuseIdentifier: UserFriendCell.cellIdentifier)
         collectionView.delegate = self
     }
     
@@ -143,7 +155,7 @@ class ProfileInfoView: ProfileInfoParentView {
         idLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom)
             $0.leading.equalTo(nameLabel.snp.leading)
-            $0.width.equalTo(106)
+            $0.width.greaterThanOrEqualTo(106)
         }
         
         addSubview(seperator)
@@ -183,14 +195,13 @@ class ProfileInfoView: ProfileInfoParentView {
         
     private func configure(model: ProfileModel) {
         nameLabel.text = model.results?.userName
-        idLabel.text = model.results?.id
-        friendsCountLabel.text = "friend count ?"
+        idLabel.text = "@" + (model.results?.id ?? "")
         collectionView.reloadData()
     }
     
     // 유저 타입별 분기 처리
     private func configureActionButtonUI(model: ProfileModel) {
-        
+        guard let viewModel = viewModel else { return }
         if viewModel.isMyProfile == true {
             buttonStack.addArrangedSubview(editMyProfileButton)
             // 버튼 Corner Radius
@@ -202,36 +213,10 @@ class ProfileInfoView: ProfileInfoParentView {
             return
         }
         
-        guard let relationship = model.results?.relationship,
-              let friendType = Relationship(rawValue: relationship) else { return }
-        
-        switch friendType {
-        case .block:
-            buttonStack.addArrangedSubview(cancelBlockButton)
-            cancelBlockButton.backgroundColor = friendType.backgroundColor
-            cancelBlockButton.tintColor = friendType.tintColor
-            cancelBlockButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friendRequested:
-            buttonStack.addArrangedSubview(friendRequestCancelButton)
-            friendRequestCancelButton.backgroundColor = friendType.backgroundColor
-            friendRequestCancelButton.tintColor = friendType.tintColor
-            friendRequestCancelButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friendRequestReceived:
-            buttonStack.addArrangedSubview(confirmRequestFriendButton)
-            confirmRequestFriendButton.backgroundColor = friendType.backgroundColor
-            confirmRequestFriendButton.tintColor = friendType.tintColor
-            confirmRequestFriendButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friend:
-            buttonStack.addArrangedSubview(friendCancelButton)
-            friendCancelButton.backgroundColor = friendType.backgroundColor
-            friendCancelButton.tintColor = friendType.tintColor
-            friendCancelButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        case .friendRejected:
-            buttonStack.addArrangedSubview(friendRequestButton)
-            friendRequestButton.backgroundColor = friendType.backgroundColor
-            friendRequestButton.tintColor = friendType.tintColor
-            friendRequestButton.setAttributedTitle(friendType.attributedTitle, for: .normal)
-        }
+        buttonStack.addArrangedSubview(friendActionButton)
+        friendActionButton.tintColor = viewModel.relationShip.tintColor
+        friendActionButton.backgroundColor = viewModel.relationShip.backgroundColor
+        friendActionButton.setAttributedTitle(viewModel.relationShip.attributedTitle, for: .normal)
         
         buttonStack.addArrangedSubview(messageButton)
 
@@ -254,19 +239,13 @@ class ProfileInfoView: ProfileInfoParentView {
     }
 }
 
-extension ProfileInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.numberOfFriendsCellCount
-    }
+extension ProfileInfoView: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? UserFriendCell else { return UICollectionViewCell() }
-        return cell
-    }
 }
 
 extension ProfileInfoView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let viewModel = viewModel else { return CGSize(width: 0, height: 0) }
         return viewModel.getCellSize()
     }
 }

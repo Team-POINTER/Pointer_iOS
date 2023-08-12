@@ -34,41 +34,122 @@ class EditUserIDViewModel: ViewModelType {
     }
     
     //MARK: - Input/Output
-    var disposeBag = DisposeBag()
     struct Input {
-        let idTextFieldEvent = PublishRelay<String>()
+        let idTextFieldEvent: Observable<String>
+        let idValidationButtonTapped: Observable<Void>
+        let saveButtonTapped: Observable<Void>
     }
     
     struct Output {
+        let checkLimitedIdString = PublishRelay<String>()
         let checkValidateResult = PublishRelay<CheckValidateResult>()
         let checkIdStringCountString: BehaviorRelay<String>
+        let isSaveButtonActive = BehaviorRelay<Bool>(value: false)
+        let isSuccessSaveUserId = BehaviorRelay<(Bool, String?)>(value: (false, nil))
     }
     
     //MARK: - Properties
+    var disposeBag = DisposeBag()
+    lazy var authNetwork = AuthNetworkManager()
+    lazy var profileNetwork = ProfileNetworkManager()
     let user: ProfileModel?
+    var userIdToEdit: String?
     
     //MARK: - Init
     init(user: ProfileModel?) {
         self.user = user
+        self.userIdToEdit = user?.results?.id
     }
     
     //MARK: - Functions
     func transform(input: Input) -> Output {
-        let output = Output(checkIdStringCountString: BehaviorRelay(value: getIdStringCount(text: user?.results?.id ?? "오류")))
+        let output = Output(checkIdStringCountString: BehaviorRelay(value: getIdStringCount(user?.results?.id ?? "오류")))
         
+        /// 중복확인 버튼 클릭 이벤트
+        /// 1. 가장 최신의 ID를 가지고
+        /// 2. Validation 요청
+        /// 3. 결과에 따라 저장 버튼 활성화 여부 푸시
+        input.idValidationButtonTapped
+            .withLatestFrom(output.checkLimitedIdString)
+            .subscribe { [weak self] string in
+                guard let self = self else { return }
+                self.requestIdValidation(string.element) { result in
+                    if result == .duplicatedId {
+                        output.checkValidateResult.accept(.alreadyInUse)
+                        output.isSaveButtonActive.accept(false)
+                    } else if result == .doubleCheck {
+                        output.checkValidateResult.accept(.available)
+                        output.isSaveButtonActive.accept(true)
+                    } else if result == .haveToCheckId {
+                        
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        // ID 텍스트필드 입력 이벤트
         input.idTextFieldEvent
             .subscribe { [weak self] string in
                 if let text = string.element,
                    let self = self {
-                    let textCountString = self.getIdStringCount(text: text)
+                    // 1. 아이디 30자 넘지 않게 제한
+                    let limitedString = self.checkLimitString(text)
+                    output.checkLimitedIdString.accept(limitedString)
+                    // 2. String 수 계산
+                    let textCountString = self.getIdStringCount(limitedString)
+                    self.userIdToEdit = limitedString
+                    // 푸시
+                    output.isSaveButtonActive.accept(false)
                     output.checkIdStringCountString.accept(textCountString)
                 }
             }.disposed(by: disposeBag)
-
+        
+        // 저장 버튼
+        input.saveButtonTapped
+            .withLatestFrom(output.checkLimitedIdString)
+            .subscribe { [weak self] text in
+                guard let self = self,
+                      let text = text.element else { return }
+                self.authNetwork.idSavePost(AuthSaveIdInputModel(id: text),
+                                            TokenManager.getUserAccessToken() ?? "") { result, type in
+                    if type == .saveId {
+                        output.isSuccessSaveUserId.accept((true, text))
+                    } else {
+                        output.isSuccessSaveUserId.accept((false, nil))
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
         return output
     }
     
-    private func getIdStringCount(text: String) -> String {
+    // 글자 수 제한
+    private func checkLimitString(_ text: String) -> String {
+        guard text.count <= 30 else {
+            let limitedText = String(text.prefix(30))
+            return limitedText
+        }
+        return text
+    }
+    
+    // 글자 수 세기
+    private func getIdStringCount(_ text: String) -> String {
         return "\(text.count)/\(idMaxCount)"
+    }
+    
+    //MARK: - API
+    func requestIdValidation(_ idToValidate: String?, completion: @escaping (LoginResultType) -> Void) {
+        // 0. Validation
+        guard let userId = idToValidate, userId != user?.results?.id, userId.count <= 30 else {
+            print("Validation 실패")
+            return
+        }
+        
+        // 1. 중복확인
+        let input = AuthCheckIdInputModel(userId: TokenManager.getIntUserId(), id: userId)
+        authNetwork.idCheckPost(input, TokenManager.getUserAccessToken() ?? "") { model, resultType in
+            completion(resultType)
+        }
     }
 }

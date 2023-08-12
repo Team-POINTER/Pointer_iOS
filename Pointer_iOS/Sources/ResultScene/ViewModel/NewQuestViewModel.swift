@@ -113,6 +113,7 @@ class NewQuestViewModel: ViewModelType{
         input.newQuestButtonTapEvent
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
+                print("질문 등록 버튼 Tap")
                 let newQuestionRequestModel = NewQuestionRequestModel(roomId: self.roomId,
                                                                       content: self.questionInputString)
                 ResultNetworkManager.shared.newQuestionRequest(newQuestionRequestModel) { (error, model) in
