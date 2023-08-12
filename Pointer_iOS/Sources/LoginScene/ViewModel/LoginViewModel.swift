@@ -17,7 +17,7 @@ class LoginViewModel: NSObject, ViewModelType {
     
 //MARK: - Properties
     var disposeBag = DisposeBag()
-    var loginView = PublishRelay<UIViewController>()
+    var loginView = PublishRelay<UIViewController?>()
     
 //MARK: - In/Out
     struct Input {
@@ -58,7 +58,12 @@ class LoginViewModel: NSObject, ViewModelType {
         
         loginView
             .subscribe(onNext: { viewController in
-                output.nextViewController.accept(viewController)
+                if let vc = viewController {
+                    output.nextViewController.accept(vc)
+                } else {
+                    output.dissMiss.accept(true)
+                }
+
             })
             .disposed(by: disposeBag)
         
@@ -180,15 +185,34 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
             let familyName = appleIDCredential.fullName?.familyName
             let givenName = appleIDCredential.fullName?.givenName
             let email = appleIDCredential.email
-            appleIDCredential.user
+
             if let token = appleIDCredential.identityToken, // JWT token
                let tokenString = String(data: token, encoding: .utf8) {
-                print(tokenString)
-                let appleToken = AuthInputModel(accessToken: tokenString)
-                AuthNetworkManager.shared.posts(appleToken) { [weak self] model, loginResultType in
-                    let termsViewModel = TermsViewModel(authResultModel: model)
-                    self?.loginView.accept(TermsViewController(viewModel: termsViewModel))
+                print("🔥AppleToken: \(tokenString)")
+                AuthNetworkManager.shared.appleLogin(appleToken: tokenString) { [weak self] model, loginResultType in
+                    switch loginResultType {
+                    case .success:
+                        let termsViewModel = TermsViewModel(authResultModel: model)
+                        let vc = TermsViewController(viewModel: termsViewModel)
+                        self?.loginView.accept(vc)
+                    case .existedUser:
+                        guard let accessToken = model.tokenDto?.accessToken,
+                              let refreshToken = model.tokenDto?.refreshToken,
+                              let userId = model.tokenDto?.userId else { return}
+                        TokenManager.saveUserAccessToken(accessToken: accessToken)
+                        TokenManager.saveUserRefreshToken(refreshToken: refreshToken)
+                        TokenManager.saveUserId(userId: String(userId))
+//                        output.dissMiss.accept(true)
+                    default:
+                        print(loginResultType.message)
+                        return
+                    }
                 }
+                
+//                AuthNetworkManager.shared.posts(appleToken) { [weak self] model, loginResultType in
+//                    let termsViewModel = TermsViewModel(authResultModel: model)
+//                    self?.loginView.accept(TermsViewController(viewModel: termsViewModel))
+//                }
             }
         }
     }
