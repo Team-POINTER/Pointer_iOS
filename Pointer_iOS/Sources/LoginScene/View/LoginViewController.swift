@@ -11,10 +11,16 @@ import SnapKit
 import KakaoSDKAuth
 import KakaoSDKUser
 import RxSwift
+import RxGesture
 import RxCocoa
+
+protocol LoginViewDelegate: AnyObject {
+    func loginSuccess()
+}
 
 class LoginViewController: BaseViewController {
     
+    weak var delegate: LoginViewDelegate?
     var disposeBag = DisposeBag()
     lazy var loginViewModel: LoginViewModel = { LoginViewModel() }()
     
@@ -38,9 +44,12 @@ class LoginViewController: BaseViewController {
     
         output.dissMiss
             .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] _ in
+            .subscribe { [weak self] bool in
                 guard let self = self else { return }
-                self.dismiss(animated: true)
+                if bool {
+                    self.dismiss(animated: true)
+                    self.delegate?.loginSuccess()
+                }
             }
             .disposed(by: disposeBag)
     }

@@ -49,7 +49,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>라이브러리에서 사진을 가져오기 위해 권한을 허용합니다.</string>
 </dict>
 </plist>

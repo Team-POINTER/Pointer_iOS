@@ -19,7 +19,6 @@ class AppCoordinator {
     
     //MARK: - Methods
     func start() {
-        print(#function)
         let launchScreen = LaunchScreenController()
         launchScreen.modalPresentationStyle = .overFullScreen
         launchScreen.modalTransitionStyle = .crossDissolve
