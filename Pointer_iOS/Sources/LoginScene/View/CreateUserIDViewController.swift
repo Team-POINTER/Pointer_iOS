@@ -26,7 +26,11 @@ class CreateUserIDViewController: BaseViewController {
     
 //MARK: - RX
     func bindViewModel() {
-        let input = CreateUserIDViewModel.Input(idTextFieldEditEvent: inputUserIDTextfeild.rx.text.orEmpty.asObservable(), idDoubleCheckButtonTapEvent: idDoubleCheckButton.rx.tap.asObservable(), nextButtonTapEvent: nextButton.rx.tap.asObservable())
+        let input = CreateUserIDViewModel.Input(
+            idTextFieldEditEvent: inputUserIDTextfeild.rx.text.orEmpty.asObservable(),
+            idDoubleCheckButtonTapEvent: idDoubleCheckButton.rx.tap.asObservable(),
+            nextButtonTapEvent: nextButton.rx.tap.asObservable())
+        
         let output = createUserIdViewModel.transform(input: input)
         
         output.idTextFieldLimitedString
@@ -52,25 +56,9 @@ class CreateUserIDViewController: BaseViewController {
         
         output.userNoticeString
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] num in
-                switch num {
-                case 0:
-                    self?.checkValueValidLabel.text = ""
-                case 1:
-                    self?.checkValueValidLabel.text = "중복 확인해주세요."
-                    self?.checkValueValidLabel.textColor = UIColor.inactiveGray
-                case 2:
-                    self?.checkValueValidLabel.text = "형식에 어긋난 아이디입니다."
-                    self?.checkValueValidLabel.textColor = UIColor.pointerRed
-                case 3:
-                    self?.checkValueValidLabel.text = "중복되는 ID가 있습니다."
-                    self?.checkValueValidLabel.textColor = UIColor.pointerRed
-                case 4:
-                    self?.checkValueValidLabel.text = "사용 가능한 ID 입니다."
-                    self?.checkValueValidLabel.textColor = UIColor.green
-                default:
-                    return
-                }
+            .subscribe(onNext: { [weak self] style in
+                self?.checkValueValidLabel.text = style.description
+                self?.checkValueValidLabel.textColor = style.fontColor
             })
             .disposed(by: disposeBag)
      

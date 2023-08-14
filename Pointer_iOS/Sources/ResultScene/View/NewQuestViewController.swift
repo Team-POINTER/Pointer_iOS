@@ -11,10 +11,9 @@ import RxSwift
 import RxCocoa
 
 // 1. timeString값으로 남은 시간을 받아오고 카운트 다운 버튼 활성화 [O]
-// 2. 초기에 서버에게 질문 등록하기 버튼 활성화의 유무를 받아서 바로 적용 [X]
-// 3. 시간 활성화 비활성화에 따른 enum
-// 4. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
-// 5. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
+// 2. 시간 활성화 비활성화에 따른 enum
+// 3. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
+// 4. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
 
 class NewQuestViewController: BaseViewController {
     
@@ -36,7 +35,7 @@ class NewQuestViewController: BaseViewController {
 //MARK: - RX
     func bindViewModel() {
         
-        let input = NewQuestViewModel.Input(newQuestTextFieldEditEvent: newQuestTextField.rx.text.orEmpty.asObservable(),
+        let input = NewQuestViewModel.Input(newQuestTextViewEditEvent: newQuestTextView.rx.text.orEmpty.asObservable(),
                                             newQuestButtonTapEvent: newQuestButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
@@ -48,12 +47,12 @@ class NewQuestViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        // 텍스트필드에 값 유무로 버튼 색상 변경
-        output.newQuestTextFieldText
+        // 텍스트뷰에 값 유무로 버튼 색상 변경
+        output.newQuestTextViewText
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] text in
                 guard let self = self else { return }
-                if text == "" {
+                if text == "질문을 입력하세요." || text == "누군가 이미 질문을 등록했어요." || text == "" {
                     self.newQuestButton.backgroundColor = NextQuestButtonStyle.disable.backgroundColor
                     self.newQuestButton.isEnabled = NextQuestButtonStyle.disable.isEnable
                 } else {
@@ -63,30 +62,40 @@ class NewQuestViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        newQuestTextView.rx.didBeginEditing
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] text in
+                guard let self = self else { return }
+                if (self.newQuestTextView.text == "질문을 입력하세요.") {
+                    self.newQuestTextView.text = nil
+                    self.newQuestTextView.textColor = .white
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        newQuestTextView.rx.didEndEditing
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                if (self.newQuestTextView.text.count == 0) {
+                    self.newQuestTextView.text = "질문을 입력하세요."
+                    self.newQuestTextView.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         output.timeLimited
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] b in
                 guard let self = self else { return}
-                
                 // 시간 0 시(버튼 활성화)
                 if b {
-                    self.newQuestTextField.isEnabled = true
-                    self.newQuestTextField.textColor = .white
-                    self.newQuestTextField.attributedPlaceholder = NSAttributedString(
-                        string: "질문을 입력하세요.",
-                        attributes: [
-                            .foregroundColor: UIColor.rgb(red: 121, green: 125, blue: 148)
-                        ]
-                    )
+                    self.newQuestTextView.isEditable = true
                 // 시간 남았을 시(버튼 비활성화)
                 } else {
-                    self.newQuestTextField.isEnabled = false
-                    self.newQuestTextField.attributedPlaceholder = NSAttributedString(
-                        string: "누군가 이미 질문을 등록했어요.",
-                        attributes: [
-                            .foregroundColor: UIColor.rgb(red: 121, green: 125, blue: 148)
-                        ]
-                    )
+                    self.newQuestTextView.isEditable = false
+                    self.newQuestTextView.text = "누군가 이미 질문을 등록했어요."
+                    self.newQuestTextView.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
                 }
             })
             .disposed(by: disposeBag)
@@ -136,13 +145,18 @@ class NewQuestViewController: BaseViewController {
         return $0
     }(UILabel())
     
-    var newQuestTextField: UITextField = {
-        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 20)
+    private lazy var newQuestTextView: UITextView = {
+        $0.backgroundColor = .clear
         $0.textAlignment = .center
+        $0.text = "질문을 입력하세요."
+        $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
+        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 20)
+        $0.isScrollEnabled = false
+        $0.delegate = self
         return $0
-    }(UITextField())
+    }(UITextView())
     
-    lazy var newQuestButton: UIButton = {
+    private lazy var newQuestButton: UIButton = {
         let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
         $0.setAttributedTitle(attributedQuestionString, for: .normal)
         $0.layer.cornerRadius = 25
@@ -152,7 +166,7 @@ class NewQuestViewController: BaseViewController {
         return $0
     }(UIButton())
     
-    let inviteButton: UIButton = {
+    private let inviteButton: UIButton = {
         $0.setTitle("링크로 초대", for: .normal)
         $0.titleLabel?.font = UIFont.notoSansBold(size: 16)
         $0.layer.borderWidth = 1
@@ -166,21 +180,22 @@ class NewQuestViewController: BaseViewController {
 //MARK: - set UI
     func setUI(){
         view.addSubview(questAlertLabel)
-        view.addSubview(newQuestTextField)
+        view.addSubview(newQuestTextView)
         view.addSubview(newQuestButton)
         view.addSubview(inviteButton)
     }
     
     func setConstraints() {
         questAlertLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(12)
             make.leading.trailing.equalToSuperview().inset(75)
             make.centerX.equalToSuperview()
         }
-        newQuestTextField.snp.makeConstraints { make in
+        newQuestTextView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.leading.equalToSuperview().inset(45.5)
             make.trailing.equalToSuperview().inset(45.5)
+            make.height.equalTo(110)
         }
         newQuestButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(-30)
@@ -194,6 +209,7 @@ class NewQuestViewController: BaseViewController {
             make.height.equalTo(50)
             make.width.equalTo(Device.width / 3)
         }
+
     }
     
 //MARK: - Life Cycles
@@ -225,4 +241,14 @@ class NewQuestViewController: BaseViewController {
         let alert = PointerAlert(alertType: .alert, configs: [backAction], description: description)
         present(alert, animated: true)
     }
+}
+
+//MARK: - UITextViewDelegate
+extension NewQuestViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            if text == "\n" {
+                return false // 엔터 키 입력 시 동작 X - 줄바꿈 기능 제거
+            }
+            return true
+        }
 }

@@ -86,13 +86,13 @@ class NewQuestViewModel: ViewModelType{
     
 //MARK: - In/Out
     struct Input {
-        let newQuestTextFieldEditEvent: Observable<String>
+        let newQuestTextViewEditEvent: Observable<String>
         let newQuestButtonTapEvent: Observable<Void>
     }
     
     struct Output {
         let timeLimited = BehaviorRelay<Bool>(value: false)
-        let newQuestTextFieldText = BehaviorRelay<String>(value: "")
+        let newQuestTextViewText = BehaviorRelay<String>(value: "")
         let buttonIsEnable = BehaviorRelay<NextQuestButtonStyle>(value: .disable)
         let backAlert = BehaviorRelay<NewQuestResponse?>(value: nil)
     }
@@ -102,10 +102,13 @@ class NewQuestViewModel: ViewModelType{
         
         let output = Output()
         // 질문 입력 시
-        input.newQuestTextFieldEditEvent
+        input.newQuestTextViewEditEvent
             .subscribe { [weak self] text in
-                self?.questionInputString = text
-                output.newQuestTextFieldText.accept(text)
+                guard let self = self else { return }
+                let limitedCountText = self.textViewLimitedString(text: text)
+        
+                self.questionInputString = limitedCountText
+                output.newQuestTextViewText.accept(limitedCountText)
             }
             .disposed(by: disposeBag)
         
@@ -183,5 +186,14 @@ class NewQuestViewModel: ViewModelType{
     func stopTimer() {
         self.timer?.invalidate()
         self.timer = nil
+    }
+    
+    // 45자 제한
+    func textViewLimitedString(text: String) -> String {
+        if text.count > 45 {
+            return String(text.prefix(45))
+        } else {
+            return text
+        }
     }
 }
