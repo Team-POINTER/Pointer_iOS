@@ -9,6 +9,39 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum IdCheckStyle: CaseIterable {
+    case none
+    case check
+    case unformed
+    case duplicated
+    case avaliable
+    
+    var description: String {
+        switch self {
+        case .none: return ""
+        case .check: return "중복 확인해주세요."
+        case .unformed: return "형식에 어긋난 아이디입니다."
+        case .duplicated: return "중복되는 ID가 있습니다."
+        case .avaliable: return "사용 가능한 ID 입니다."
+        }
+    }
+    
+    var fontColor: UIColor {
+        switch self {
+        case .none:
+            return UIColor.clear
+        case .check:
+            return UIColor.inactiveGray
+        case .unformed:
+            return UIColor.pointerRed
+        case .duplicated:
+            return UIColor.pointerRed
+        case .avaliable:
+            return UIColor.green
+        }
+    }
+}
+
 class CreateUserIDViewModel: ViewModelType {
     
 //MARK: - Properties
@@ -32,7 +65,7 @@ class CreateUserIDViewModel: ViewModelType {
         var idTextFieldLimitedString = PublishRelay<String>()
         var idTextFieldValidString = BehaviorRelay<Bool>(value: false)
         var duplicatedIdCheck = BehaviorRelay<Bool>(value: false)
-        var userNoticeString = BehaviorRelay<Int>(value: 0)
+        var userNoticeString = BehaviorRelay<IdCheckStyle>(value: .none)
         var nextButtonValid = BehaviorRelay<Bool>(value: false)
         var nextButtonTap = PublishRelay<UIViewController>()
     }
@@ -59,18 +92,23 @@ class CreateUserIDViewModel: ViewModelType {
                     
                     if validString {
                         // 유효성 O
-                        output.userNoticeString.accept(1)
+                        output.userNoticeString.accept(.check)
                     } else {
                         // 유효성 X
-                        output.userNoticeString.accept(2)
+                        output.userNoticeString.accept(.unformed)
                     }
                     
                     if limitedString == "" {
-                        output.userNoticeString.accept(0)
+                        output.userNoticeString.accept(.none)
                     }
-                    
-                    output.nextButtonValid.accept(false)
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        // 입력 값이 바뀌면 nextButton 비활성화
+        output.idTextFieldLimitedString
+            .subscribe { _ in
+                output.nextButtonValid.accept(false)
             }
             .disposed(by: disposeBag)
         
@@ -85,12 +123,12 @@ class CreateUserIDViewModel: ViewModelType {
                         if loginResultType == LoginResultType.duplicatedId {
                             // ID 중복 시
                             output.duplicatedIdCheck.accept(false)
-                            output.userNoticeString.accept(3)
+                            output.userNoticeString.accept(.duplicated)
                         }
                         if loginResultType == LoginResultType.doubleCheck {
                             // 중복 확인 성공 시
                             output.duplicatedIdCheck.accept(true)
-                            output.userNoticeString.accept(4)
+                            output.userNoticeString.accept(.avaliable)
                         }
                     }
                 }
