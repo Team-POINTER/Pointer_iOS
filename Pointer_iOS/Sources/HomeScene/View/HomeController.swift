@@ -100,10 +100,12 @@ class HomeController: BaseViewController {
     }
     
     @objc private func handleNotiLogoutTapped() {
-        TokenManager.resetUserToken()
-        guard let tabVc = tabBarController as? BaseTabBarController else { return }
-        tabVc.viewControllers = []
-        tabVc.configureAuth()
+        sceneDelegate?.appCoordinator?.logout()
+//        TokenManager.resetUserToken()
+//        guard let tabVc = tabBarController as? BaseTabBarController else { return }
+//        exit(0)
+//        tabVc.viewControllers = []
+//        tabVc.configureAuth()
     }
     
     @objc private func handleActionButtonTapped() {

@@ -132,6 +132,9 @@
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
 		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
+		F9AB8CF72A888E3000BA8309 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */; };
+		F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CF82A88900A00BA8309 /* AuthManager.swift */; };
+		F9AB8CFB2A8891D300BA8309 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */; };
 		F9F120702A5922AD009A33F2 /* RoomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */; };
 		F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F120722A592D75009A33F2 /* TokenManager.swift */; };
 /* End PBXBuildFile section */
@@ -250,6 +253,9 @@
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
+		F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		F9AB8CF82A88900A00BA8309 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRouter.swift; sourceTree = "<group>"; };
 		F9F120722A592D75009A33F2 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -658,13 +664,12 @@
 			children = (
 				47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */,
 				CD23208F29B8CFCB003D0B84 /* Util */,
+				F9AB8CF52A888E1B00BA8309 /* Application */,
 				CD23208D29B8CFC5003D0B84 /* Base */,
 				F98555232A72AFF200EB6247 /* Secret */,
 				CD23209329B8D2AF003D0B84 /* API */,
 				F9F120712A592D3A009A33F2 /* Authentication */,
 				CD23209029B8D253003D0B84 /* Sources */,
-				CD23207929B8C6EB003D0B84 /* AppDelegate.swift */,
-				CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */,
 				CD23208229B8C6EC003D0B84 /* Assets.xcassets */,
 				CD23208729B8C6EC003D0B84 /* Info.plist */,
 				4749D46D29B9B96800011E06 /* Font */,
@@ -735,7 +740,6 @@
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
 				47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */,
-				47CB4A892A7BB77000E001D2 /* UILabel.swift */,
 				F948AEFB2A86059E00DDC698 /* UIWindow.swift */,
 			);
 			path = Extension;
@@ -930,6 +934,18 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		F9AB8CF52A888E1B00BA8309 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				CD23207929B8C6EB003D0B84 /* AppDelegate.swift */,
+				CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */,
+				F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */,
+				F9AB8CF82A88900A00BA8309 /* AuthManager.swift */,
+				F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
 		F9F120712A592D3A009A33F2 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -1095,6 +1111,7 @@
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
+				F9AB8CF72A888E3000BA8309 /* AppCoordinator.swift in Sources */,
 				478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				478CA0062A62CEA3000FA196 /* HintViewModel.swift in Sources */,
@@ -1119,6 +1136,7 @@
 				47CB4A882A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift in Sources */,
 				F93C449D2A877F55009B04F3 /* PointerAlert+Wrapping.swift in Sources */,
 				F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */,
+				F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */,
 				473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */,
@@ -1135,6 +1153,7 @@
 				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,
 				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
 				F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */,
+				F9AB8CFB2A8891D300BA8309 /* LaunchScreen.swift in Sources */,
 				F93C44992A877B15009B04F3 /* FriendNetworkManager.swift in Sources */,
 				47CC89602A46844F0020246E /* AuthRouter.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
@@ -1281,10 +1300,12 @@
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Pointer;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 및 동영상 첨부를 위한 앨범 사용 권한";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "라이브러리에서 사진을 가져오기 위해 권한을 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1294,12 +1315,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1314,10 +1338,12 @@
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Pointer;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 및 동영상 첨부를 위한 앨범 사용 권한";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "라이브러리에서 사진을 가져오기 위해 권한을 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1327,12 +1353,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

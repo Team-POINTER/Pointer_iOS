@@ -19,10 +19,10 @@ class BaseTabBarController: UITabBarController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if hasFirstLoaded == false {
-            configureAuth()
-            hasFirstLoaded = true
-        }
+//        if hasFirstLoaded == false {
+//            configureAuth()
+//            hasFirstLoaded = true
+//        }
     }
     
     //MARK: - Auth 상태에 따라 View 변경
@@ -44,13 +44,14 @@ class BaseTabBarController: UITabBarController {
         // 유저 토큰이 존재하지 않다면
         DispatchQueue.main.async { [weak self] in
             let loginView = LoginViewController()
+            loginView.delegate = self
             loginView.modalPresentationStyle = .fullScreen
             self?.present(loginView, animated: true)
         }
     }
     
     //MARK: - Function
-    private func configureViewControllers() {
+    func configureViewControllers() {
         tabBarSetting()
         // 첫번째 탭
 //        let firstVC = UIViewController()
@@ -102,5 +103,11 @@ class BaseTabBarController: UITabBarController {
             tabBar.layer.masksToBounds = false
             tabBar.isTranslucent = false
         }
+    }
+}
+
+extension BaseTabBarController: LoginViewDelegate {
+    func loginSuccess() {
+        configureAuth()
     }
 }

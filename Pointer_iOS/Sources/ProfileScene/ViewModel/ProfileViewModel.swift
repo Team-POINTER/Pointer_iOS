@@ -168,6 +168,7 @@ class ProfileViewModel: ViewModelType {
     func requestUserFriendsList() {
         print("🔥요청하는 User Id : \(userId)")
         profileNetwork.getUserFriendList(userId: userId, lastPage: 0) { [weak self] result in
+            print(result?.userList.first?.file)
             guard let result = result else { return }
             self?.friendsCount.accept(result.total)
             self?.friendsArray.accept(result.userList)
