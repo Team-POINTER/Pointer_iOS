@@ -48,4 +48,13 @@ struct TokenManager {
             return 0
         }
     }
+    
+    // 푸시토큰
+    static func saveUserAPNSToken(token: String) {
+        UserDefaults.standard.set(token, forKey: "APNSToken")
+    }
+    
+    static func getUserAPNSToken() -> String? {
+        return UserDefaults.standard.string(forKey: "APNSToken")
+    }
 }

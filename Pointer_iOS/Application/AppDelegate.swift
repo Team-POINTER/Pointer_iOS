@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UserNotifications
 import IQKeyboardManagerSwift
 import KakaoSDKCommon
 import KakaoSDKUser
@@ -23,18 +24,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         KakaoSDK.initSDK(appKey: Secret.kakaoNativeKey)
         
-//        SendbirdUI.initialize(applicationId: Secret.sendbird_App) {
-//            // Do something to display the start of the SendbirdUIKit initialization.
-//        } migrationHandler: {
-//            // Do something to display the progress of the DB migration.
-//        } completionHandler: { error in
-//            // Do something to display the completion of the SendbirdChat initialization.
-//        }
-//
-        // set current user
-//        SBUGlobals.currentUser = SBUUser(userId: "userA")
-    
+        // 1. 푸시 권한 요청
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            print(granted)
+        }
+        
+        // 2. device 토큰 획득
+        application.registerForRemoteNotifications()
         return true
+    }
+    
+    //MARK: - Push 등록하는 메소드
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        TokenManager.saveUserAPNSToken(token: tokenString)
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -61,3 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+}

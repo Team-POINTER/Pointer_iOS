@@ -11,6 +11,7 @@ class AppCoordinator {
     //MARK: - Properties
     let tabBarController: BaseTabBarController
     let authManager = AuthManager()
+    let pushManager = RemotePushManager()
     
     //MARK: - Lifecycle
     init(_ tabBarController: BaseTabBarController) {
@@ -37,12 +38,15 @@ class AppCoordinator {
         authManager.configureAuth { [weak self] isSuccessed in
             // 런치스크린이 있다면 dismiss
             if let launchScreen = launchScreen {
+                
                 launchScreen.dismiss(animated: true)
             }
             
             // Auth 정보가 있다면 메인으로, 없다면 로그인 뷰로
             guard let self = self else { return }
             if isSuccessed {
+                // 푸시 등록
+                self.pushManager.registerRemotePushToken()
                 self.tabBarController.configureViewControllers()
             } else {
                 let loginView = LoginViewController()
