@@ -8,8 +8,14 @@
 import UIKit
 import SnapKit
 
-class AllNotiCell: UICollectionViewCell {
+class RoomNotiCell: UICollectionViewCell {
     //MARK: - Properties
+    var item: RoomAlarmList? {
+        didSet {
+            configure()
+        }
+    }
+    
     let userProfilImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "defaultProfile")
@@ -76,5 +82,10 @@ class AllNotiCell: UICollectionViewCell {
             $0.leading.equalTo(stack.snp.leading)
             $0.bottom.equalToSuperview().inset(16)
         }
+    }
+    
+    private func configure() {
+        guard let item = item else { return }
+        titleLabel.text = item.content
     }
 }

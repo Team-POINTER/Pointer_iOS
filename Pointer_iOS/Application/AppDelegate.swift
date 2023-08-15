@@ -25,19 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         KakaoSDK.initSDK(appKey: Secret.kakaoNativeKey)
         
         // 1. 푸시 권한 요청
-        let center = UNUserNotificationCenter.current()
-        center.delegate = self
-        
-        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             print(granted)
         }
-        
         // 2. device 토큰 획득
         application.registerForRemoteNotifications()
         return true
     }
-    
-    //MARK: - Push 등록하는 메소드
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
@@ -52,22 +47,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: UISceneSession Lifecycle
-
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
+
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
 
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
+    // 실행중에도 알림을 수신하도록 처리
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void){
+        completionHandler([.banner, .badge, .sound])
+    }
     
+    // 푸시 알림을 탭 했을 때
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        configureNotification(userInfo: userInfo)
+    }
+    
+    private func configureNotification(userInfo: [AnyHashable: Any]) {
+        print("🔔푸시: \(userInfo)")
+        sceneDelegate?.appCoordinator?.configurePushNotification(userInfo: userInfo)
+    }
 }

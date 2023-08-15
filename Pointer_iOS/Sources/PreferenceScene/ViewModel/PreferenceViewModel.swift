@@ -60,7 +60,11 @@ class PreferenceViewModel: ViewModelType {
         // 푸시 정보 request
         network.getRemotePushInfo { [weak self] result in
             guard let self = self,
-                  let result = result else { return }
+                  let result = result else {
+                let errorAlert = PointerAlert.getSimpleAlert(title: "🚨오류 발생", message: "오류가 발생했습니다😭\n다시 시도해주세요")
+                self?.alertView.accept(errorAlert)
+                return
+            }
             
             var trueCount = 0
             var newData = self.preferenceData.value

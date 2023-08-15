@@ -36,17 +36,19 @@ struct FriendsResponseModel: Codable {
     let status: Int
     let code: String
     let message: String
-    let userList: [FriendsModel]
+    let friendInfoList: [FriendsModel]
+    let name: String
     let total: Int
     let currentPage: Int
 }
 
 // MARK: - UserList
 struct FriendsModel: Codable {
-    let userId: Int
+    let friendId: Int
     let id: String
-    let userName: String
+    let friendName: String
     let file: String?
+    let relationship: String
 }
 
 //MARK: - 중복확인 결과

@@ -70,6 +70,13 @@ class AppCoordinator {
         }
         start()
     }
+    
+    // 실행중에 푸시 알림을 탭 했을 경우
+    func configurePushNotification(userInfo: [AnyHashable: Any]) {
+        guard let pushType = PushReceiver(rawValue: 0),
+              let nextViewController = pushType.getNextViewController(id: nil) else { return }
+        
+    }
 }
 
 // LoginViewDelegate - 회원가입 완료 이후

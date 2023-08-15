@@ -35,11 +35,11 @@ class ProfileNetworkManager {
     //MARK: - 친구 리스트 조회
     func getUserFriendList(userId: Int, lastPage: Int, completion: @escaping (FriendsResponseModel?) -> Void) {
         let router = ProfileRouter.getFriendsList(userId: userId, lastPage: lastPage)
-        
-        AF.request(router.url, method: router.method, headers: router.headers)
+        print(router.parameters)
+        AF.request(router.url, method: router.method, parameters: router.parameters, encoding: JSONEncoding.default, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: FriendsResponseModel.self) { response in
-                print("url: \(router.url)")
+                print(response)
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):

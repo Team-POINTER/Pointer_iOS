@@ -21,6 +21,10 @@ enum RemotePushRouter {
     case chatNotiEnable
     /// 이벤트 알림 활성화/비활성화
     case eventNotiEnable
+    /// Room 알림 리스트 조회
+    case getRoomPushList(lastPage: Int)
+    /// Friend 알림 리스트 조회
+    case getFriendPushList(lastPage: Int)
 }
 
 extension RemotePushRouter: HttpRouter {
@@ -47,6 +51,10 @@ extension RemotePushRouter: HttpRouter {
             return "/alarm/chat"
         case .eventNotiEnable:
             return "/alarm/event/active"
+        case .getRoomPushList(let lastPage):
+            return "/alarm/\(lastPage)"
+        case .getFriendPushList(let lastPage):
+            return "/alarm/friend/\(lastPage)"
         }
     }
     
@@ -58,6 +66,8 @@ extension RemotePushRouter: HttpRouter {
             return .get
         case .totalNotiEnable, .activityNotiEnable, .chatNotiEnable, .eventNotiEnable:
             return .post
+        case .getRoomPushList, .getFriendPushList:
+            return .get
         }
     }
     

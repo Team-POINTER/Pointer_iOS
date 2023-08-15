@@ -40,7 +40,7 @@ extension ProfileRouter: HttpRouter {
         case .getPoints:
             return "/users/get/points"
         case .getFriendsList(let userId, let lastPage):
-            return "/users/friend?userId=\(userId)&lastPage=\(lastPage)"
+            return "/friend/search"
         }
     }
     
@@ -57,7 +57,7 @@ extension ProfileRouter: HttpRouter {
         case .getPoints:
             return .get
         case .getFriendsList:
-            return .get
+            return .post
         }
     }
     
@@ -68,10 +68,12 @@ extension ProfileRouter: HttpRouter {
     }
     
     var parameters: Parameters? {
-        let parameters: [String: Any] = [
-            "userId": 4
-        ]
-        return parameters
+        switch self {
+        case .getFriendsList(let userId, let lastPage):
+            return ["userId": userId, "keyword": "", "lastPage": lastPage]
+        default:
+            return nil
+        }
     }
     
     func body() throws -> Data? {

@@ -149,7 +149,6 @@ struct RemotePushInfoResponse: Codable {
 }
 
 struct RemotePushInfoResult: Codable {
-    let allAlarm: Bool
     let activeAlarm: Bool
     let chatAlarm: Bool
     let eventAlarm: Bool

@@ -69,7 +69,7 @@
 		CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06C77B29C0C68600A88ACD /* TextfieldCustomView.swift */; };
 		CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E59E29CE1EEE00B52885 /* NotificationViewController.swift */; };
 		CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */; };
-		CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AC29D0008300B52885 /* AllNotiCell.swift */; };
+		CD07E5AD29D0008300B52885 /* RoomNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AC29D0008300B52885 /* RoomNotiCell.swift */; };
 		CD07E5AF29D000B400B52885 /* FriendsNotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */; };
 		CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */; };
 		CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */; };
@@ -141,6 +141,11 @@
 		F9AB8D052A8B480A00BA8309 /* RemotePushRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8D042A8B480A00BA8309 /* RemotePushRouter.swift */; };
 		F9F120702A5922AD009A33F2 /* RoomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */; };
 		F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F120722A592D75009A33F2 /* TokenManager.swift */; };
+		F9F4EFDB2A8BCE5400BB4D03 /* PushReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFDA2A8BCE5400BB4D03 /* PushReceiver.swift */; };
+		F9F4EFDD2A8BDA6800BB4D03 /* NotiDetailRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFDC2A8BDA6800BB4D03 /* NotiDetailRoomViewModel.swift */; };
+		F9F4EFE02A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFDF2A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift */; };
+		F9F4EFE22A8BDB0A00BB4D03 /* NotiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFE12A8BDB0A00BB4D03 /* NotiDetailViewModel.swift */; };
+		F9F4EFE52A8BDD9700BB4D03 /* NotiDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFE42A8BDD9700BB4D03 /* NotiDetailModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,7 +210,7 @@
 		CD06C77B29C0C68600A88ACD /* TextfieldCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldCustomView.swift; sourceTree = "<group>"; };
 		CD07E59E29CE1EEE00B52885 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		CD07E5A929CFFE9600B52885 /* NotificationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailViewController.swift; sourceTree = "<group>"; };
-		CD07E5AC29D0008300B52885 /* AllNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNotiCell.swift; sourceTree = "<group>"; };
+		CD07E5AC29D0008300B52885 /* RoomNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomNotiCell.swift; sourceTree = "<group>"; };
 		CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsNotiCell.swift; sourceTree = "<group>"; };
 		CD0EE9202A074B8F0090BF48 /* ProfileParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileParentViewController.swift; sourceTree = "<group>"; };
 		CD0EE9222A074C210090BF48 /* ProfileInfoParentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoParentView.swift; sourceTree = "<group>"; };
@@ -266,6 +271,11 @@
 		F9AB8D042A8B480A00BA8309 /* RemotePushRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePushRouter.swift; sourceTree = "<group>"; };
 		F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRouter.swift; sourceTree = "<group>"; };
 		F9F120722A592D75009A33F2 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		F9F4EFDA2A8BCE5400BB4D03 /* PushReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushReceiver.swift; sourceTree = "<group>"; };
+		F9F4EFDC2A8BDA6800BB4D03 /* NotiDetailRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotiDetailRoomViewModel.swift; path = Pointer_iOS/Sources/NotificationScene/ViewModel/NotiDetailRoomViewModel.swift; sourceTree = SOURCE_ROOT; };
+		F9F4EFDF2A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiDetailFriendsViewModel.swift; sourceTree = "<group>"; };
+		F9F4EFE12A8BDB0A00BB4D03 /* NotiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiDetailViewModel.swift; sourceTree = "<group>"; };
+		F9F4EFE42A8BDD9700BB4D03 /* NotiDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiDetailModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -587,17 +597,11 @@
 		CD07E59B29CE1ECC00B52885 /* NotificationScene */ = {
 			isa = PBXGroup;
 			children = (
+				F9F4EFE32A8BDD8900BB4D03 /* Model */,
 				CD07E59D29CE1EE400B52885 /* View */,
-				CD07E59C29CE1EE200B52885 /* ViewModel */,
+				F9F4EFDE2A8BDADF00BB4D03 /* ViewModel */,
 			);
 			path = NotificationScene;
-			sourceTree = "<group>";
-		};
-		CD07E59C29CE1EE200B52885 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CD07E59D29CE1EE400B52885 /* View */ = {
@@ -613,7 +617,7 @@
 		CD07E5AB29D0007500B52885 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				CD07E5AC29D0008300B52885 /* AllNotiCell.swift */,
+				CD07E5AC29D0008300B52885 /* RoomNotiCell.swift */,
 				CD07E5AE29D000B400B52885 /* FriendsNotiCell.swift */,
 			);
 			path = Cell;
@@ -954,7 +958,7 @@
 				F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */,
 				F9AB8CF82A88900A00BA8309 /* AuthManager.swift */,
 				F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */,
-				F9AB8D012A8B47A100BA8309 /* RemotePushManager.swift */,
+				F9F4EFDA2A8BCE5400BB4D03 /* PushReceiver.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -962,6 +966,7 @@
 		F9AB8D032A8B47EB00BA8309 /* RemotePush */ = {
 			isa = PBXGroup;
 			children = (
+				F9AB8D012A8B47A100BA8309 /* RemotePushManager.swift */,
 			);
 			path = RemotePush;
 			sourceTree = "<group>";
@@ -973,6 +978,24 @@
 			);
 			name = Authentication;
 			path = "며소";
+			sourceTree = "<group>";
+		};
+		F9F4EFDE2A8BDADF00BB4D03 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4EFDC2A8BDA6800BB4D03 /* NotiDetailRoomViewModel.swift */,
+				F9F4EFDF2A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift */,
+				F9F4EFE12A8BDB0A00BB4D03 /* NotiDetailViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F9F4EFE32A8BDD8900BB4D03 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4EFE42A8BDD9700BB4D03 /* NotiDetailModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1086,6 +1109,7 @@
 				CD0667812A04E8870003C7B4 /* UserFriendCell.swift in Sources */,
 				F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */,
 				CD6BCDAC29BB97B300DB024C /* RoomPreviewCell.swift in Sources */,
+				F9F4EFE52A8BDD9700BB4D03 /* NotiDetailModel.swift in Sources */,
 				47CB4A862A7B789300E001D2 /* FloatingPanelController.swift in Sources */,
 				CD23209E29B8DC0E003D0B84 /* BaseNavigationController.swift in Sources */,
 				47FD24A52A83705600529342 /* SearchViewModel.swift in Sources */,
@@ -1106,12 +1130,14 @@
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
 				F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */,
+				F9F4EFE22A8BDB0A00BB4D03 /* NotiDetailViewModel.swift in Sources */,
 				F9AB8CFE2A8B389200BA8309 /* Secret.swift in Sources */,
 				F912D7F92A7E830500178651 /* EditProfileViewModel.swift in Sources */,
 				CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */,
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
 				47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */,
 				CD5BCC5F29F5423700DD44F7 /* PreferenceItemCell.swift in Sources */,
+				F9F4EFDD2A8BDA6800BB4D03 /* NotiDetailRoomViewModel.swift in Sources */,
 				478CA00F2A6D246C000FA196 /* ReportViewController.swift in Sources */,
 				4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */,
 				F93C449B2A877DAF009B04F3 /* FriendRelationship.swift in Sources */,
@@ -1149,7 +1175,7 @@
 				47CC895A2A46829B0020246E /* HttpService.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
 				F9AB8D022A8B47A100BA8309 /* RemotePushManager.swift in Sources */,
-				CD07E5AD29D0008300B52885 /* AllNotiCell.swift in Sources */,
+				CD07E5AD29D0008300B52885 /* RoomNotiCell.swift in Sources */,
 				478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
 				478CA0122A6D337B000FA196 /* ReportViewModel.swift in Sources */,
@@ -1180,8 +1206,10 @@
 				F9AB8CFB2A8891D300BA8309 /* LaunchScreen.swift in Sources */,
 				F93C44992A877B15009B04F3 /* FriendNetworkManager.swift in Sources */,
 				47CC89602A46844F0020246E /* AuthRouter.swift in Sources */,
+				F9F4EFDB2A8BCE5400BB4D03 /* PushReceiver.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
 				F93C449F2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift in Sources */,
+				F9F4EFE02A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
@@ -1320,7 +1348,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
@@ -1358,7 +1386,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;

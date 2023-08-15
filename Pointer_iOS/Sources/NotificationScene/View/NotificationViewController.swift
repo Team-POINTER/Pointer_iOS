@@ -24,10 +24,10 @@ class NotificationViewController: BaseViewController {
     }()
     
     // 뷰컨트롤러s
-    lazy var allNotiVC = NotificationDetailViewController(withNotificationType: .all)
-    lazy var friendsNotiVC = NotificationDetailViewController(withNotificationType: .friends)
+    lazy var roomNotiVC = NotificationDetailViewController(withNotificationType: .room(viewModel: NotiDetailRoomViewModel()))
+    lazy var friendsNotiVC = NotificationDetailViewController(withNotificationType: .friends(viewModel: NotiDetailFriendsViewModel()))
     
-    lazy var viewControllers = [allNotiVC, friendsNotiVC]
+    lazy var viewControllers = [roomNotiVC, friendsNotiVC]
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         return vc

@@ -51,7 +51,6 @@ class RemotePushManager {
             .responseDecodable(of: RemotePushInfoResponse.self) { response in
                 switch response.result {
                 case .success(let result):
-                    print(result)
                     if result.code == router.successCode {
                         completion(result.result)
                     } else {
@@ -80,6 +79,48 @@ class RemotePushManager {
                 case .failure(let error):
                     print(error)
                     completion(false)
+                }
+            }
+    }
+    
+    // 알림 리스트 호출
+    func requestRoomNotiDetailList(completion: @escaping ([RoomAlarmList]) -> Void) {
+        let router = RemotePushRouter.getRoomPushList(lastPage: 0)
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: NotiDetailRoomResponse.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print(result)
+                    if result.code == router.successCode {
+                        completion(result.result.alarmList)
+                    } else {
+                        completion([])
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion([])
+                }
+            }
+    }
+    
+    // 친구 알림 리스트 호출
+    func requestFriendNotiDetailList(completion: @escaping ([FriendAlarmList]) -> Void) {
+        let router = RemotePushRouter.getRoomPushList(lastPage: 0)
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: NotiDetailFriendResponse.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print(result)
+                    if result.code == router.successCode {
+                        completion(result.result)
+                    } else {
+                        completion([])
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion([])
                 }
             }
     }

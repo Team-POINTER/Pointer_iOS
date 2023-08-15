@@ -6,9 +6,17 @@
 //
 
 import UIKit
+import Kingfisher
+import SnapKit
 
 class FriendsNotiCell: UICollectionViewCell {
     //MARK: - Properties
+    var item: FriendAlarmList? {
+        didSet {
+            configure()
+        }
+    }
+    
     let userProfilImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "defaultProfile")
@@ -79,5 +87,17 @@ class FriendsNotiCell: UICollectionViewCell {
             actionButton.layer.cornerRadius = 12
             actionButton.clipsToBounds = true
         }
+    }
+    
+    private func configure() {
+        guard let item = item else { return }
+        let profileUrl = URL(string: item.sendUserProfile.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
+        userProfilImageView.kf.indicatorType = .activity
+        userProfilImageView.kf.setImage(with: profileUrl)
+        
+        userNameLabel.text = item.sendUserName
+        userAccountLabel.text = item.sendUserId
+        
+        
     }
 }
