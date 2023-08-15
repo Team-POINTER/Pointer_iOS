@@ -64,14 +64,20 @@ class RoomPreviewCell: UICollectionViewCell {
         return label
     }()
     
+    lazy var actionContainerView: UIView = {
+        let view = UIView()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(actionImageTapped))
+        view.addGestureRecognizer(tap)
+        return view
+    }()
+    
     lazy var actionImageView: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(systemName: "ellipsis")
         image.transform = image.transform.rotated(by: .pi/2)
         image.tintColor = .black
+        image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(actionImageTapped))
-        image.addGestureRecognizer(tap)
         return image
     }()
 
@@ -105,7 +111,7 @@ class RoomPreviewCell: UICollectionViewCell {
         addSubview(memberCountLabel)
         addSubview(starIcon)
         addSubview(leaderNameLabel)
-        addSubview(actionImageView)
+        addSubview(actionContainerView)
         
         roomNameLabel.snp.makeConstraints {
             $0.leading.top.equalToSuperview().inset(21.5)
@@ -132,9 +138,14 @@ class RoomPreviewCell: UICollectionViewCell {
             $0.bottom.equalTo(starIcon)
         }
         
-        actionImageView.snp.makeConstraints {
+        actionContainerView.snp.makeConstraints {
             $0.trailing.bottom.equalToSuperview().inset(16)
             $0.width.height.equalTo(20)
+        }
+        
+        actionContainerView.addSubview(actionImageView)
+        actionImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
@@ -144,5 +155,12 @@ class RoomPreviewCell: UICollectionViewCell {
         roomBodyLabel.text = viewModel.roomModel.question
         memberCountLabel.text = "\(viewModel.roomModel.memberCnt) 명"
         
+        if viewModel.roomModel.topUserName == nil || viewModel.roomModel.topUserName == "" {
+            starIcon.isHidden = true
+            leaderNameLabel.text = ""
+        } else {
+            starIcon.isHidden = false
+            leaderNameLabel.text = viewModel.roomModel.topUserName
+        }
     }
 }

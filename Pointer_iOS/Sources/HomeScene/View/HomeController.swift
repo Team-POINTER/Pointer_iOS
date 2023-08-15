@@ -12,6 +12,9 @@ import SnapKit
 class HomeController: BaseViewController {
     //MARK: - Properties
     private let disposeBag = DisposeBag()
+    private lazy var refreshControl = PointerRefreshControl(target: self) { [weak self] in
+        self?.viewModel.requestRoomList()
+    }
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -21,6 +24,7 @@ class HomeController: BaseViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
         cv.register(RoomPreviewCell.self, forCellWithReuseIdentifier: RoomPreviewCell.identifier)
+        cv.refreshControl = refreshControl
         cv.delegate = self
         return cv
     }()
@@ -52,6 +56,9 @@ class HomeController: BaseViewController {
         _ = viewModel.transform(input: input)
         
         viewModel.roomModel
+            .do(onNext: { [weak self] _ in
+                self?.refreshControl.endRefreshing()
+            })
             .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoomPreviewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPreviewCell else { return UICollectionViewCell() }
                 cell.roomViewModel = self?.viewModel.getRoomViewModel(index: index)
@@ -101,11 +108,6 @@ class HomeController: BaseViewController {
     
     @objc private func handleNotiLogoutTapped() {
         sceneDelegate?.appCoordinator?.logout()
-//        TokenManager.resetUserToken()
-//        guard let tabVc = tabBarController as? BaseTabBarController else { return }
-//        exit(0)
-//        tabVc.viewControllers = []
-//        tabVc.configureAuth()
     }
     
     @objc private func handleActionButtonTapped() {

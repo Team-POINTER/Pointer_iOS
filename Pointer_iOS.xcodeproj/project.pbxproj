@@ -135,6 +135,7 @@
 		F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CF82A88900A00BA8309 /* AuthManager.swift */; };
 		F9AB8CFB2A8891D300BA8309 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */; };
 		F9AB8CFE2A8B389200BA8309 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFD2A8B389200BA8309 /* Secret.swift */; };
+		F9AB8D002A8B442200BA8309 /* PointerRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */; };
 		F9F120702A5922AD009A33F2 /* RoomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */; };
 		F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F120722A592D75009A33F2 /* TokenManager.swift */; };
 /* End PBXBuildFile section */
@@ -256,6 +257,7 @@
 		F9AB8CF82A88900A00BA8309 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		F9AB8CFD2A8B389200BA8309 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerRefreshControl.swift; sourceTree = "<group>"; };
 		F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRouter.swift; sourceTree = "<group>"; };
 		F9F120722A592D75009A33F2 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -569,6 +571,7 @@
 				473B739929CEE41100B33C77 /* ViewModelType.swift */,
 				F948AEF92A86041D00DDC698 /* IndicatorManager.swift */,
 				F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */,
+				F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1121,6 +1124,7 @@
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
 				CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */,
+				F9AB8D002A8B442200BA8309 /* PointerRefreshControl.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
 				47CC895A2A46829B0020246E /* HttpService.swift in Sources */,

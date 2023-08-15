@@ -112,7 +112,8 @@ class PointerAlert: UIViewController {
             self.topStack.addArrangedSubview(button)
         }
         // 취소버튼
-        let cancel = makeInnerView(title: "취소", font: .notoSansRegular(size: 18), textColor: .black, backgroundColor: .clear, index: 0, height: 70) { _ in
+        let cancellIndex = configs.count
+        let cancel = makeInnerView(title: "취소", font: .notoSansRegular(size: 18), textColor: .black, backgroundColor: .clear, index: cancellIndex, height: 70) { _ in
             
         }
 
@@ -128,7 +129,7 @@ class PointerAlert: UIViewController {
         view.addSubview(buttonsStack)
         buttonsStack.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(14)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
         UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseIn) {
@@ -195,7 +196,8 @@ class PointerAlert: UIViewController {
     //MARK: - Common
     private func makeButtonStack(addSubViews: [UIView]) -> UIStackView {
         let view = UIStackView(arrangedSubviews: addSubViews)
-        view.backgroundColor = .pointerGray
+        view.backgroundColor = UIColor(red: 0.91, green: 0.914, blue: 0.953, alpha: 0.8)
+
         view.layer.cornerRadius = 25
         view.isLayoutMarginsRelativeArrangement = true
         view.layoutMargins = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 19)
@@ -256,9 +258,9 @@ class PointerAlert: UIViewController {
         if let title = alertTitle {
             let titleLabel: UILabel = {
                 let label = UILabel()
-                label.font = .systemFont(ofSize: 14)
+                label.font = .notoSansRegular(size: 13)
                 label.textAlignment = .center
-                label.textColor  = .black
+                label.textColor  = .rgb(red: 87, green: 90, blue: 107)
                 label.text = title
                 return label
             }()
@@ -288,7 +290,7 @@ class PointerAlert: UIViewController {
     
     private func makeDivider() -> UIView {
         let view = UIView()
-        view.backgroundColor = .alertGray
+        view.backgroundColor = .alertGray.withAlphaComponent(0.5)
         return view
     }
     
