@@ -58,6 +58,8 @@
 		47CC89602A46844F0020246E /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* AuthRouter.swift */; };
 		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
 		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
+		47E049A32A8A50A4000A789D /* ReportNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E049A22A8A50A3000A789D /* ReportNetworkManager.swift */; };
+		47E049A52A8A50E8000A789D /* ReportRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E049A42A8A50E8000A789D /* ReportRouter.swift */; };
 		47FD24A52A83705600529342 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A42A83705600529342 /* SearchViewModel.swift */; };
 		47FD24A72A8395A200529342 /* FriendSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A62A8395A200529342 /* FriendSearchRouter.swift */; };
 		47FD24AA2A83E67900529342 /* FriendSearchNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A92A83E67900529342 /* FriendSearchNetworkManager.swift */; };
@@ -187,6 +189,8 @@
 		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
 		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
 		47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewModel.swift; sourceTree = "<group>"; };
+		47E049A22A8A50A3000A789D /* ReportNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportNetworkManager.swift; sourceTree = "<group>"; };
+		47E049A42A8A50E8000A789D /* ReportRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRouter.swift; sourceTree = "<group>"; };
 		47FD24A42A83705600529342 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		47FD24A62A8395A200529342 /* FriendSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSearchRouter.swift; sourceTree = "<group>"; };
 		47FD24A92A83E67900529342 /* FriendSearchNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSearchNetworkManager.swift; sourceTree = "<group>"; };
@@ -493,6 +497,7 @@
 				F98555262A72B08B00EB6247 /* ProfileRouter.swift */,
 				47FD24A62A8395A200529342 /* FriendSearchRouter.swift */,
 				F948AF022A87787500DDC698 /* FriendRouter.swift */,
+				47E049A42A8A50E8000A789D /* ReportRouter.swift */,
 			);
 			path = HTTP;
 			sourceTree = "<group>";
@@ -504,12 +509,20 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		47FD24A82A83E63A00529342 /* Friend */ = {
+		47E049A12A8A5090000A789D /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				47E049A22A8A50A3000A789D /* ReportNetworkManager.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
+		47FD24A82A83E63A00529342 /* SearchFriend */ = {
 			isa = PBXGroup;
 			children = (
 				47FD24A92A83E67900529342 /* FriendSearchNetworkManager.swift */,
 			);
-			path = Friend;
+			path = SearchFriend;
 			sourceTree = "<group>";
 		};
 		CD0667772A04E8870003C7B4 /* ProfileScene */ = {
@@ -719,9 +732,10 @@
 				478C9FED2A5EC274000FA196 /* Home */,
 				478C9FF72A60385D000FA196 /* Room */,
 				478CA0022A623EA7000FA196 /* Result */,
+				47E049A12A8A5090000A789D /* Report */,
 				F93C44972A877B04009B04F3 /* Friend */,
 				F985552B2A72B75200EB6247 /* Profile */,
-				47FD24A82A83E63A00529342 /* Friend */,
+				47FD24A82A83E63A00529342 /* SearchFriend */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -735,7 +749,6 @@
 				4749D47A29B9BB3300011E06 /* UIImage.swift */,
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
 				47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */,
-				47CB4A892A7BB77000E001D2 /* UILabel.swift */,
 				F948AEFB2A86059E00DDC698 /* UIWindow.swift */,
 			);
 			path = Extension;
@@ -1059,6 +1072,7 @@
 				CD5BCC5D29F53B8500DD44F7 /* PreferenceViewModel.swift in Sources */,
 				4749D47B29B9BB3300011E06 /* UIImage.swift in Sources */,
 				47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */,
+				47E049A52A8A50E8000A789D /* ReportRouter.swift in Sources */,
 				CD6BCDAA29BB4B5E00DB024C /* UIBarButtonItem.swift in Sources */,
 				CD5BCC5A29F53B5E00DD44F7 /* PreferenceModel.swift in Sources */,
 				CD0EE9272A0788510090BF48 /* ProfileEditViewController.swift in Sources */,
@@ -1101,6 +1115,7 @@
 				47548E3C2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift in Sources */,
 				47117CA529C72EB3001707C8 /* ResultViewController.swift in Sources */,
 				CD06C77C29C0C68600A88ACD /* TextfieldCustomView.swift in Sources */,
+				47E049A32A8A50A4000A789D /* ReportNetworkManager.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
 				CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */,

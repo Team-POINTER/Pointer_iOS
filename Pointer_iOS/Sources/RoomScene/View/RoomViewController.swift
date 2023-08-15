@@ -281,7 +281,7 @@ class RoomViewController: BaseViewController {
     }
     
     func presentReportView(_ reason: String) {
-        let reportVC = ReportViewController(reason: reason)
+        let reportVC = ReportViewController(viewModel: ReportViewModel())
         fpc.set(contentViewController: reportVC)
         fpc.track(scrollView: reportVC.scrollView)
         self.present(fpc, animated: true)
