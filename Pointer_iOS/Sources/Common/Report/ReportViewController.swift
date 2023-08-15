@@ -12,13 +12,15 @@ import RxCocoa
 import IQKeyboardManagerSwift
 
 final class ReportViewController: UIViewController {
-    let reason: String
     
     let disposeBag = DisposeBag()
-    let viewModel = ReportViewModel()
+    let viewModel: ReportViewModel
     
     func bindViewModel() {
-        let input = ReportViewModel.Input(reportText: reportTextView.rx.text.orEmpty.asObservable())
+        let input = ReportViewModel.Input(
+            reportText: reportTextView.rx.text.orEmpty.asObservable(),
+            submitButtonTapedEvent: submitButton.rx.tap.asObservable()
+        )
         let output = viewModel.transform(input: input)
 
         output.limitText
@@ -101,7 +103,7 @@ final class ReportViewController: UIViewController {
     }(UIButton())
     
     lazy var reasonLabel: UILabel = {
-        $0.text = "사유 : \(reason)"
+        $0.text = "사유 : \(viewModel.reasonCode)"
         $0.font = UIFont.notoSans(font: .notoSansKrRegular, size: 12)
         $0.textColor = UIColor.rgb(red: 87, green: 90, blue: 107)
         $0.textAlignment = .left
@@ -126,8 +128,8 @@ final class ReportViewController: UIViewController {
     }(UITextView())
     
     // MARK: - Life Cycles
-    init(reason: String) {
-        self.reason = reason
+    init(viewModel: ReportViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         setUpView()
     }

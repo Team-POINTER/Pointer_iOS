@@ -49,6 +49,7 @@ class HomeViewModel: ViewModelType {
             nextViewController.accept(resultVC)
         } else {
             let roomVC = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
+            roomVC.delegate = self
             nextViewController.accept(roomVC)
         }
     }
@@ -167,5 +168,12 @@ class HomeViewModel: ViewModelType {
                 print("실패")
             }
         }
+    }
+}
+
+//MARK: - RoomViewControllerDelegate
+extension HomeViewModel: RoomViewControllerDelegate {
+    func didChangedRoomState() {
+        self.requestRoomList()
     }
 }
