@@ -86,6 +86,7 @@ class SearchResultController: UIViewController {
     private func setupCollectionView() {
         collectionView.register(RoomPreviewCell.self, forCellWithReuseIdentifier: roomCellReuseIdentifier)
         collectionView.register(AccountInfoCell.self, forCellWithReuseIdentifier: accountCellReuseIdentifier)
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.delegate = self
         collectionView.dataSource = self
     }
