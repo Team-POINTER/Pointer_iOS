@@ -38,7 +38,7 @@ struct RoomNameChangeInput: Codable {
 }
 
 struct PointerDefaultResponse: Codable {
-    let status: Int
+    let status: Int?
     let code: String
     let message: String
 }

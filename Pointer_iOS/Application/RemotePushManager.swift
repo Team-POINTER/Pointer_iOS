@@ -42,6 +42,47 @@ class RemotePushManager {
                 }
             }
     }
+    
+    func getRemotePushInfo(completion: @escaping (RemotePushInfoResult?) -> Void) {
+        let router = RemotePushRouter.getPushEnableStatus
+        // 네트워크 request
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: RemotePushInfoResponse.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print(result)
+                    if result.code == router.successCode {
+                        completion(result.result)
+                    } else {
+                        completion(nil)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(nil)
+                }
+            }
+    }
+    
+    // 푸시 토글
+    func requestTogglePushStatus(status: Bool, router: RemotePushRouter, completion: @escaping (Bool) -> Void) {
+        AF.request(router.url, method: router.method, parameters: router.getStatusParam(status), encoding: JSONEncoding.default, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: PointerDefaultResponse.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print(result)
+                    if result.code == router.successCode {
+                        completion(true)
+                    } else {
+                        completion(false)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+                }
+            }
+    }
 }
 
 struct RemotePushResponse: Decodable {

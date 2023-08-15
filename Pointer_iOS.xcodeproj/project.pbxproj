@@ -117,6 +117,7 @@
 		CDEC90542A0A81BC00EA437D /* EditUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */; };
 		F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90071982A60367500D1CDEE /* PointerRoomModel.swift */; };
 		F912D7F92A7E830500178651 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F912D7F82A7E830500178651 /* EditProfileViewModel.swift */; };
+		F92584942A8B69490098EBA2 /* PointerToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92584932A8B69490098EBA2 /* PointerToggleView.swift */; };
 		F925EB5D2A604897008139FE /* RoomCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F925EB5C2A604897008139FE /* RoomCellViewModel.swift */; };
 		F93C44992A877B15009B04F3 /* FriendNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C44982A877B15009B04F3 /* FriendNetworkManager.swift */; };
 		F93C449B2A877DAF009B04F3 /* FriendRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C449A2A877DAF009B04F3 /* FriendRelationship.swift */; };
@@ -244,6 +245,7 @@
 		CDEC90532A0A81BC00EA437D /* EditUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserIDViewController.swift; sourceTree = "<group>"; };
 		F90071982A60367500D1CDEE /* PointerRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerRoomModel.swift; sourceTree = "<group>"; };
 		F912D7F82A7E830500178651 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		F92584932A8B69490098EBA2 /* PointerToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerToggleView.swift; sourceTree = "<group>"; };
 		F925EB5C2A604897008139FE /* RoomCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCellViewModel.swift; sourceTree = "<group>"; };
 		F93C44982A877B15009B04F3 /* FriendNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendNetworkManager.swift; sourceTree = "<group>"; };
 		F93C449A2A877DAF009B04F3 /* FriendRelationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationship.swift; sourceTree = "<group>"; };
@@ -577,6 +579,7 @@
 				F948AEF92A86041D00DDC698 /* IndicatorManager.swift */,
 				F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */,
 				F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */,
+				F92584932A8B69490098EBA2 /* PointerToggleView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1142,6 +1145,7 @@
 				F9AB8D002A8B442200BA8309 /* PointerRefreshControl.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
+				F92584942A8B69490098EBA2 /* PointerToggleView.swift in Sources */,
 				47CC895A2A46829B0020246E /* HttpService.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
 				F9AB8D022A8B47A100BA8309 /* RemotePushManager.swift in Sources */,
