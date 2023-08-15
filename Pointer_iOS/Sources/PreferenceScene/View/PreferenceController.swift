@@ -43,12 +43,12 @@ class PreferenceController: BaseViewController {
     
     //MARK: - Functions
     func bind() {
-        viewModel.transform(
+        _ = viewModel.transform(
             input: PreferenceViewModel.Input(collectionItemSelected: collectionView.rx.itemSelected.asObservable()))
         
         viewModel.preferenceData
             .bind { [weak self] data in
-                if data != nil {
+                if !data.isEmpty {
                     self?.collectionView.reloadData()
                 }
             }
@@ -59,6 +59,13 @@ class PreferenceController: BaseViewController {
                 if data != nil {
                     self?.collectionView.reloadData()
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.alertView
+            .bind { [weak self] alert in
+                guard let alert = alert else { return }
+                self?.present(alert, animated: true)
             }
             .disposed(by: disposeBag)
     }

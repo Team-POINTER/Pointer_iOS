@@ -26,6 +26,7 @@ class PreferenceViewModel: ViewModelType {
     
     let preferenceData = BehaviorRelay<[PreferenceModel]>(value: PreferenceModel.getPreferenceData())
     let pushInfoData = BehaviorRelay<RemotePushInfoResult?>(value: nil)
+    let alertView = BehaviorRelay<PointerAlert?>(value: nil)
     
     //MARK: - Computed Properties
     
@@ -118,7 +119,8 @@ extension PreferenceViewModel: PreferenceItemDelegate {
             if isSuccessed {
                 self?.requestPushInfoData()
             } else {
-                print("실패..")
+                let errorAlert = PointerAlert.getSimpleAlert(title: "오류가 발생했습니다😭", message: "다시 시도해주세요")
+                self?.alertView.accept(errorAlert)
             }
         }
     }
