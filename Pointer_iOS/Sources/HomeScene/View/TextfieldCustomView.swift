@@ -18,7 +18,7 @@ class CustomTextfieldView: UIView {
     lazy var textfield: UITextField = {
         let tf = UITextField()
         tf.backgroundColor = UIColor.rgb(red: 239, green: 239, blue: 239)
-        tf.placeholder = "룸 이름을 입력하세요"
+        tf.attributedPlaceholder = NSAttributedString(string: "룸 이름을 입력하세요", attributes: [.font: UIFont.notoSans(font: .notoSansKrRegular, size: 15), .foregroundColor: UIColor.alertGray])
         tf.font = .notoSansRegular(size: 16)
         tf.delegate = self
         tf.textColor = .black
@@ -40,13 +40,13 @@ class CustomTextfieldView: UIView {
     let disposeBag = DisposeBag()
     
     //MARK: - Lifecycle
-    init(roomName: String, withViewHeight height: CGFloat) {
+    init(roomName: String?, withViewHeight height: CGFloat) {
         self.height = height
         super.init(frame: .zero)
         bind()
         setupUI()
         self.textfield.text = roomName
-        self.currentCharacterCount.onNext(roomName.count)
+        self.currentCharacterCount.onNext(roomName?.count ?? 0)
     }
     
     required init?(coder: NSCoder) {

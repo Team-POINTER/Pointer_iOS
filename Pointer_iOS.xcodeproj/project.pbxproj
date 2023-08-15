@@ -130,10 +130,14 @@
 		F948AF012A860A7400DDC698 /* NVActivityIndicatorViewExtended in Frameworks */ = {isa = PBXBuildFile; productRef = F948AF002A860A7400DDC698 /* NVActivityIndicatorViewExtended */; };
 		F948AF032A87787500DDC698 /* FriendRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AF022A87787500DDC698 /* FriendRouter.swift */; };
 		F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F94CD6C12A85169E00A808B9 /* YPImagePicker */; };
-		F98555252A72B00300EB6247 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555242A72B00300EB6247 /* Secret.swift */; };
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
 		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
+		F9AB8CF72A888E3000BA8309 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */; };
+		F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CF82A88900A00BA8309 /* AuthManager.swift */; };
+		F9AB8CFB2A8891D300BA8309 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */; };
+		F9AB8CFE2A8B389200BA8309 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFD2A8B389200BA8309 /* Secret.swift */; };
+		F9AB8D002A8B442200BA8309 /* PointerRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */; };
 		F9F120702A5922AD009A33F2 /* RoomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */; };
 		F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F120722A592D75009A33F2 /* TokenManager.swift */; };
 /* End PBXBuildFile section */
@@ -250,10 +254,14 @@
 		F948AEF92A86041D00DDC698 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
 		F948AEFB2A86059E00DDC698 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		F948AF022A87787500DDC698 /* FriendRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRouter.swift; sourceTree = "<group>"; };
-		F98555242A72B00300EB6247 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
+		F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		F9AB8CF82A88900A00BA8309 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		F9AB8CFD2A8B389200BA8309 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerRefreshControl.swift; sourceTree = "<group>"; };
 		F9F1206F2A5922AD009A33F2 /* RoomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRouter.swift; sourceTree = "<group>"; };
 		F9F120722A592D75009A33F2 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -576,6 +584,7 @@
 				473B739929CEE41100B33C77 /* ViewModelType.swift */,
 				F948AEF92A86041D00DDC698 /* IndicatorManager.swift */,
 				F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */,
+				F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -671,13 +680,12 @@
 			children = (
 				47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */,
 				CD23208F29B8CFCB003D0B84 /* Util */,
+				F9AB8CF52A888E1B00BA8309 /* Application */,
 				CD23208D29B8CFC5003D0B84 /* Base */,
 				F98555232A72AFF200EB6247 /* Secret */,
 				CD23209329B8D2AF003D0B84 /* API */,
 				F9F120712A592D3A009A33F2 /* Authentication */,
 				CD23209029B8D253003D0B84 /* Sources */,
-				CD23207929B8C6EB003D0B84 /* AppDelegate.swift */,
-				CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */,
 				CD23208229B8C6EC003D0B84 /* Assets.xcassets */,
 				CD23208729B8C6EC003D0B84 /* Info.plist */,
 				4749D46D29B9B96800011E06 /* Font */,
@@ -921,7 +929,7 @@
 		F98555232A72AFF200EB6247 /* Secret */ = {
 			isa = PBXGroup;
 			children = (
-				F98555242A72B00300EB6247 /* Secret.swift */,
+				F9AB8CFD2A8B389200BA8309 /* Secret.swift */,
 			);
 			path = Secret;
 			sourceTree = "<group>";
@@ -941,6 +949,18 @@
 				F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		F9AB8CF52A888E1B00BA8309 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				CD23207929B8C6EB003D0B84 /* AppDelegate.swift */,
+				CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */,
+				F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */,
+				F9AB8CF82A88900A00BA8309 /* AuthManager.swift */,
+				F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 		F9F120712A592D3A009A33F2 /* Authentication */ = {
@@ -1084,6 +1104,7 @@
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
 				F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */,
+				F9AB8CFE2A8B389200BA8309 /* Secret.swift in Sources */,
 				F912D7F92A7E830500178651 /* EditProfileViewModel.swift in Sources */,
 				CD0EE9212A074B8F0090BF48 /* ProfileParentViewController.swift in Sources */,
 				47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */,
@@ -1102,13 +1123,13 @@
 				47FD24A72A8395A200529342 /* FriendSearchRouter.swift in Sources */,
 				CDC51EC929C4EB0C00E8BC58 /* SearchController.swift in Sources */,
 				CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */,
-				F98555252A72B00300EB6247 /* Secret.swift in Sources */,
 				CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */,
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
+				F9AB8CF72A888E3000BA8309 /* AppCoordinator.swift in Sources */,
 				478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */,
 				CD7A70FF29BE23D0003E140C /* UIFont.swift in Sources */,
 				478CA0062A62CEA3000FA196 /* HintViewModel.swift in Sources */,
@@ -1119,6 +1140,7 @@
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
 				CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */,
+				F9AB8D002A8B442200BA8309 /* PointerRefreshControl.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
 				47CC895A2A46829B0020246E /* HttpService.swift in Sources */,
@@ -1134,6 +1156,7 @@
 				47CB4A882A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift in Sources */,
 				F93C449D2A877F55009B04F3 /* PointerAlert+Wrapping.swift in Sources */,
 				F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */,
+				F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */,
 				473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */,
@@ -1150,6 +1173,7 @@
 				CD2F79C22A0FC7C80094F81F /* FriendsListViewModel.swift in Sources */,
 				471145D02A0E321800AED0DC /* NewQuestViewModel.swift in Sources */,
 				F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */,
+				F9AB8CFB2A8891D300BA8309 /* LaunchScreen.swift in Sources */,
 				F93C44992A877B15009B04F3 /* FriendNetworkManager.swift in Sources */,
 				47CC89602A46844F0020246E /* AuthRouter.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
@@ -1296,10 +1320,12 @@
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Pointer;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 및 동영상 첨부를 위한 앨범 사용 권한";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "라이브러리에서 사진을 가져오기 위해 권한을 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1309,12 +1335,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1329,10 +1358,12 @@
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Pointer;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 및 동영상 첨부를 위한 앨범 사용 권한";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "라이브러리에서 사진을 가져오기 위해 권한을 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1342,12 +1373,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

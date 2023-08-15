@@ -32,6 +32,9 @@ enum ReportType: String, CaseIterable {
     case etc = "기타 사유"
 }
 
+protocol RoomViewControllerDelegate: AnyObject {
+    func didChangedRoomState()
+}
 
 class RoomViewController: BaseViewController {
     
@@ -59,6 +62,7 @@ class RoomViewController: BaseViewController {
     
     let disposeBag = DisposeBag()
     let viewModel: RoomViewModel
+    weak var delegate: RoomViewControllerDelegate?
     
     
 //MARK: - Init
@@ -182,6 +186,7 @@ class RoomViewController: BaseViewController {
             .subscribe { [weak self] b in
                 if b {
                     self?.navigationController?.popViewController(animated: true)
+                    self?.delegate?.didChangedRoomState()
                 }
             }
             .disposed(by: disposeBag)

@@ -12,12 +12,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    var appCoordinator: AppCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = BaseTabBarController()
+        
+        let baseTabBarController = BaseTabBarController()
+        
+        window?.rootViewController = baseTabBarController
         window?.makeKeyAndVisible()
+        
+        appCoordinator = AppCoordinator(baseTabBarController)
+        self.appCoordinator?.start()
+        
         window?.overrideUserInterfaceStyle = .dark // 다크모드 고정
     }
     

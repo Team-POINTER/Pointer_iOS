@@ -49,6 +49,7 @@ class HomeViewModel: ViewModelType {
             nextViewController.accept(resultVC)
         } else {
             let roomVC = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
+            roomVC.delegate = self
             nextViewController.accept(roomVC)
         }
     }
@@ -76,7 +77,7 @@ class HomeViewModel: ViewModelType {
             guard let roomName = changeTo else { return }
             self?.requestCreateRoom(roomName: roomName)
         }
-        let customView = CustomTextfieldView(roomName: "", withViewHeight: 50)
+        let customView = CustomTextfieldView(roomName: nil, withViewHeight: 50)
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 설정", description: "새로운 룸의 이름을 입력하세요", customView: customView)
         return alert
     }
@@ -95,9 +96,9 @@ class HomeViewModel: ViewModelType {
     // ToDo - request 넘기는거 memory leak 나는건가..?
     // ToDo - code 별로 에러처리, 래픽토링
     // RoomList API 호출
-    func requestRoomList() {
+    func requestRoomList(handler: (() -> Void)? = nil) {
         let word = ""
-        
+        IndicatorManager.shared.show()
         network.requestRoomList { [weak self] model, error in
             if let error = error {
                 print(error)
@@ -115,6 +116,8 @@ class HomeViewModel: ViewModelType {
                 // 실패한 경우 - 현재는 액세스 토큰 만료 경우밖에 없음
                 self.requestNewAccessToken()
             }
+            IndicatorManager.shared.hide()
+            handler?()
         }
     }
     
@@ -165,5 +168,12 @@ class HomeViewModel: ViewModelType {
                 print("실패")
             }
         }
+    }
+}
+
+//MARK: - RoomViewControllerDelegate
+extension HomeViewModel: RoomViewControllerDelegate {
+    func didChangedRoomState() {
+        self.requestRoomList()
     }
 }
