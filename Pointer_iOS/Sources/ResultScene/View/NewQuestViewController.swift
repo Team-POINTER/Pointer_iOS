@@ -15,10 +15,15 @@ import RxCocoa
 // 3. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
 // 4. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
 
+protocol NewQuestViewControllerDelegate: AnyObject {
+    func requestedNewQuestion(viewController: UIViewController)
+}
+
 class NewQuestViewController: BaseViewController {
     
     let viewModel: NewQuestViewModel
     let disposeBag = DisposeBag()
+    weak var delegate: NewQuestViewControllerDelegate?
 
 //MARK: - Init
     init(viewModel: NewQuestViewModel) {
@@ -104,31 +109,33 @@ class NewQuestViewController: BaseViewController {
         output.backAlert
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] type in
+                guard let self = self else { return }
+                
                 if type == .questionError {
-                    self?.dismissAlert(title: "돌아가기", description: "다른 사람이 질문을 등록했습니다.") {
-                        self?.navigationController?.popToRootViewController(animated: true)
-                        self?.tabBarController?.tabBar.isHidden = false
+                    self.dismissAlert(title: "돌아가기", description: "다른 사람이 질문을 등록했습니다.") {
+                        self.navigationController?.dismissWithNavigationPopStyle()
                     }
                 }
                 if type == .success {
-                    self?.dismissAlert(title: "투표하기", description: "질문을 등록하였습니다.") {
-                        let home = HomeController()
-                        let roomViewModel = RoomViewModel(roomId: self?.viewModel.roomId ?? 0)
-                        let room = RoomViewController(viewModel: roomViewModel)
-                        self?.navigationController?.setViewControllers([home, room], animated: true)
-                        self?.tabBarController?.tabBar.isHidden = false
+                    self.dismissAlert(title: "투표하기", description: "질문을 등록하였습니다.") {
+                        self.navigationController?.dismissWithNavigationPopStyle()
+                        let roomVM = RoomViewModel(roomId: self.viewModel.roomId)
+                        let roomVC = RoomViewController(viewModel: roomVM)
+                        
+                        guard let tabBarVC = self.navigationController?.presentingViewController as? BaseTabBarController,
+                              let homeNavVC = tabBarVC.viewControllers?.first as? BaseNavigationController else { return }
+                        
+                        homeNavVC.pushViewController(roomVC, animated: true)
                     }
                 }
                 if type == .accountError {
-                    self?.dismissAlert(title: "돌아가기", description: "회원 정보가 없습니다.") {
-                        self?.navigationController?.popToRootViewController(animated: true)
-                        self?.tabBarController?.tabBar.isHidden = false
+                    self.dismissAlert(title: "돌아가기", description: "회원 정보가 없습니다.") {
+                        self.navigationController?.dismissWithNavigationPopStyle()
                     }
                 }
                 if type == .roomError {
-                    self?.dismissAlert(title: "돌아가기", description: "룸 조회에 실패하였습니다.") {
-                        self?.navigationController?.popToRootViewController(animated: true)
-                        self?.tabBarController?.tabBar.isHidden = false
+                    self.dismissAlert(title: "돌아가기", description: "룸 조회에 실패하였습니다.") {
+                        self.navigationController?.dismissWithNavigationPopStyle()
                     }
                 }
             })

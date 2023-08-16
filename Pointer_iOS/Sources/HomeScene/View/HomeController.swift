@@ -88,7 +88,7 @@ class HomeController: BaseViewController {
         viewModel.presenter
             .bind { [weak self] viewController in
                 if let vc = viewController {
-                    let nav = BaseNavigationController.templateNavigationController(nil, title: "알림", viewController: vc)
+                    let nav = BaseNavigationController.templateNavigationController(nil, viewController: vc)
                     self?.tabBarController?.presentWithNavigationPushStyle(nav)
                 }
             }

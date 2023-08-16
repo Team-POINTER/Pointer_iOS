@@ -10,7 +10,7 @@ import UIKit
 class BaseNavigationController: UINavigationController {
     
     // 네비게이션 컨트롤러 만들기
-    static func templateNavigationController(_ image: UIImage?, title: String, viewController: UIViewController) -> UINavigationController {
+    static func templateNavigationController(_ image: UIImage?, title: String? = "", viewController: UIViewController) -> UINavigationController {
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()

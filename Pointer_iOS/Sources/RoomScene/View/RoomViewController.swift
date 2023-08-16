@@ -26,6 +26,7 @@ import FloatingPanel
 
 protocol RoomViewControllerDelegate: AnyObject {
     func didChangedRoomState()
+    func tapedPoint(viewController: UIViewController)
 }
 
 class RoomViewController: BaseViewController {
@@ -164,7 +165,7 @@ class RoomViewController: BaseViewController {
             .subscribe(onNext: { [weak self] viewController in
                 self?.navigationController?.popViewController(animated: false)
                 self?.delegate?.didChangedRoomState()
-                self?.present(viewController, animated: true)
+                self?.delegate?.tapedPoint(viewController: viewController)
             })
             .disposed(by: disposeBag)
         
@@ -227,6 +228,7 @@ class RoomViewController: BaseViewController {
 //MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
+        self.delegate?.didChangedRoomState()
     }
     
     @objc func menuButtonTap() {

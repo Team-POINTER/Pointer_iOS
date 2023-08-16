@@ -41,6 +41,7 @@ class ResultViewModel: ViewModelType{
     
     var limitedAt = ""
     var roomId = 0
+    var questionId = 0
     var userName = ""
     var roomName = ""
     var question = ""
@@ -59,8 +60,8 @@ class ResultViewModel: ViewModelType{
 //MARK: - init
     init(_ roomId: Int, _ questionId: Int, _ limitedAt: String) {
         self.roomId = roomId
-        resultRequest(questionId)
         self.limitedAt = limitedAt
+        self.questionId = questionId
     }
     
 //MARK: - In/Out
@@ -78,6 +79,7 @@ class ResultViewModel: ViewModelType{
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         let output = Output()
+        resultRequest(self.questionId)
         
         input.myResultButtonTap
             .subscribe { [weak self] _ in
