@@ -74,11 +74,13 @@ class NotificationDetailViewController: UIViewController {
                 case .room:
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: roomCellIdentifier, for: IndexPath(row: index, section: 0)) as? RoomNotiCell,
                           let item = item as? RoomAlarmList else { return UICollectionViewCell() }
+                    print("🔥roomItem: \(item)")
                     cell.item = item
                     return cell
                 case .friends:
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendCellReuseIdentifier, for: IndexPath(row: index, section: 0)) as? FriendsNotiCell,
                           let item = item as? FriendAlarmList else { return UICollectionViewCell() }
+                    print("🔥friendItem: \(item)")
                     cell.item = item
                     return cell
                 }

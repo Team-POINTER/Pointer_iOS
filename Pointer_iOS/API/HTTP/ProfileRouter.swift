@@ -39,7 +39,7 @@ extension ProfileRouter: HttpRouter {
             return "/users/update/id"
         case .getPoints:
             return "/users/get/points"
-        case .getFriendsList(let userId, let lastPage):
+        case .getFriendsList(_, _):
             return "/friend/search"
         }
     }

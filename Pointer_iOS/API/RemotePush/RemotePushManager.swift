@@ -114,7 +114,7 @@ class RemotePushManager {
                 case .success(let result):
                     print(result)
                     if result.code == router.successCode {
-                        completion(result.result)
+                        completion(result.result.alarmList)
                     } else {
                         completion([])
                     }

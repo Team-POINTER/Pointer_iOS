@@ -28,7 +28,7 @@ class RoomNotiCell: UICollectionViewCell {
         label.text = "주민서님이 당신을 콕! 찔렀어요."
         label.font = .notoSans(font: .notoSansKrMedium, size: 13)
         label.textColor = .white
-        label.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        label.numberOfLines = 0
         return label
     }()
     
@@ -37,6 +37,8 @@ class RoomNotiCell: UICollectionViewCell {
         label.text = "얼른 질문을 확인하고 지목해봐요."
         label.font = .notoSansRegular(size: 11)
         label.textColor = .white
+        label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
         return label
     }()
     
@@ -62,30 +64,26 @@ class RoomNotiCell: UICollectionViewCell {
         addSubview(userProfilImageView)
         userProfilImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)
-            $0.top.equalToSuperview().inset(5)
+            $0.centerY.equalToSuperview()
             $0.width.height.equalTo(44)
             userProfilImageView.layer.cornerRadius = 22
             userProfilImageView.clipsToBounds = true
         }
         
-        let stack = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
+        let stack = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel, dateLabel])
         stack.axis = .vertical
         
         addSubview(stack)
         stack.snp.makeConstraints {
             $0.leading.equalTo(userProfilImageView.snp.trailing).inset(-18)
-            $0.top.equalToSuperview().inset(8)
-        }
-        
-        addSubview(dateLabel)
-        dateLabel.snp.makeConstraints {
-            $0.leading.equalTo(stack.snp.leading)
-            $0.bottom.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(18)
+            $0.centerY.equalToSuperview()
         }
     }
     
     private func configure() {
         guard let item = item else { return }
         titleLabel.text = item.content
+        
     }
 }

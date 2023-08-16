@@ -32,16 +32,23 @@ struct RoomAlarmList: Codable {
 // MARK: - Welcome
 struct NotiDetailFriendResponse: Codable {
     let code, message: String
-    let result: [FriendAlarmList]
+    let result: NotiDetailFriendResult
 }
 
 // MARK: - Result
+struct NotiDetailFriendResult: Codable {
+    let newAlarm: Bool
+    let newFriendAlarm: Bool
+    let newFriendAlarmCnt: Int
+    let alarmList: [FriendAlarmList]
+}
+
+// MARK: - AlarmList
 struct FriendAlarmList: Codable {
     let alarmId: Int
-    let userId: Int
-    let sendUserId: String
+    let sendUserId: Int
     let sendUserName: String
     let sendUserProfile: String
-    let friendStatus: String
+    let content: String
     let type: String
 }

@@ -95,8 +95,8 @@ class FriendsNotiCell: UICollectionViewCell {
         userProfilImageView.kf.indicatorType = .activity
         userProfilImageView.kf.setImage(with: profileUrl)
         
-        userNameLabel.text = item.sendUserName
-        userAccountLabel.text = item.sendUserId
+        userNameLabel.text = "\(item.sendUserId)"
+        userAccountLabel.text = item.sendUserName
         
         
     }

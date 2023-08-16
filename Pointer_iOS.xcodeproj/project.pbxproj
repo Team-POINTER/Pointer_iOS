@@ -123,6 +123,7 @@
 		F93C449B2A877DAF009B04F3 /* FriendRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C449A2A877DAF009B04F3 /* FriendRelationship.swift */; };
 		F93C449D2A877F55009B04F3 /* PointerAlert+Wrapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C449C2A877F55009B04F3 /* PointerAlert+Wrapping.swift */; };
 		F93C449F2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */; };
+		F93C44B02A8CBC92009B04F3 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93C44AF2A8CBC92009B04F3 /* UIViewController.swift */; };
 		F948AEFA2A86041D00DDC698 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AEF92A86041D00DDC698 /* IndicatorManager.swift */; };
 		F948AEFC2A86059E00DDC698 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AEFB2A86059E00DDC698 /* UIWindow.swift */; };
 		F948AEFF2A860A7400DDC698 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */; };
@@ -256,6 +257,7 @@
 		F93C449A2A877DAF009B04F3 /* FriendRelationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRelationship.swift; sourceTree = "<group>"; };
 		F93C449C2A877F55009B04F3 /* PointerAlert+Wrapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointerAlert+Wrapping.swift"; sourceTree = "<group>"; };
 		F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerFullScreenPhotoView.swift; sourceTree = "<group>"; };
+		F93C44AF2A8CBC92009B04F3 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		F948AEF92A86041D00DDC698 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
 		F948AEFB2A86059E00DDC698 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		F948AF022A87787500DDC698 /* FriendRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRouter.swift; sourceTree = "<group>"; };
@@ -757,6 +759,7 @@
 				CD7A70FE29BE23D0003E140C /* UIFont.swift */,
 				47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */,
 				F948AEFB2A86059E00DDC698 /* UIWindow.swift */,
+				F93C44AF2A8CBC92009B04F3 /* UIViewController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1186,6 +1189,7 @@
 				47CB4A882A7B7D3F00E001D2 /* ReportFloatingPanelLayout.swift in Sources */,
 				F93C449D2A877F55009B04F3 /* PointerAlert+Wrapping.swift in Sources */,
 				F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */,
+				F93C44B02A8CBC92009B04F3 /* UIViewController.swift in Sources */,
 				F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */,
 				473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
@@ -1277,6 +1281,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pointer;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1331,6 +1336,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pointer;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

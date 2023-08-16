@@ -103,7 +103,9 @@ class HomeController: BaseViewController {
     
     @objc private func handleNotiButtonTapped() {
         let vc = NotificationViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        let nav = BaseNavigationController.templateNavigationController(nil, title: "알림", viewController: vc)
+        self.tabBarController?.presentWithNavigationPushStyle(nav)
+//        navigationController?.pushViewController(nav, animated: true)
     }
     
     @objc private func handleNotiLogoutTapped() {
