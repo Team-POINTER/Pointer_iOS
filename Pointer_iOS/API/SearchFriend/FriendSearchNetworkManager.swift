@@ -53,6 +53,7 @@ struct SearchUserListModel: Decodable {
     let userId: Int
     let id: String
     let userName: String
-    let file: String?
+    let file: String
+    let relationship: String
 }
 

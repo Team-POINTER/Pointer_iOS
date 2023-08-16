@@ -198,7 +198,7 @@ class NewQuestViewController: BaseViewController {
             make.height.equalTo(110)
         }
         newQuestButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(-30)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(5)
             make.leading.equalToSuperview().inset(18)
             make.height.equalTo(50)
             make.width.equalTo(Device.width / 2 + 10)

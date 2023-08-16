@@ -21,7 +21,7 @@ class ReportNetworkManager {
     
 //MARK: - Function
     
-    // 지목화면 결과 조회
+    // 신고하기
     func reportRequest(parameter: ReportRequestModel, _ completion: @escaping (Error?, ReportResultModel?) -> Void){
         let router = reportRouter.report
         
@@ -39,7 +39,7 @@ class ReportNetworkManager {
                     completion(nil, result)
                 // 실패인 경우
                 case .failure(let error):
-                    print("지목화면 결과 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("신고하기 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }

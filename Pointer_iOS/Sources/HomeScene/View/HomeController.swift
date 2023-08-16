@@ -77,10 +77,19 @@ class HomeController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        viewModel.nextViewController
+        viewModel.pusher
             .bind { [weak self] viewController in
                 if let vc = viewController {
                     self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.presenter
+            .bind { [weak self] viewController in
+                if let vc = viewController {
+                    let nav = BaseNavigationController.templateNavigationController(nil, title: "알림", viewController: vc)
+                    self?.tabBarController?.presentWithNavigationPushStyle(nav)
                 }
             }
             .disposed(by: disposeBag)
@@ -105,7 +114,6 @@ class HomeController: BaseViewController {
         let vc = NotificationViewController()
         let nav = BaseNavigationController.templateNavigationController(nil, title: "알림", viewController: vc)
         self.tabBarController?.presentWithNavigationPushStyle(nav)
-//        navigationController?.pushViewController(nav, animated: true)
     }
     
     @objc private func handleNotiLogoutTapped() {

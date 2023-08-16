@@ -27,7 +27,7 @@ extension FriendSearchRouter: HttpRouter {
     var path: String {
         switch self {
         case .searchUser:
-            return "/search"
+            return "/user/search"
         case .searchfriend:
             return "/friend/search"
         case .searchBlockedFriend:

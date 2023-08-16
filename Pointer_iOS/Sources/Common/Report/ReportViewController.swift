@@ -22,7 +22,7 @@ final class ReportViewController: UIViewController {
             submitButtonTapedEvent: submitButton.rx.tap.asObservable()
         )
         let output = viewModel.transform(input: input)
-
+        
         output.limitText
             .bind(to: reportTextView.rx.text)
             .disposed(by: disposeBag)
@@ -53,6 +53,27 @@ final class ReportViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.submitButtonValid
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] b in
+                if b {
+                    self?.submitButton.isEnabled = true
+                    self?.submitButton.setTitleColor(UIColor.pointerRed, for: .normal)
+                } else {
+                    self?.submitButton.isEnabled = false
+                    self?.submitButton.setTitleColor(UIColor.inactiveGray, for: .normal)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.dismissReportView
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] b in
+                if b {
+                    self?.dismiss(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Properties
@@ -98,12 +119,12 @@ final class ReportViewController: UIViewController {
         $0.setTitle("제출", for: .normal)
         $0.setTitleColor(UIColor.pointerRed, for: .normal)
         $0.titleLabel?.font = UIFont.notoSansRegular(size: 16)
-        $0.addTarget(self, action: #selector(submitButtonTap), for: .touchUpInside)
+        $0.isEnabled = false
         return $0
     }(UIButton())
     
     lazy var reasonLabel: UILabel = {
-        $0.text = "사유 : \(viewModel.reasonCode)"
+        $0.text = "사유 : \(viewModel.presentingReason)"
         $0.font = UIFont.notoSans(font: .notoSansKrRegular, size: 12)
         $0.textColor = UIColor.rgb(red: 87, green: 90, blue: 107)
         $0.textAlignment = .left
@@ -205,9 +226,5 @@ final class ReportViewController: UIViewController {
     // MARK: - Helper
     @objc func backButtonTap() {
         self.dismiss(animated: true)
-    }
-    
-    @objc func submitButtonTap() {
-        print("DEBUG: 제출 버튼 눌림")
     }
 }

@@ -20,6 +20,7 @@ final class RoomViewModel: ViewModelType {
     
     var roomId: Int
     var limitedAt = ""
+    var targetUserId = 0
     
     // 투표용 properties
     var questionId: Int = 0
@@ -27,11 +28,10 @@ final class RoomViewModel: ViewModelType {
     var votedUsers: [Int] = []
     var hintString: String = ""
     
+    
     //MARK: - LifeCycle
     init(roomId: Int) {
         self.roomId = roomId
-        // 더미 User들 생성 !
-//        allUsersInThisRoom.accept(User.getDummyUsers())
         searchRoomRequest(roomId)
     }
 
@@ -134,7 +134,8 @@ final class RoomViewModel: ViewModelType {
                     
                     // 서버 연동 성공 시
                     if let model = model {
-                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId, self.limitedAt)))
+                        let resultVC = ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId, self.limitedAt))
+                        output.pointButtonTap.accept(UINavigationController(rootViewController: resultVC))
                     }
                 }
             })
@@ -238,6 +239,7 @@ final class RoomViewModel: ViewModelType {
                 self?.roomResultMembersObservable.accept(result.roomMembers)
                 self?.questionId = result.questionId
                 self?.limitedAt = result.limitedAt
+                self?.targetUserId = result.questionCreatorId
                 print("🔥 RoomViewModel - searchRoomRequest 데이터: \(result)")
             }, onError: { error in
                 print("RoomViewModel - searchRoomRequest 에러: \(error.localizedDescription)")

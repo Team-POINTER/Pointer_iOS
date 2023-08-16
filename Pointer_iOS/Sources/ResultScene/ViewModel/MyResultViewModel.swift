@@ -14,15 +14,16 @@ class MyResultViewModel: ViewModelType{
     let disposeBag = DisposeBag()
     var myResultObservable = PublishRelay<[TotalQuestionResultData]>()
     
-    var questId = 0
-    var userName = ""
-    var roomName = ""
+    let userName: String
+    let roomName: String
+    let roomId: Int
     
 //MARK: - Init
     init(_ roomId: Int, _ userName: String, _ roomName: String) {
-        totalQuestionRequest(roomId)
         self.userName = userName
         self.roomName = roomName
+        self.roomId = roomId
+        totalQuestionRequest(roomId)
     }
     
 //MARK: - In/Out
@@ -43,7 +44,13 @@ class MyResultViewModel: ViewModelType{
             .zip(input.hintTableViewItemSelected, input.hintTableViewModelSelected)
             .bind { [weak self] indexPath, model in
                 guard let self = self else { return }
-                output.hintTableViewSelected.accept(HintViewController(viewModel: HintViewModel(questionId: model.questionId, roomName: self.roomName, question: model.question, userName: self.userName)))
+                let viewModel = HintViewModel(roomName: self.roomName,
+                                              userName: self.userName,
+                                              question: model.question,
+                                              roomId: self.roomId,
+                                              questionId: model.questionId)
+                
+                output.hintTableViewSelected.accept(HintViewController(viewModel: viewModel))
             }
             .disposed(by: disposeBag)
         

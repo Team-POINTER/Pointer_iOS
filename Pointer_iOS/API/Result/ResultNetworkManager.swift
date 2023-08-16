@@ -166,6 +166,29 @@ class ResultNetworkManager {
             }
     }
     
+    func deleteHintRequest(_ parameters: DeleteHintRequestModel, completion: @escaping (Error?, DeleteResultModel?) -> Void) {
+        let router = voteRouter.deleteHint
+        AF.request(router.url,
+                   method: router.method,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: DeleteResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    completion(nil, result)
+                // 실패인 경우
+                case .failure(let error):
+                    print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
+            }
+    }
+    
 }
 
 
@@ -231,7 +254,6 @@ struct ShowHintResultModel: Decodable {
 }
 
 struct ShowHintResultData: Decodable {
-    let hint: [String]
     let voters: [showHintResultVoters]
     let allVoteCnt: Int // 모든 투표 수
     let targetVotedCnt: Int // 받은 투표 수
@@ -239,8 +261,22 @@ struct ShowHintResultData: Decodable {
 }   
 
 struct showHintResultVoters: Decodable {
+    let voteHistoryId: Int
     let voterId: Int
     let voterNm: String
+    let hint: String
+}
+
+//MARK: - #1-4 힌트 삭제
+struct DeleteHintRequestModel: Encodable {
+    let questionId: Int
+    let voterId: Int
+}
+
+struct DeleteResultModel: Decodable {
+    let status: Int?
+    let code: String
+    let message: String
 }
 
 //MARK: - #1-5 새 질문 등록

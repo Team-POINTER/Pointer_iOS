@@ -15,7 +15,8 @@ class HomeViewModel: ViewModelType {
 //MARK: - Properties
     var disposeBag = DisposeBag()
     let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
-    let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
+    let pusher = BehaviorRelay<UIViewController?>(value: nil)
+    let presenter = BehaviorRelay<UIViewController?>(value: nil)
     let expiredToken = BehaviorRelay<Bool>(value: false)
     let network = HomeNetworkManager()
 
@@ -46,11 +47,11 @@ class HomeViewModel: ViewModelType {
         // 룸 투표 여부에 따라
         if voted {
             let resultVC = ResultViewController(viewModel: ResultViewModel(roomId, questionId, limitedAt))
-            nextViewController.accept(resultVC)
+            presenter.accept(resultVC)
         } else {
             let roomVC = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
             roomVC.delegate = self
-            nextViewController.accept(roomVC)
+            pusher.accept(roomVC)
         }
     }
     

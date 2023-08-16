@@ -13,6 +13,7 @@ enum VoteRouter {
     case votedResult(_ questionId: Int) // 지목화면 결과 조회
     case showHint(_ questionId: Int) // 힌트 보기
     case searchNotVotedResult(_ questionId: Int) // 지목하지 않은 사람 조회
+    case deleteHint
 
 }
 
@@ -36,6 +37,8 @@ extension VoteRouter: HttpRouter {
             return "/votes/hint/\(questionId)"
         case .searchNotVotedResult(let questionId):
             return "/votes/not-noted/\(questionId)"
+        case .deleteHint:
+            return "/votes/delete/hint"
         }
     }
     
@@ -49,6 +52,8 @@ extension VoteRouter: HttpRouter {
             return .get
         case .searchNotVotedResult:
             return .get
+        case .deleteHint:
+            return .post
         }
     }
     

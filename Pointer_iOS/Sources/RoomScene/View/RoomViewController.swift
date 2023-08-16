@@ -24,14 +24,6 @@ import FloatingPanel
 // 4. navigationBar titleColor, LeftBarItem 추가 [O]
 // 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[O])
 
-enum ReportType: String, CaseIterable {
-    case spam = "스팸"
-    case swear = "모욕적인 문장"
-    case gender = "성적 혐오 발언"
-    case violence = "폭력 또는 따돌림"
-    case etc = "기타 사유"
-}
-
 protocol RoomViewControllerDelegate: AnyObject {
     func didChangedRoomState()
 }
@@ -85,7 +77,7 @@ class RoomViewController: BaseViewController {
         viewModel.roomResultObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                self?.title = data.roomNm
+                self?.title = data.privateRoomNm
                 self?.roomTopView.questLabel.text = data.question
             })
             .disposed(by: disposeBag)
@@ -170,7 +162,9 @@ class RoomViewController: BaseViewController {
         output.pointButtonTap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                self?.navigationController?.popViewController(animated: false)
+                self?.delegate?.didChangedRoomState()
+                self?.present(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -229,11 +223,6 @@ class RoomViewController: BaseViewController {
         bindViewModel()
         self.hideKeyboardWhenTappedAround()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
 
 //MARK: - Selector
     @objc func backButtonTap() {
@@ -274,9 +263,9 @@ class RoomViewController: BaseViewController {
     func reportTap() {
         var sheetConfig = [PointerAlertActionConfig]()
         
-        ReportType.allCases.forEach { type in
-            let config = PointerAlertActionConfig(title: type.rawValue, textColor: .black) { [weak self] _ in
-                self?.presentReportView(type.rawValue)
+        ReasonCode.allCases.forEach { type in
+            let config = PointerAlertActionConfig(title: type.reason, textColor: .black) { [weak self] _ in
+                self?.presentReportView(reasonCode: type.rawValue, presentingReason: type.reason)
             }
             sheetConfig.append(config)
         }
@@ -285,8 +274,15 @@ class RoomViewController: BaseViewController {
         present(actionSheet, animated: true)
     }
     
-    func presentReportView(_ reason: String) {
-        let reportVC = ReportViewController(viewModel: ReportViewModel())
+    func presentReportView(reasonCode: String, presentingReason: String) {
+        let reportVM = ReportViewModel(roomId: viewModel.roomId,
+                                       questionId: viewModel.questionId,
+                                       type: .question,
+                                       targetUserId: viewModel.targetUserId,
+                                       presentingReason: presentingReason,
+                                       reasonCode: reasonCode)
+        print("룸에서 넘기는 roomId - \(viewModel.roomId) / questionId - \(viewModel.questionId) / targetUserId - \(viewModel.targetUserId) / presentReason - \(presentingReason) / reasonCode - \(reasonCode)")
+        let reportVC = ReportViewController(viewModel: reportVM)
         fpc.set(contentViewController: reportVC)
         fpc.track(scrollView: reportVC.scrollView)
         self.present(fpc, animated: true)

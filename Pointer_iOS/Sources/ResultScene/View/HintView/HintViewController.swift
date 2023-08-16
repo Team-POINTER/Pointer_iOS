@@ -16,7 +16,7 @@ class HintViewController: BaseViewController {
 
     let viewModel: HintViewModel
     let disposeBag = DisposeBag()
-    var longPressName = ""
+    var longPressHint = ""
 
 //MARK: - Init
     init(viewModel: HintViewModel) {
@@ -43,7 +43,7 @@ class HintViewController: BaseViewController {
 
                 for i in 0..<data.voters.count {
                     let label: UILabel = {
-                        $0.text = "\(i+1). \(data.voters[i].voterNm)"
+                        $0.text = "\(i+1). \(data.voters[i].hint)"
                         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 17)
                         $0.textColor = UIColor.black
                         return $0
@@ -53,7 +53,9 @@ class HintViewController: BaseViewController {
                         .when(.began)
                         .observe(on: MainScheduler.instance)
                         .subscribe(onNext: { [weak self] _ in
-                            self?.longPressShowSetting(name: data.voters[i].voterNm)
+                            self?.longPressShowSetting(hint: data.voters[i].hint,
+                                                       voterId: data.voters[i].voterId
+                            )
                         })
                         .disposed(by: self.disposeBag)
                     
@@ -61,6 +63,15 @@ class HintViewController: BaseViewController {
                 }
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
                 self.hintDate.text = data.createdAt
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.dismissHintView
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] b in
+                if b {
+                    self?.navigationController?.popViewController(animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -195,25 +206,25 @@ class HintViewController: BaseViewController {
     }
     
 //MARK: - Helper
-    func longPressShowSetting(name: String) {
+    func longPressShowSetting(hint: String, voterId: Int) {
         let report = PointerAlertActionConfig(title: "신고하기", textColor: .red) { [weak self] _ in
-            self?.reportTap()
+            self?.reportTap(targetUserId: voterId)
         }
         let delete = PointerAlertActionConfig(title: "삭제하기", textColor: .black) { [weak self] _ in
-            print("DEBUG: 힌트 삭제")
+            self?.viewModel.deleteHintRequest(voterId: voterId)
         }
         
-        longPressName = name
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete], title: longPressName)
+        longPressHint = hint
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete], title: longPressHint)
         present(actionSheet, animated: true)
     }
 
-    func reportTap() {
+    func reportTap(targetUserId: Int) {
         var reportConfig = [PointerAlertActionConfig]()
         
-        ReportType.allCases.forEach { type in
-            let config = PointerAlertActionConfig(title: type.rawValue, textColor: .black) { [weak self] _ in
-                self?.presentReportView(type.rawValue)
+        ReasonCode.allCases.forEach { type in
+            let config = PointerAlertActionConfig(title: type.reason, textColor: .black) { [weak self] _ in
+                self?.presentReportView(reasonCode: type.rawValue, presentingReason: type.reason, targetUserId: targetUserId)
             }
             reportConfig.append(config)
         }
@@ -222,9 +233,15 @@ class HintViewController: BaseViewController {
         present(actionSheet, animated: true)
     }
     
-    // MARK: [FIX ME] 신고 하는 이름 - longPressName
-    func presentReportView(_ reason: String) {
-        let reportVM = ReportViewModel()
+    func presentReportView(reasonCode: String, presentingReason: String, targetUserId: Int) {
+        let reportVM = ReportViewModel(roomId: viewModel.roomId,
+                                       questionId: viewModel.questionId,
+                                       type: .hint,
+                                       targetUserId: targetUserId,
+                                       presentingReason: presentingReason,
+                                       reasonCode: reasonCode)
+        
+        print("룸에서 넘기는 roomId - \(viewModel.roomId) / questionId - \(viewModel.questionId) / targetUserId - \(targetUserId) / presentReason - \(presentingReason) / reasonCode - \(reasonCode)")
         let reportVC = ReportViewController(viewModel: reportVM)
         fpc.set(contentViewController: reportVC)
         fpc.track(scrollView: reportVC.scrollView)

@@ -21,6 +21,7 @@ class ResultViewController: BaseViewController {
     init(viewModel: ResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .overFullScreen
         self.newQuestionTimerLabel.text = viewModel.limitedAt
         
     }
@@ -200,12 +201,8 @@ class ResultViewController: BaseViewController {
         bindViewModel()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
     func configureBar() {
-        let backButton = UIImage(systemName: "chevron.backward")
+        let backButton = UIImage(systemName: "xmark")
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButton, size: 45, target: self, handler: #selector(backButtonTap))
         self.navigationItem.leftBarButtonItem = notiButton
     }
@@ -282,7 +279,6 @@ class ResultViewController: BaseViewController {
 
 //MARK: - Selector
     @objc func backButtonTap() {
-        self.navigationController?.popToRootViewController(animated: true)
-        self.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.dismissWithNavigationPopStyle()
     }
 }
