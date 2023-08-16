@@ -211,6 +211,7 @@ final class RoomViewModel: ViewModelType {
         let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
             // 2. 입력한 텍스트로 룸 이름 변경 API 호출
             self?.requestChangeRoomName(changeTo: changeTo, roomId: roomId)
+            self?.dismissRoom.accept(true)
         }
         let customView = CustomTextfieldView(roomName: currentName, withViewHeight: 50)
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 편집", description: "'\(currentName)'의 새로운 이름을 입력하세요", customView: customView)
@@ -222,6 +223,7 @@ final class RoomViewModel: ViewModelType {
         let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
         let confirmAction = PointerAlertActionConfig(title: "나가기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] _ in
             self?.requestExitRoom(roomId: roomId)
+            self?.dismissRoom.accept(true)
         }
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 나가기", description: "정말로 나가시겠습니까?")
         return alert

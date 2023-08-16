@@ -11,7 +11,7 @@ import SnapKit
 class RoomBottomView: UIView {
 
     let inviteButton : UIButton = {
-        $0.setTitle("링크로 초대하기", for: .normal)
+        $0.setTitle("친구 초대하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.notoSansBold(size: 16)
         $0.backgroundColor = .clear

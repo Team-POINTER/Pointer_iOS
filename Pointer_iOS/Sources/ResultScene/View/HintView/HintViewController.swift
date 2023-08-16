@@ -224,7 +224,8 @@ class HintViewController: BaseViewController {
     
     // MARK: [FIX ME] 신고 하는 이름 - longPressName
     func presentReportView(_ reason: String) {
-        let reportVC = ReportViewController(reason: reason)
+        let reportVM = ReportViewModel()
+        let reportVC = ReportViewController(viewModel: reportVM)
         fpc.set(contentViewController: reportVC)
         fpc.track(scrollView: reportVC.scrollView)
         self.present(fpc, animated: true)
