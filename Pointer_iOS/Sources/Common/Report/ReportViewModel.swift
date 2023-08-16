@@ -9,30 +9,58 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum ReportType: String, CaseIterable {
+    case question = "QUESTION"
+    case hint = "HINT"
+}
+
+enum ReasonCode: String, CaseIterable {
+    case spam = "SPAM"
+    case insult = "INSULT"
+    case sexualAversion = "SEXUAL_AVERSION"
+    case violence = "VIOLENCE"
+    case custom = "CUSTOM"
+    
+    var reason: String {
+        switch self {
+        case .spam:
+            return "스팸"
+        case .insult:
+            return "모욕적인 문장"
+        case .sexualAversion:
+            return "성적 혐오 발언"
+        case .violence:
+            return "폭력 또는 따돌림"
+        case .custom:
+            return "기타 사유"
+        }
+    }
+}
+
 class ReportViewModel: ViewModelType {
     
 //MARK: - Properties
     let disposeBag = DisposeBag()
+    let dismissReportView = BehaviorRelay<Bool>(value: false)
     
-//    let roomId: Int
-//    let questionId: Int
-//    let type: String // enum이 좋을듯
-//    let reasonCode: String
     let userId = TokenManager.getIntUserId()
     var reason = ""
     
-    let roomId = 0
-    let questionId = 0
-    let type = "" // enum이 좋을듯
-    let reasonCode = ""
-    
+    let roomId: Int
+    let questionId: Int
+    let type: String
+    let targetUserId: Int
+    let presentingReason: String
+    let reasonCode: String
     
 //MARK: - Life Cycles
-    init() { // roomId: Int, questionId:Int, type: String, reasonCode: String
-//        self.roomId = roomId
-//        self.questionId = questionId
-//        self.type = type
-//        self.reasonCode = reasonCode
+    init(roomId: Int, questionId:Int, type: ReportType, targetUserId: Int, presentingReason: String, reasonCode: String) {
+        self.roomId = roomId
+        self.questionId = questionId
+        self.type = type.rawValue
+        self.targetUserId = targetUserId
+        self.presentingReason = presentingReason
+        self.reasonCode = reasonCode
     }
     
 //MARK: - In/Out
@@ -44,6 +72,7 @@ class ReportViewModel: ViewModelType {
     struct Output {
         let limitText = BehaviorRelay<String>(value: "")
         let reportTextCount = BehaviorRelay<String>(value: "")
+        let submitButtonValid = BehaviorRelay<Bool>(value: false)
     }
     
 //MARK: - Rx Transform
@@ -64,14 +93,19 @@ class ReportViewModel: ViewModelType {
                 if text == "포인터 팀이 조치를 취해드릴 수 있게 문제 상황을 최대한 구체적으로 설명해주세요." {
                     let limitTextCount = "0/500"
                     output.reportTextCount.accept(limitTextCount)
+                    output.submitButtonValid.accept(false)
                 } else {
                     let limitTextCount = "\(limitText.count)/500"
                     output.reportTextCount.accept(limitTextCount)
+                    // count가 0 이상일 때만 true
+                    if limitText.count > 0 {
+                        output.submitButtonValid.accept(true)
+                    } else {
+                        output.submitButtonValid.accept(false)
+                    }
                 }
             }
             .disposed(by: disposeBag)
-        
-        return output
         
         input.submitButtonTapedEvent
             .subscribe { [weak self] _ in
@@ -79,15 +113,17 @@ class ReportViewModel: ViewModelType {
                 let model = ReportRequestModel(roomId: self.roomId,
                                                dataId: self.questionId,
                                                type: self.type,
-                                               targetUserId: self.userId,
-                                               reportingUserId: 0,
+                                               targetUserId: self.targetUserId,
+                                               reportingUserId: self.userId,
                                                reason: self.reason,
                                                reasonCode: self.reasonCode)
                 
                 self.reportRequest(model: model)
             }
             .disposed(by: disposeBag)
-            
+        
+        return output
+    
     }
 
     
@@ -102,13 +138,15 @@ class ReportViewModel: ViewModelType {
     
 //MARK: - Network
     func reportRequest(model: ReportRequestModel) {
-        ReportNetworkManager.shared.reportRequest(parameter: model) { (error, model) in
+        ReportNetworkManager.shared.reportRequest(parameter: model) { [weak self] (error, model) in
             if let error = error {
                 print(error.localizedDescription)
             }
             
             if let model = model {
-                print("DEBUG: 신고 데이터 분기 처리")
+                // 일단 신고 생성되면 dismiss -> 추후 신고 기능에 따라 변경
+                print("🔥DEBUG: 신고 완료 - \(model)")
+                self?.dismissReportView.accept(true)
             }
         }
     }

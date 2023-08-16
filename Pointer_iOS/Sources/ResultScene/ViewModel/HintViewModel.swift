@@ -15,10 +15,12 @@ class HintViewModel: ViewModelType{
     let showHintObservable = PublishRelay<ShowHintResultData>()
     let dismissHintView = BehaviorRelay<Bool>(value: false)
     
-    var questionId = 0
-    var roomName = ""
-    var question = ""
-    var userName = ""
+    let roomName: String
+    let userName: String
+    let question: String
+    
+    let roomId: Int
+    let questionId: Int
     
     enum DeleteHintCode: String, CaseIterable {
         case success = "K006"
@@ -26,12 +28,14 @@ class HintViewModel: ViewModelType{
     }
     
 //MARK: - Init
-    init(questionId: Int, roomName: String, question: String, userName: String) {
-        showHintRequest(questionId)
+    init(roomName: String, userName: String, question: String, roomId: Int , questionId: Int) {
         self.roomName = roomName
-        self.question = question
         self.userName = userName
+        self.question = question
+        
+        self.roomId = roomId
         self.questionId = questionId
+        showHintRequest(questionId)
     }
     
 //MARK: - In/Out
