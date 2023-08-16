@@ -27,6 +27,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.appCoordinator?.start()
         
         window?.overrideUserInterfaceStyle = .dark // 다크모드 고정
+        
+        // 🔔 푸시로 앱이 실행된 경우 !
+        guard let notificationResponse = connectionOptions.notificationResponse else { return }
+        let userInfo = notificationResponse.notification.request.content.userInfo
+        appCoordinator?.userInfoByPush = userInfo
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

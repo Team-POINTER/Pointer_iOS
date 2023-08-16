@@ -10,7 +10,7 @@ import SnapKit
 
 class PreferenceItemHeader: UICollectionReusableView {
     //MARK: - Properties
-    var headerType: PreferenceModel.SectionType? {
+    var headerType: PreferenceSectionType? {
         didSet {
             configure()
         }
@@ -45,6 +45,6 @@ class PreferenceItemHeader: UICollectionReusableView {
     
     private func configure() {
         guard let type = headerType else { return }
-        titleLabel.text = type.rawValue
+        titleLabel.text = type.title
     }
 }

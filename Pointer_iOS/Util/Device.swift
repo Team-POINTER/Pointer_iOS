@@ -51,5 +51,8 @@ struct Device {
     static var bottomInset: CGFloat {
         return UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0
     }
+    
+    static let uuid = UIDevice.current.identifierForVendor?.uuidString ?? ""
+
 }
 

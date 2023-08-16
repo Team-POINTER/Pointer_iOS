@@ -21,6 +21,7 @@ class ResultViewController: BaseViewController {
     init(viewModel: ResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .overFullScreen
         self.newQuestionTimerLabel.text = viewModel.limitedAt
         
     }
@@ -278,6 +279,6 @@ class ResultViewController: BaseViewController {
 
 //MARK: - Selector
     @objc func backButtonTap() {
-        self.dismiss(animated: true)
+        self.navigationController?.dismissWithNavigationPopStyle()
     }
 }

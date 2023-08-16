@@ -88,7 +88,8 @@ class HomeController: BaseViewController {
         viewModel.presenter
             .bind { [weak self] viewController in
                 if let vc = viewController {
-                    self?.present(vc, animated: true)
+                    let nav = BaseNavigationController.templateNavigationController(nil, title: "알림", viewController: vc)
+                    self?.tabBarController?.presentWithNavigationPushStyle(nav)
                 }
             }
             .disposed(by: disposeBag)
@@ -111,7 +112,8 @@ class HomeController: BaseViewController {
     
     @objc private func handleNotiButtonTapped() {
         let vc = NotificationViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        let nav = BaseNavigationController.templateNavigationController(nil, title: "알림", viewController: vc)
+        self.tabBarController?.presentWithNavigationPushStyle(nav)
     }
     
     @objc private func handleNotiLogoutTapped() {

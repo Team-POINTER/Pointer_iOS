@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 import SnapKit
 
-private let allNotiCellReuseIdentifier = "allNotiCell"
-private let friendsNotiCellReuseIdentifier = "friendsNotiCell"
+private let roomCellIdentifier = "allNotiCell"
+private let friendCellReuseIdentifier = "friendsNotiCell"
 
 class NotificationDetailViewController: UIViewController {
     
@@ -17,24 +19,39 @@ class NotificationDetailViewController: UIViewController {
     // all: 전체 알림
     // friends: 친구 신청 관련
     enum NotiType {
-        case all
-        case friends
+        case room(viewModel: NotiDetailViewModel)
+        case friends(viewModel: NotiDetailViewModel)
+        
+        var viewModel: NotiDetailViewModel {
+            switch self {
+            case .friends(let viewModel):
+                return viewModel
+            case .room(viewModel: let viewModel):
+                return viewModel
+            }
+        }
     }
     
     //MARK: - Properties
     let notiType: NotiType
+    let viewModel: NotiDetailViewModel
+    let disposeBag = DisposeBag()
     
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
+        cv.register(RoomNotiCell.self, forCellWithReuseIdentifier: roomCellIdentifier)
+        cv.register(FriendsNotiCell.self, forCellWithReuseIdentifier: friendCellReuseIdentifier)
+        cv.delegate = self
         return cv
     }()
     
     //MARK: - Lifecycle
     init(withNotificationType type: NotiType) {
         self.notiType = type
+        self.viewModel = type.viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,20 +61,35 @@ class NotificationDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
         setupUI()
+        bind()
     }
     
-    //MARK: - Selector
+    //MARK: - Bind
+    private func bind() {
+        viewModel.dataSources
+            .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
+                guard let self = self else { return UICollectionViewCell() }
+                switch self.notiType {
+                case .room:
+                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: roomCellIdentifier, for: IndexPath(row: index, section: 0)) as? RoomNotiCell,
+                          let item = item as? RoomAlarmList else { return UICollectionViewCell() }
+                    print("🔥roomItem: \(item)")
+                    cell.item = item
+                    return cell
+                case .friends:
+                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendCellReuseIdentifier, for: IndexPath(row: index, section: 0)) as? FriendsNotiCell,
+                          let item = item as? FriendAlarmList else { return UICollectionViewCell() }
+                    print("🔥friendItem: \(item)")
+                    cell.item = item
+                    return cell
+                }
+            }
+            .disposed(by: disposeBag)
+        viewModel.requestData()
+    }
     
     //MARK: - Functions
-    private func setupCollectionView() {
-        collectionView.register(AllNotiCell.self, forCellWithReuseIdentifier: allNotiCellReuseIdentifier)
-        collectionView.register(FriendsNotiCell.self, forCellWithReuseIdentifier: friendsNotiCellReuseIdentifier)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-    }
-    
     private func setupUI() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
@@ -66,32 +98,14 @@ class NotificationDetailViewController: UIViewController {
     }
 }
 
-extension NotificationDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch notiType {
-        case .all:
-            return 10
-        case .friends:
-            return 5
-        }
-    }
+extension NotificationDetailViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch notiType {
-        case .all:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allNotiCellReuseIdentifier, for: indexPath) as? AllNotiCell else { return UICollectionViewCell() }
-            return cell
-        case .friends:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendsNotiCellReuseIdentifier, for: indexPath) as? FriendsNotiCell else { return UICollectionViewCell() }
-            return cell
-        }
-    }
 }
 
 extension NotificationDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch notiType {
-        case .all:
+        case .room:
             return CGSize(width: collectionView.frame.width - 32, height: 91)
         case .friends:
             return CGSize(width: collectionView.frame.width - 32, height: 54)
@@ -100,7 +114,7 @@ extension NotificationDetailViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         switch notiType {
-        case .all:
+        case .room:
             return 0
         case .friends:
             return 0

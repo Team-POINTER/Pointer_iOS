@@ -202,6 +202,7 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                         TokenManager.saveUserAccessToken(accessToken: accessToken)
                         TokenManager.saveUserRefreshToken(refreshToken: refreshToken)
                         TokenManager.saveUserId(userId: String(userId))
+                        self?.loginView.accept(nil)
 //                        output.dissMiss.accept(true)
                     default:
                         print(loginResultType.message)

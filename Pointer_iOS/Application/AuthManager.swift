@@ -9,14 +9,16 @@ import Foundation
 
 class AuthManager {
     
+    let network = AuthNetworkManager()
+    
     func configureAuth(completion: @escaping (Bool) -> Void) {
         if TokenManager.getUserAccessToken() == nil {
             // 로그인 뷰
             completion(false)
         } else {
             // 정상 진행
-            completion(true)
-            print("🔥AccessToken = \(TokenManager.getUserAccessToken())")
+            print("🔥AccessToken = \(TokenManager.getUserAccessToken() ?? "토큰없음")")
+            network.validateAccessToken(completion: completion)
         }
     }
 }

@@ -46,8 +46,7 @@ class HomeViewModel: ViewModelType {
     func pushSingleRoomController(voted: Bool = false, roomId: Int, questionId: Int = 0, limitedAt: String = "") {
         // 룸 투표 여부에 따라
         if voted {
-            let resultVC = BaseNavigationController(rootViewController: ResultViewController(viewModel: ResultViewModel(roomId, questionId, limitedAt)))
-            resultVC.modalPresentationStyle = .overFullScreen
+            let resultVC = ResultViewController(viewModel: ResultViewModel(roomId, questionId, limitedAt))
             presenter.accept(resultVC)
         } else {
             let roomVC = RoomViewController(viewModel: RoomViewModel(roomId: roomId))

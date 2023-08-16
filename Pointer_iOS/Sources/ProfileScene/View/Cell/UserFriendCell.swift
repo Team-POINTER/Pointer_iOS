@@ -64,7 +64,7 @@ class UserFriendCell: UICollectionViewCell {
     // data fetch
     private func configure() {
         guard let data = userData else { return }
-        nameLabel.text = data.userName
+        nameLabel.text = data.friendName
         if let url = data.file {
             profileImageView.kf.setImage(with: URL(string: url))
         }

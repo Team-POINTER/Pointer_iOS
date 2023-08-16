@@ -38,7 +38,7 @@ enum LoginResultType: String, CaseIterable {
     }
 }
 
-struct AuthNetworkManager {
+class AuthNetworkManager {
     
 //MARK: - shared
     static let shared = AuthNetworkManager()
@@ -211,6 +211,30 @@ struct AuthNetworkManager {
                 completion(false)
             }
         }
+    }
+    
+    func validateAccessToken(completion: @escaping (Bool) -> Void) {
+        let router = AuthRouter.validate
+        
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .responseDecodable(of: PointerDefaultResponse.self) { [weak self] response in
+                switch response.result {
+                case .success(let data):
+                    if data.code == "G005" {
+                        completion(true)
+                    } else {
+                        // 오류인 경우.. refresh 도전, 언래핑 먼저
+                        guard let refreshToken = TokenManager.getUserRefreshToken(), !refreshToken.isEmpty else {
+                            completion(false)
+                            return
+                        }
+                        self?.reissuePost(refreshToken, completion)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+                }
+            }
     }
     
 }

@@ -24,10 +24,10 @@ class NotificationViewController: BaseViewController {
     }()
     
     // 뷰컨트롤러s
-    lazy var allNotiVC = NotificationDetailViewController(withNotificationType: .all)
-    lazy var friendsNotiVC = NotificationDetailViewController(withNotificationType: .friends)
+    lazy var roomNotiVC = NotificationDetailViewController(withNotificationType: .room(viewModel: NotiDetailRoomViewModel()))
+    lazy var friendsNotiVC = NotificationDetailViewController(withNotificationType: .friends(viewModel: NotiDetailFriendsViewModel()))
     
-    lazy var viewControllers = [allNotiVC, friendsNotiVC]
+    lazy var viewControllers = [roomNotiVC, friendsNotiVC]
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         return vc
@@ -41,6 +41,15 @@ class NotificationViewController: BaseViewController {
     }
     
     //MARK: - Lifecycle
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .overFullScreen
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavi()
@@ -63,7 +72,7 @@ class NotificationViewController: BaseViewController {
     
     //MARK: - Selector
     @objc private func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
+        self.navigationController?.dismissWithNavigationPopStyle()
     }
     
     //MARK: - Functions

@@ -59,39 +59,17 @@ class BaseTabBarController: UITabBarController {
         
         // 두번째 탭
         let secondVC = HomeController()
-        let nav2 = templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
+        let nav2 = BaseNavigationController.templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
         let viewModel = ProfileViewModel(userId: TokenManager.getIntUserId())
         let thirdVC = ProfileViewController(viewModel: viewModel)
-        let nav3 = templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
+        let nav3 = BaseNavigationController.templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup
         viewControllers = [nav2, nav3]
 //        selectedIndex = 0
     }
-    
-    // 네비게이션 컨트롤러 만들기
-    private func templateNavigationController(_ image: UIImage?, title: String, viewController: UIViewController) -> UINavigationController {
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .clear
-        appearance.shadowColor = nil
-        
-        let nav = BaseNavigationController(rootViewController: viewController)
-        
-        nav.navigationBar.standardAppearance = appearance
-        nav.navigationItem.largeTitleDisplayMode = .automatic
-        
-        nav.navigationBar.tintColor = .white
-        
-        nav.tabBarItem.image = image
-        nav.tabBarItem.title = title
-        
-        return nav
-    }
-    
     
     
     func tabBarSetting() {

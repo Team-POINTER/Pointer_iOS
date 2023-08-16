@@ -50,7 +50,7 @@ enum NextQuestButtonStyle: CaseIterable {
             let seconds = time % 60
             let changingTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
             
-            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white])
+            let attributedQuestionString = NSMutableAttributedString(string: "질문 등록하기 ", attributes: [.font: UIFont.notoSansBold(size: 17), .foregroundColor: UIColor.white.withAlphaComponent(0.5)])
             attributedQuestionString.append(NSMutableAttributedString(string: "\(changingTime)", attributes: [.font: UIFont.notoSans(font: .notoSansKrMedium, size: 17), .foregroundColor: UIColor.white.withAlphaComponent(0.5)]))
             return attributedQuestionString
         }
