@@ -162,7 +162,9 @@ class RoomViewController: BaseViewController {
         output.pointButtonTap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                self?.navigationController?.popViewController(animated: false)
+                self?.delegate?.didChangedRoomState()
+                self?.present(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -221,11 +223,6 @@ class RoomViewController: BaseViewController {
         bindViewModel()
         self.hideKeyboardWhenTappedAround()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
 
 //MARK: - Selector
     @objc func backButtonTap() {

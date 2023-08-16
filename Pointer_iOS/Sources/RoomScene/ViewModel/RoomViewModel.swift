@@ -134,7 +134,8 @@ final class RoomViewModel: ViewModelType {
                     
                     // 서버 연동 성공 시
                     if let model = model {
-                        output.pointButtonTap.accept(ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId, self.limitedAt)))
+                        let resultVC = ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId, self.limitedAt))
+                        output.pointButtonTap.accept(UINavigationController(rootViewController: resultVC))
                     }
                 }
             })

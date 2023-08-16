@@ -87,7 +87,7 @@ class MyResultViewController: BaseViewController {
         hintTableView.snp.makeConstraints { make in
             make.top.equalTo(hintAlertLabel.snp.bottom).inset(-2.6)
             make.leading.trailing.equalToSuperview().inset(12.5)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
             make.width.equalTo(Device.width - 25)
         }
     }

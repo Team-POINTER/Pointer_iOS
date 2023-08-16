@@ -15,7 +15,8 @@ class HomeViewModel: ViewModelType {
 //MARK: - Properties
     var disposeBag = DisposeBag()
     let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
-    let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
+    let pusher = BehaviorRelay<UIViewController?>(value: nil)
+    let presenter = BehaviorRelay<UIViewController?>(value: nil)
     let expiredToken = BehaviorRelay<Bool>(value: false)
     let network = HomeNetworkManager()
 
@@ -45,12 +46,13 @@ class HomeViewModel: ViewModelType {
     func pushSingleRoomController(voted: Bool = false, roomId: Int, questionId: Int = 0, limitedAt: String = "") {
         // 룸 투표 여부에 따라
         if voted {
-            let resultVC = ResultViewController(viewModel: ResultViewModel(roomId, questionId, limitedAt))
-            nextViewController.accept(resultVC)
+            let resultVC = BaseNavigationController(rootViewController: ResultViewController(viewModel: ResultViewModel(roomId, questionId, limitedAt)))
+            resultVC.modalPresentationStyle = .overFullScreen
+            presenter.accept(resultVC)
         } else {
             let roomVC = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
             roomVC.delegate = self
-            nextViewController.accept(roomVC)
+            pusher.accept(roomVC)
         }
     }
     

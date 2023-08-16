@@ -77,10 +77,18 @@ class HomeController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        viewModel.nextViewController
+        viewModel.pusher
             .bind { [weak self] viewController in
                 if let vc = viewController {
                     self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.presenter
+            .bind { [weak self] viewController in
+                if let vc = viewController {
+                    self?.present(vc, animated: true)
                 }
             }
             .disposed(by: disposeBag)
