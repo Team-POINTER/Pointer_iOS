@@ -191,11 +191,12 @@ struct SearchRoomResultModel: Decodable {
 
 struct SearchRoomResultData: Decodable {
     let roomId: Int
-    let roomNm: String
+    let privateRoomNm: String
     let memberNum: Int
     let votingNum: Int
     let questionId: Int
     let question: String
+    let questionCreatorId: Int
     let limitedAt: String
     let roomMembers: [SearchRoomMembers]
 }

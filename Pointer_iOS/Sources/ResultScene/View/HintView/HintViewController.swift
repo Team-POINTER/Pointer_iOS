@@ -16,7 +16,7 @@ class HintViewController: BaseViewController {
 
     let viewModel: HintViewModel
     let disposeBag = DisposeBag()
-    var longPressName = ""
+    var longPressHint = ""
 
 //MARK: - Init
     init(viewModel: HintViewModel) {
@@ -43,7 +43,7 @@ class HintViewController: BaseViewController {
 
                 for i in 0..<data.voters.count {
                     let label: UILabel = {
-                        $0.text = "\(i+1). \(data.voters[i].voterNm)"
+                        $0.text = "\(i+1). \(data.voters[i].hint)"
                         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 17)
                         $0.textColor = UIColor.black
                         return $0
@@ -53,7 +53,7 @@ class HintViewController: BaseViewController {
                         .when(.began)
                         .observe(on: MainScheduler.instance)
                         .subscribe(onNext: { [weak self] _ in
-                            self?.longPressShowSetting(name: data.voters[i].voterNm)
+                            self?.longPressShowSetting(hint: data.voters[i].hint)
                         })
                         .disposed(by: self.disposeBag)
                     
@@ -195,7 +195,7 @@ class HintViewController: BaseViewController {
     }
     
 //MARK: - Helper
-    func longPressShowSetting(name: String) {
+    func longPressShowSetting(hint: String) {
         let report = PointerAlertActionConfig(title: "신고하기", textColor: .red) { [weak self] _ in
             self?.reportTap()
         }
@@ -203,8 +203,8 @@ class HintViewController: BaseViewController {
             print("DEBUG: 힌트 삭제")
         }
         
-        longPressName = name
-        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete], title: longPressName)
+        longPressHint = hint
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: [report, delete], title: longPressHint)
         present(actionSheet, animated: true)
     }
 

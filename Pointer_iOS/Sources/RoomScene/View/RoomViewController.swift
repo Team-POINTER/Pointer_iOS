@@ -85,7 +85,7 @@ class RoomViewController: BaseViewController {
         viewModel.roomResultObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                self?.title = data.roomNm
+                self?.title = data.privateRoomNm
                 self?.roomTopView.questLabel.text = data.question
             })
             .disposed(by: disposeBag)
