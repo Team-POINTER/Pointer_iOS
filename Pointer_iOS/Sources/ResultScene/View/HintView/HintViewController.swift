@@ -53,7 +53,7 @@ class HintViewController: BaseViewController {
                         .when(.began)
                         .observe(on: MainScheduler.instance)
                         .subscribe(onNext: { [weak self] _ in
-                            self?.longPressShowSetting(hint: data.voters[i].hint)
+                            self?.longPressShowSetting(hint: data.voters[i].hint, voterId: data.voters[i].voterId)
                         })
                         .disposed(by: self.disposeBag)
                     
@@ -61,6 +61,15 @@ class HintViewController: BaseViewController {
                 }
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
                 self.hintDate.text = data.createdAt
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.dismissHintView
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] b in
+                if b {
+                    self?.navigationController?.popViewController(animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -195,12 +204,12 @@ class HintViewController: BaseViewController {
     }
     
 //MARK: - Helper
-    func longPressShowSetting(hint: String) {
+    func longPressShowSetting(hint: String, voterId: Int) {
         let report = PointerAlertActionConfig(title: "신고하기", textColor: .red) { [weak self] _ in
             self?.reportTap()
         }
         let delete = PointerAlertActionConfig(title: "삭제하기", textColor: .black) { [weak self] _ in
-            print("DEBUG: 힌트 삭제")
+            self?.viewModel.deleteHintRequest(voterId: voterId)
         }
         
         longPressHint = hint
