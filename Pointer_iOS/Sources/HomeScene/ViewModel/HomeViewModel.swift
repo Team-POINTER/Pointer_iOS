@@ -174,7 +174,21 @@ class HomeViewModel: ViewModelType {
 
 //MARK: - RoomViewControllerDelegate
 extension HomeViewModel: RoomViewControllerDelegate {
+    // 나가면 룸 조회
     func didChangedRoomState() {
         self.requestRoomList()
+    }
+    
+    // 투표 후 결과보기로 이동
+    func tapedPoint(viewController: UIViewController) {
+        self.presenter.accept(viewController)
+    }
+}
+
+//MARK: - NewQuestViewControllerDelegate
+extension HomeViewModel: NewQuestViewControllerDelegate {
+    // 질문 생성 후 투표룸으로 이동
+    func requestedNewQuestion(viewController: UIViewController) {
+        self.pusher.accept(viewController)
     }
 }

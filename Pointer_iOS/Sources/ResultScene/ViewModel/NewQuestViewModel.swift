@@ -61,14 +61,14 @@ class NewQuestViewModel: ViewModelType{
     
 //MARK: - Properties
     
-    var limitedAt = ""
-    var roomName = ""
-    var roomId = 0
-    var userId = TokenManager.getIntUserId()
+    let limitedAt: String
+    let roomName: String
+    let roomId: Int
+    let userId = TokenManager.getIntUserId()
     var questionInputString = "" // 텍스트필드 입력 값
     
     // 룸 인원이 전부 투표 했는지 여부
-    var notVotedMemberCnt = 0
+    var notVotedMemberCnt: Int
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     private var timer: Timer?

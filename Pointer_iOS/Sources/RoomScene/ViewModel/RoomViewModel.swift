@@ -32,7 +32,6 @@ final class RoomViewModel: ViewModelType {
     //MARK: - LifeCycle
     init(roomId: Int) {
         self.roomId = roomId
-        searchRoomRequest(roomId)
     }
 
     //MARK: - In/Out
@@ -53,6 +52,7 @@ final class RoomViewModel: ViewModelType {
     
     //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
+        searchRoomRequest(roomId)
         
         /// 0. 상단에서 Output() 및 필요한 저장값들 선언
         let output = Output()
@@ -135,7 +135,7 @@ final class RoomViewModel: ViewModelType {
                     // 서버 연동 성공 시
                     if let model = model {
                         let resultVC = ResultViewController(viewModel: ResultViewModel(self.roomId, self.questionId, self.limitedAt))
-                        output.pointButtonTap.accept(UINavigationController(rootViewController: resultVC))
+                        output.pointButtonTap.accept(resultVC)
                     }
                 }
             })
