@@ -130,7 +130,7 @@ class ProfileViewModel: ViewModelType {
             .zip(input.friendsItemSelected,
                  input.friendsModelSelected)
             .subscribe { [weak self] indexPath, user in
-                let profileViewModel = ProfileViewModel(userId: user.userId)
+                let profileViewModel = ProfileViewModel(userId: user.friendId)
                 let userProfileVc = ProfileViewController(viewModel: profileViewModel)
                 profileViewModel.delegate = self
                 self?.nextViewController.accept(userProfileVc)
@@ -168,10 +168,9 @@ class ProfileViewModel: ViewModelType {
     func requestUserFriendsList() {
         print("🔥요청하는 User Id : \(userId)")
         profileNetwork.getUserFriendList(userId: userId, lastPage: 0) { [weak self] result in
-            print(result?.userList.first?.file)
             guard let result = result else { return }
             self?.friendsCount.accept(result.total)
-            self?.friendsArray.accept(result.userList)
+            self?.friendsArray.accept(result.friendInfoList)
         }
     }
     

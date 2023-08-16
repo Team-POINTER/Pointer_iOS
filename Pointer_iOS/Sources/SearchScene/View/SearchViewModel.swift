@@ -35,7 +35,7 @@ final class SearchViewModel: ViewModelType {
                 guard let text = text.element,
                       let self = self else { return }
                 self.requestRoomList("\(text)")
-                self.requestAccountList(word: "\(text)", lastPage: currentPage)
+                self.requestAccountList(word: "\(text)", lastPage: self.currentPage)
             }
             .disposed(by: disposeBag)
         

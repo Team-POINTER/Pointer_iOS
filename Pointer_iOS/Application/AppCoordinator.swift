@@ -11,6 +11,10 @@ class AppCoordinator {
     //MARK: - Properties
     let tabBarController: BaseTabBarController
     let authManager = AuthManager()
+    let pushManager = RemotePushManager()
+    
+    // 푸시로 앱을 실행시킨 경우 데이터가 들어옴
+    var userInfoByPush: [AnyHashable: Any]?
     
     //MARK: - Lifecycle
     init(_ tabBarController: BaseTabBarController) {
@@ -37,13 +41,26 @@ class AppCoordinator {
         authManager.configureAuth { [weak self] isSuccessed in
             // 런치스크린이 있다면 dismiss
             if let launchScreen = launchScreen {
+                
                 launchScreen.dismiss(animated: true)
             }
             
             // Auth 정보가 있다면 메인으로, 없다면 로그인 뷰로
             guard let self = self else { return }
+            
             if isSuccessed {
+                // 푸시 등록
+                self.pushManager.registerRemotePushToken()
+                
+                // 뷰 생성
                 self.tabBarController.configureViewControllers()
+                
+                // 들어온 푸시 데이터가 있다면?
+                if let pushData = self.userInfoByPush {
+                    self.userInfoByPush = nil
+                    self.configurePushNotification(userInfo: pushData)
+                }
+                
             } else {
                 let loginView = LoginViewController()
                 loginView.delegate = self
@@ -65,6 +82,21 @@ class AppCoordinator {
             }
         }
         start()
+    }
+    
+    // 실행중에 푸시 알림을 탭 했을 경우
+    func configurePushNotification(userInfo: [AnyHashable: Any]) {
+        // 미리 들어온 푸시 데이터가 있으면 return
+        if userInfoByPush != nil {
+            return
+        }
+        
+//        guard let pushType = PushReceiver(rawValue: 0),
+//              let nextViewController = pushType.getNextViewController(id: nil) else { return }
+        
+        // 일단 알림 뷰 로 가자..
+        let notiVc = BaseNavigationController.templateNavigationController(nil, title: "알림", viewController: NotificationViewController())
+        self.tabBarController.presentWithNavigationPushStyle(notiVc)
     }
 }
 

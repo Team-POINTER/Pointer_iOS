@@ -57,7 +57,7 @@ class HintViewController: BaseViewController {
                         })
                         .disposed(by: self.disposeBag)
                     
-                    selectMePeopleStackView.addArrangedSubview(label)
+                    self.selectMePeopleStackView.addArrangedSubview(label)
                 }
                 self.selectedMeNumber.text = "\(data.targetVotedCnt) / \(data.allVoteCnt)"
                 self.hintDate.text = data.createdAt
