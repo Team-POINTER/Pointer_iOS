@@ -7,17 +7,44 @@
 
 import UIKit
 
-enum PushReceiver: Int {
-    case chat = 0
-    case poke = 1
-    case friendRequest = 2
-    case friendAccept = 3
-    case question = 4
-    case event = 5
+enum PushType: String {
+    case chat = "CHAT"
+    case poke = "POKE"
+    case friendRequest = "FRIEND_REQUEST"
+    case friendAccept = "FRIEND_ACCEPT"
+    case question = "QUESTION"
+    case event = "EVENT"
     case none
+    
+    func generateTitle(targetUser: String? = nil) -> String {
+        switch self {
+        case .chat:
+            return "채팅이 왔어요"
+        case .poke:
+            return "새로운 질문이 등록되었어요"
+        case .friendRequest:
+            if let user = targetUser {
+                return "\(user)로부터 친구 요청이 왔어요"
+            } else {
+                return "친구요청이 왔어요"
+            }
+        case .friendAccept:
+            if let user = targetUser {
+                return "\(user)와 친구가 되었어요"
+            } else {
+                return "친구가 되었어요"
+            }
+        case .question:
+            return "질문이 왔어요"
+        case .event:
+            return "이벤트가 있어요"
+        case .none:
+            return ""
+        }
+    }
 }
 
-extension PushReceiver {
+extension PushType {
     func getNextViewController(id: Int? = nil) -> UIViewController? {
         switch self {
         case .poke, .question:
