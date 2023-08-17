@@ -26,7 +26,7 @@ class RelationshipFriendActionView: UIView {
     
     let stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = .vertical
+        stackView.axis = .horizontal
         stackView.spacing = 5
         return stackView
     }()

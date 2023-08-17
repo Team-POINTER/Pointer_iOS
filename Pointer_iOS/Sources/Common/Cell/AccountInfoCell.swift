@@ -11,6 +11,8 @@ import Kingfisher
 
 class AccountInfoCell: UICollectionViewCell {
     
+    weak var delegate: RelationshipFriendActionDelegate?
+    
     var accountModel: SearchUserListModel? {
         didSet {
             configure()
@@ -42,12 +44,7 @@ class AccountInfoCell: UICollectionViewCell {
         return label
     }()
     
-    let actionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .pointerRed
-        button.setAttributedTitle(NSAttributedString(string: "친구 신청", attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 10), NSAttributedString.Key.foregroundColor: UIColor.white]), for: .normal)
-        return button
-    }()
+    private var relationshipActionView: RelationshipFriendActionView?
     
     //MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -78,21 +75,31 @@ class AccountInfoCell: UICollectionViewCell {
             $0.leading.equalTo(userProfilImageView.snp.trailing).inset(-11)
             $0.centerY.equalTo(userProfilImageView.snp.centerY)
         }
-        
-        addSubview(actionButton)
-        actionButton.snp.makeConstraints {
-            $0.height.equalTo(24)
-            $0.trailing.equalToSuperview().inset(19)
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(56)
-            actionButton.layer.cornerRadius = 12
-            actionButton.clipsToBounds = true
-        }
     }
     
     func configure() {
         guard let model = accountModel else { return }
         userAccountLabel.text = model.id
         userNameLabel.text = model.userName
+        
+        // relationship에 따른 액션 버튼 뷰
+        let relationShip = Relationship(rawValue: model.relationship) ?? .none
+
+        // reuse 된 경우
+        if let view = self.relationshipActionView {
+            view.removeFromSuperview()
+            self.relationshipActionView = nil
+        }
+        // 새로 만든 경우
+        let actionButtonView = RelationshipFriendActionView(userId: model.userId, relationship: relationShip, userName: model.userName, userStringId: model.id)
+        actionButtonView.delegate = delegate
+        self.relationshipActionView = actionButtonView
+        guard let view = relationshipActionView else { return }
+        addSubview(view)
+        view.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(30)
+        }
     }
 }
