@@ -28,17 +28,9 @@ class SearchResultController: UIViewController {
     private let viewModel: SearchViewModel
     private let disposeBag = DisposeBag()
     
-    private var roomData: [PointerRoomModel] = [] {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    private var roomData: [PointerRoomModel] = []
     
-    private var accountData: [SearchUserListModel] = [] {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    private var accountData: [SearchUserListModel] = []
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -72,12 +64,14 @@ class SearchResultController: UIViewController {
         viewModel.searchRoomResult
             .subscribe(onNext: { [weak self] data in
                 self?.roomData = data.roomList
+                self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
         
         viewModel.searchAccountResult
             .subscribe(onNext: { [weak self] data in
                 self?.accountData = data
+                self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
     }
@@ -119,11 +113,12 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
             cell.roomViewModel = model
             
             return cell
+            
         case .account:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: accountCellReuseIdentifier, for: indexPath) as? AccountInfoCell else { return UICollectionViewCell() }
             
             let model = accountData[indexPath.row]
-            
+            cell.delegate = self
             cell.accountModel = model
             
             return cell
@@ -131,11 +126,17 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let model = accountData[indexPath.row]
-        let viewModel = ProfileViewModel(userId: model.userId)
-        let profileVC = ProfileViewController(viewModel: viewModel)
-        
-        self.navigationController?.pushViewController(profileVC, animated: true)
+        switch resultType {
+        case .room:
+            //
+            break
+        case .account:
+            let model = accountData[indexPath.row]
+            let viewModel = ProfileViewModel(userId: model.userId)
+            let profileVC = ProfileViewController(viewModel: viewModel)
+            
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
     }
 }
 
@@ -156,5 +157,15 @@ extension SearchResultController: UICollectionViewDelegateFlowLayout {
         case .account:
             return 0
         }
+    }
+}
+
+extension SearchResultController: RelationshipFriendActionDelegate {
+    func showActionAlert(alert: PointerAlert) {
+        self.present(alert, animated: true)
+    }
+    
+    func didFriendRelationshipChanged() {
+        viewModel.requestAccountList(word: viewModel.lastSearchedKeyword, lastPage: 0)
     }
 }

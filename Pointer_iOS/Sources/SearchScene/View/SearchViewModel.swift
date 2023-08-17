@@ -16,6 +16,8 @@ final class SearchViewModel: ViewModelType {
     let searchAccountResult = PublishRelay<[SearchUserListModel]>()
     
     private var currentPage = 0
+    
+    var lastSearchedKeyword = ""
  
 //MARK: - In/Out
     struct Input {
@@ -36,6 +38,7 @@ final class SearchViewModel: ViewModelType {
                       let self = self else { return }
                 self.requestRoomList("\(text)")
                 self.requestAccountList(word: "\(text)", lastPage: self.currentPage)
+                self.lastSearchedKeyword = text
             }
             .disposed(by: disposeBag)
         

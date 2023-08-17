@@ -12,6 +12,8 @@ import SnapKit
 
 class UserListCollectionView: UIView {
     //MARK: - Properties
+    weak var friendsListCelldelegate: FriendsListCellDelegate?
+    weak var relationshipDelegate: RelationshipFriendActionDelegate?
     /// to accept datasource
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     /// 친구 count Label을 사용할건지?
@@ -66,6 +68,8 @@ class UserListCollectionView: UIView {
             })
             .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FriendsListCell.cellIdentifier, for: IndexPath(row: index, section: 0)) as? FriendsListCell else { return UICollectionViewCell() }
+                cell.friendsListCellDelegate = self?.friendsListCelldelegate
+                cell.relationshipDelegate = self?.relationshipDelegate
                 cell.viewType = self?.viewType
                 cell.userData = item
                 return cell

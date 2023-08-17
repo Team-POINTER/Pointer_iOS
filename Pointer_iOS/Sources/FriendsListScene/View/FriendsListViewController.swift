@@ -29,6 +29,8 @@ class FriendsListViewController: BaseViewController {
         let view = UserListCollectionView(type: viewModel.listType)
         view.showFriendCountLabel = viewModel.listType == .normal ? true : false
         view.friendCountTitle = "친구"
+        view.friendsListCelldelegate = self
+        view.relationshipDelegate = self
         return view
     }()
     
@@ -155,5 +157,21 @@ class FriendsListViewController: BaseViewController {
 extension FriendsListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: collectionView.frame.width, height: 55)
+    }
+}
+
+extension FriendsListViewController: FriendsListCellDelegate {
+    func userSelected(user: FriendsListResultData) {
+        // something
+    }
+}
+
+extension FriendsListViewController: RelationshipFriendActionDelegate {
+    func showActionAlert(alert: PointerAlert) {
+        self.present(alert, animated: true)
+    }
+    
+    func didFriendRelationshipChanged() {
+        viewModel.requestFriendList()
     }
 }
