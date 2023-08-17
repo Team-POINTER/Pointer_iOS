@@ -22,7 +22,9 @@ class ProfileInfoView: ProfileInfoParentView {
         let label = UILabel()
         label.font = .notoSans(font: .notoSansKrMedium, size: 25)
         label.textColor = .white
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
         return label
     }()
     
@@ -30,7 +32,9 @@ class ProfileInfoView: ProfileInfoParentView {
         let label = UILabel()
         label.textColor = .rgb(red: 179, green: 183, blue: 205)
         label.font = .notoSansRegular(size: 18)
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
         return label
     }()
     
@@ -148,14 +152,14 @@ class ProfileInfoView: ProfileInfoParentView {
         nameLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
             $0.top.equalToSuperview().inset(67)
-            $0.width.equalTo(106)
+            $0.width.equalTo(Device.width * 0.4)
         }
         
         addSubview(idLabel)
         idLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom)
             $0.leading.equalTo(nameLabel.snp.leading)
-            $0.width.greaterThanOrEqualTo(106)
+            $0.width.equalTo(Device.width * 0.4)
         }
         
         addSubview(seperator)

@@ -16,6 +16,14 @@ class HomeController: BaseViewController {
         self?.viewModel.requestRoomList()
     }
     
+    private let logoImageView: UIImageView = {
+        let view = UIImageView(image: UIImage(named: "pointer_logo_main"))
+        view.contentMode = .scaleAspectFit
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        return view
+    }()
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 18
@@ -102,6 +110,15 @@ class HomeController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
+        logoImageView.rx.tapGesture()
+            .when(.recognized)
+            .asDriver{ _ in .never() }
+            .drive(onNext: { [weak self] _ in
+                self?.viewModel.roomModel.accept([])
+                self?.viewModel.requestRoomList()
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     //MARK: - Selector
@@ -143,10 +160,7 @@ class HomeController: BaseViewController {
     
     private func setupNavigationController() {
         // 로고
-        let logoImageView = UIImageView(image: UIImage(named: "pointer_logo_main"))
-        logoImageView.contentMode = .scaleAspectFit
         let imageItem = UIBarButtonItem.init(customView: logoImageView)
-        logoImageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
         navigationItem.leftBarButtonItem = imageItem
         
         // 우측 바버튼

@@ -43,8 +43,16 @@ class PreferenceController: BaseViewController {
     
     //MARK: - Functions
     func bind() {
-        _ = viewModel.transform(
+        let output = viewModel.transform(
             input: PreferenceViewModel.Input(collectionItemSelected: collectionView.rx.itemSelected.asObservable()))
+        
+        output.nextViewController
+            .bind { [weak self] viewController in
+                if let vc = viewController {
+                    self?.present(vc, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
         
         viewModel.preferenceData
             .bind { [weak self] data in
