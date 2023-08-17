@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 class FriendsListViewModel: ViewModelType {
     //MARK: - ListType
@@ -20,16 +19,21 @@ class FriendsListViewModel: ViewModelType {
     //MARK: - Properties
     var disposeBag = DisposeBag()
     let listType: ListType
-    let friendsListObservable = PublishRelay<[SectionModel]>()
-    let friendsList = BehaviorRelay<[SectionModel]>(value: [SectionModel(header: "header", items: [])])
-    let selectedUser = BehaviorRelay<[FriendsListResultData]>(value: [])
+    let selectedUser = BehaviorRelay<[FriendsModel]>(value: [])
     
-    let roomId: Int?
+    let userList = BehaviorRelay<[FriendsModel]>(value: [])
+    let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
     
+    private lazy var profileNetwork = ProfileNetworkManager()
+    
+    private var roomId: Int?
+    private var userId: Int?
     
     //MARK: - Rx
     struct Input {
         let searchTextFieldEditEvent: Observable<String>
+        let collectionViewItemSelected: Observable<IndexPath>
+        let collectionViewModelSelected: Observable<FriendsModel>
     }
     
     struct Output {
@@ -60,34 +64,28 @@ class FriendsListViewModel: ViewModelType {
                 output.buttonAttributeString.accept(buttonAttributeString)
             }
             .disposed(by: disposeBag)
+        
+        input.collectionViewModelSelected
+            .subscribe { [weak self] item in
+                guard let self = self,
+                      let item = item.element,
+                      listType == .normal else { return }
+                let userId = item.friendId
+                let viewModel = ProfileViewModel(userId: userId)
+                let vc = ProfileViewController(viewModel: viewModel)
+                self.nextViewController.accept(vc)
+            }
+            .disposed(by: disposeBag)
+        
+        requestFriendList()
         return output
     }
     
     //MARK: - LifeCycle
-    init(listType: ListType, roomId: Int? = nil) {
+    init(listType: ListType, roomId: Int? = nil, userId: Int? = nil) {
         self.listType = listType
-         self.roomId = roomId
-    }
-    
-    //MARK: - DataSources
-    struct SectionModel {
-        var header: String?
-        var footer: String?
-        var items: [Item]
-    }
-    
-    func makeDataSource() -> RxCollectionViewSectionedReloadDataSource<SectionModel> {
-        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel>(configureCell: { [weak self] datasource, collectionView, indexPath, item in
-            // Cell
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FriendsListCell.cellIdentifier, for: indexPath) as? FriendsListCell,
-                  let self = self else { return UICollectionViewCell() }
-            cell.user = item
-            cell.isSelectedCell = self.detectSelectedUser(item)
-            cell.delegate = self
-            return cell
-        })
-        
-        return dataSource
+        self.roomId = roomId
+        self.userId = userId
     }
     
     // User가 선택된 상태인지 체크하는 메소드
@@ -115,8 +113,9 @@ class FriendsListViewModel: ViewModelType {
                 }
             }
         case false:
-            currentSelectedUser.append(selectedUser)
-            self.selectedUser.accept(currentSelectedUser)
+            break
+//            currentSelectedUser.append(selectedUser)
+//            self.selectedUser.accept(currentSelectedUser)
         }
     }
     
@@ -131,37 +130,33 @@ class FriendsListViewModel: ViewModelType {
     }
     
 //MARK: - API
-    // 초대 가능한 친구 목록
+    // 초대 가능한 친구 목록 조회
     func inviteFriendsListRequest(_ input: InviteFriendsListReqeustInputModel) {
         guard let roomId = roomId else { return }
         RoomNetworkManager.shared.inviteFriendListRequest(roomId, input) { [weak self] error, model in
             if let error = error {
                 print("DEBUG: 초대 가능한 친구 목록 조회 에러 - \(error.localizedDescription)")
             }
-            
-            if let model = model {
-                let sectionModel = [SectionModel(header: "header", items: model)]
-                self?.friendsListObservable.accept(sectionModel)
+            // 언래핑
+            guard let modelList = model else { return }
+            // FriendsModel로 변경
+            let userList = modelList.map {
+                FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: $0.relationship ?? 99)
             }
+            // accept
+            self?.userList.accept(userList)
         }
     }
     
-}
-
-//MARK: - FriendsListViewModel.SectionModel
-extension FriendsListViewModel.SectionModel: SectionModelType {
-    typealias Item = FriendsListResultData
-    
-    init(original: FriendsListViewModel.SectionModel, items: [FriendsListResultData]) {
-        self = original
-        self.items = items
-    }
-}
-
-
-//MARK: - FriendsListCellDelegate
-extension FriendsListViewModel: FriendsListCellDelegate {
-    func userSelected(user: FriendsListResultData) {
-        processSelectedUser(selectedUser: user)
+    // 친구 리스트 조회
+    func requestFriendList() {
+        guard let userId = userId else { return }
+        profileNetwork.getUserFriendList(userId: userId, lastPage: 0) { [weak self] response in
+            guard let response = response, response.code == "J013" else {
+                return
+            }
+            self?.userList.accept(response.friendInfoList)
+            print(response.friendInfoList)
+        }
     }
 }

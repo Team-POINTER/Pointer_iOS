@@ -10,14 +10,20 @@ import UIKit
 enum Relationship: Int {
     case block = 0
     case friendRequested = 1
-    case friendRequestReceived = 2
+    case friendRequestReceived = 2 // 기본: 수락
     case friend = 3
     case friendRejected = 4
+    case requestRejectConfig
     case none
     
     // 버튼 배경색
     var backgroundColor: UIColor {
-        return .pointerRed
+        switch self {
+        case .friendRequested, .friendRequestReceived, .block:
+            return .pointerRed
+        case .friend, .requestRejectConfig, .none, .friendRejected:
+            return .darkGray
+        }
     }
     
     var tintColor: UIColor {
@@ -37,6 +43,25 @@ enum Relationship: Int {
             return getButtonTitle(title: "친구 ✓")
         case .friendRejected, .none:
             return getButtonTitle(title: "친구 신청")
+        case .requestRejectConfig:
+            return getButtonTitle(title: "거절")
+        }
+    }
+    
+    var smallAttributedTitle: NSAttributedString {
+        switch self {
+        case .block:
+            return getButtonTitle(title: "차단 해제", size: 11)
+        case .friendRequested:
+            return getButtonTitle(title: "요청 취소", size: 11)
+        case .friendRequestReceived:
+            return getButtonTitle(title: "요청 수락", size: 11)
+        case .friend:
+            return getButtonTitle(title: "친구 ✓", size: 11)
+        case .friendRejected, .none:
+            return getButtonTitle(title: "친구 신청", size: 11)
+        case .requestRejectConfig:
+            return getButtonTitle(title: "거절", size: 11)
         }
     }
     
@@ -48,6 +73,7 @@ enum Relationship: Int {
         case .friendRequestReceived: return "요청 수락"
         case .friend: return "친구 해제"
         case .friendRejected, .none: return "친구 요청"
+        case .requestRejectConfig: return "요청 거절"
         }
     }
     
@@ -59,6 +85,7 @@ enum Relationship: Int {
         case .friendRequestReceived: return "수락"
         case .friend: return "해제"
         case .friendRejected, .none: return "요청"
+        case .requestRejectConfig: return "거절"
         }
     }
     
@@ -74,6 +101,7 @@ enum Relationship: Int {
         case .friendRequestReceived: return "\(targetName)(\(targetId))님의 친구 요청을\n수락하시겠어요?"
         case .friend: return "\(targetName)(\(targetId))님과\n친구를 해제하시겠어요?"
         case .friendRejected, .none: return "\(targetName)(\(targetId))님에게 친구를 요청하시겠어요?"
+        case .requestRejectConfig: return "\(targetName)(\(targetId))님의 요청을 거절하시겠어요?"
         }
     }
     
@@ -85,12 +113,13 @@ enum Relationship: Int {
         case .friendRequestReceived: return .acceptFreindRequest
         case .friend: return .breakFreind
         case .friendRejected, .none: return .requestFriend
+        case .requestRejectConfig: return .rejectFriendRequest
         }
     }
     
     // 버튼 Attributed Title
-    func getButtonTitle(title: String) -> NSAttributedString {
-        let string = NSAttributedString(string: title, attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 13)])
+    func getButtonTitle(title: String, size: Int = 13) -> NSAttributedString {
+        let string = NSAttributedString(string: title, attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: CGFloat(size))])
         return string
     }
 }
