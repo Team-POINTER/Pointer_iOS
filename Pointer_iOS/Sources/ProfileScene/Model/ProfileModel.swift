@@ -48,7 +48,7 @@ struct FriendsModel: Codable {
     let id: String
     let friendName: String
     let file: String?
-    let relationship: String
+    let relationship: Int
 }
 
 //MARK: - 중복확인 결과
