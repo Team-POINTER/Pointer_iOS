@@ -184,11 +184,3 @@ extension HomeViewModel: RoomViewControllerDelegate {
         self.presenter.accept(viewController)
     }
 }
-
-//MARK: - NewQuestViewControllerDelegate
-extension HomeViewModel: NewQuestViewControllerDelegate {
-    // 질문 생성 후 투표룸으로 이동
-    func requestedNewQuestion(viewController: UIViewController) {
-        self.pusher.accept(viewController)
-    }
-}

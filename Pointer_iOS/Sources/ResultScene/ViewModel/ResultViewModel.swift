@@ -39,9 +39,10 @@ class ResultViewModel: ViewModelType{
 //MARK: - Properties
     // resultView에 맞는 모델 [X] -> API 연결 시
     
-    var limitedAt = ""
-    var roomId = 0
-    var questionId = 0
+    let limitedAt: String
+    let roomId: Int
+    let questionId: Int
+    
     var userName = ""
     var roomName = ""
     var question = ""
@@ -91,7 +92,7 @@ class ResultViewModel: ViewModelType{
         input.newQuestionButtonTap
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                output.newQuestionButtonTap.accept(NewQuestViewController(viewModel: NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId, notVotedMemberCnt: self.notVotedMeberCnt)))
+                output.newQuestionButtonTap.accept(NewQuestViewController(viewModel: NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId)))
             }
             .disposed(by: disposeBag)
         

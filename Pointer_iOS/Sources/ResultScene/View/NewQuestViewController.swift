@@ -14,16 +14,10 @@ import RxCocoa
 // 2. 시간 활성화 비활성화에 따른 enum
 // 3. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
 // 4. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
-
-protocol NewQuestViewControllerDelegate: AnyObject {
-    func requestedNewQuestion(viewController: UIViewController)
-}
-
 class NewQuestViewController: BaseViewController {
     
     let viewModel: NewQuestViewModel
     let disposeBag = DisposeBag()
-    weak var delegate: NewQuestViewControllerDelegate?
 
 //MARK: - Init
     init(viewModel: NewQuestViewModel) {
@@ -96,11 +90,11 @@ class NewQuestViewController: BaseViewController {
                 // 시간 0 시(버튼 활성화)
                 if b {
                     self.newQuestTextView.isEditable = true
+                    self.newQuestTextView.text = "질문을 입력하세요."
                 // 시간 남았을 시(버튼 비활성화)
                 } else {
                     self.newQuestTextView.isEditable = false
                     self.newQuestTextView.text = "누군가 이미 질문을 등록했어요."
-                    self.newQuestTextView.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
                 }
             })
             .disposed(by: disposeBag)
@@ -155,7 +149,6 @@ class NewQuestViewController: BaseViewController {
     private lazy var newQuestTextView: UITextView = {
         $0.backgroundColor = .clear
         $0.textAlignment = .center
-        $0.text = "질문을 입력하세요."
         $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 20)
         $0.isScrollEnabled = false

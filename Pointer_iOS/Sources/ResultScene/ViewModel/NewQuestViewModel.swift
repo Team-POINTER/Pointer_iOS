@@ -68,7 +68,7 @@ class NewQuestViewModel: ViewModelType{
     var questionInputString = "" // 텍스트필드 입력 값
     
     // 룸 인원이 전부 투표 했는지 여부
-    var notVotedMemberCnt: Int
+    let creatableQuestion = BehaviorRelay<Bool>(value: false)
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     private var timer: Timer?
@@ -76,11 +76,10 @@ class NewQuestViewModel: ViewModelType{
     let disposeBag = DisposeBag()
     
 //MARK: - Init
-    init(limitedAt: String, roomName: String, roomId: Int, notVotedMemberCnt: Int) {
+    init(limitedAt: String, roomName: String, roomId: Int) {
         self.limitedAt = limitedAt
         self.roomName = roomName
         self.roomId = roomId
-        self.notVotedMemberCnt = notVotedMemberCnt
         self.startTimer()
     }
     
@@ -99,6 +98,7 @@ class NewQuestViewModel: ViewModelType{
     
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
+        checkCreatableQuestionRequest(roomId: roomId)
         
         let output = Output()
         // 질문 입력 시
@@ -143,13 +143,10 @@ class NewQuestViewModel: ViewModelType{
             }
             .disposed(by: disposeBag)
         
-        remainingTime
-            .subscribe { [weak self] time in
-                guard let time = time.element,
-                      let self = self else { return }
-                
-                // 남아있는 시간이 0보다 작거나 룸 인원이 전부 투표한 경우
-                if time <= 0 || self.notVotedMemberCnt == 0 {
+        // 질문 등록 가능 시
+        creatableQuestion
+            .subscribe { b in
+                if b {
                     output.timeLimited.accept(true)
                     output.buttonIsEnable.accept(.isEnable)
                 } else {
@@ -164,7 +161,7 @@ class NewQuestViewModel: ViewModelType{
     
     
 //MARK: - Functions
-    func startTimer() {
+    private func startTimer() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         guard let endDate = formatter.date(from: limitedAt) else { return }
@@ -183,17 +180,32 @@ class NewQuestViewModel: ViewModelType{
         }
     }
     
-    func stopTimer() {
+    private func stopTimer() {
         self.timer?.invalidate()
         self.timer = nil
     }
     
     // 45자 제한
-    func textViewLimitedString(text: String) -> String {
+    private func textViewLimitedString(text: String) -> String {
         if text.count > 45 {
             return String(text.prefix(45))
         } else {
             return text
+        }
+    }
+    
+//MARK: - Network
+    // 질문 등록 가능 여부 확인
+    private func checkCreatableQuestionRequest(roomId: Int) {
+        ResultNetworkManager.shared.checkCreatableQuestionRequest(roomId) { [weak self] (error, model) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+            if let model = model {
+                print("DEBUG: 질문 등록 가능 여부 \(model.result)")
+                self?.creatableQuestion.accept(model.result)
+            }
         }
     }
 }

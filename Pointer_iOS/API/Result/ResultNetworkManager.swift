@@ -11,14 +11,14 @@ import RxSwift
 
 class ResultNetworkManager {
     
-//MARK: - shared
+    //MARK: - shared
     static let shared = ResultNetworkManager()
     let questionRouter = QuestionRouter.self
     let voteRouter = VoteRouter.self
     let userId = TokenManager.getIntUserId()
     
     
-//MARK: - Observable 변환
+    //MARK: - Observable 변환
     func votedResultRequest(_ questionId: Int) -> Observable<VotedResultData> {
         return Observable.create { (observer) -> Disposable in
             
@@ -73,97 +73,97 @@ class ResultNetworkManager {
         }
     }
     
-//MARK: - Function
+    //MARK: - Function
     
     // 지목화면 결과 조회
     private func votedResultRequest(_ questionId: Int, _ completion: @escaping (Error?, VotedResultData?) -> Void){
         AF.request(voteRouter.votedResult(questionId).url,
                    method: voteRouter.votedResult(questionId).method,
                    headers: voteRouter.votedResult(questionId).headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: VotedResultModel.self) { response in
-                switch response.result {
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: VotedResultModel.self) { response in
+            switch response.result {
                 // 성공인 경우
-                case .success(let result):
-                    // completion 전송
-                    print(result)
-                    guard let data = result.result else { return }
-                    completion(nil, data)
+            case .success(let result):
+                // completion 전송
+                print(result)
+                guard let data = result.result else { return }
+                completion(nil, data)
                 // 실패인 경우
-                case .failure(let error):
-                    print("지목화면 결과 데이터 전송 실패 - \(error.localizedDescription)")
-                    // completion 전송
-                    completion(error, nil)
-                }
+            case .failure(let error):
+                print("지목화면 결과 데이터 전송 실패 - \(error.localizedDescription)")
+                // completion 전송
+                completion(error, nil)
             }
+        }
     }
     
     private func totalQuestionRequest(_ roomId: Int, completion: @escaping (Error?, [TotalQuestionResultData]?) -> Void) {
         AF.request(questionRouter.totalSearchQuestion(roomId).url,
                    method:questionRouter.totalSearchQuestion(roomId).method,
                    headers: questionRouter.totalSearchQuestion(roomId).headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: TotalQuestionResultModel.self) { response in
-                switch response.result {
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: TotalQuestionResultModel.self) { response in
+            switch response.result {
                 // 성공인 경우
-                case .success(let result):
-                    // completion 전송
-                    print(result)
-                    guard let data = result.result else { return }
-                    completion(nil, data)
+            case .success(let result):
+                // completion 전송
+                print(result)
+                guard let data = result.result else { return }
+                completion(nil, data)
                 // 실패인 경우
-                case .failure(let error):
-                    print("질문 전체 조회 데이터 전송 실패 - \(error.localizedDescription)")
-                    // completion 전송
-                    completion(error, nil)
-                }
+            case .failure(let error):
+                print("질문 전체 조회 데이터 전송 실패 - \(error.localizedDescription)")
+                // completion 전송
+                completion(error, nil)
             }
+        }
     }
     
     private func showHintRequest(_ questionId: Int, completion: @escaping (Error?, ShowHintResultData?) -> Void) {
         AF.request(voteRouter.showHint(questionId).url,
                    method:voteRouter.showHint(questionId).method,
                    headers: voteRouter.showHint(questionId).headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: ShowHintResultModel.self) { response in
-                switch response.result {
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: ShowHintResultModel.self) { response in
+            switch response.result {
                 // 성공인 경우
-                case .success(let result):
-                    // completion 전송
-                    print(result)
-                    guard let data = result.result else { return }
-                    completion(nil, data)
+            case .success(let result):
+                // completion 전송
+                print(result)
+                guard let data = result.result else { return }
+                completion(nil, data)
                 // 실패인 경우
-                case .failure(let error):
-                    print("힌트보기 데이터 전송 실패 - \(error.localizedDescription)")
-                    // completion 전송
-                    completion(error, nil)
-                }
+            case .failure(let error):
+                print("힌트보기 데이터 전송 실패 - \(error.localizedDescription)")
+                // completion 전송
+                completion(error, nil)
             }
+        }
     }
     
     func newQuestionRequest(_ parameters: NewQuestionRequestModel,
-                                    completion: @escaping (Error?, NewQuestionResultModel?) -> Void) {
+                            completion: @escaping (Error?, NewQuestionResultModel?) -> Void) {
         AF.request(questionRouter.createQuestion.url,
                    method:questionRouter.createQuestion.method,
                    parameters: parameters,
                    encoder: JSONParameterEncoder.default,
                    headers: questionRouter.createQuestion.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: NewQuestionResultModel.self) { response in
-                switch response.result {
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: NewQuestionResultModel.self) { response in
+            switch response.result {
                 // 성공인 경우
-                case .success(let result):
-                    // completion 전송
-                    print(result)
-                    completion(nil, result)
+            case .success(let result):
+                // completion 전송
+                print(result)
+                completion(nil, result)
                 // 실패인 경우
-                case .failure(let error):
-                    print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
-                    // completion 전송
-                    completion(error, nil)
-                }
+            case .failure(let error):
+                print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
+                // completion 전송
+                completion(error, nil)
             }
+        }
     }
     
     func deleteHintRequest(_ parameters: DeleteHintRequestModel, completion: @escaping (Error?, DeleteResultModel?) -> Void) {
@@ -173,22 +173,42 @@ class ResultNetworkManager {
                    parameters: parameters,
                    encoder: JSONParameterEncoder.default,
                    headers: router.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: DeleteResultModel.self) { response in
-                switch response.result {
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: DeleteResultModel.self) { response in
+            switch response.result {
                 // 성공인 경우
-                case .success(let result):
-                    // completion 전송
-                    completion(nil, result)
+            case .success(let result):
+                // completion 전송
+                completion(nil, result)
                 // 실패인 경우
-                case .failure(let error):
-                    print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
-                    // completion 전송
-                    completion(error, nil)
-                }
+            case .failure(let error):
+                print("새 질문 등록 데이터 전송 실패 - \(error.localizedDescription)")
+                // completion 전송
+                completion(error, nil)
             }
+        }
     }
     
+    func checkCreatableQuestionRequest(_ roomId: Int, completion: @escaping (Error?, CheckCreatableQuestionResultModel?) -> Void) {
+        let router = questionRouter.checkCreatableQuestion(roomId)
+        AF.request(router.url,
+                   method: router.method,
+                   headers: router.headers)
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: CheckCreatableQuestionResultModel.self) { response in
+            switch response.result {
+                // 성공인 경우
+            case .success(let result):
+                // completion 전송
+                completion(nil, result)
+                // 실패인 경우
+            case .failure(let error):
+                print("질문 생성 가능 여부 확인 데이터 전송 실패 - \(error.localizedDescription)")
+                // completion 전송
+                completion(error, nil)
+            }
+        }
+    }
 }
 
 
@@ -295,4 +315,11 @@ struct NewQuestionResultModel: Decodable {
 struct NewQuestionResultData: Decodable {
     let questionId: Int
     let content: String
+}
+
+//MARK: - #1-5 질문 생성 가능 조회
+struct CheckCreatableQuestionResultModel: Decodable {
+    let code: String
+    let message: String
+    let result: Bool
 }
