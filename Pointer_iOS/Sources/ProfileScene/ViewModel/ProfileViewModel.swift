@@ -120,8 +120,10 @@ class ProfileViewModel: ViewModelType {
         input.moreFriendLabelTapped
             .when(.recognized)
             .asDriver{ _ in .never() }
-            .drive(onNext: { _ in
-                // 친구 리스트로 이동
+            .drive(onNext: { [weak self] _ in
+                let viewModel = FriendsListViewModel(listType: .normal, roomId: nil, userId: self?.userId)
+                let vc = FriendsListViewController(viewModel: viewModel)
+                self?.nextViewController.accept(vc)
             })
             .disposed(by: disposeBag)
         
