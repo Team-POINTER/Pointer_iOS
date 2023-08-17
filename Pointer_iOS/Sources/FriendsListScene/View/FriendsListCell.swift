@@ -17,7 +17,8 @@ protocol FriendsListCellDelegate: AnyObject {
 class FriendsListCell: UICollectionViewCell {
     //MARK: - Properties
     static let cellIdentifier = "FriendsListCell"
-    var delegate: FriendsListCellDelegate?
+    weak var friendsListCellDelegate: FriendsListCellDelegate?
+    weak var relationshipDelegate: RelationshipFriendActionDelegate?
     var disposeBag = DisposeBag()
     
     var isSelectedCell: Bool = false {
@@ -86,7 +87,7 @@ class FriendsListCell: UICollectionViewCell {
                 guard let self = self,
                       let user = self.user else { return }
                 self.isSelectedCell.toggle()
-                self.delegate?.userSelected(user: user)
+                self.friendsListCellDelegate?.userSelected(user: user)
             }
             .disposed(by: disposeBag)
     }
@@ -141,7 +142,8 @@ class FriendsListCell: UICollectionViewCell {
                 self.relationshipActionView = nil
             }
             // 새로 만든 경우
-            let actionButtonView = RelationshipFriendActionView(userId: user.friendId, relationship: Relationship(rawValue: user.relationship) ?? .none)
+            let actionButtonView = RelationshipFriendActionView(userId: user.friendId, relationship: Relationship(rawValue: user.relationship) ?? .none, userName: user.friendName, userStringId: user.id)
+            actionButtonView.delegate = relationshipDelegate
             self.relationshipActionView = actionButtonView
             guard let view = relationshipActionView else { return }
             addSubview(view)

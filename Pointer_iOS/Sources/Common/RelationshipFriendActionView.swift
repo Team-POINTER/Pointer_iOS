@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 protocol RelationshipFriendActionDelegate: AnyObject {
+    func showActionAlert(alert: PointerAlert)
     func didFriendRelationshipChanged()
 }
 
@@ -20,6 +21,8 @@ class RelationshipFriendActionView: UIView {
     let network = FriendNetworkManager()
     let relationship: Relationship
     let userId: Int
+    let userStringId: String
+    let userName: String
     
     let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -29,9 +32,11 @@ class RelationshipFriendActionView: UIView {
     }()
     
     //MARK: - Lifecycle
-    init(userId: Int, relationship: Relationship) {
+    init(userId: Int, relationship: Relationship, userName: String, userStringId: String) {
         self.relationship = relationship
         self.userId = userId
+        self.userStringId = userStringId
+        self.userName = userName
         super.init(frame: .zero)
         setupUI()
     }
@@ -81,19 +86,41 @@ class RelationshipFriendActionView: UIView {
     }
     
     @objc private func actionButtonTapped() {
-        network.requestFriendAction(userId, router: relationship.router) { [weak self] isSuccessed in
-            if isSuccessed {
-                self?.delegate?.didFriendRelationshipChanged()
+        // Alert 뷰 만들어서 확인
+        let alert = PointerAlert.getActionAlert(
+            title: relationship.alertTitle,
+            message: relationship.getAlertMessage(targetName: userName,
+                                                       targetId: userStringId),
+            actionTitle: relationship.alertActionTitle) { [weak self] _ in
+                // Alert 액션
+                guard let self = self else { return }
+                network.requestFriendAction(self.userId, router: self.relationship.router) { isSuccessed in
+                    if isSuccessed {
+                        self.delegate?.didFriendRelationshipChanged()
+                    }
+                }
             }
-        }
+        
+        delegate?.showActionAlert(alert: alert)
     }
     
     @objc private func rejectButtonTapped() {
         let router = FriendRouter.rejectFriendRequest
-        network.requestFriendAction(userId, router: router) { [weak self] isSuccessed in
-            if isSuccessed {
-                self?.delegate?.didFriendRelationshipChanged()
+        
+        let alert = PointerAlert.getActionAlert(
+            title: relationship.alertTitle,
+            message: relationship.getAlertMessage(targetName: userName,
+                                                       targetId: userStringId),
+            actionTitle: relationship.alertActionTitle) { [weak self] _ in
+                // Alert 액션
+                guard let self = self else { return }
+                self.network.requestFriendAction(userId, router: router) { isSuccessed in
+                    if isSuccessed {
+                        self.delegate?.didFriendRelationshipChanged()
+                    }
+                }
             }
-        }
+        
+        delegate?.showActionAlert(alert: alert)
     }
 }
