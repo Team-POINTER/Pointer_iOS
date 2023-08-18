@@ -69,7 +69,7 @@ class FriendsListViewModel: ViewModelType {
             .subscribe { [weak self] item in
                 guard let self = self,
                       let item = item.element,
-                      listType == .normal else { return }
+                      self.listType == .normal else { return }
                 let userId = item.friendId
                 let viewModel = ProfileViewModel(userId: userId)
                 let vc = ProfileViewController(viewModel: viewModel)

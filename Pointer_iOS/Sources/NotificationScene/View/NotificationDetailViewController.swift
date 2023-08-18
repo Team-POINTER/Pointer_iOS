@@ -30,6 +30,24 @@ class NotificationDetailViewController: UIViewController {
                 return viewModel
             }
         }
+        
+        var emptyViewTitle: String {
+            switch self {
+            case .room:
+                return "아직 알림이 없어요"
+            case .friends:
+                return "아직 친구 요청이 없어요"
+            }
+        }
+        
+        var emptyViewSubTitle: String {
+            switch self {
+            case .room:
+                return "활동 알림이 오면 여기에 표시돼요."
+            case .friends:
+                return "친구 요청을 받으면 여기에 표시돼요."
+            }
+        }
     }
     
     //MARK: - Properties
@@ -48,6 +66,8 @@ class NotificationDetailViewController: UIViewController {
         return cv
     }()
     
+    private let emptyView = ListEmptyView()
+    
     //MARK: - Lifecycle
     init(withNotificationType type: NotiType) {
         self.notiType = type
@@ -61,6 +81,8 @@ class NotificationDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        emptyView.titleText = notiType.emptyViewTitle
+        emptyView.subtitleText = notiType.emptyViewSubTitle
         setupUI()
         bind()
     }
@@ -68,6 +90,10 @@ class NotificationDetailViewController: UIViewController {
     //MARK: - Bind
     private func bind() {
         viewModel.dataSources
+            .do(onNext: { [weak self] list in
+                print(list)
+                self?.emptyView.isHidden = !list.isEmpty
+            })
             .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
                 guard let self = self else { return UICollectionViewCell() }
                 switch self.notiType {
@@ -96,6 +122,14 @@ class NotificationDetailViewController: UIViewController {
         collectionView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        
+        view.addSubview(emptyView)
+        emptyView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().inset(100)
+        }
+        
+        emptyView.isHidden = true
     }
 }
 
