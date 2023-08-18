@@ -37,6 +37,7 @@ class AppCoordinator {
     // Auth 인증 및 메인뷰로
     func configureAuthGoToMain(launchScreen: LaunchScreenController? = nil) {
         // 시작하면 configureAuth
+        tabBarController.viewControllers = []
         print(#function)
         authManager.configureAuth { [weak self] isSuccessed in
             // 런치스크린이 있다면 dismiss
@@ -72,7 +73,6 @@ class AppCoordinator {
     
     func logout() {
         // 유저 토큰들 다 지우기
-        print(#function)
         TokenManager.resetUserToken()
         DispatchQueue.main.async { [weak self] in
             guard let tabBar = self?.tabBarController,
@@ -80,8 +80,9 @@ class AppCoordinator {
             views.forEach { view in
                 view.removeFromParent()
             }
+            tabBar.viewControllers = []
         }
-        start()
+        configureAuthGoToMain()
     }
     
     // 실행중에 푸시 알림을 탭 했을 경우

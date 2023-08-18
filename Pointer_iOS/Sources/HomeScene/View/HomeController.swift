@@ -108,6 +108,7 @@ class HomeController: BaseViewController {
         viewModel.expiredToken
             .bind { [weak self] b in
                 if b {
+                    Util.showToast("로그인 세션이 만료되어 재로그인이 필요합니다")
                     self?.handleNotiLogoutTapped()
                 }
             }
@@ -183,13 +184,8 @@ class HomeController: BaseViewController {
 
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, handler: #selector(handleNotiButtonTapped))
         let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, handler: #selector(handleSearchButtonTapped))
-        
-        // (임시)로그아웃
-        let logoutImage = UIImage(systemName: "arrow.up.forward")
 
-        let logoutButton = UIBarButtonItem.getPointerBarButton(withIconimage: logoutImage, size: 45, target: self, handler: #selector(handleNotiLogoutTapped))
-
-        navigationItem.rightBarButtonItems = [notiButton, searchButton, logoutButton]
+        navigationItem.rightBarButtonItems = [notiButton, searchButton]
     }
 }
 
