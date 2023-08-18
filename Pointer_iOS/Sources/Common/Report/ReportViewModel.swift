@@ -43,7 +43,6 @@ class ReportViewModel: ViewModelType {
     let disposeBag = DisposeBag()
     let dismissReportView = BehaviorRelay<Bool>(value: false)
     
-    let userId = TokenManager.getIntUserId()
     var reason = ""
     
     let roomId: Int
@@ -114,7 +113,6 @@ class ReportViewModel: ViewModelType {
                                                dataId: self.questionId,
                                                type: self.type,
                                                targetUserId: self.targetUserId,
-                                               reportingUserId: self.userId,
                                                reason: self.reason,
                                                reasonCode: self.reasonCode)
                 

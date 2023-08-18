@@ -24,6 +24,7 @@ class ReportNetworkManager {
     // 신고하기
     func reportRequest(parameter: ReportRequestModel, _ completion: @escaping (Error?, ReportResultModel?) -> Void){
         let router = reportRouter.report
+        print(parameter)
         
         AF.request(router.url,
                    method: router.method,
@@ -51,12 +52,11 @@ class ReportNetworkManager {
 
 
 //MARK: - 룸, 힌트 신고 생성
-struct ReportRequestModel: Codable {
+struct ReportRequestModel: Encodable {
     let roomId: Int
     let dataId: Int
     let type: String
     let targetUserId: Int
-    let reportingUserId: Int
     let reason: String
     let reasonCode: String
 }
@@ -65,6 +65,15 @@ struct ReportResultModel: Decodable {
     let status: Int?
     let code: String
     let message: String
-    let result: ReportRequestModel?
+    let result: ReportRusultData?
 }
 
+struct ReportRusultData: Decodable {
+    let roomId: Int
+    let data: String
+    let type: String
+    let targetUserId: Int
+    let reportingUserId: Int
+    let reason: String
+    let reasonCode: String
+}
