@@ -94,7 +94,7 @@ class RelationshipFriendActionView: UIView {
             actionTitle: relationship.alertActionTitle) { [weak self] _ in
                 // Alert 액션
                 guard let self = self else { return }
-                network.requestFriendAction(self.userId, router: self.relationship.router) { isSuccessed in
+                self.network.requestFriendAction(self.userId, router: self.relationship.router) { isSuccessed in
                     if isSuccessed {
                         self.delegate?.didFriendRelationshipChanged()
                     }
@@ -114,7 +114,7 @@ class RelationshipFriendActionView: UIView {
             actionTitle: relationship.alertActionTitle) { [weak self] _ in
                 // Alert 액션
                 guard let self = self else { return }
-                self.network.requestFriendAction(userId, router: router) { isSuccessed in
+                self.network.requestFriendAction(self.userId, router: router) { isSuccessed in
                     if isSuccessed {
                         self.delegate?.didFriendRelationshipChanged()
                     }

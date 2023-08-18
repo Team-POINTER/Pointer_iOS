@@ -22,8 +22,8 @@ class LaunchScreenController: BaseViewController {
         super.viewDidLoad()
         view.addSubview(mainImage)
         mainImage.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(130)
-            $0.top.bottom.equalToSuperview().inset(200)
+            $0.center.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.3)
         }
     }
 }

@@ -40,8 +40,11 @@ class PreferenceViewModel: ViewModelType {
             .subscribe(onNext: { [weak self] indexPath in
                 guard let self = self else { return }
                 let item = self.indexPathToType(indexPath)
-                let nextVc = item.menu.nextViewController
-                output.nextViewController.accept(nextVc)
+                
+                if let nextVc = item.menu.nextViewController {
+                    output.nextViewController.accept(nextVc)
+                    return
+                }
             })
             .disposed(by: disposeBag)
         

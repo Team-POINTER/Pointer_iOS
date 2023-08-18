@@ -40,11 +40,11 @@ enum LoginResultType: String, CaseIterable {
 
 class AuthNetworkManager {
     
-//MARK: - shared
+    //MARK: - shared
     static let shared = AuthNetworkManager()
     let router = AuthRouter.self
     
-//MARK: - Function
+    //MARK: - Function
     func posts(_ parameter: AuthInputModel, _ completion: @escaping (AuthResultModel, LoginResultType) -> Void){
         print("Login URL = \(AuthRouter.login.url)")
         
@@ -53,8 +53,8 @@ class AuthNetworkManager {
                    parameters: parameter,
                    encoder: JSONParameterEncoder.default,
                    headers: router.login.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: AuthResultModel.self) { response in
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
                 // 성공인 경우
             case .success(let result):
@@ -77,14 +77,14 @@ class AuthNetworkManager {
         let param: [String: String] = ["identityToken": appleToken]
         
         AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default)
-//            .response { response in
-//                switch response.result {
-//                case .success(let data):
-//                    print("Image uploaded successfully: \(String(data: data!, encoding: .utf8) ?? "")")
-//                case .failure(let error):
-//                    print("Error uploading image: \(error)")
-//                }
-//            }
+        //            .response { response in
+        //                switch response.result {
+        //                case .success(let data):
+        //                    print("Image uploaded successfully: \(String(data: data!, encoding: .utf8) ?? "")")
+        //                case .failure(let error):
+        //                    print("Error uploading image: \(error)")
+        //                }
+        //            }
             .responseDecodable(of: AuthResultModel.self) { response in
                 switch response.result {
                     // 성공인 경우
@@ -111,8 +111,8 @@ class AuthNetworkManager {
                    parameters: parameter,
                    encoder: JSONParameterEncoder.default,
                    headers: router.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: AuthResultModel.self) { response in
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
             case .success(let result):
                 print("동의 항목 전송 성공 - \(result)")
@@ -134,8 +134,8 @@ class AuthNetworkManager {
                    parameters: parameter,
                    encoder: JSONParameterEncoder.default,
                    headers: router.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: PointerResultModel.self) { response in
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: PointerResultModel.self) { response in
             switch response.result {
             case .success(let result):
                 print("ID 중복 확인 데이터 전송 성공 - \(result)")
@@ -160,8 +160,8 @@ class AuthNetworkManager {
                    parameters: parameter,
                    encoder: JSONParameterEncoder.default,
                    headers: router.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: PointerResultModel.self) { response in
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: PointerResultModel.self) { response in
             switch response.result {
             case .success(let result):
                 print("ID 저장 데이터 전송 성공 - \(result)")
@@ -182,8 +182,8 @@ class AuthNetworkManager {
         AF.request(router.url,
                    method: router.method,
                    headers: router.headers)
-            .validate(statusCode: 200..<500)
-            .responseDecodable(of: AuthResultModel.self) { response in
+        .validate(statusCode: 200..<500)
+        .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
             case .success(let model):
                 print("Token 재발급 데이터 전송 성공 - \(model)")
@@ -213,6 +213,7 @@ class AuthNetworkManager {
         }
     }
     
+    // 액세스토큰 유효성 검사
     func validateAccessToken(completion: @escaping (Bool) -> Void) {
         let router = AuthRouter.validate
         
@@ -237,6 +238,25 @@ class AuthNetworkManager {
             }
     }
     
+    // 회원 탈퇴
+    func resignUserAccount(completion: @escaping (Bool) -> Void) {
+        let router = AuthRouter.resign
+        
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .responseDecodable(of: PointerDefaultResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    if data.code == router.successCode {
+                        completion(true)
+                    } else {
+                        completion(false)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+                }
+            }
+    }
 }
 
 

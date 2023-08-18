@@ -13,8 +13,8 @@ enum Relationship: Int {
     case friendRequestReceived = 2 // 기본: 수락
     case friend = 3
     case friendRejected = 4
+    case none = 5
     case requestRejectConfig = 88
-    case none = 99
     
     // 버튼 배경색
     var backgroundColor: UIColor {

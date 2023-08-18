@@ -64,7 +64,7 @@ class UserListCollectionView: UIView {
         self.userList
             .do(onNext: { [weak self] userList in
                 guard let self = self else { return }
-                self.countLabel.text = "\(friendCountTitle) \(userList.count)"
+                self.countLabel.text = "\(self.friendCountTitle) \(userList.count)"
             })
             .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FriendsListCell.cellIdentifier, for: IndexPath(row: index, section: 0)) as? FriendsListCell else { return UICollectionViewCell() }

@@ -16,6 +16,7 @@ enum AuthRouter {
     case saveId(_ accessToken: String)
     case reissue(_ refreshToken: String)
     case validate
+    case resign
 }
 
 extension AuthRouter: HttpRouter {
@@ -44,6 +45,8 @@ extension AuthRouter: HttpRouter {
             return "/auth/login/apple"
         case .validate:
             return "/user/check"
+        case .resign:
+            return "/user/resign"
         }
     }
     
@@ -63,6 +66,8 @@ extension AuthRouter: HttpRouter {
             return .post
         case .validate:
             return .get
+        case .resign:
+            return .delete
         }
     }
     
@@ -82,11 +87,20 @@ extension AuthRouter: HttpRouter {
         case .reissue(let refreshToken):
             return ["Content-Type" : "application/json",
                     "Authorization" : "Bearer \(refreshToken)"]
-        case .validate:
+        case .validate, .resign:
             return ["Content-Type" : "application/json",
                     "Authorization" : "Bearer \(TokenManager.getUserAccessToken() ?? "")"]
         }
         
+    }
+    
+    var successCode: String? {
+        switch self {
+        case .resign:
+            return "A007"
+        default:
+            return nil
+        }
     }
     
     var parameters: Parameters? {

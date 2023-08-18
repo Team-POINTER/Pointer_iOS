@@ -47,6 +47,8 @@ class HomeController: BaseViewController {
         return button
     }()
     
+    private let emptyView = ListEmptyView()
+    
     private let viewModel = HomeViewModel()
     
     //MARK: - Lifecycle
@@ -64,8 +66,9 @@ class HomeController: BaseViewController {
         _ = viewModel.transform(input: input)
         
         viewModel.roomModel
-            .do(onNext: { [weak self] _ in
+            .do(onNext: { [weak self] list in
                 self?.refreshControl.endRefreshing()
+                self?.emptyView.isHidden = !list.isEmpty
             })
             .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoomPreviewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPreviewCell else { return UICollectionViewCell() }
@@ -105,6 +108,7 @@ class HomeController: BaseViewController {
         viewModel.expiredToken
             .bind { [weak self] b in
                 if b {
+                    Util.showToast("로그인 세션이 만료되어 재로그인이 필요합니다")
                     self?.handleNotiLogoutTapped()
                 }
             }
@@ -156,6 +160,17 @@ class HomeController: BaseViewController {
             actionButton.layer.cornerRadius = 62 / 2
             actionButton.clipsToBounds = true
         }
+        
+        view.addSubview(emptyView)
+        emptyView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().inset(140)
+        }
+        
+        emptyView.isHidden = true
+        
+        emptyView.titleText = "아직 참여중인 룸이 없어요"
+        emptyView.subtitleText = "질문을 만들고, 누가 나를 지목 할지 확인해보세요!"
     }
     
     private func setupNavigationController() {
@@ -169,13 +184,8 @@ class HomeController: BaseViewController {
 
         let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, handler: #selector(handleNotiButtonTapped))
         let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, handler: #selector(handleSearchButtonTapped))
-        
-        // (임시)로그아웃
-        let logoutImage = UIImage(systemName: "arrow.up.forward")
 
-        let logoutButton = UIBarButtonItem.getPointerBarButton(withIconimage: logoutImage, size: 45, target: self, handler: #selector(handleNotiLogoutTapped))
-
-        navigationItem.rightBarButtonItems = [notiButton, searchButton, logoutButton]
+        navigationItem.rightBarButtonItems = [notiButton, searchButton]
     }
 }
 
