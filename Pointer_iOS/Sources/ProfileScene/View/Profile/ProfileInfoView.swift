@@ -31,7 +31,7 @@ class ProfileInfoView: ProfileInfoParentView {
     let idLabel: UILabel = {
         let label = UILabel()
         label.textColor = .rgb(red: 179, green: 183, blue: 205)
-        label.font = .notoSansRegular(size: 18)
+        label.font = .notoSansRegular(size: 14)
         label.textAlignment = .left
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8

@@ -48,6 +48,10 @@ class EditProfileViewModel: ViewModelType {
         return profile.results?.userName != originalProfile.results?.userName || isUserProfileDefault || isUserBackgroundDefault || isUserIdChanged || userSelectedProfileImage.value != nil || userSelectedBackgroundImage.value != nil
     }
     
+    var userIdString: String {
+        return "@\(profile.results?.id ?? "")"
+    }
+    
     init(profile: ProfileModel) {
         self.originalProfile = profile
         self.profile = profile

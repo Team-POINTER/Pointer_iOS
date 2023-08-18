@@ -56,7 +56,7 @@ class EditProfileInfoView: ProfileInfoParentView {
     let userIDGuideLabel: UILabel = {
         let label = UILabel()
         label.text = "사용자 아이디"
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.font = .notoSansRegular(size: 18)
         label.textColor = .white
         return label
@@ -67,7 +67,7 @@ class EditProfileInfoView: ProfileInfoParentView {
         userIDLabel.textColor = .inactiveGray
         userIDLabel.font = .notoSansRegular(size: 18)
         userIDLabel.textAlignment = .center
-        userIDLabel.text = editViewModel.profile.results?.id
+        userIDLabel.text = editViewModel.userIdString
         return userIDLabel
     }()
     
@@ -80,7 +80,11 @@ class EditProfileInfoView: ProfileInfoParentView {
         container.addSubview(self.userIdLabel)
         container.addSubview(line)
         
-        self.userIdLabel.snp.makeConstraints { $0.edges.equalToSuperview() }
+        self.userIdLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.height.equalTo(50)
+        }
+        
         line.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(2)
@@ -164,19 +168,20 @@ class EditProfileInfoView: ProfileInfoParentView {
         }
         
         let stack = UIStackView(arrangedSubviews: [userIDGuideLabel, userIDView])
-        stack.axis = .horizontal
+        stack.axis = .vertical
         stack.alignment = .fill
+        stack.spacing = 12
         
         addSubview(stack)
         stack.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(38)
             $0.top.equalTo(nameTextFieldView.snp.bottom).inset(-28)
-            $0.height.equalTo(60)
+//            $0.height.equalTo(120)
         }
         
-        userIDGuideLabel.snp.makeConstraints {
-            $0.width.equalTo(self.snp.width).multipliedBy(0.45)
-        }
+//        userIDGuideLabel.snp.makeConstraints {
+//            $0.width.equalTo(self.snp.width).multipliedBy(0.45)
+//        }
     }
     
     private func configure() {

@@ -59,7 +59,7 @@ class FriendListEmptyView: UIView {
         
         self.addSubview(actionButton)
         actionButton.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom)
+            $0.top.equalTo(titleLabel.snp.bottom).inset(-5)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(30)
             $0.width.equalTo(130)
