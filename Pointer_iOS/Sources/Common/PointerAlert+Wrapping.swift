@@ -20,4 +20,8 @@ extension PointerAlert {
         let alert = PointerAlert(alertType: .alert, configs: [cancelConfig, confirmConfig], title: title, description: message)
         return alert
     }
+    
+    static func getErrorAlert() -> PointerAlert {
+        return PointerAlert.getSimpleAlert(title: "오류가 발생했습니다😭", message: "다시 시도해주세요")
+    }
 }

@@ -233,6 +233,10 @@ class ProfileInfoView: ProfileInfoParentView {
     private func configureActionButtonUI(model: ProfileModel) {
         guard let viewModel = viewModel else { return }
         if viewModel.isMyProfile == true {
+            // 버튼 색 변경
+            editMyProfileButton.backgroundColor = .pointerRed
+            editMyProfileButton.tintColor = .white
+            
             buttonStack.addArrangedSubview(editMyProfileButton)
             // 버튼 Corner Radius
             buttonStack.subviews.forEach {

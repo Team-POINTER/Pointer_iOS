@@ -146,7 +146,10 @@ enum PreferenceMenuType: Int, CaseIterable {
         case .blockedUser:
             return nil
         case .removeAccount:
-            return nil
+            let vc = RemoveAccountController()
+            let nav = BaseNavigationController.templateNavigationController(nil, viewController: vc)
+            nav.modalPresentationStyle = .overFullScreen
+            return nav
         case .signOut:
             let alert = PointerAlert.getActionAlert(title: "로그아웃", message: "저장된 모든 정보는 재로그인시 유지돼요. 정말 로그아웃 하시겠습니까?", actionTitle: "로그아웃") { _ in
                 sceneDelegate?.appCoordinator?.logout()

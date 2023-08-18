@@ -136,6 +136,8 @@
 		F97A64D02A8FAC4B0095BECB /* FriendListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64CF2A8FAC4B0095BECB /* FriendListEmptyView.swift */; };
 		F97A64D32A8FC72E0095BECB /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F97A64D22A8FC72E0095BECB /* Toast */; };
 		F97A64D52A8FC8180095BECB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64D42A8FC8180095BECB /* Util.swift */; };
+		F97A64D72A8FD35B0095BECB /* RemoveAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64D62A8FD35B0095BECB /* RemoveAccountController.swift */; };
+		F97A64D92A8FD9840095BECB /* RemoveAccountConfirmController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64D82A8FD9840095BECB /* RemoveAccountConfirmController.swift */; };
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
 		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
@@ -274,6 +276,8 @@
 		F97A64CD2A8F9B1D0095BECB /* ListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
 		F97A64CF2A8FAC4B0095BECB /* FriendListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListEmptyView.swift; sourceTree = "<group>"; };
 		F97A64D42A8FC8180095BECB /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		F97A64D62A8FD35B0095BECB /* RemoveAccountController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountController.swift; sourceTree = "<group>"; };
+		F97A64D82A8FD9840095BECB /* RemoveAccountConfirmController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountConfirmController.swift; sourceTree = "<group>"; };
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
@@ -859,6 +863,8 @@
 				CD5BCC5E29F5423700DD44F7 /* PreferenceItemCell.swift */,
 				CD5BCC6029F546A500DD44F7 /* PreferenceItemHeader.swift */,
 				CD5BCC6229F571D700DD44F7 /* PreferenceSectionBackgroundView.swift */,
+				F97A64D62A8FD35B0095BECB /* RemoveAccountController.swift */,
+				F97A64D82A8FD9840095BECB /* RemoveAccountConfirmController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1219,6 +1225,7 @@
 				F9AB8D002A8B442200BA8309 /* PointerRefreshControl.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,
 				47117CE429CD92C9001707C8 /* LoginViewController.swift in Sources */,
+				F97A64D72A8FD35B0095BECB /* RemoveAccountController.swift in Sources */,
 				F92584942A8B69490098EBA2 /* PointerToggleView.swift in Sources */,
 				47CC895A2A46829B0020246E /* HttpService.swift in Sources */,
 				47117CB429CB2E0B001707C8 /* SelfSizingTableView.swift in Sources */,
@@ -1226,6 +1233,7 @@
 				CD07E5AD29D0008300B52885 /* RoomNotiCell.swift in Sources */,
 				478C9FFF2A618483000FA196 /* QuestionRouter.swift in Sources */,
 				473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */,
+				F97A64D92A8FD9840095BECB /* RemoveAccountConfirmController.swift in Sources */,
 				478CA0122A6D337B000FA196 /* ReportViewModel.swift in Sources */,
 				47FD24AA2A83E67900529342 /* FriendSearchNetworkManager.swift in Sources */,
 				47CC89582A4681BB0020246E /* HttpRouter.swift in Sources */,

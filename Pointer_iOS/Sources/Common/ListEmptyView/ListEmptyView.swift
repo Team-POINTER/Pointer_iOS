@@ -16,6 +16,7 @@ class ListEmptyView: UIView {
         let label = UILabel()
         label.font = .notoSansBold(size: 18)
         label.textAlignment = .center
+        label.numberOfLines = 0
         label.textColor = UIColor(red: 0.7, green: 0.716, blue: 0.804, alpha: 1)
         return label
     }()
@@ -24,6 +25,7 @@ class ListEmptyView: UIView {
         let label = UILabel()
         label.font = .notoSansRegular(size: 14)
         label.textAlignment = .center
+        label.numberOfLines = 0
         label.textColor = UIColor(red: 0.7, green: 0.716, blue: 0.804, alpha: 1)
         return label
     }()
