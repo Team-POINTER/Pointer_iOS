@@ -47,6 +47,8 @@ class HomeController: BaseViewController {
         return button
     }()
     
+    private let emptyView = ListEmptyView()
+    
     private let viewModel = HomeViewModel()
     
     //MARK: - Lifecycle
@@ -64,8 +66,9 @@ class HomeController: BaseViewController {
         _ = viewModel.transform(input: input)
         
         viewModel.roomModel
-            .do(onNext: { [weak self] _ in
+            .do(onNext: { [weak self] list in
                 self?.refreshControl.endRefreshing()
+                self?.emptyView.isHidden = !list.isEmpty
             })
             .bind(to: collectionView.rx.items) { [weak self] collectionView, index, item in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoomPreviewCell.identifier, for: IndexPath(row: index, section: 0)) as? RoomPreviewCell else { return UICollectionViewCell() }
@@ -156,6 +159,17 @@ class HomeController: BaseViewController {
             actionButton.layer.cornerRadius = 62 / 2
             actionButton.clipsToBounds = true
         }
+        
+        view.addSubview(emptyView)
+        emptyView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().inset(140)
+        }
+        
+        emptyView.isHidden = true
+        
+        emptyView.titleText = "아직 참여중인 룸이 없어요"
+        emptyView.subtitleText = "질문을 만들고, 누가 나를 지목 할지 확인해보세요!"
     }
     
     private func setupNavigationController() {

@@ -81,8 +81,6 @@ class NotificationDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emptyView.titleText = notiType.emptyViewTitle
-        emptyView.subtitleText = notiType.emptyViewSubTitle
         setupUI()
         bind()
     }
@@ -130,6 +128,9 @@ class NotificationDetailViewController: UIViewController {
         }
         
         emptyView.isHidden = true
+        
+        emptyView.titleText = notiType.emptyViewTitle
+        emptyView.subtitleText = notiType.emptyViewSubTitle
     }
 }
 
