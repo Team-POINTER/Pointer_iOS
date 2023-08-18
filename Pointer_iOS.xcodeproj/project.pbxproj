@@ -133,6 +133,7 @@
 		F948AF032A87787500DDC698 /* FriendRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948AF022A87787500DDC698 /* FriendRouter.swift */; };
 		F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F94CD6C12A85169E00A808B9 /* YPImagePicker */; };
 		F97A64CE2A8F9B1D0095BECB /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64CD2A8F9B1D0095BECB /* ListEmptyView.swift */; };
+		F97A64D02A8FAC4B0095BECB /* FriendListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64CF2A8FAC4B0095BECB /* FriendListEmptyView.swift */; };
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
 		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
@@ -269,6 +270,7 @@
 		F948AEFB2A86059E00DDC698 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		F948AF022A87787500DDC698 /* FriendRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRouter.swift; sourceTree = "<group>"; };
 		F97A64CD2A8F9B1D0095BECB /* ListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
+		F97A64CF2A8FAC4B0095BECB /* FriendListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListEmptyView.swift; sourceTree = "<group>"; };
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
@@ -668,6 +670,7 @@
 			children = (
 				CD06677C2A04E8870003C7B4 /* ProfileViewController.swift */,
 				CD06677B2A04E8870003C7B4 /* ProfileInfoView.swift */,
+				F97A64CF2A8FAC4B0095BECB /* FriendListEmptyView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1204,6 +1207,7 @@
 				47E049A32A8A50A4000A789D /* ReportNetworkManager.swift in Sources */,
 				CD23209229B8D260003D0B84 /* BaseViewController.swift in Sources */,
 				CD2DBECA29C63317005E377C /* Device.swift in Sources */,
+				F97A64D02A8FAC4B0095BECB /* FriendListEmptyView.swift in Sources */,
 				CD07E5AA29CFFE9600B52885 /* NotificationDetailViewController.swift in Sources */,
 				F9AB8D002A8B442200BA8309 /* PointerRefreshControl.swift in Sources */,
 				4749D48629BDEEF500011E06 /* RoomPeopleTableViewCell.swift in Sources */,

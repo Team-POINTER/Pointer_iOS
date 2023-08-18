@@ -142,6 +142,10 @@ class ProfileViewModel: ViewModelType {
         return output
     }
     
+    func pushToSearchFriendView() {
+        
+    }
+    
     //MARK: - Call API
     // 프로필 정보 요청
     func requestUserProfile() {

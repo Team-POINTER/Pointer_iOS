@@ -70,6 +70,8 @@ class ProfileInfoView: ProfileInfoParentView {
         return cv
     }()
     
+    private let emptyView = FriendListEmptyView()
+    
     // 자기 자신일 때
     lazy var editMyProfileButton = getActionButton("프로필 편집")
     
@@ -85,10 +87,12 @@ class ProfileInfoView: ProfileInfoParentView {
         return stack
     }()
     
+    
     //MARK: - Lifecycle
     override init(viewModel: ProfileViewModel?, delegate: ProfileInfoViewDelegate? = nil) {
         super.init(viewModel: viewModel, delegate: delegate)
         setupCollectionView()
+        setupEmptyView()
         bind()
         setupUI()
     }
@@ -123,6 +127,9 @@ class ProfileInfoView: ProfileInfoParentView {
         
         // 친구 리스트 바인딩
         viewModel.friendsArray
+            .do(onNext: { [weak self] list in
+                self?.emptyView.isHidden = !list.isEmpty
+            })
             .bind(to: collectionView.rx.items) { collectionView, indexPath, item in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserFriendCell.cellIdentifier, for: IndexPath(row: indexPath, section: 0)) as? UserFriendCell else { return UICollectionViewCell() }
                 cell.userData = item
@@ -144,6 +151,16 @@ class ProfileInfoView: ProfileInfoParentView {
     private func setupCollectionView() {
         collectionView.register(UserFriendCell.self, forCellWithReuseIdentifier: UserFriendCell.cellIdentifier)
         collectionView.delegate = self
+    }
+    
+    private func setupEmptyView() {
+        if viewModel?.isMyProfile == true {
+            emptyView.titleText = "아직 친구를 찾지 못하셨나요?"
+            emptyView.buttonText = "친구할 사람 찾기"
+            emptyView.buttonAction = viewModel?.pushToSearchFriendView
+        } else {
+            emptyView.titleText = "친구 목록이 비어있어요"
+        }
     }
     
     override func setupUI() {
@@ -194,6 +211,13 @@ class ProfileInfoView: ProfileInfoParentView {
             $0.trailing.equalTo(seperator.snp.trailing)
             $0.bottom.equalTo(idLabel.snp.bottom)
             $0.height.equalTo(28)
+        }
+        
+        addSubview(emptyView)
+        emptyView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(collectionView.snp.centerY).offset(-40)
+            $0.leading.trailing.equalToSuperview()
         }
     }
         
