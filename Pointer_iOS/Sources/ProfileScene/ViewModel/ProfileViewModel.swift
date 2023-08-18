@@ -121,9 +121,11 @@ class ProfileViewModel: ViewModelType {
             .when(.recognized)
             .asDriver{ _ in .never() }
             .drive(onNext: { [weak self] _ in
-                let viewModel = FriendsListViewModel(listType: .normal, roomId: nil, userId: self?.userId)
+                guard let self = self,
+                      self.friendsArray.value.count > 0 else { return }
+                let viewModel = FriendsListViewModel(listType: .normal, roomId: nil, userId: self.userId)
                 let vc = FriendsListViewController(viewModel: viewModel)
-                self?.nextViewController.accept(vc)
+                self.nextViewController.accept(vc)
             })
             .disposed(by: disposeBag)
         
@@ -142,8 +144,12 @@ class ProfileViewModel: ViewModelType {
         return output
     }
     
+    // 친구할 사람 찾기 뷰 클릭시
     func pushToSearchFriendView() {
-        
+        let viewModel = SearchViewModel()
+        let searchVc = SearchController(viewModel: viewModel)
+        searchVc.viewWillShowIndex = 1
+        nextViewController.accept(searchVc)
     }
     
     //MARK: - Call API

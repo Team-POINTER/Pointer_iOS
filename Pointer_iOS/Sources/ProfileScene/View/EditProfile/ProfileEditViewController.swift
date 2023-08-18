@@ -71,9 +71,14 @@ class ProfileEditViewController: ProfileParentViewController {
     
     override func navigationBarBackButtonTapped() {
         if editViewModel.isProfileEditied {
-            self.delegate?.profileEditSuccessed()
+            let alert = PointerAlert.getActionAlert(title: "프로필 편집 나가기", message: "화면을 나가면 변경사항은 저장되지 않습니다. 나가시겠습니까?", actionTitle: "나가기") { [weak self] _ in
+                self?.delegate?.profileEditSuccessed()
+                self?.navigationController?.popViewController(animated: true)
+            }
+            self.present(alert, animated: true)
+        } else {
+            self.navigationController?.popViewController(animated: true)
         }
-        super.navigationBarBackButtonTapped()
     }
     
     //MARK: - Lifecycle

@@ -11,7 +11,7 @@ class FriendListEmptyView: UIView {
     //MARK: - Properties
     public var titleText = ""
     public var buttonText = ""
-    public var buttonAction: (() -> Void)?
+    public var buttonAction: (() -> ())?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -24,6 +24,7 @@ class FriendListEmptyView: UIView {
     private let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .white
+        button.isEnabled = true
         return button
     }()
     

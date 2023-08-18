@@ -153,6 +153,7 @@ class ProfileInfoView: ProfileInfoParentView {
         collectionView.delegate = self
     }
     
+    // EmptyView 세팅
     private func setupEmptyView() {
         if viewModel?.isMyProfile == true {
             emptyView.titleText = "아직 친구를 찾지 못하셨나요?"
@@ -218,6 +219,7 @@ class ProfileInfoView: ProfileInfoParentView {
             $0.centerX.equalToSuperview()
             $0.centerY.equalTo(collectionView.snp.centerY).offset(-40)
             $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(65)
         }
     }
         

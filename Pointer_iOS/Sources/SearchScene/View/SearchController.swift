@@ -13,6 +13,7 @@ import BetterSegmentedControl
 
 class SearchController: BaseViewController {
     //MARK: - Properties
+    var viewWillShowIndex: Int?
     var disposeBag = DisposeBag()
     let viewModel: SearchViewModel
     
@@ -112,6 +113,10 @@ class SearchController: BaseViewController {
         pageViewController.dataSource = self
         if let firstVC = viewControllers.first {
             pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
+        }
+        // viewWillShowIndex에 데이터가 있으면 해당 페이지로 이동
+        if let index = viewWillShowIndex {
+            self.currentPage = index
         }
     }
     
