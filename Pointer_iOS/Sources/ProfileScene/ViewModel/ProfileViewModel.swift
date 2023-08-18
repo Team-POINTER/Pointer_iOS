@@ -112,7 +112,7 @@ class ProfileViewModel: ViewModelType {
             .when(.recognized)
             .asDriver{ _ in .never() }
             .drive(onNext: { _ in
-                print("메시지 버튼 클릭")
+                Util.showToast("채팅 기능 준비중입니다", position: .center)
             })
             .disposed(by: disposeBag)
         

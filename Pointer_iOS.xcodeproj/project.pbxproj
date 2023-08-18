@@ -134,6 +134,8 @@
 		F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F94CD6C12A85169E00A808B9 /* YPImagePicker */; };
 		F97A64CE2A8F9B1D0095BECB /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64CD2A8F9B1D0095BECB /* ListEmptyView.swift */; };
 		F97A64D02A8FAC4B0095BECB /* FriendListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64CF2A8FAC4B0095BECB /* FriendListEmptyView.swift */; };
+		F97A64D32A8FC72E0095BECB /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F97A64D22A8FC72E0095BECB /* Toast */; };
+		F97A64D52A8FC8180095BECB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64D42A8FC8180095BECB /* Util.swift */; };
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
 		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
@@ -271,6 +273,7 @@
 		F948AF022A87787500DDC698 /* FriendRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRouter.swift; sourceTree = "<group>"; };
 		F97A64CD2A8F9B1D0095BECB /* ListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
 		F97A64CF2A8FAC4B0095BECB /* FriendListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListEmptyView.swift; sourceTree = "<group>"; };
+		F97A64D42A8FC8180095BECB /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
@@ -297,6 +300,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F97A64D32A8FC72E0095BECB /* Toast in Frameworks */,
 				CD0EE92E2A0804C00090BF48 /* RxCocoa in Frameworks */,
 				CD0EE9352A08050B0090BF48 /* RxGesture in Frameworks */,
 				F948AEFF2A860A7400DDC698 /* NVActivityIndicatorView in Frameworks */,
@@ -732,6 +736,7 @@
 			isa = PBXGroup;
 			children = (
 				CD2DBEC929C63317005E377C /* Device.swift */,
+				F97A64D42A8FC8180095BECB /* Util.swift */,
 				CD23209429B8D2CC003D0B84 /* Constant.swift */,
 				CD23209629B8D2ED003D0B84 /* Extension */,
 			);
@@ -1067,6 +1072,7 @@
 				F94CD6C12A85169E00A808B9 /* YPImagePicker */,
 				F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */,
 				F948AF002A860A7400DDC698 /* NVActivityIndicatorViewExtended */,
+				F97A64D22A8FC72E0095BECB /* Toast */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -1109,6 +1115,7 @@
 				CD15E1782A1BC13C00A8E643 /* XCRemoteSwiftPackageReference "sendbird-uikit-ios-spm" */,
 				F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 				F948AEFD2A860A7400DDC698 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
+				F97A64D12A8FC72E0095BECB /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -1238,6 +1245,7 @@
 				4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */,
 				CD2DBEC629C62BDE005E377C /* AccountInfoCell.swift in Sources */,
 				473B73A329D029A200B33C77 /* TermsViewController.swift in Sources */,
+				F97A64D52A8FC8180095BECB /* Util.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
 				CD5BCC5629F5384300DD44F7 /* PreferenceController.swift in Sources */,
@@ -1585,6 +1593,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		F97A64D12A8FC72E0095BECB /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1662,6 +1678,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */;
 			productName = YPImagePicker;
+		};
+		F97A64D22A8FC72E0095BECB /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F97A64D12A8FC72E0095BECB /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
