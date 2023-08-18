@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Welcome
+// MARK: - 전체 얼림
 struct NotiDetailRoomResponse: Codable {
     let code, message: String
     let result: NotiDetailRoomResult
@@ -23,32 +23,27 @@ struct NotiDetailRoomResponse: Codable {
 // MARK: - AlarmList
 struct RoomAlarmList: Codable {
     let alarmId: Int
-    let content: String?
-    let type: String
     let sendUserId: Int?
     let sendUserName: String?
+    let sendUserProfile: String?
+    let content: String?
+    let type: String
+    let createdAt: String
 }
 
-// MARK: - Welcome
+// MARK: - 친구요청 알림
 struct NotiDetailFriendResponse: Codable {
     let code, message: String
-    let result: NotiDetailFriendResult
-}
-
-// MARK: - Result
-struct NotiDetailFriendResult: Codable {
-    let newAlarm: Bool
-    let newFriendAlarm: Bool
-    let newFriendAlarmCnt: Int
-    let alarmList: [FriendAlarmList]
+    let result: [FriendAlarmList]
 }
 
 // MARK: - AlarmList
 struct FriendAlarmList: Codable {
     let alarmId: Int
-    let sendUserId: Int
+    let userId: Int
+    let sendUserId: String
     let sendUserName: String
     let sendUserProfile: String
-    let content: String
+    let relationship: Int
     let type: String
 }

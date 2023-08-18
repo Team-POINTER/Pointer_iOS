@@ -17,7 +17,8 @@ protocol FriendsListCellDelegate: AnyObject {
 class FriendsListCell: UICollectionViewCell {
     //MARK: - Properties
     static let cellIdentifier = "FriendsListCell"
-    var delegate: FriendsListCellDelegate?
+    weak var friendsListCellDelegate: FriendsListCellDelegate?
+    weak var relationshipDelegate: RelationshipFriendActionDelegate?
     var disposeBag = DisposeBag()
     
     var isSelectedCell: Bool = false {
@@ -26,11 +27,19 @@ class FriendsListCell: UICollectionViewCell {
         }
     }
     
+    var userData: FriendsModel? {
+        didSet {
+            configure()
+        }
+    }
+    
     var user: FriendsListResultData? {
         didSet {
             configure()
         }
     }
+    
+    var viewType: FriendsListViewModel.ListType?
     
     private let profileImageView: UIImageView = {
         let view = UIImageView()
@@ -57,6 +66,8 @@ class FriendsListCell: UICollectionViewCell {
         return view
     }()
     
+    private var relationshipActionView: RelationshipFriendActionView?
+    
     //MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -76,7 +87,7 @@ class FriendsListCell: UICollectionViewCell {
                 guard let self = self,
                       let user = self.user else { return }
                 self.isSelectedCell.toggle()
-                self.delegate?.userSelected(user: user)
+                self.friendsListCellDelegate?.userSelected(user: user)
             }
             .disposed(by: disposeBag)
     }
@@ -85,7 +96,7 @@ class FriendsListCell: UICollectionViewCell {
     private func setupUI() {
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview()
             $0.top.bottom.equalToSuperview().inset(5)
             $0.width.equalTo(profileImageView.snp.height)
             profileImageView.layer.cornerRadius = (self.frame.height - 10) / 2
@@ -98,22 +109,50 @@ class FriendsListCell: UICollectionViewCell {
         addSubview(stack)
         stack.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(profileImageView.snp.trailing).inset(-11)
+            $0.leading.equalTo(profileImageView.snp.trailing).inset(-10)
         }
         
-        addSubview(selectImageView)
-        selectImageView.snp.makeConstraints {
-            $0.width.height.equalTo(self.snp.height).dividedBy(1.8)
-            $0.trailing.equalToSuperview().inset(20)
-            $0.centerY.equalToSuperview()
+        guard let viewType = viewType else { return }
+        switch viewType {
+        case .normal:
+            break
+        case .select:
+            addSubview(selectImageView)
+            selectImageView.snp.makeConstraints {
+                $0.width.height.equalTo(self.snp.height).dividedBy(1.8)
+                $0.trailing.equalToSuperview()
+                $0.centerY.equalToSuperview()
+            }
         }
     }
     
     private func configure() {
-        guard let user = user else { return }
-        profileImageView.image = .defaultProfile
+        guard let user = userData else { return }
+        profileImageView.kf.indicatorType = .activity
+        profileImageView.kf.setImage(with: URL(string: user.file ?? ""))
+        
         userIdLabel.text = user.id
         userNameLabel.text = user.friendName
+        
+        // 뷰 타입이 노말인 경우만
+        if viewType == .normal {
+            // reuse 된 경우
+            if let view = self.relationshipActionView {
+                view.removeFromSuperview()
+                self.relationshipActionView = nil
+            }
+            // 새로 만든 경우
+            let actionButtonView = RelationshipFriendActionView(userId: user.friendId, relationship: Relationship(rawValue: user.relationship) ?? .none, userName: user.friendName, userStringId: user.id)
+            actionButtonView.delegate = relationshipDelegate
+            self.relationshipActionView = actionButtonView
+            guard let view = relationshipActionView else { return }
+            addSubview(view)
+            view.snp.makeConstraints {
+                $0.centerY.equalToSuperview()
+                $0.trailing.equalToSuperview()
+                $0.height.equalTo(30)
+            }
+        }
     }
     
     private func configureSelected() {

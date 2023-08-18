@@ -11,6 +11,7 @@ import SnapKit
 
 class FriendsNotiCell: UICollectionViewCell {
     //MARK: - Properties
+    weak var delegate: RelationshipFriendActionDelegate?
     var item: FriendAlarmList? {
         didSet {
             configure()
@@ -41,12 +42,7 @@ class FriendsNotiCell: UICollectionViewCell {
         return label
     }()
     
-    let actionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .pointerRed
-        button.setAttributedTitle(NSAttributedString(string: "친구 신청", attributes: [NSAttributedString.Key.font: UIFont.notoSans(font: .notoSansKrMedium, size: 10), NSAttributedString.Key.foregroundColor: UIColor.white]), for: .normal)
-        return button
-    }()
+    private var relationshipActionView: RelationshipFriendActionView?
     
     //MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -77,27 +73,36 @@ class FriendsNotiCell: UICollectionViewCell {
             $0.leading.equalTo(userProfilImageView.snp.trailing).inset(-11)
             $0.centerY.equalTo(userProfilImageView.snp.centerY)
         }
-        
-        addSubview(actionButton)
-        actionButton.snp.makeConstraints {
-            $0.height.equalTo(24)
-            $0.trailing.equalToSuperview().inset(19)
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(56)
-            actionButton.layer.cornerRadius = 12
-            actionButton.clipsToBounds = true
-        }
     }
     
     private func configure() {
         guard let item = item else { return }
+        
         let profileUrl = URL(string: item.sendUserProfile.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
+        
         userProfilImageView.kf.indicatorType = .activity
         userProfilImageView.kf.setImage(with: profileUrl)
         
         userNameLabel.text = "\(item.sendUserId)"
         userAccountLabel.text = item.sendUserName
         
-        
+        let relationShip = Relationship(rawValue: item.relationship) ?? .none
+
+        // reuse 된 경우
+        if let view = self.relationshipActionView {
+            view.removeFromSuperview()
+            self.relationshipActionView = nil
+        }
+        // 새로 만든 경우
+        let actionButtonView = RelationshipFriendActionView(userId: item.userId, relationship: relationShip, userName: item.sendUserName, userStringId: item.sendUserId)
+        actionButtonView.delegate = delegate
+        self.relationshipActionView = actionButtonView
+        guard let view = relationshipActionView else { return }
+        addSubview(view)
+        view.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(30)
+        }
     }
 }

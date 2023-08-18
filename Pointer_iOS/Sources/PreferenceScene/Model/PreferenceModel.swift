@@ -5,7 +5,8 @@
 //  Created by 김지수 on 2023/04/23.
 //
 
-import Foundation
+import UIKit
+import SafariServices
 
 enum PreferenceSectionType: Int, CaseIterable {
     case personal = 0
@@ -117,6 +118,38 @@ enum PreferenceMenuType: Int, CaseIterable {
         case .chattingNotification: return .chatNotiEnable
         case .activityNotification: return .activityNotiEnable
         case .eventNotification: return .eventNotiEnable
+        default:
+            return nil
+        }
+    }
+    
+    var nextViewController: UIViewController? {
+        switch self {
+        case .viewMode:
+            return nil
+        case .appVersion:
+            return nil
+        case .inquire:
+            return nil
+        case .notice:
+            return nil
+        case .serviceTerms:
+            guard let url = URL(string: "https://pointer2024.notion.site/d55d0a2334d549e9a17477bc6ade3bb0?pvs=4") else { return nil }
+            let vc = SFSafariViewController(url: url)
+            return vc
+        case .privacyTerms:
+            guard let url = URL(string: "https://pointer2024.notion.site/4936ea14737f44018b2d798db4e64d0a?pvs=4") else { return nil }
+            let vc = SFSafariViewController(url: url)
+            return vc
+        case .openSourceLicense:
+            return nil
+        case .blockedUser:
+            return nil
+        case .removeAccount:
+            return nil
+        case .signOut:
+            return nil
+            
         default:
             return nil
         }

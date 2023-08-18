@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 
 class RoomNotiCell: UICollectionViewCell {
@@ -83,7 +84,33 @@ class RoomNotiCell: UICollectionViewCell {
     
     private func configure() {
         guard let item = item else { return }
-        titleLabel.text = item.content
         
+        let pushType = PushType(rawValue: item.type) ?? .none
+        
+        titleLabel.text = pushType.generateTitle(targetUser: item.sendUserName)
+        subTitleLabel.text = item.content
+        
+        userProfilImageView.kf.indicatorType = .activity
+        userProfilImageView.kf.setImage(with: URL(string: item.sendUserProfile ?? ""))
+        
+        dateLabel.text = convertDateString(item.createdAt)
+    }
+    
+    private func convertDateString(_ original: String) -> String? {
+        // 원본 날짜 문자열의 형식을 정의하는 DateFormatter
+        let originalFormatter = DateFormatter()
+        originalFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        originalFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+        // 원본 날짜 문자열을 Date 객체로 변환
+        guard let date = originalFormatter.date(from: original) else {
+            return nil
+        }
+
+        // Date 객체를 원하는 형식의 문자열로 변환하는 DateFormatter
+        let newFormatter = DateFormatter()
+        newFormatter.dateFormat = "yy.MM.dd HH:mm"
+
+        return newFormatter.string(from: date)
     }
 }

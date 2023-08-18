@@ -150,6 +150,32 @@ class RoomNetworkManager {
             }
     }
     
+    // 룸 초대
+    func invteFriendRequest(_ parameters: InviteFriendRequestModel, completion: @escaping (Error?, InviteFriendResultModel?) -> Void) {
+        let router = roomRouter.inviteMemeber
+        
+        AF.request(router.url,
+                   method: router.method,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: InviteFriendResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    print(result)
+                    completion(nil, result)
+                // 실패인 경우
+                case .failure(let error):
+                    print("룸 초대 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
+            }
+    }
+    
     // 초대 가능한 친구 목록
     func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel,
                                  completion: @escaping (Error?, [FriendsListResultData]?) -> Void) {
@@ -274,3 +300,28 @@ struct FriendsListResultData: Decodable {
     let status: Int?
     let relationship: Int?
 }
+
+// MARK: - 룸 초대하기
+struct InviteFriendRequestModel: Encodable {
+    let roomId: Int
+    let userFriendIdList: [Int]
+}
+
+struct InviteFriendResultModel: Decodable {
+    let status: Int
+    let code: String
+    let message: String
+    let data: InviteFriendResultData?
+}
+
+struct InviteFriendResultData: Decodable {
+    let accessToken: String
+    let refreshToken: String
+    let invteMemberList: [InviteFriendResultMemberModel]
+}
+
+struct InviteFriendResultMemberModel: Decodable {
+    let userId: Int
+    let nickNm: String
+}
+

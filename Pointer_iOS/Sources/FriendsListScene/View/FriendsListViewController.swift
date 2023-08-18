@@ -18,21 +18,20 @@ class FriendsListViewController: BaseViewController {
     
     let searchHeaderView = FriendsListHeaderView()
     
-    lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionHeadersPinToVisibleBounds = true
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .clear
-        cv.delegate = self
-        cv.register(FriendsListCell.self, forCellWithReuseIdentifier: FriendsListCell.cellIdentifier)
-        return cv
-    }()
-    
     let confirmButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .pointerRed
         button.tintColor = .white
         return button
+    }()
+    
+    lazy var collectionView: UserListCollectionView = {
+        let view = UserListCollectionView(type: viewModel.listType)
+        view.showFriendCountLabel = viewModel.listType == .normal ? true : false
+        view.friendCountTitle = "친구"
+        view.friendsListCelldelegate = self
+        view.relationshipDelegate = self
+        return view
     }()
     
     //MARK: - Lifecycle
@@ -55,17 +54,27 @@ class FriendsListViewController: BaseViewController {
     //MARK: - bind
     func bind() {
         let input = FriendsListViewModel.Input(
-            searchTextFieldEditEvent: searchHeaderView.searchTextField.rx.text.orEmpty.asObservable())
+            searchTextFieldEditEvent: searchHeaderView.searchTextField.rx.text.orEmpty.asObservable(),
+            collectionViewItemSelected: collectionView.collectionView.rx.itemSelected.asObservable(),
+            collectionViewModelSelected: collectionView.collectionView.rx.modelSelected(FriendsModel.self).asObservable(),
+            confirmButtonTappedEvent: confirmButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
-
-        
-        
-        // CollectionView 바인딩
-        viewModel.friendsList
-            .bind(to: collectionView.rx.items(dataSource: viewModel.makeDataSource()))
-            .disposed(by: disposeBag)
         
         confirmButton.setAttributedTitle(viewModel.getInitialButtonAttributeString(), for: .normal)
+        
+        // 뷰모델에서 받은 유저 리스트를 커스텀 collectionView의 데이터소스로
+        viewModel.userList
+            .bind(to: collectionView.userList)
+            .disposed(by: disposeBag)
+        
+        // 다음 뷰
+        viewModel.nextViewController
+            .bind { [weak self] vc in
+                if let vc = vc {
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
         
         output.buttonAttributeString
             .bind { [weak self] attribute in
@@ -73,14 +82,20 @@ class FriendsListViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        
-//        Observable
-//            .zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(User.self))
-//            .subscribe { [weak self] indexPath, item in
-//                guard let cell = self?.collectionView.cellForItem(at: indexPath) as? FriendsListCell else { return }
-
-//            }
-//            .disposed(by: disposeBag)
+        viewModel.dismiss
+            .bind { [weak self] type in
+                switch type {
+                case .sucess:
+                    self?.navigationController?.popToRootViewController(animated: true)
+                case .roomMemberNotExist:
+                    print("룸 멤버가 존재하지 않습니다. error 처리")
+                case .roomCreateOverLimit:
+                    print("룸 인원 초과 Alert error 처리")
+                case .none:
+                    print("룸 생성 수 초과 error도 생각 해야할 듯!")
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Selector
@@ -102,14 +117,14 @@ class FriendsListViewController: BaseViewController {
         view.addSubview(searchHeaderView)
         view.addSubview(collectionView)
         
+        searchHeaderView.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(60)
+        }
+        
         switch viewModel.listType {
         // 타입이 Select일 경우
         case .select:
-            searchHeaderView.snp.makeConstraints {
-                $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-                $0.height.equalTo(60)
-            }
-            
             // 버튼 추가
             view.addSubview(confirmButton)
             confirmButton.snp.makeConstraints {
@@ -128,7 +143,9 @@ class FriendsListViewController: BaseViewController {
         // 타입이 Normal일 경우
         case .normal:
             collectionView.snp.makeConstraints {
-                $0.edges.equalTo(view.safeAreaLayoutGuide)
+                $0.top.equalTo(searchHeaderView.snp.bottom)
+                $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+                $0.bottom.equalToSuperview()
             }
         }
     }
@@ -157,5 +174,21 @@ class FriendsListViewController: BaseViewController {
 extension FriendsListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: collectionView.frame.width, height: 55)
+    }
+}
+
+extension FriendsListViewController: FriendsListCellDelegate {
+    func userSelected(user: FriendsListResultData) {
+        // something
+    }
+}
+
+extension FriendsListViewController: RelationshipFriendActionDelegate {
+    func showActionAlert(alert: PointerAlert) {
+        self.present(alert, animated: true)
+    }
+    
+    func didFriendRelationshipChanged() {
+        viewModel.requestFriendList()
     }
 }

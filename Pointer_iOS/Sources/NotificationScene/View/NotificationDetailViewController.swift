@@ -81,6 +81,7 @@ class NotificationDetailViewController: UIViewController {
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendCellReuseIdentifier, for: IndexPath(row: index, section: 0)) as? FriendsNotiCell,
                           let item = item as? FriendAlarmList else { return UICollectionViewCell() }
                     print("🔥friendItem: \(item)")
+                    cell.delegate = self
                     cell.item = item
                     return cell
                 }
@@ -119,5 +120,15 @@ extension NotificationDetailViewController: UICollectionViewDelegateFlowLayout {
         case .friends:
             return 0
         }
+    }
+}
+
+extension NotificationDetailViewController: RelationshipFriendActionDelegate {
+    func showActionAlert(alert: PointerAlert) {
+        self.present(alert, animated: true)
+    }
+    
+    func didFriendRelationshipChanged() {
+        viewModel.requestData()
     }
 }

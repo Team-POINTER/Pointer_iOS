@@ -42,14 +42,14 @@ class ProfileViewController: ProfileParentViewController {
         setupUI()
         setupNavigationBar()
         setupNavigation(viewModel: viewModel)
-        viewModel.requestUserProfile()
-        viewModel.requestUserFriendsList()
         bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        viewModel.requestUserProfile()
+        viewModel.requestUserFriendsList()
     }
     
     //MARK: - Bind

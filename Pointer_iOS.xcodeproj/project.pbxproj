@@ -149,6 +149,8 @@
 		F9F4EFE02A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFDF2A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift */; };
 		F9F4EFE22A8BDB0A00BB4D03 /* NotiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFE12A8BDB0A00BB4D03 /* NotiDetailViewModel.swift */; };
 		F9F4EFE52A8BDD9700BB4D03 /* NotiDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFE42A8BDD9700BB4D03 /* NotiDetailModel.swift */; };
+		F9F4EFE72A8E551F00BB4D03 /* UserListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFE62A8E551F00BB4D03 /* UserListCollectionView.swift */; };
+		F9F4EFE92A8E642900BB4D03 /* RelationshipFriendActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4EFE82A8E642900BB4D03 /* RelationshipFriendActionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -282,6 +284,8 @@
 		F9F4EFDF2A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiDetailFriendsViewModel.swift; sourceTree = "<group>"; };
 		F9F4EFE12A8BDB0A00BB4D03 /* NotiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiDetailViewModel.swift; sourceTree = "<group>"; };
 		F9F4EFE42A8BDD9700BB4D03 /* NotiDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiDetailModel.swift; sourceTree = "<group>"; };
+		F9F4EFE62A8E551F00BB4D03 /* UserListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListCollectionView.swift; sourceTree = "<group>"; };
+		F9F4EFE82A8E642900BB4D03 /* RelationshipFriendActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipFriendActionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -605,6 +609,7 @@
 				F93C449E2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift */,
 				F9AB8CFF2A8B442200BA8309 /* PointerRefreshControl.swift */,
 				F92584932A8B69490098EBA2 /* PointerToggleView.swift */,
+				F9F4EFE82A8E642900BB4D03 /* RelationshipFriendActionView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -741,7 +746,7 @@
 				CD07E59B29CE1ECC00B52885 /* NotificationScene */,
 				CD5BCC5429F5382B00DD44F7 /* PreferenceScene */,
 				CD0667772A04E8870003C7B4 /* ProfileScene */,
-				CD2F79BC2A0FC7700094F81F /* FriendsList */,
+				CD2F79BC2A0FC7700094F81F /* FriendsListScene */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -798,13 +803,13 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		CD2F79BC2A0FC7700094F81F /* FriendsList */ = {
+		CD2F79BC2A0FC7700094F81F /* FriendsListScene */ = {
 			isa = PBXGroup;
 			children = (
 				CD2F79C02A0FC7BD0094F81F /* ViewModel */,
 				CD2F79BF2A0FC7B70094F81F /* View */,
 			);
-			path = FriendsList;
+			path = FriendsListScene;
 			sourceTree = "<group>";
 		};
 		CD2F79BF2A0FC7B70094F81F /* View */ = {
@@ -813,6 +818,7 @@
 				CD2F79BD2A0FC7910094F81F /* FriendsListViewController.swift */,
 				CD2F79C32A0FCB860094F81F /* FriendsListCell.swift */,
 				CD2F79C82A0FDFC30094F81F /* FriendsListHeaderView.swift */,
+				F9F4EFE62A8E551F00BB4D03 /* UserListCollectionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1206,8 +1212,10 @@
 				F93C449D2A877F55009B04F3 /* PointerAlert+Wrapping.swift in Sources */,
 				F90071992A60367500D1CDEE /* PointerRoomModel.swift in Sources */,
 				F93C44B02A8CBC92009B04F3 /* UIViewController.swift in Sources */,
+				F9F4EFE72A8E551F00BB4D03 /* UserListCollectionView.swift in Sources */,
 				F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */,
 				473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */,
+				F9F4EFE92A8E642900BB4D03 /* RelationshipFriendActionView.swift in Sources */,
 				47117C9F29C2F391001707C8 /* RoomModel.swift in Sources */,
 				478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */,
 				47117CA729C72EC6001707C8 /* ResultViewModel.swift in Sources */,
@@ -1302,6 +1310,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Pointer;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1356,6 +1365,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = Pointer;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
