@@ -172,7 +172,7 @@ class RoomViewController: BaseViewController {
         output.inviteButtonTap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
-                print("invite 버튼 click")
+                self?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         

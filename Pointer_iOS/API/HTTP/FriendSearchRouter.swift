@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 enum FriendSearchRouter {
-    case searchUser // 유저 검색
+    case searchUser(keyword: String, lastPage: Int) // 유저 검색
     case searchfriend // 친구 검색
     case searchBlockedFriend // 차단된 친구 검색
 }
@@ -26,8 +26,8 @@ extension FriendSearchRouter: HttpRouter {
 
     var path: String {
         switch self {
-        case .searchUser:
-            return "/user/search"
+        case .searchUser(let keyword, let lastPage):
+            return "/user/search?keyword=\(keyword)&lastPage=\(lastPage)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         case .searchfriend:
             return "/friend/search"
         case .searchBlockedFriend:
@@ -38,11 +38,11 @@ extension FriendSearchRouter: HttpRouter {
     var method: HTTPMethod {
         switch self {
         case .searchUser:
-            return .post
+            return .get
         case .searchfriend:
-            return .post
+            return .get
         case .searchBlockedFriend:
-            return .post
+            return .get
         }
     }
 

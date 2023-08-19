@@ -56,10 +56,10 @@ class RoomNetworkManager {
         }
     }
     
-    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel) -> Observable<[FriendsListResultData]> {
+    func inviteFriendListRequest(_ roomId: Int, _ keyword: String, _ lastPage: Int) -> Observable<[FriendsListResultData]> {
         return Observable.create { (observer) -> Disposable in
             
-            self.inviteFriendListRequest(roomId, parameters) { error, friendsListResultData in
+            self.inviteFriendListRequest(roomId: roomId, keyword: keyword, lastPage: lastPage) { error, friendsListResultData in
                 if let error = error {
                     observer.onError(error)
                 }
@@ -177,14 +177,12 @@ class RoomNetworkManager {
     }
     
     // 초대 가능한 친구 목록
-    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel,
+    private func inviteFriendListRequest(roomId: Int, keyword: String, lastPage: Int,
                                  completion: @escaping (Error?, [FriendsListResultData]?) -> Void) {
-        let inviteFriendsList = roomRouter.avaliableInviteFriendList(roomId)
+        let inviteFriendsList = roomRouter.friendsListToAttend(roomId: roomId, keyword: keyword, lastPage: lastPage)
         
         AF.request(inviteFriendsList.url,
                    method: inviteFriendsList.method,
-                   parameters: parameters,
-                   encoder: JSONParameterEncoder.default,
                    headers: inviteFriendsList.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: FriendsListResultModel.self) { response in
@@ -290,6 +288,7 @@ struct FriendsListResultModel: Decodable {
     let message: String
     let friendList: [FriendsListResultData]
     let total: Int
+    let currentPage: Int
 }
 
 struct FriendsListResultData: Decodable {
@@ -297,8 +296,8 @@ struct FriendsListResultData: Decodable {
     let id: String
     let friendName: String
     let file: String?
-    let status: Int?
-    let relationship: Int?
+    let status: Int
+    let reason: String?
 }
 
 // MARK: - 룸 초대하기

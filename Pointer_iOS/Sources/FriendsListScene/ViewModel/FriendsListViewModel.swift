@@ -62,8 +62,7 @@ class FriendsListViewModel: ViewModelType {
                 print(text)
                 
                 //MARK: [FIX ME] lastPage 값이 어떤 값인가? - 무한 스크롤 시
-                let model = InviteFriendsListReqeustInputModel(keyword: text, lastPage: self.lastPage)
-                self.inviteFriendsListRequest(model)
+                self.inviteFriendsListRequest(keyword: text, lastPage: self.lastPage)
             }
             .disposed(by: disposeBag)
         
@@ -152,21 +151,21 @@ class FriendsListViewModel: ViewModelType {
     
 //MARK: - API
     // 초대 가능한 친구 목록 조회
-    func inviteFriendsListRequest(_ input: InviteFriendsListReqeustInputModel) {
+    func inviteFriendsListRequest(keyword: String, lastPage: Int) {
         guard let roomId = roomId else { return }
-        RoomNetworkManager.shared.inviteFriendListRequest(roomId, input) { [weak self] error, model in
-            if let error = error {
-                print("DEBUG: 초대 가능한 친구 목록 조회 에러 - \(error.localizedDescription)")
-            }
-            // 언래핑
-            guard let modelList = model else { return }
-            // FriendsModel로 변경
-            let userList = modelList.map {
-                FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: $0.relationship ?? 99)
-            }
-            // accept
-            self?.userList.accept(userList)
-        }
+        RoomNetworkManager.shared.inviteFriendListRequest(roomId, keyword, lastPage)
+            .subscribe(onNext: { [weak self] model in
+                // FriendsModel로 변경
+                let userList = model.map {
+                    FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: 3)
+                }
+                // accept
+                self?.userList.accept(userList)
+            },
+            onError: { error in
+                print("초대 가능한 친구 목록 조회 - error = \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
     }
     
     // 친구 리스트 조회
