@@ -68,8 +68,7 @@ final class SearchViewModel: ViewModelType {
     
     // 유저 검색
     func requestAccountList(word: String, lastPage: Int) {
-        let input = SearchUserRequestModel(keyword: word, lastPage: lastPage)
-        FriendSearchNetworkManager.shared.searchUserListRequest(input) { [weak self] (model, error) in
+        FriendSearchNetworkManager.shared.searchUserListRequest(keyword: word, lastPage: lastPage) { [weak self] (model, error) in
             guard let self = self else { return }
             
             if let error = error {

@@ -12,7 +12,7 @@ enum RoomRouter {
     case createRoom // 룸 생성
     case exitRoom(_ roomId: Int) // 룸 나가기
     case inviteMemeber // 룸 초대
-    case friendsListToAttend(_ roomId: Int) // 초대 가능한 친구 목록
+    case friendsListToAttend(roomId: Int, keyword: String, lastPage: Int) // 초대 가능한 친구 목록
     case roomMembers(_ roomId: Int) // 룸 내부 멤버 조회
     case modifyRoomTitle // 룸 이름 변경
     case getSingleRoom(_ roomId: Int) // 룸(하나) 조회
@@ -38,8 +38,8 @@ extension RoomRouter: HttpRouter {
             return "/room/\(roomId)/exit"
         case .inviteMemeber:
             return "/room/invite/members"
-        case .friendsListToAttend(let roomId):
-            return "room/\(roomId)/friends"
+        case .friendsListToAttend(let roomId, let keyword, let lastPage):
+            return "/room/\(roomId)/friends?keyword=\(keyword)&lastPage=\(lastPage)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         case .roomMembers(let roomId):
             return "/room/get/\(roomId)/members"
         case .modifyRoomTitle:

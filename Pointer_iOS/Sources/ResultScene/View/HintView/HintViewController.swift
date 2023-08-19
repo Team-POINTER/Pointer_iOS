@@ -54,7 +54,8 @@ class HintViewController: BaseViewController {
                         .observe(on: MainScheduler.instance)
                         .subscribe(onNext: { [weak self] _ in
                             self?.longPressShowSetting(hint: data.voters[i].hint,
-                                                       voterId: data.voters[i].voterId
+                                                       voterId: data.voters[i].voterId,
+                                                       voteHistoryId: data.voters[i].voteHistoryId
                             )
                         })
                         .disposed(by: self.disposeBag)
@@ -206,9 +207,9 @@ class HintViewController: BaseViewController {
     }
     
 //MARK: - Helper
-    func longPressShowSetting(hint: String, voterId: Int) {
+    func longPressShowSetting(hint: String, voterId: Int, voteHistoryId: Int) {
         let report = PointerAlertActionConfig(title: "신고하기", textColor: .red) { [weak self] _ in
-            self?.reportTap(targetUserId: voterId)
+            self?.reportTap(voteHistoryId: voteHistoryId, targetUserId: voterId)
         }
         let delete = PointerAlertActionConfig(title: "삭제하기", textColor: .black) { [weak self] _ in
             self?.viewModel.deleteHintRequest(voterId: voterId)
@@ -219,12 +220,15 @@ class HintViewController: BaseViewController {
         present(actionSheet, animated: true)
     }
 
-    func reportTap(targetUserId: Int) {
+    func reportTap(voteHistoryId: Int, targetUserId: Int) {
         var reportConfig = [PointerAlertActionConfig]()
         
         ReasonCode.allCases.forEach { type in
             let config = PointerAlertActionConfig(title: type.reason, textColor: .black) { [weak self] _ in
-                self?.presentReportView(reasonCode: type.rawValue, presentingReason: type.reason, targetUserId: targetUserId)
+                self?.presentReportView(reasonCode: type.rawValue,
+                                        presentingReason: type.reason,
+                                        voteHistoryId: voteHistoryId,
+                                        targetUserId: targetUserId)
             }
             reportConfig.append(config)
         }
@@ -233,15 +237,15 @@ class HintViewController: BaseViewController {
         present(actionSheet, animated: true)
     }
     
-    func presentReportView(reasonCode: String, presentingReason: String, targetUserId: Int) {
+    func presentReportView(reasonCode: String, presentingReason: String, voteHistoryId: Int, targetUserId: Int) {
         let reportVM = ReportViewModel(roomId: viewModel.roomId,
-                                       questionId: viewModel.questionId,
+                                       questionId: voteHistoryId,
                                        type: .hint,
                                        targetUserId: targetUserId,
                                        presentingReason: presentingReason,
                                        reasonCode: reasonCode)
         
-        print("룸에서 넘기는 roomId - \(viewModel.roomId) / questionId - \(viewModel.questionId) / targetUserId - \(targetUserId) / presentReason - \(presentingReason) / reasonCode - \(reasonCode)")
+        print("룸에서 넘기는 roomId - \(viewModel.roomId) / voteHistoryId - \(voteHistoryId) / targetUserId - \(targetUserId) / presentReason - \(presentingReason) / reasonCode - \(reasonCode)")
         let reportVC = ReportViewController(viewModel: reportVM)
         fpc.set(contentViewController: reportVC)
         fpc.track(scrollView: reportVC.scrollView)

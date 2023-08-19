@@ -56,10 +56,10 @@ class RoomNetworkManager {
         }
     }
     
-    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel) -> Observable<[FriendsListResultData]> {
+    func inviteFriendListRequest(_ roomId: Int, _ keyword: String, _ lastPage: Int) -> Observable<[FriendsListResultData]> {
         return Observable.create { (observer) -> Disposable in
             
-            self.inviteFriendListRequest(roomId, parameters) { error, friendsListResultData in
+            self.inviteFriendListRequest(roomId: roomId, keyword: keyword, lastPage: lastPage) { error, friendsListResultData in
                 if let error = error {
                     observer.onError(error)
                 }
@@ -150,15 +150,39 @@ class RoomNetworkManager {
             }
     }
     
+    // 룸 초대
+    func invteFriendRequest(_ parameters: InviteFriendRequestModel, completion: @escaping (Error?, InviteFriendResultModel?) -> Void) {
+        let router = roomRouter.inviteMemeber
+        
+        AF.request(router.url,
+                   method: router.method,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default,
+                   headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: InviteFriendResultModel.self) { response in
+                switch response.result {
+                // 성공인 경우
+                case .success(let result):
+                    // completion 전송
+                    print(result)
+                    completion(nil, result)
+                // 실패인 경우
+                case .failure(let error):
+                    print("룸 초대 데이터 전송 실패 - \(error.localizedDescription)")
+                    // completion 전송
+                    completion(error, nil)
+                }
+            }
+    }
+    
     // 초대 가능한 친구 목록
-    func inviteFriendListRequest(_ roomId: Int, _ parameters: InviteFriendsListReqeustInputModel,
+    private func inviteFriendListRequest(roomId: Int, keyword: String, lastPage: Int,
                                  completion: @escaping (Error?, [FriendsListResultData]?) -> Void) {
-        let inviteFriendsList = roomRouter.avaliableInviteFriendList(roomId)
+        let inviteFriendsList = roomRouter.friendsListToAttend(roomId: roomId, keyword: keyword, lastPage: lastPage)
         
         AF.request(inviteFriendsList.url,
                    method: inviteFriendsList.method,
-                   parameters: parameters,
-                   encoder: JSONParameterEncoder.default,
                    headers: inviteFriendsList.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: FriendsListResultModel.self) { response in
@@ -264,6 +288,7 @@ struct FriendsListResultModel: Decodable {
     let message: String
     let friendList: [FriendsListResultData]
     let total: Int
+    let currentPage: Int
 }
 
 struct FriendsListResultData: Decodable {
@@ -271,6 +296,31 @@ struct FriendsListResultData: Decodable {
     let id: String
     let friendName: String
     let file: String?
-    let status: Int?
-    let relationship: Int?
+    let status: Int
+    let reason: String?
 }
+
+// MARK: - 룸 초대하기
+struct InviteFriendRequestModel: Encodable {
+    let roomId: Int
+    let userFriendIdList: [Int]
+}
+
+struct InviteFriendResultModel: Decodable {
+    let status: Int
+    let code: String
+    let message: String
+    let data: InviteFriendResultData?
+}
+
+struct InviteFriendResultData: Decodable {
+    let accessToken: String
+    let refreshToken: String
+    let invteMemberList: [InviteFriendResultMemberModel]
+}
+
+struct InviteFriendResultMemberModel: Decodable {
+    let userId: Int
+    let nickNm: String
+}
+

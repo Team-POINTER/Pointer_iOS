@@ -14,6 +14,7 @@ enum QuestionRouter {
     case totalSearchQuestion(_ roomId: Int) // 전체 질문 조회
     case modifyQuestion(_ questionId: Int) // 질문 수정
     case deleteQuestion(_ questionId: Int) // 질문 삭제
+    case checkCreatableQuestion(_ roomId: Int) // 질문 생성 여부 확인
 }
 
 extension QuestionRouter: HttpRouter {
@@ -38,6 +39,8 @@ extension QuestionRouter: HttpRouter {
             return "/questions/\(questionId)"
         case .deleteQuestion(let roomId):
             return "/questions/\(roomId)"
+        case .checkCreatableQuestion(let roomId):
+            return "/questions/check/\(roomId)"
         }
     }
     
@@ -53,6 +56,8 @@ extension QuestionRouter: HttpRouter {
             return .patch
         case .deleteQuestion:
             return .delete
+        case .checkCreatableQuestion:
+            return .get
         }
     }
     

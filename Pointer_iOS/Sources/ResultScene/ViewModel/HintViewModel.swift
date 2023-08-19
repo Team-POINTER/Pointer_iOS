@@ -35,7 +35,6 @@ class HintViewModel: ViewModelType{
         
         self.roomId = roomId
         self.questionId = questionId
-        showHintRequest(questionId)
     }
     
 //MARK: - In/Out
@@ -50,6 +49,7 @@ class HintViewModel: ViewModelType{
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         let output = Output()
+        showHintRequest(questionId)
         
         return output
     }

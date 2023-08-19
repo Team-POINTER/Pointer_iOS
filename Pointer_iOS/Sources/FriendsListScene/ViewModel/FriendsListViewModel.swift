@@ -9,6 +9,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+// #1-8 responseCode
+enum InviteFriendResultType: String, CaseIterable {
+    case sucess = "J008"
+    case roomMemberNotExist = "J001"
+    case roomCreateOverLimit = "J005"
+}
+
 class FriendsListViewModel: ViewModelType {
     //MARK: - ListType
     enum ListType {
@@ -23,17 +30,21 @@ class FriendsListViewModel: ViewModelType {
     
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
+    let dismiss = BehaviorRelay<InviteFriendResultType?>(value: nil)
     
     private lazy var profileNetwork = ProfileNetworkManager()
     
     private var roomId: Int?
     private var userId: Int?
+    private var lastPage: Int = 0
+    private var inviteFriendIdList: [Int] = []
     
     //MARK: - Rx
     struct Input {
         let searchTextFieldEditEvent: Observable<String>
         let collectionViewItemSelected: Observable<IndexPath>
         let collectionViewModelSelected: Observable<FriendsModel>
+        let confirmButtonTappedEvent: Observable<Void>
     }
     
     struct Output {
@@ -51,8 +62,7 @@ class FriendsListViewModel: ViewModelType {
                 print(text)
                 
                 //MARK: [FIX ME] lastPage 값이 어떤 값인가? - 무한 스크롤 시
-                let model = InviteFriendsListReqeustInputModel(keyword: text, lastPage: 0)
-                self.inviteFriendsListRequest(model)
+                self.inviteFriendsListRequest(keyword: text, lastPage: self.lastPage)
             }
             .disposed(by: disposeBag)
         
@@ -60,6 +70,7 @@ class FriendsListViewModel: ViewModelType {
             .subscribe { [weak self] users in
                 guard let self = self,
                       let users = users.element else { return }
+                inviteFriendIdList = users.map { $0.friendId }
                 let buttonAttributeString = self.makeButtonAttributeString(count: users.count)
                 output.buttonAttributeString.accept(buttonAttributeString)
             }
@@ -74,6 +85,15 @@ class FriendsListViewModel: ViewModelType {
                 let viewModel = ProfileViewModel(userId: userId)
                 let vc = ProfileViewController(viewModel: viewModel)
                 self.nextViewController.accept(vc)
+            }
+            .disposed(by: disposeBag)
+        
+        input.confirmButtonTappedEvent
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                
+                let model = InviteFriendRequestModel(roomId: self.roomId ?? 0, userFriendIdList: self.inviteFriendIdList)
+                self.inviteFriendRequest(model)
             }
             .disposed(by: disposeBag)
         
@@ -131,21 +151,21 @@ class FriendsListViewModel: ViewModelType {
     
 //MARK: - API
     // 초대 가능한 친구 목록 조회
-    func inviteFriendsListRequest(_ input: InviteFriendsListReqeustInputModel) {
+    func inviteFriendsListRequest(keyword: String, lastPage: Int) {
         guard let roomId = roomId else { return }
-        RoomNetworkManager.shared.inviteFriendListRequest(roomId, input) { [weak self] error, model in
-            if let error = error {
-                print("DEBUG: 초대 가능한 친구 목록 조회 에러 - \(error.localizedDescription)")
-            }
-            // 언래핑
-            guard let modelList = model else { return }
-            // FriendsModel로 변경
-            let userList = modelList.map {
-                FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: $0.relationship ?? 99)
-            }
-            // accept
-            self?.userList.accept(userList)
-        }
+        RoomNetworkManager.shared.inviteFriendListRequest(roomId, keyword, lastPage)
+            .subscribe(onNext: { [weak self] model in
+                // FriendsModel로 변경
+                let userList = model.map {
+                    FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: 3)
+                }
+                // accept
+                self?.userList.accept(userList)
+            },
+            onError: { error in
+                print("초대 가능한 친구 목록 조회 - error = \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
     }
     
     // 친구 리스트 조회
@@ -157,6 +177,27 @@ class FriendsListViewModel: ViewModelType {
             }
             self?.userList.accept(response.friendInfoList)
             print(response.friendInfoList)
+        }
+    }
+    
+    // 룸 초대
+    private func inviteFriendRequest(_ input: InviteFriendRequestModel) {
+        RoomNetworkManager.shared.invteFriendRequest(input) { [weak self] (error, model) in
+            if let error = error {
+                print("DEBUG: 룸 초대 에러 - \(error.localizedDescription)")
+            }
+            
+            if let model = model {
+                if model.code == InviteFriendResultType.sucess.rawValue {
+                    self?.dismiss.accept(.sucess)
+                } else if model.code == InviteFriendResultType.roomMemberNotExist.rawValue {
+                    self?.dismiss.accept(.roomMemberNotExist)
+                } else if model.code == InviteFriendResultType.roomCreateOverLimit.rawValue {
+                    self?.dismiss.accept(.roomCreateOverLimit)
+                } else {
+                    self?.dismiss.accept(.none)
+                }
+            }
         }
     }
 }

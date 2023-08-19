@@ -14,6 +14,7 @@ class MyResultViewController: BaseViewController {
 //MARK: - properties
     let disposeBag = DisposeBag()
     var viewModel: MyResultViewModel
+    var hintVC = UIViewController()
     
 //MARK: - Init
     init(viewModel: MyResultViewModel) {
@@ -50,7 +51,11 @@ class MyResultViewController: BaseViewController {
         output.hintTableViewSelected
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                guard let self = self else { return }
+                self.hintVC = viewController
+                self.usePointAlert(title: "포인트 0개 사용", description: "포인트 0개를 사용하여 나를 지목한 사람의 힌트를 확인하시겠어요?") {
+                    
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -108,6 +113,24 @@ class MyResultViewController: BaseViewController {
         self.navigationItem.leftBarButtonItem = notiButton
     }
     
+//MARK: - Functions
+    func usePointAlert(title: String, description: String, completion: @escaping() -> Void) {
+        let backAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { _ in
+            completion()
+        })
+        
+        let useAction = PointerAlertActionConfig(title: "사용하기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.navigationController?.pushViewController(self.hintVC, animated: true)
+            //MARK: 업데이트 이후 포인트 확인과 부족했을 시 Alert 분기 처리 추가
+            completion()
+        })
+    
+        let alert = PointerAlert(alertType: .alert, configs: [backAction, useAction], title: title, description: description)
+        present(alert, animated: true)
+    }
+    
+//MARK: - Handler
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
     }

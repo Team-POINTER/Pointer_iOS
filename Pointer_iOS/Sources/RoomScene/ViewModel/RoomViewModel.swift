@@ -143,8 +143,9 @@ final class RoomViewModel: ViewModelType {
         
         input.inviteButtonTapEvent
             .subscribe(onNext: { _ in
-                print("초대하기 버튼 Tap")
-//                output.inviteButtonTap.accept(<#T##event: UIViewController##UIViewController#>)
+                let inviteVM = FriendsListViewModel(listType: .select, roomId: self.roomId)
+                let inviteVC = FriendsListViewController(viewModel: inviteVM)
+                output.inviteButtonTap.accept(inviteVC)
             })
             .disposed(by: disposeBag)
         

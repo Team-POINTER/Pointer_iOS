@@ -54,8 +54,10 @@ class FriendsListViewController: BaseViewController {
     //MARK: - bind
     func bind() {
         let input = FriendsListViewModel.Input(
-            searchTextFieldEditEvent: searchHeaderView.searchTextField.rx.text.orEmpty.asObservable(), collectionViewItemSelected: collectionView.collectionView.rx.itemSelected.asObservable(),
-            collectionViewModelSelected: collectionView.collectionView.rx.modelSelected(FriendsModel.self).asObservable())
+            searchTextFieldEditEvent: searchHeaderView.searchTextField.rx.text.orEmpty.asObservable(),
+            collectionViewItemSelected: collectionView.collectionView.rx.itemSelected.asObservable(),
+            collectionViewModelSelected: collectionView.collectionView.rx.modelSelected(FriendsModel.self).asObservable(),
+            confirmButtonTappedEvent: confirmButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
         confirmButton.setAttributedTitle(viewModel.getInitialButtonAttributeString(), for: .normal)
@@ -77,6 +79,25 @@ class FriendsListViewController: BaseViewController {
         output.buttonAttributeString
             .bind { [weak self] attribute in
                 self?.confirmButton.setAttributedTitle(attribute, for: .normal)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.dismiss
+            .bind { [weak self] type in
+                switch type {
+                case .sucess:
+                    self?.navigationController?.popToRootViewController(animated: true)
+                case .roomMemberNotExist:
+                    self?.dismissAlert(title: "돌아가기", description: "룸 멤버가 존재하지 않습니다.") {
+                        print("룸 멤버 존재 Alert error")
+                    }
+                case .roomCreateOverLimit:
+                    self?.dismissAlert(title: "돌아가기", description: "룸 인원이 초과되었습니다.") {
+                        print("룸 인원 초과 Alert error")
+                    }
+                case .none:
+                    print("룸 생성 수 초과 error도 생각 해야할 듯!")
+                }
             }
             .disposed(by: disposeBag)
     }
@@ -150,6 +171,16 @@ class FriendsListViewController: BaseViewController {
             let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: plusImage, target: self, handler: #selector(plusButtonTapped))
             navigationItem.rightBarButtonItem = rightBarButton
         }
+    }
+    
+    func dismissAlert(title: String, description: String, completion: @escaping() -> Void) {
+        let backAction = PointerAlertActionConfig(title: title, textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
+            self?.dismiss(animated: true)
+            completion()
+        })
+    
+        let alert = PointerAlert(alertType: .alert, configs: [backAction], description: description)
+        present(alert, animated: true)
     }
 }
 
