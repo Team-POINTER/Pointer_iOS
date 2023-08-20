@@ -36,7 +36,7 @@ class ProfileNetworkManager {
     func getUserFriendList(userId: Int, lastPage: Int, completion: @escaping (FriendsResponseModel?) -> Void) {
         let router = ProfileRouter.getFriendsList(userId: userId, lastPage: lastPage)
         print(router.parameters)
-        AF.request(router.url, method: router.method, parameters: router.parameters, encoding: JSONEncoding.default, headers: router.headers)
+        AF.request(router.url, method: router.method, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: FriendsResponseModel.self) { response in
                 print(response)

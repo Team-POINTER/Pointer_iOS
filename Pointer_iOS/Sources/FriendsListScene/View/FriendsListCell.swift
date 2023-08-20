@@ -39,7 +39,11 @@ class FriendsListCell: UICollectionViewCell {
         }
     }
     
-    var viewType: FriendsListViewModel.ListType?
+    var viewType: FriendsListViewModel.ListType? {
+        didSet {
+            setupUI()
+        }
+    }
     
     private let profileImageView: UIImageView = {
         let view = UIImageView()
@@ -71,25 +75,18 @@ class FriendsListCell: UICollectionViewCell {
     //MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        setupUI()
-        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Bind
-    private func bind() {
-        selectImageView.rx.tapGesture().when(.recognized)
-            .subscribe { [weak self] _ in
-                guard let self = self,
-                      let user = self.user else { return }
-                self.isSelectedCell.toggle()
-                self.friendsListCellDelegate?.userSelected(user: user)
-            }
-            .disposed(by: disposeBag)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.isUserInteractionEnabled = true
+        userIdLabel.alpha = 1
+        userNameLabel.alpha = 1
+        selectImageView.alpha = 1
     }
     
     //MARK: - Functions
@@ -128,11 +125,23 @@ class FriendsListCell: UICollectionViewCell {
     
     private func configure() {
         guard let user = userData else { return }
+        
         profileImageView.kf.indicatorType = .activity
         profileImageView.kf.setImage(with: URL(string: user.file ?? ""))
         
         userIdLabel.text = user.id
         userNameLabel.text = user.friendName
+        
+        if viewType == .select {
+            guard let status = user.status else { return }
+            
+            if status == 0 {
+                self.isUserInteractionEnabled = false
+                userIdLabel.alpha = 0.4
+                userNameLabel.alpha = 0.4
+                selectImageView.alpha = 0.4
+            }
+        }
         
         // 뷰 타입이 노말인 경우만
         if viewType == .normal {

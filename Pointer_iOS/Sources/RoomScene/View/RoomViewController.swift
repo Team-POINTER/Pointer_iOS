@@ -241,11 +241,6 @@ class RoomViewController: BaseViewController {
             let modifyAlert = self.viewModel.getModifyRoomNameAlert(currentRoomName, roomId: roomId)
             self.present(modifyAlert, animated: true)
         }
-        let inviteFriend = PointerAlertActionConfig(title: "친구 초대하기", textColor: .black) { [weak self] _ in
-            let viewModel = FriendsListViewModel(listType: .select, roomId: self?.viewModel.roomId)
-            let viewController = FriendsListViewController(viewModel: viewModel)
-            self?.navigationController?.pushViewController(viewController, animated: true)
-        }
         let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
             self?.reportTap()
         }
@@ -257,7 +252,7 @@ class RoomViewController: BaseViewController {
         }
 
         let actionSheet = PointerAlert(alertType: .actionSheet,
-                                       configs: [modifyRoomName, inviteFriend, report, exitRoom],
+                                       configs: [modifyRoomName, report, exitRoom],
                                        title: "룸 '\(currentRoomName)'에 대해")
         present(actionSheet, animated: true)
     }

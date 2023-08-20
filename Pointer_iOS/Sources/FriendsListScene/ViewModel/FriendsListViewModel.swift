@@ -9,13 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-// #1-8 responseCode
-enum InviteFriendResultType: String, CaseIterable {
-    case sucess = "J008"
-    case roomMemberNotExist = "J001"
-    case roomCreateOverLimit = "J005"
-}
-
 class FriendsListViewModel: ViewModelType {
     //MARK: - ListType
     enum ListType {
@@ -30,7 +23,8 @@ class FriendsListViewModel: ViewModelType {
     
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
-    let dismiss = BehaviorRelay<InviteFriendResultType?>(value: nil)
+    let dismiss = PublishRelay<String>()
+    let inviteLink = PublishRelay<String>()
     
     private lazy var profileNetwork = ProfileNetworkManager()
     
@@ -70,29 +64,37 @@ class FriendsListViewModel: ViewModelType {
             .subscribe { [weak self] users in
                 guard let self = self,
                       let users = users.element else { return }
-                inviteFriendIdList = users.map { $0.friendId }
+                self.inviteFriendIdList = users.map { $0.friendId }
                 let buttonAttributeString = self.makeButtonAttributeString(count: users.count)
                 output.buttonAttributeString.accept(buttonAttributeString)
             }
             .disposed(by: disposeBag)
         
+        // 셀을 선택했을 때
         input.collectionViewModelSelected
             .subscribe { [weak self] item in
                 guard let self = self,
-                      let item = item.element,
-                      self.listType == .normal else { return }
-                let userId = item.friendId
-                let viewModel = ProfileViewModel(userId: userId)
-                let vc = ProfileViewController(viewModel: viewModel)
-                self.nextViewController.accept(vc)
+                      let item = item.element else { return }
+                
+                switch self.listType {
+                case .normal:
+                    let userId = item.friendId
+                    let viewModel = ProfileViewModel(userId: userId)
+                    let vc = ProfileViewController(viewModel: viewModel)
+                    self.nextViewController.accept(vc)
+                case .select:
+                    self.processSelectedUser(selectedUser: item)
+                    print(selectedUser.value.count)
+                }
             }
             .disposed(by: disposeBag)
         
         input.confirmButtonTappedEvent
             .subscribe { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      let roomId = self.roomId else { return }
                 
-                let model = InviteFriendRequestModel(roomId: self.roomId ?? 0, userFriendIdList: self.inviteFriendIdList)
+                let model = InviteFriendRequestModel(roomId: roomId, userFriendIdList: self.inviteFriendIdList)
                 self.inviteFriendRequest(model)
             }
             .disposed(by: disposeBag)
@@ -109,10 +111,10 @@ class FriendsListViewModel: ViewModelType {
     }
     
     // User가 선택된 상태인지 체크하는 메소드
-    private func detectSelectedUser(_ selectedUser: FriendsListResultData) -> Bool {
+    func detectSelectedUser(_ selectedUser: FriendsModel) -> Bool {
         var isSelectedUser = false
         for user in self.selectedUser.value {
-            if user.id == selectedUser.id {
+            if user.friendId == selectedUser.friendId {
                 isSelectedUser = true
                 break
             }
@@ -121,21 +123,25 @@ class FriendsListViewModel: ViewModelType {
     }
     
     // User Select 이벤트가 들어오면 실행하는 함수
-    private func processSelectedUser(selectedUser: FriendsListResultData) {
+    func processSelectedUser(selectedUser: FriendsModel) {
+        // 현재 선택한 유저들의 배열
         var currentSelectedUser = self.selectedUser.value
+        // 이미 선택한 유저인지 체크
         let isUserSelected = detectSelectedUser(selectedUser)
+        
         switch isUserSelected {
+        // 이미 선택한 유저라면 - Selected 배열에서 지우기
         case true:
             currentSelectedUser.enumerated().forEach { index, user in
-                if selectedUser.id == user.id {
+                if selectedUser.friendId == user.friendId {
                     currentSelectedUser.remove(at: index)
                     self.selectedUser.accept(currentSelectedUser)
                 }
             }
+        // 선택 안한 유저라면 - Selceted 배열에 추가
         case false:
-            break
-//            currentSelectedUser.append(selectedUser)
-//            self.selectedUser.accept(currentSelectedUser)
+            currentSelectedUser.append(selectedUser)
+            self.selectedUser.accept(currentSelectedUser)
         }
     }
     
@@ -157,7 +163,7 @@ class FriendsListViewModel: ViewModelType {
             .subscribe(onNext: { [weak self] model in
                 // FriendsModel로 변경
                 let userList = model.map {
-                    FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: 3)
+                    FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: 3, status: $0.status)
                 }
                 // accept
                 self?.userList.accept(userList)
@@ -188,15 +194,22 @@ class FriendsListViewModel: ViewModelType {
             }
             
             if let model = model {
-                if model.code == InviteFriendResultType.sucess.rawValue {
-                    self?.dismiss.accept(.sucess)
-                } else if model.code == InviteFriendResultType.roomMemberNotExist.rawValue {
-                    self?.dismiss.accept(.roomMemberNotExist)
-                } else if model.code == InviteFriendResultType.roomCreateOverLimit.rawValue {
-                    self?.dismiss.accept(.roomCreateOverLimit)
-                } else {
-                    self?.dismiss.accept(.none)
-                }
+                self?.dismiss.accept(model.message)
+            }
+        }
+    }
+    
+    // 룸 초대 (링크)
+    func inviteFriendWithLinkRequest() {
+        guard let roomId = self.roomId else { return }
+        
+        RoomNetworkManager.shared.inviteFriendWithLinkRequest(roomId) { [weak self] (error, link) in
+            if let error = error {
+                print("DEBUG: 룸 초대 에러 - \(error.localizedDescription)")
+            }
+            
+            if let inviteLink = link {
+                self?.inviteLink.accept(inviteLink)
             }
         }
     }

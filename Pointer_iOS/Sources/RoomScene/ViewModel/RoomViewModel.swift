@@ -145,6 +145,7 @@ final class RoomViewModel: ViewModelType {
             .subscribe(onNext: { _ in
                 let inviteVM = FriendsListViewModel(listType: .select, roomId: self.roomId)
                 let inviteVC = FriendsListViewController(viewModel: inviteVM)
+                inviteVC.delegate = self
                 output.inviteButtonTap.accept(inviteVC)
             })
             .disposed(by: disposeBag)
@@ -298,5 +299,12 @@ final class RoomViewModel: ViewModelType {
                 print("실패")
             }
         }
+    }
+}
+
+//MARK: - FriendsListViewControllerDelegate
+extension RoomViewModel: FriendsListViewControllerDelegate {
+    func dismissInviteView() {
+        self.searchRoomRequest(self.roomId)
     }
 }

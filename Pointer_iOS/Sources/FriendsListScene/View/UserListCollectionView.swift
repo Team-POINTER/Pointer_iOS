@@ -14,6 +14,9 @@ class UserListCollectionView: UIView {
     //MARK: - Properties
     weak var friendsListCelldelegate: FriendsListCellDelegate?
     weak var relationshipDelegate: RelationshipFriendActionDelegate?
+    
+    /// weak View Model
+    weak var viewModel: FriendsListViewModel?
     /// to accept datasource
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     /// 친구 count Label을 사용할건지?
@@ -47,7 +50,6 @@ class UserListCollectionView: UIView {
     init(type: FriendsListViewModel.ListType) {
         self.viewType = type
         super.init(frame: .zero)
-        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -57,10 +59,12 @@ class UserListCollectionView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         setupUI()
+        bind()
     }
     
     //MARK: - bind
     private func bind() {
+        // 유저 리스트
         self.userList
             .do(onNext: { [weak self] userList in
                 guard let self = self else { return }
@@ -72,9 +76,21 @@ class UserListCollectionView: UIView {
                 cell.relationshipDelegate = self?.relationshipDelegate
                 cell.viewType = self?.viewType
                 cell.userData = item
+                // 뷰모델 바인딩 ( select 체크의 경우 )
+                guard let viewModel = self?.viewModel else { return cell }
+                cell.isSelectedCell = viewModel.detectSelectedUser(item)
                 return cell
             }
             .disposed(by: disposeBag)
+        
+        // Select - 선택한 유저 바인딩
+        if let viewModel = viewModel {
+            viewModel.selectedUser
+                .bind { [weak self] _ in
+                    self?.collectionView.reloadData()
+                }
+                .disposed(by: disposeBag)
+        }
     }
     
     //MARK: - Methods
