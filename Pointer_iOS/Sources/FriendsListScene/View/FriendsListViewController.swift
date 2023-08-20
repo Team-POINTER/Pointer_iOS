@@ -101,6 +101,23 @@ class FriendsListViewController: BaseViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        viewModel.inviteLink
+            .bind { [weak self] link in
+                guard let self = self else { return }
+                
+                var shareObject = [Any]()
+                
+                shareObject.append(link)
+                
+                let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
+                activityViewController.popoverPresentationController?.sourceView = self.view
+                
+                //activityViewController.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook,UIActivity.ActivityType.postToTwitter,UIActivity.ActivityType.mail]
+                
+                self.present(activityViewController, animated: true, completion: nil)
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Selector
@@ -109,7 +126,7 @@ class FriendsListViewController: BaseViewController {
     }
     
     @objc private func linkButtonTapped() {
-        print("Link Button Tapped")
+        viewModel.inviteFriendWithLinkRequest()
     }
     
     @objc private func plusButtonTapped() {

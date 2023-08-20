@@ -31,6 +31,7 @@ class FriendsListViewModel: ViewModelType {
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
     let dismiss = BehaviorRelay<InviteFriendResultType?>(value: nil)
+    let inviteLink = PublishRelay<String>()
     
     private lazy var profileNetwork = ProfileNetworkManager()
     
@@ -90,15 +91,17 @@ class FriendsListViewModel: ViewModelType {
                     self.nextViewController.accept(vc)
                 case .select:
                     self.processSelectedUser(selectedUser: item)
+                    print(selectedUser.value.count)
                 }
             }
             .disposed(by: disposeBag)
         
         input.confirmButtonTappedEvent
             .subscribe { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      let roomId = self.roomId else { return }
                 
-                let model = InviteFriendRequestModel(roomId: self.roomId ?? 0, userFriendIdList: self.inviteFriendIdList)
+                let model = InviteFriendRequestModel(roomId: roomId, userFriendIdList: self.inviteFriendIdList)
                 self.inviteFriendRequest(model)
             }
             .disposed(by: disposeBag)
@@ -192,6 +195,7 @@ class FriendsListViewModel: ViewModelType {
     
     // 룸 초대
     private func inviteFriendRequest(_ input: InviteFriendRequestModel) {
+        print("룸 초대 파라미터 = \(input)")
         RoomNetworkManager.shared.invteFriendRequest(input) { [weak self] (error, model) in
             if let error = error {
                 print("DEBUG: 룸 초대 에러 - \(error.localizedDescription)")
@@ -207,6 +211,20 @@ class FriendsListViewModel: ViewModelType {
                 } else {
                     self?.dismiss.accept(.none)
                 }
+            }
+        }
+    }
+    
+    func inviteFriendWithLinkRequest() {
+        guard let roomId = self.roomId else { return }
+        
+        RoomNetworkManager.shared.inviteFriendWithLinkRequest(roomId) { [weak self] (error, link) in
+            if let error = error {
+                print("DEBUG: 룸 초대 에러 - \(error.localizedDescription)")
+            }
+            
+            if let inviteLink = link {
+                self?.inviteLink.accept(inviteLink)
             }
         }
     }

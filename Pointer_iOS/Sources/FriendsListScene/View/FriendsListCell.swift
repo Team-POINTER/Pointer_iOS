@@ -75,25 +75,12 @@ class FriendsListCell: UICollectionViewCell {
     //MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Bind
-    private func bind() {
-        selectImageView.rx.tapGesture().when(.recognized)
-            .subscribe { [weak self] _ in
-                guard let self = self,
-                      let user = self.user else { return }
-                self.isSelectedCell.toggle()
-                self.friendsListCellDelegate?.userSelected(user: user)
-            }
-            .disposed(by: disposeBag)
-    }
     
     //MARK: - Functions
     private func setupUI() {
