@@ -18,8 +18,8 @@ class CustomTextfieldView: UIView {
     lazy var textfield: UITextField = {
         let tf = UITextField()
         tf.backgroundColor = UIColor.rgb(red: 239, green: 239, blue: 239)
-        tf.attributedPlaceholder = NSAttributedString(string: "룸 이름을 입력하세요", attributes: [.font: UIFont.notoSans(font: .notoSansKrRegular, size: 15), .foregroundColor: UIColor.alertGray])
-        tf.font = .notoSansRegular(size: 16)
+        tf.attributedPlaceholder = NSAttributedString(string: "룸 이름을 입력하세요", attributes: [.font: UIFont.notoSans(font: .notoSansKrRegular, size: 13), .foregroundColor: UIColor.alertGray])
+        tf.font = .notoSansRegular(size: 13)
         tf.delegate = self
         tf.textColor = .black
         return tf
@@ -27,7 +27,7 @@ class CustomTextfieldView: UIView {
     
     let wordLimitLabel: UILabel = {
         let label = UILabel()
-        label.font = .notoSans(font: .notoSansKrLight, size: 13)
+        label.font = .notoSans(font: .notoSansKrLight, size: 11)
         label.textColor = UIColor.rgb(red: 102, green: 102, blue: 102)
         return label
     }()

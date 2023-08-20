@@ -26,16 +26,16 @@ class RoomNotiCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "주민서님이 당신을 콕! 찔렀어요."
+        label.text = "-"
         label.font = .notoSans(font: .notoSansKrMedium, size: 13)
         label.textColor = .white
         label.numberOfLines = 0
         return label
     }()
-    
-    let subTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "얼른 질문을 확인하고 지목해봐요."
+
+    let subTitleLabel: VerticalAlignLabel = {
+        let label = VerticalAlignLabel()
+        label.text = "-"
         label.font = .notoSansRegular(size: 11)
         label.textColor = .white
         label.numberOfLines = 0
@@ -43,11 +43,23 @@ class RoomNotiCell: UICollectionViewCell {
         return label
     }()
     
+    lazy var subTitleContainerView: UIView = {
+        let view = UIView()
+        view.addSubview(subTitleLabel)
+        subTitleLabel.snp.makeConstraints {
+            $0.leading.top.trailing.equalToSuperview()
+            $0.bottom.greaterThanOrEqualToSuperview()
+        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        return view
+    }()
+    
     let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "3/14 11:14"
+        label.text = "-"
         label.font = .notoSansRegular(size: 11)
-        label.textColor = .darkGray
+        label.textColor = UIColor(red: 0.7, green: 0.716, blue: 0.804, alpha: 1)
         return label
     }()
     
@@ -64,21 +76,22 @@ class RoomNotiCell: UICollectionViewCell {
     private func setupUI() {
         addSubview(userProfilImageView)
         userProfilImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.top.equalToSuperview()
             $0.width.height.equalTo(44)
             userProfilImageView.layer.cornerRadius = 22
             userProfilImageView.clipsToBounds = true
         }
         
-        let stack = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel, dateLabel])
+        let stack = UIStackView(arrangedSubviews: [titleLabel, subTitleContainerView, dateLabel])
         stack.axis = .vertical
+        stack.spacing = 1.5
         
         addSubview(stack)
         stack.snp.makeConstraints {
+            $0.top.equalToSuperview()
             $0.leading.equalTo(userProfilImageView.snp.trailing).inset(-18)
             $0.trailing.equalToSuperview().inset(18)
-            $0.centerY.equalToSuperview()
         }
     }
     

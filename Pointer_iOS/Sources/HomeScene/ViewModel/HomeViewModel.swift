@@ -73,19 +73,19 @@ class HomeViewModel: ViewModelType {
     
     
     func getCreateRoomNameAlert() -> PointerAlert {
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
-        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansRegular(size: 15), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSans(font: .notoSansKrMedium, size: 15)) { [weak self] changeTo in
             guard let roomName = changeTo else { return }
             self?.requestCreateRoom(roomName: roomName)
         }
-        let customView = CustomTextfieldView(roomName: nil, withViewHeight: 50)
+        let customView = CustomTextfieldView(roomName: nil, withViewHeight: 40)
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 설정", description: "새로운 룸의 이름을 입력하세요", customView: customView)
         return alert
     }
     
     func getExitRoomAlert(roomId: Int) -> PointerAlert {
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
-        let confirmAction = PointerAlertActionConfig(title: "나가기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] _ in
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansRegular(size: 15), handler: nil)
+        let confirmAction = PointerAlertActionConfig(title: "나가기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansRegular(size: 15)) { [weak self] _ in
             self?.requestExitRoom(roomId: roomId)
         }
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 나가기", description: "정말로 나가시겠습니까?")

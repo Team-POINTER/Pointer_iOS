@@ -15,8 +15,8 @@ extension PointerAlert {
     }
     
     static func getActionAlert(title: String, message: String, actionTitle: String = "확인", handler: @escaping ((String?)) -> Void) -> PointerAlert {
-        let cancelConfig = PointerAlertActionConfig(title: "취소", textColor: .alertGray, handler: nil)
-        let confirmConfig = PointerAlertActionConfig(title: actionTitle, textColor: .pointerRed, font: .notoSans(font: .notoSansKrMedium, size: 18), handler: handler)
+        let cancelConfig = PointerAlertActionConfig(title: "취소", textColor: .alertGray, font: .notoSans(font: .notoSansKrMedium, size: 15), handler: nil)
+        let confirmConfig = PointerAlertActionConfig(title: actionTitle, textColor: .pointerRed, font: .notoSans(font: .notoSansKrMedium, size: 15), handler: handler)
         let alert = PointerAlert(alertType: .alert, configs: [cancelConfig, confirmConfig], title: title, description: message)
         return alert
     }

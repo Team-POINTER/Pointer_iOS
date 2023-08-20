@@ -58,7 +58,7 @@ class FriendsNotiCell: UICollectionViewCell {
     private func setupUI() {
         addSubview(userProfilImageView)
         userProfilImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
             $0.width.height.equalTo(44)
             userProfilImageView.layer.cornerRadius = 22

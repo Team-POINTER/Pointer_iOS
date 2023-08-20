@@ -209,14 +209,14 @@ final class RoomViewModel: ViewModelType {
     //MARK: - Alert
     func getModifyRoomNameAlert(_ currentName: String, roomId: Int) -> PointerAlert {
         // 0. 취소 Action
-        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: nil)
+        let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansRegular(size: 15), handler: nil)
         // 1. 확인 Action
-        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16)) { [weak self] changeTo in
+        let confirmAction = PointerAlertActionConfig(title: "완료", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansRegular(size: 15)) { [weak self] changeTo in
             // 2. 입력한 텍스트로 룸 이름 변경 API 호출
             self?.requestChangeRoomName(changeTo: changeTo, roomId: roomId)
             self?.dismissRoom.accept(true)
         }
-        let customView = CustomTextfieldView(roomName: currentName, withViewHeight: 50)
+        let customView = CustomTextfieldView(roomName: currentName, withViewHeight: 40)
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "룸 이름 편집", description: "'\(currentName)'의 새로운 이름을 입력하세요", customView: customView)
         return alert
     }
