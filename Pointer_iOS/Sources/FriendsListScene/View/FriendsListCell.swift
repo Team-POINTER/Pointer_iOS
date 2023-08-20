@@ -39,7 +39,11 @@ class FriendsListCell: UICollectionViewCell {
         }
     }
     
-    var viewType: FriendsListViewModel.ListType?
+    var viewType: FriendsListViewModel.ListType? {
+        didSet {
+            setupUI()
+        }
+    }
     
     private let profileImageView: UIImageView = {
         let view = UIImageView()
@@ -72,7 +76,6 @@ class FriendsListCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupUI()
         bind()
     }
     

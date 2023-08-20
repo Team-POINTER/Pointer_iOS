@@ -109,7 +109,7 @@ class FriendsListViewModel: ViewModelType {
     }
     
     // User가 선택된 상태인지 체크하는 메소드
-    private func detectSelectedUser(_ selectedUser: FriendsListResultData) -> Bool {
+    func detectSelectedUser(_ selectedUser: FriendsModel) -> Bool {
         var isSelectedUser = false
         for user in self.selectedUser.value {
             if user.id == selectedUser.id {
@@ -121,7 +121,7 @@ class FriendsListViewModel: ViewModelType {
     }
     
     // User Select 이벤트가 들어오면 실행하는 함수
-    private func processSelectedUser(selectedUser: FriendsListResultData) {
+    func processSelectedUser(selectedUser: FriendsModel) {
         var currentSelectedUser = self.selectedUser.value
         let isUserSelected = detectSelectedUser(selectedUser)
         switch isUserSelected {
@@ -133,9 +133,8 @@ class FriendsListViewModel: ViewModelType {
                 }
             }
         case false:
-            break
-//            currentSelectedUser.append(selectedUser)
-//            self.selectedUser.accept(currentSelectedUser)
+            currentSelectedUser.append(selectedUser)
+            self.selectedUser.accept(currentSelectedUser)
         }
     }
     

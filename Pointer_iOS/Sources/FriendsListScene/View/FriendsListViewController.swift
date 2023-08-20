@@ -31,6 +31,7 @@ class FriendsListViewController: BaseViewController {
         view.friendCountTitle = "친구"
         view.friendsListCelldelegate = self
         view.relationshipDelegate = self
+        view.viewModel = self.viewModel
         return view
     }()
     
