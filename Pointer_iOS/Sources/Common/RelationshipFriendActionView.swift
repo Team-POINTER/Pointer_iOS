@@ -105,13 +105,14 @@ class RelationshipFriendActionView: UIView {
     }
     
     @objc private func rejectButtonTapped() {
+        let rejectConfig = Relationship.requestRejectConfig
         let router = FriendRouter.rejectFriendRequest
         
         let alert = PointerAlert.getActionAlert(
-            title: relationship.alertTitle,
-            message: relationship.getAlertMessage(targetName: userName,
+            title: rejectConfig.alertTitle,
+            message: rejectConfig.getAlertMessage(targetName: userName,
                                                        targetId: userStringId),
-            actionTitle: relationship.alertActionTitle) { [weak self] _ in
+            actionTitle: rejectConfig.alertActionTitle) { [weak self] _ in
                 // Alert 액션
                 guard let self = self else { return }
                 self.network.requestFriendAction(self.userId, router: router) { isSuccessed in
