@@ -138,6 +138,7 @@
 		F97A64D52A8FC8180095BECB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64D42A8FC8180095BECB /* Util.swift */; };
 		F97A64D72A8FD35B0095BECB /* RemoveAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64D62A8FD35B0095BECB /* RemoveAccountController.swift */; };
 		F97A64D92A8FD9840095BECB /* RemoveAccountConfirmController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64D82A8FD9840095BECB /* RemoveAccountConfirmController.swift */; };
+		F97A64DB2A92662C0095BECB /* VerticalAlignUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A64DA2A92662C0095BECB /* VerticalAlignUILabel.swift */; };
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
 		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
@@ -278,6 +279,7 @@
 		F97A64D42A8FC8180095BECB /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		F97A64D62A8FD35B0095BECB /* RemoveAccountController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountController.swift; sourceTree = "<group>"; };
 		F97A64D82A8FD9840095BECB /* RemoveAccountConfirmController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountConfirmController.swift; sourceTree = "<group>"; };
+		F97A64DA2A92662C0095BECB /* VerticalAlignUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalAlignUILabel.swift; sourceTree = "<group>"; };
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
@@ -794,6 +796,7 @@
 				47CB4A852A7B789300E001D2 /* FloatingPanelController.swift */,
 				F948AEFB2A86059E00DDC698 /* UIWindow.swift */,
 				F93C44AF2A8CBC92009B04F3 /* UIViewController.swift */,
+				F97A64DA2A92662C0095BECB /* VerticalAlignUILabel.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1178,6 +1181,7 @@
 				473B739A29CEE41100B33C77 /* ViewModelType.swift in Sources */,
 				478CA0012A61935F000FA196 /* VoteRouter.swift in Sources */,
 				47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */,
+				F97A64DB2A92662C0095BECB /* VerticalAlignUILabel.swift in Sources */,
 				CD90B48A29BE327700772192 /* PointerAlert.swift in Sources */,
 				CD23209829B8D2FB003D0B84 /* UIColor.swift in Sources */,
 				F9F120732A592D75009A33F2 /* TokenManager.swift in Sources */,

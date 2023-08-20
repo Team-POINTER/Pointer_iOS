@@ -70,7 +70,7 @@ class FriendsListViewModel: ViewModelType {
             .subscribe { [weak self] users in
                 guard let self = self,
                       let users = users.element else { return }
-                inviteFriendIdList = users.map { $0.friendId }
+                self.inviteFriendIdList = users.map { $0.friendId }
                 let buttonAttributeString = self.makeButtonAttributeString(count: users.count)
                 output.buttonAttributeString.accept(buttonAttributeString)
             }

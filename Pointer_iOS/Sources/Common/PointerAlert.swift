@@ -166,21 +166,19 @@ class PointerAlert: UIViewController {
         
         // Title / Description
         let titleLabel = makeAlertContentLabel(text: alertTitle,
-                                               font: .notoSansBold(size: 20))
+                                               font: .notoSans(font: .notoSansKrMedium, size: 17))
         let descriptionLabel = makeAlertContentLabel(text: alertDescription,
-                                                     font: .notoSansRegular(size: 15))
+                                                     font: .notoSansRegular(size: 13))
         
         // 임시 UIView Stack
-        var viewStacksArray: [UIView] = []
+        var viewStacksArray: [UIView] = [titleLabel, descriptionLabel, makeSpacing(height: 9), makeSpacing(height: 9), actionContainerView]
         
         // 커스텀 뷰가 있다면 추가, 없다면 생략
         if let customView = customView {
             if let customTextfield = customView as? CustomTextfieldView {
                 customTextfield.delegate = self
             }
-            viewStacksArray = [titleLabel, descriptionLabel, customView, actionContainerView]
-        } else {
-            viewStacksArray = [titleLabel, descriptionLabel, actionContainerView]
+            viewStacksArray.insert(customView, at: 3)
         }
         
         // 최종 AlertStack 생성
@@ -309,12 +307,20 @@ class PointerAlert: UIViewController {
         let alertStack = UIStackView(arrangedSubviews: views)
         alertStack.backgroundColor = .pointerGray
         alertStack.axis = .vertical
-        alertStack.spacing = 15
+        alertStack.spacing = 3
         alertStack.layer.cornerRadius = 15
         alertStack.clipsToBounds = true
         alertStack.layoutMargins = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         alertStack.isLayoutMarginsRelativeArrangement = true
         return alertStack
+    }
+    
+    private func makeSpacing(height: CGFloat) -> UIView {
+        let view = UIView()
+        view.snp.makeConstraints {
+            $0.height.equalTo(height)
+        }
+        return view
     }
     
     //MARK: - TabBar Height
