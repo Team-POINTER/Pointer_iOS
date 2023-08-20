@@ -185,13 +185,6 @@ class FriendsListViewController: BaseViewController {
     }
 }
 
-//MARK: - UIcollectionViewDelegate
-extension FriendsListViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 55)
-    }
-}
-
 extension FriendsListViewController: FriendsListCellDelegate {
     func userSelected(user: FriendsListResultData) {
         // something

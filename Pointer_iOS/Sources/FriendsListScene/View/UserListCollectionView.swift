@@ -64,6 +64,7 @@ class UserListCollectionView: UIView {
     
     //MARK: - bind
     private func bind() {
+        // 유저 리스트
         self.userList
             .do(onNext: { [weak self] userList in
                 guard let self = self else { return }
@@ -82,15 +83,7 @@ class UserListCollectionView: UIView {
             }
             .disposed(by: disposeBag)
         
-        collectionView.rx.itemSelected
-            .bind { [weak self] indexPath in
-                guard let self = self,
-                      let viewModel = viewModel else { return }
-                let model = userList.value[indexPath.row]
-                viewModel.processSelectedUser(selectedUser: model)
-            }
-            .disposed(by: disposeBag)
-        
+        // Select - 선택한 유저 바인딩
         if let viewModel = viewModel {
             viewModel.selectedUser
                 .bind { [weak self] _ in

@@ -39,8 +39,8 @@ extension ProfileRouter: HttpRouter {
             return "/users/update/id"
         case .getPoints:
             return "/users/get/points"
-        case .getFriendsList(_, _):
-            return "/friend/search"
+        case .getFriendsList(let userId, let lastPage):
+            return "/friend/search?userId=\(userId)&keyword=&lastPage=\(lastPage)"
         }
     }
     
@@ -57,7 +57,7 @@ extension ProfileRouter: HttpRouter {
         case .getPoints:
             return .get
         case .getFriendsList:
-            return .post
+            return .get
         }
     }
     

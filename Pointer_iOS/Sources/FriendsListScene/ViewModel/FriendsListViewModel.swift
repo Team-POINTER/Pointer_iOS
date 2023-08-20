@@ -70,21 +70,27 @@ class FriendsListViewModel: ViewModelType {
             .subscribe { [weak self] users in
                 guard let self = self,
                       let users = users.element else { return }
-                inviteFriendIdList = users.map { $0.friendId }
+                self.inviteFriendIdList = users.map { $0.friendId }
                 let buttonAttributeString = self.makeButtonAttributeString(count: users.count)
                 output.buttonAttributeString.accept(buttonAttributeString)
             }
             .disposed(by: disposeBag)
         
+        // 셀을 선택했을 때
         input.collectionViewModelSelected
             .subscribe { [weak self] item in
                 guard let self = self,
-                      let item = item.element,
-                      self.listType == .normal else { return }
-                let userId = item.friendId
-                let viewModel = ProfileViewModel(userId: userId)
-                let vc = ProfileViewController(viewModel: viewModel)
-                self.nextViewController.accept(vc)
+                      let item = item.element else { return }
+                
+                switch self.listType {
+                case .normal:
+                    let userId = item.friendId
+                    let viewModel = ProfileViewModel(userId: userId)
+                    let vc = ProfileViewController(viewModel: viewModel)
+                    self.nextViewController.accept(vc)
+                case .select:
+                    self.processSelectedUser(selectedUser: item)
+                }
             }
             .disposed(by: disposeBag)
         
@@ -112,7 +118,7 @@ class FriendsListViewModel: ViewModelType {
     func detectSelectedUser(_ selectedUser: FriendsModel) -> Bool {
         var isSelectedUser = false
         for user in self.selectedUser.value {
-            if user.id == selectedUser.id {
+            if user.friendId == selectedUser.friendId {
                 isSelectedUser = true
                 break
             }
@@ -122,16 +128,21 @@ class FriendsListViewModel: ViewModelType {
     
     // User Select 이벤트가 들어오면 실행하는 함수
     func processSelectedUser(selectedUser: FriendsModel) {
+        // 현재 선택한 유저들의 배열
         var currentSelectedUser = self.selectedUser.value
+        // 이미 선택한 유저인지 체크
         let isUserSelected = detectSelectedUser(selectedUser)
+        
         switch isUserSelected {
+        // 이미 선택한 유저라면 - Selected 배열에서 지우기
         case true:
             currentSelectedUser.enumerated().forEach { index, user in
-                if selectedUser.id == user.id {
+                if selectedUser.friendId == user.friendId {
                     currentSelectedUser.remove(at: index)
                     self.selectedUser.accept(currentSelectedUser)
                 }
             }
+        // 선택 안한 유저라면 - Selceted 배열에 추가
         case false:
             currentSelectedUser.append(selectedUser)
             self.selectedUser.accept(currentSelectedUser)
