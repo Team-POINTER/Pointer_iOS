@@ -40,6 +40,8 @@
 		4749D48D29C06C7400011E06 /* RoomTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48C29C06C7400011E06 /* RoomTopView.swift */; };
 		4749D48F29C0708000011E06 /* RoomBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4749D48E29C0707F00011E06 /* RoomBottomView.swift */; };
 		47548E3C2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47548E3B2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift */; };
+		475B74382A925EFF00C8BB97 /* PointRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B74372A925EFF00C8BB97 /* PointRouter.swift */; };
+		475B743B2A925FC900C8BB97 /* PointNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B743A2A925FC900C8BB97 /* PointNetworkManager.swift */; };
 		47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */; };
 		478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */; };
 		478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */; };
@@ -191,6 +193,8 @@
 		4749D48C29C06C7400011E06 /* RoomTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTopView.swift; sourceTree = "<group>"; };
 		4749D48E29C0707F00011E06 /* RoomBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBottomView.swift; sourceTree = "<group>"; };
 		47548E3B2A1E2AE700A5BB40 /* ChattingRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewModel.swift; sourceTree = "<group>"; };
+		475B74372A925EFF00C8BB97 /* PointRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointRouter.swift; sourceTree = "<group>"; };
+		475B743A2A925FC900C8BB97 /* PointNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointNetworkManager.swift; sourceTree = "<group>"; };
 		47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewController.swift; sourceTree = "<group>"; };
 		478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNetworkManager.swift; sourceTree = "<group>"; };
 		478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -467,6 +471,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		475B74392A925FAF00C8BB97 /* Point */ = {
+			isa = PBXGroup;
+			children = (
+				475B743A2A925FC900C8BB97 /* PointNetworkManager.swift */,
+			);
+			path = Point;
+			sourceTree = "<group>";
+		};
 		47665AD42A1C884C00A95154 /* ChattingRoomScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -541,6 +553,7 @@
 				F948AF022A87787500DDC698 /* FriendRouter.swift */,
 				F9AB8D042A8B480A00BA8309 /* RemotePushRouter.swift */,
 				47E049A42A8A50E8000A789D /* ReportRouter.swift */,
+				475B74372A925EFF00C8BB97 /* PointRouter.swift */,
 			);
 			path = HTTP;
 			sourceTree = "<group>";
@@ -778,6 +791,7 @@
 				47E049A12A8A5090000A789D /* Report */,
 				F93C44972A877B04009B04F3 /* Friend */,
 				F985552B2A72B75200EB6247 /* Profile */,
+				475B74392A925FAF00C8BB97 /* Point */,
 				47FD24A82A83E63A00529342 /* SearchFriend */,
 			);
 			path = API;
@@ -1268,11 +1282,13 @@
 				47CC89602A46844F0020246E /* AuthRouter.swift in Sources */,
 				F9F4EFDB2A8BCE5400BB4D03 /* PushReceiver.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
+				475B743B2A925FC900C8BB97 /* PointNetworkManager.swift in Sources */,
 				F93C449F2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift in Sources */,
 				F9F4EFE02A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift in Sources */,
 				47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */,
 				47117CAB29C74DCB001707C8 /* ResultChatView.swift in Sources */,
 				CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */,
+				475B74382A925EFF00C8BB97 /* PointRouter.swift in Sources */,
 				F948AEFC2A86059E00DDC698 /* UIWindow.swift in Sources */,
 				478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */,
 				CD2F79C92A0FDFC30094F81F /* FriendsListHeaderView.swift in Sources */,

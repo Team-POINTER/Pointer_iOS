@@ -48,15 +48,32 @@ class MyResultViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        output.hintTableViewSelected
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] viewController in
+        output.checkedPointResult
+            .bind { [weak self] model in
+                guard let self = self,
+                      let model = model else { return }
+                
+                self.present(viewModel.usePointAlert(title: "포인트 \(model.point)개 사용",
+                                                     description: "포인트를 \(model.point)개 사용하여 나를 지목한 사람의 힌트를 확인하시겠어요?",
+                                                     point: model.point), animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        output.lackedPointResult
+            .bind { [weak self] b in
                 guard let self = self else { return }
-                self.hintVC = viewController
-                self.usePointAlert(title: "포인트 0개 사용", description: "포인트 0개를 사용하여 나를 지목한 사람의 힌트를 확인하시겠어요?") {
-                    
+                if b {
+                    self.present(viewModel.moveToAppStoreAlert(title: "포인트가 부족해요", description: "포인트를 샵으로 충전하러 가서 나를 지목한 사람을 확인할까요?"), animated: true)
                 }
-            })
+            }
+            .disposed(by: disposeBag)
+        
+        output.usedPointResult
+            .bind { [weak self] viewController in
+                guard let self = self,
+                      let vc = viewController else { return }
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
             .disposed(by: disposeBag)
     }
     
@@ -114,21 +131,7 @@ class MyResultViewController: BaseViewController {
     }
     
 //MARK: - Functions
-    func usePointAlert(title: String, description: String, completion: @escaping() -> Void) {
-        let backAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { _ in
-            completion()
-        })
-        
-        let useAction = PointerAlertActionConfig(title: "사용하기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.navigationController?.pushViewController(self.hintVC, animated: true)
-            //MARK: 업데이트 이후 포인트 확인과 부족했을 시 Alert 분기 처리 추가
-            completion()
-        })
-    
-        let alert = PointerAlert(alertType: .alert, configs: [backAction, useAction], title: title, description: description)
-        present(alert, animated: true)
-    }
+
     
 //MARK: - Handler
     @objc func backButtonTap() {
