@@ -9,13 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-// #1-8 responseCode
-enum InviteFriendResultType: String, CaseIterable {
-    case sucess = "J008"
-    case roomMemberNotExist = "J001"
-    case roomCreateOverLimit = "J005"
-}
-
 class FriendsListViewModel: ViewModelType {
     //MARK: - ListType
     enum ListType {
@@ -30,7 +23,7 @@ class FriendsListViewModel: ViewModelType {
     
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
-    let dismiss = BehaviorRelay<InviteFriendResultType?>(value: nil)
+    let dismiss = PublishRelay<String>()
     let inviteLink = PublishRelay<String>()
     
     private lazy var profileNetwork = ProfileNetworkManager()
@@ -170,7 +163,7 @@ class FriendsListViewModel: ViewModelType {
             .subscribe(onNext: { [weak self] model in
                 // FriendsModel로 변경
                 let userList = model.map {
-                    FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: 3)
+                    FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: 3, status: $0.status)
                 }
                 // accept
                 self?.userList.accept(userList)
@@ -195,26 +188,18 @@ class FriendsListViewModel: ViewModelType {
     
     // 룸 초대
     private func inviteFriendRequest(_ input: InviteFriendRequestModel) {
-        print("룸 초대 파라미터 = \(input)")
         RoomNetworkManager.shared.invteFriendRequest(input) { [weak self] (error, model) in
             if let error = error {
                 print("DEBUG: 룸 초대 에러 - \(error.localizedDescription)")
             }
             
             if let model = model {
-                if model.code == InviteFriendResultType.sucess.rawValue {
-                    self?.dismiss.accept(.sucess)
-                } else if model.code == InviteFriendResultType.roomMemberNotExist.rawValue {
-                    self?.dismiss.accept(.roomMemberNotExist)
-                } else if model.code == InviteFriendResultType.roomCreateOverLimit.rawValue {
-                    self?.dismiss.accept(.roomCreateOverLimit)
-                } else {
-                    self?.dismiss.accept(.none)
-                }
+                self?.dismiss.accept(model.message)
             }
         }
     }
     
+    // 룸 초대 (링크)
     func inviteFriendWithLinkRequest() {
         guard let roomId = self.roomId else { return }
         

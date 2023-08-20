@@ -11,10 +11,15 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+protocol FriendsListViewControllerDelegate: AnyObject {
+    func dismissInviteView()
+}
+
 class FriendsListViewController: BaseViewController {
     //MARK: - Properties
     var disposeBag = DisposeBag()
     let viewModel: FriendsListViewModel
+    weak var delegate: FriendsListViewControllerDelegate?
     
     let searchHeaderView = FriendsListHeaderView()
     
@@ -84,20 +89,12 @@ class FriendsListViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.dismiss
-            .bind { [weak self] type in
-                switch type {
-                case .sucess:
-                    self?.navigationController?.popToRootViewController(animated: true)
-                case .roomMemberNotExist:
-                    self?.dismissAlert(title: "돌아가기", description: "룸 멤버가 존재하지 않습니다.") {
-                        print("룸 멤버 존재 Alert error")
-                    }
-                case .roomCreateOverLimit:
-                    self?.dismissAlert(title: "돌아가기", description: "룸 인원이 초과되었습니다.") {
-                        print("룸 인원 초과 Alert error")
-                    }
-                case .none:
-                    print("룸 생성 수 초과 error도 생각 해야할 듯!")
+            .bind { [weak self] text in
+                guard let self = self else { return }
+                //MARK: [FIX ME] delegate로 room으로 돌아가서 갱신 코드 추가해야함
+                self.dismissAlert(title: "돌아가기", description: "\(text)") {
+                    self.delegate?.dismissInviteView()
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
             .disposed(by: disposeBag)
@@ -113,7 +110,7 @@ class FriendsListViewController: BaseViewController {
                 let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
                 activityViewController.popoverPresentationController?.sourceView = self.view
                 
-                //activityViewController.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook,UIActivity.ActivityType.postToTwitter,UIActivity.ActivityType.mail]
+                activityViewController.excludedActivityTypes = [UIActivity.ActivityType.airDrop]
                 
                 self.present(activityViewController, animated: true, completion: nil)
             }

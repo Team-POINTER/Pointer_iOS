@@ -151,7 +151,7 @@ class RoomNetworkManager {
     }
     
     // 룸 초대
-    func invteFriendRequest(_ parameters: InviteFriendRequestModel, completion: @escaping (Error?, InviteFriendResultModel?) -> Void) {
+    func invteFriendRequest(_ parameters: InviteFriendRequestModel, completion: @escaping (Error?, PointerResultModel?) -> Void) {
         let router = roomRouter.inviteMemeber
         
         AF.request(router.url,
@@ -160,12 +160,11 @@ class RoomNetworkManager {
                    encoder: JSONParameterEncoder.default,
                    headers: router.headers)
             .validate(statusCode: 200..<500)
-            .responseDecodable(of: InviteFriendResultModel.self) { response in
+            .responseDecodable(of: PointerResultModel.self) { response in
                 switch response.result {
                 // 성공인 경우
                 case .success(let result):
                     // completion 전송
-                    print(result)
                     completion(nil, result)
                 // 실패인 경우
                 case .failure(let error):
@@ -193,7 +192,7 @@ class RoomNetworkManager {
                     completion(nil, link)
                 // 실패인 경우
                 case .failure(let error):
-                    print("친구 목록 조회 데이터 전송 실패 - \(error.localizedDescription)")
+                    print("룸 초대 (링크) 데이터 전송 실패 - \(error.localizedDescription)")
                     // completion 전송
                     completion(error, nil)
                 }
@@ -328,22 +327,6 @@ struct FriendsListResultData: Decodable {
 struct InviteFriendRequestModel: Encodable {
     let roomId: Int
     let userFriendIdList: [Int]
-}
-
-struct InviteFriendResultModel: Decodable {
-    let status: Int
-    let code: String
-    let message: String
-    let data: InviteFriendResultData?
-}
-
-struct InviteFriendResultData: Decodable {
-    let inviteMemberList: [InviteFriendResultMemberModel]
-}
-
-struct InviteFriendResultMemberModel: Decodable {
-    let userId: Int
-    let nickNm: String
 }
 
 //MARK: - 룸 초대하기 (링크)

@@ -81,6 +81,13 @@ class FriendsListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.isUserInteractionEnabled = true
+        userIdLabel.alpha = 1
+        userNameLabel.alpha = 1
+        selectImageView.alpha = 1
+    }
     
     //MARK: - Functions
     private func setupUI() {
@@ -118,11 +125,23 @@ class FriendsListCell: UICollectionViewCell {
     
     private func configure() {
         guard let user = userData else { return }
+        
         profileImageView.kf.indicatorType = .activity
         profileImageView.kf.setImage(with: URL(string: user.file ?? ""))
         
         userIdLabel.text = user.id
         userNameLabel.text = user.friendName
+        
+        if viewType == .select {
+            guard let status = user.status else { return }
+            
+            if status == 0 {
+                self.isUserInteractionEnabled = false
+                userIdLabel.alpha = 0.4
+                userNameLabel.alpha = 0.4
+                selectImageView.alpha = 0.4
+            }
+        }
         
         // 뷰 타입이 노말인 경우만
         if viewType == .normal {
