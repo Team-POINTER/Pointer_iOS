@@ -12,10 +12,15 @@ import RxCocoa
 import FloatingPanel
 import SendbirdUIKit
 
+protocol ResultViewControllerDelegate: AnyObject {
+    func didChangedRoomStateFromResultVC()
+}
+
 class ResultViewController: BaseViewController {
 //MARK: - properties
     var viewModel: ResultViewModel
     let disposeBag = DisposeBag()
+    weak var delegate: ResultViewControllerDelegate?
     
 //MARK: - Init
     init(viewModel: ResultViewModel) {
@@ -257,5 +262,6 @@ class ResultViewController: BaseViewController {
 //MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.dismissWithNavigationPopStyle()
+        self.delegate?.didChangedRoomStateFromResultVC()
     }
 }

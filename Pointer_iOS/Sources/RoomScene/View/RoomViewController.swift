@@ -25,7 +25,7 @@ import FloatingPanel
 // 5. 셀을 클릭 시 ViewModel에 배열로 클릭한 셀의 이름들이 저장됨 -> 삭제 시 이름이 똑같다면 문제가 생김(해결[O])
 
 protocol RoomViewControllerDelegate: AnyObject {
-    func didChangedRoomState()
+    func didChangedRoomStateFromRoomVC()
     func tapedPoint(viewController: UIViewController)
 }
 
@@ -164,7 +164,7 @@ class RoomViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
                 self?.navigationController?.popViewController(animated: false)
-                self?.delegate?.didChangedRoomState()
+                self?.delegate?.didChangedRoomStateFromRoomVC()
                 self?.delegate?.tapedPoint(viewController: viewController)
             })
             .disposed(by: disposeBag)
@@ -181,7 +181,7 @@ class RoomViewController: BaseViewController {
             .subscribe { [weak self] b in
                 if b {
                     self?.navigationController?.popViewController(animated: true)
-                    self?.delegate?.didChangedRoomState()
+                    self?.delegate?.didChangedRoomStateFromRoomVC()
                 }
             }
             .disposed(by: disposeBag)
@@ -228,7 +228,7 @@ class RoomViewController: BaseViewController {
 //MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
-        self.delegate?.didChangedRoomState()
+        self.delegate?.didChangedRoomStateFromRoomVC()
     }
     
     @objc func menuButtonTap() {
