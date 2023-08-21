@@ -12,10 +12,15 @@ import RxCocoa
 import FloatingPanel
 import SendbirdUIKit
 
+protocol ResultViewControllerDelegate: AnyObject {
+    func didChangedRoomStateFromResultVC()
+}
+
 class ResultViewController: BaseViewController {
 //MARK: - properties
     var viewModel: ResultViewModel
     let disposeBag = DisposeBag()
+    weak var delegate: ResultViewControllerDelegate?
     
 //MARK: - Init
     init(viewModel: ResultViewModel) {
@@ -108,17 +113,6 @@ class ResultViewController: BaseViewController {
     }
     
 //MARK: - UIComponents
-    lazy var scrollView: UIScrollView = {
-        $0.backgroundColor = .clear
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.showsVerticalScrollIndicator = true
-        $0.showsHorizontalScrollIndicator = false
-        $0.isScrollEnabled = true
-        $0.contentSize = contentView.bounds.size
-        return $0
-    }(UIScrollView())
-    
-    lazy var contentView = UIView()
     
     lazy var hintText: UILabel = {
         $0.font = UIFont.notoSansRegular(size: 18)
@@ -209,31 +203,20 @@ class ResultViewController: BaseViewController {
     
 //MARK: - Set UI
     func setUI() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(hintText)
-        contentView.addSubview(peopleStackView)
-        contentView.addSubview(peopleNumStackView)
-        contentView.addSubview(myNameLabel)
-        contentView.addSubview(mySelectedPointLabel)
-        contentView.addSubview(myResultButton)
-        contentView.addSubview(newQuestionTimerLabel)
-        contentView.addSubview(newQuestionButton)
-        contentView.addSubview(kokButton)
+        view.addSubview(hintText)
+        view.addSubview(peopleStackView)
+        view.addSubview(peopleNumStackView)
+        view.addSubview(myNameLabel)
+        view.addSubview(mySelectedPointLabel)
+        view.addSubview(myResultButton)
+        view.addSubview(newQuestionTimerLabel)
+        view.addSubview(newQuestionButton)
+        view.addSubview(kokButton)
     }
     
     func setUIConstraints() {
-        scrollView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.width.equalTo(UIScreen.main.bounds.width)
-        }
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.centerX.equalToSuperview()
-        }
-        
         hintText.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(33)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(33)
             make.leading.trailing.equalToSuperview().inset(45)
         }
         peopleStackView.snp.makeConstraints { make in
@@ -245,15 +228,15 @@ class ResultViewController: BaseViewController {
             make.trailing.equalToSuperview().inset(55)
         }
         myNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(peopleStackView.snp.bottom).inset(-20)
+            make.top.equalTo(peopleStackView.snp.bottom).inset(-40)
             make.leading.equalToSuperview().inset(53)
         }
         mySelectedPointLabel.snp.makeConstraints { make in
-            make.top.equalTo(peopleNumStackView.snp.bottom).inset(-20)
+            make.top.equalTo(peopleNumStackView.snp.bottom).inset(-40)
             make.trailing.equalToSuperview().inset(55)
         }
         myResultButton.snp.makeConstraints { make in
-            make.top.equalTo(myNameLabel.snp.bottom).inset(-60)
+            make.bottom.equalTo(kokButton.snp.top).inset(-20.8)
             make.leading.equalToSuperview().inset(34.5)
             make.width.equalTo(145)
             make.height.equalTo(44)
@@ -269,16 +252,16 @@ class ResultViewController: BaseViewController {
             make.centerX.equalTo(newQuestionButton.snp.centerX)
         }
         kokButton.snp.makeConstraints { make in
-            make.top.equalTo(myResultButton.snp.bottom).inset(-20)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(34.5)
             make.height.equalTo(50)
-            make.bottom.equalTo(contentView.snp.bottom).inset(15)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(5)
         }
     }
 
 //MARK: - Selector
     @objc func backButtonTap() {
         self.navigationController?.dismissWithNavigationPopStyle()
+        self.delegate?.didChangedRoomStateFromResultVC()
     }
 }

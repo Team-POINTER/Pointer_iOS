@@ -47,6 +47,7 @@ class HomeViewModel: ViewModelType {
         // 룸 투표 여부에 따라
         if voted {
             let resultVC = ResultViewController(viewModel: ResultViewModel(roomId, questionId, limitedAt))
+            resultVC.delegate = self
             presenter.accept(resultVC)
         } else {
             let roomVC = RoomViewController(viewModel: RoomViewModel(roomId: roomId))
@@ -175,12 +176,20 @@ class HomeViewModel: ViewModelType {
 //MARK: - RoomViewControllerDelegate
 extension HomeViewModel: RoomViewControllerDelegate {
     // 나가면 룸 조회
-    func didChangedRoomState() {
+    func didChangedRoomStateFromRoomVC() {
         self.requestRoomList()
     }
     
     // 투표 후 결과보기로 이동
     func tapedPoint(viewController: UIViewController) {
         self.presenter.accept(viewController)
+    }
+}
+
+
+//MARK: - ResultViewControllerDelegate
+extension HomeViewModel: ResultViewControllerDelegate {
+    func didChangedRoomStateFromResultVC() {
+        self.requestRoomList()
     }
 }

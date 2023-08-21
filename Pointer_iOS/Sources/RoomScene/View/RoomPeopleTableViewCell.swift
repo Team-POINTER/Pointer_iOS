@@ -33,7 +33,6 @@ class RoomPeopleTableViewCell: UITableViewCell {
     }(UIView())
     
     lazy var nameLabel : UILabel = {
-        $0.text = "박현준(devjoonn)"
         $0.font = UIFont.notoSansBold(size: 16)
         $0.textColor = UIColor.black
         $0.textAlignment = .center
@@ -74,6 +73,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
         nameLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(15)
+            make.trailing.lessThanOrEqualTo(pointStar.snp.leading).inset(-26)
         }
         
         pointStar.snp.makeConstraints { make in
@@ -86,7 +86,7 @@ class RoomPeopleTableViewCell: UITableViewCell {
     // 선택시 UI 전환
     func configure() {
         guard let user = user else { return }
-        nameLabel.text = "\(user.name)"
+        nameLabel.text = "\(user.name) (\(user.id))"
     }
 
 }
