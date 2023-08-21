@@ -26,4 +26,13 @@ extension FloatingPanelController {
         surfaceView.appearance = appearance
 
     }
+    
+    static func getFloatingPanelViewController(delegate: UIViewController) -> FloatingPanelController {
+        let controller = FloatingPanelController(delegate: delegate as? FloatingPanelControllerDelegate)
+        controller.isRemovalInteractionEnabled = true
+        controller.changePanelStyle()
+        controller.layout = ReportFloatingPanelLayout()
+        
+        return controller
+    }
 }
