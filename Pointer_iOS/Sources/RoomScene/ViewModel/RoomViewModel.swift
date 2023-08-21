@@ -52,7 +52,7 @@ final class RoomViewModel: ViewModelType {
     
     //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
-        searchRoomRequest(roomId)
+        searchRoomRequest()
         
         /// 0. 상단에서 Output() 및 필요한 저장값들 선언
         let output = Output()
@@ -233,7 +233,9 @@ final class RoomViewModel: ViewModelType {
     }
     
     //MARK: - Network
-    func searchRoomRequest(_ roomId: Int) {
+    func searchRoomRequest() {
+        let roomId = self.roomId
+        
         // 룸 조회 API
         RoomNetworkManager.shared.searchRoomRequest(roomId)
             .subscribe(onNext: { [weak self] result in
@@ -305,6 +307,6 @@ final class RoomViewModel: ViewModelType {
 //MARK: - FriendsListViewControllerDelegate
 extension RoomViewModel: FriendsListViewControllerDelegate {
     func dismissInviteView() {
-        self.searchRoomRequest(self.roomId)
+        self.searchRoomRequest()
     }
 }

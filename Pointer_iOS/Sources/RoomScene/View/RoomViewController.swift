@@ -241,6 +241,12 @@ class RoomViewController: BaseViewController {
             let modifyAlert = self.viewModel.getModifyRoomNameAlert(currentRoomName, roomId: roomId)
             self.present(modifyAlert, animated: true)
         }
+        let inviteFriend = PointerAlertActionConfig(title: "친구 초대하기", textColor: .black) { [weak self] _ in
+            let viewModel = FriendsListViewModel(listType: .select, roomId: self?.viewModel.roomId)
+            let viewController = FriendsListViewController(viewModel: viewModel)
+            viewController.delegate = self
+            self?.navigationController?.pushViewController(viewController, animated: true)
+        }
         let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
             self?.reportTap()
         }
@@ -252,7 +258,7 @@ class RoomViewController: BaseViewController {
         }
 
         let actionSheet = PointerAlert(alertType: .actionSheet,
-                                       configs: [modifyRoomName, report, exitRoom],
+                                       configs: [modifyRoomName, inviteFriend, report, exitRoom],
                                        title: "룸 '\(currentRoomName)'에 대해")
         present(actionSheet, animated: true)
     }
@@ -301,5 +307,12 @@ extension RoomViewController: FloatingPanelControllerDelegate {
         } else {
             fpc.move(to: .full, animated: true)
         }
+    }
+}
+
+//MARK: - FriendsListViewControllerDelegate
+extension RoomViewController: FriendsListViewControllerDelegate {
+    func dismissInviteView() {
+        self.viewModel.searchRoomRequest()
     }
 }
