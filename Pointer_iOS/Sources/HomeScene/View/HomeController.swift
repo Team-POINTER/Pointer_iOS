@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import SnapKit
+import FloatingPanel
 
 class HomeController: BaseViewController {
     //MARK: - Properties
@@ -24,7 +25,7 @@ class HomeController: BaseViewController {
         return view
     }()
     
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 18
         layout.minimumLineSpacing = 18
@@ -49,7 +50,9 @@ class HomeController: BaseViewController {
     
     private let emptyView = ListEmptyView()
     
-    private let viewModel = HomeViewModel()
+    private lazy var fpc = FloatingPanelController.getFloatingPanelViewController(delegate: self)
+    
+    let viewModel = HomeViewModel()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -198,7 +201,7 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - RoomCellDelegate
 extension HomeController: RoomPreviewCellDelegate {
-    func roomCellActionImageTapped(roomId: Int, _ currentName: String) {
+    func roomCellActionImageTapped(roomId: Int, currentName: String, questionId: Int, questionCreatorId: Int) {
         let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
             guard let self = self else { return }
             let alert = self.viewModel.getModifyRoomNameAlert(currentName, roomId: roomId)
@@ -207,13 +210,44 @@ extension HomeController: RoomPreviewCellDelegate {
         let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
             print("DEBUG - 링크로 룸 초대 눌림")
         }
+        let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
+            self?.reportTap(roomId: roomId, currentName: currentName, questionId: questionId, questionCreatorId: questionCreatorId)
+        }
         let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { [weak self] _ in
             guard let alert = self?.viewModel.getExitRoomAlert(roomId: roomId) else { return }
             self?.present(alert, animated: true)
         }
         let actionSheet = PointerAlert(alertType: .actionSheet,
-                                       configs: [modifyRoomName, inviteRoomWithLink, exitRoom],
+                                       configs: [modifyRoomName, inviteRoomWithLink, report, exitRoom],
                                        title: "룸 '\(currentName)'에 대해")
         present(actionSheet, animated: true)
+    }
+    
+    func reportTap(roomId: Int, currentName: String, questionId: Int, questionCreatorId: Int) {
+        var sheetConfig = [PointerAlertActionConfig]()
+        
+        ReasonCode.allCases.forEach { type in
+            let config = PointerAlertActionConfig(title: type.reason, textColor: .black) { [weak self] _ in
+                self?.presentReportView(roomId: roomId, currentName: currentName, questionId: questionId, questionCreatorId: questionCreatorId, reasonCode: type.rawValue, presentingReason: type.reason)
+            }
+            sheetConfig.append(config)
+        }
+        
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: sheetConfig, title: "신고 사유")
+        present(actionSheet, animated: true)
+    }
+    
+    func presentReportView(roomId: Int, currentName: String, questionId: Int, questionCreatorId: Int, reasonCode: String, presentingReason: String) {
+        let reportVM = ReportViewModel(roomId: roomId,
+                                       questionId: questionId,
+                                       type: .question,
+                                       targetUserId: questionCreatorId,
+                                       presentingReason: presentingReason,
+                                       reasonCode: reasonCode)
+        
+        let reportVC = ReportViewController(viewModel: reportVM)
+        fpc.set(contentViewController: reportVC)
+        fpc.track(scrollView: reportVC.scrollView)
+        self.present(fpc, animated: true)
     }
 }

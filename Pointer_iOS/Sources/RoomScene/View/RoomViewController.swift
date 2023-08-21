@@ -44,14 +44,7 @@ class RoomViewController: BaseViewController {
     
     private let roomBottomView = RoomBottomView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 200))
     
-    private lazy var fpc: FloatingPanelController = {
-        let controller = FloatingPanelController(delegate: self)
-        controller.isRemovalInteractionEnabled = true
-        controller.changePanelStyle()
-        controller.layout = ReportFloatingPanelLayout()
-        
-        return controller
-    }()
+    private lazy var fpc = FloatingPanelController.getFloatingPanelViewController(delegate: self)
     
     let disposeBag = DisposeBag()
     let viewModel: RoomViewModel

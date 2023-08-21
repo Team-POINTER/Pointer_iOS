@@ -24,6 +24,7 @@ struct PointerRoomModel: Codable {
     let roomId: Int
     let roomNm: String
     let questionId: Int
+    let questionCreatorId: Int
     let question: String
     let memberCnt: Int
     let topUserName: String?

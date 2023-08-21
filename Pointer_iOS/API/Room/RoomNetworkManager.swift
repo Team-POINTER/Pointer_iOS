@@ -320,7 +320,6 @@ struct FriendsListResultData: Decodable {
     let friendName: String
     let file: String?
     let status: Int
-    let reason: String?
 }
 
 // MARK: - 룸 초대하기

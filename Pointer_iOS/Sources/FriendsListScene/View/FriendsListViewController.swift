@@ -149,7 +149,7 @@ class FriendsListViewController: BaseViewController {
             confirmButton.snp.makeConstraints {
                 $0.width.equalToSuperview()
                 $0.height.equalTo(60)
-                $0.bottom.equalTo(view.safeAreaLayoutGuide)
+                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(5)
                 confirmButton.layer.cornerRadius = 13
                 confirmButton.clipsToBounds = true
             }

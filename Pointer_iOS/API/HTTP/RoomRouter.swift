@@ -88,7 +88,7 @@ extension RoomRouter: HttpRouter {
     var successCode: String {
         switch self {
         case .getRoomList:
-            return "J0010"
+            return "P0010"
         default:
             return ""
         }
