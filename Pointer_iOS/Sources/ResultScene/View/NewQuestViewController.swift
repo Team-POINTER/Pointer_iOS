@@ -35,7 +35,8 @@ class NewQuestViewController: BaseViewController {
     func bindViewModel() {
         
         let input = NewQuestViewModel.Input(newQuestTextViewEditEvent: newQuestTextView.rx.text.orEmpty.asObservable(),
-                                            newQuestButtonTapEvent: newQuestButton.rx.tap.asObservable())
+                                            newQuestButtonTapEvent: newQuestButton.rx.tap.asObservable(),
+                                            inviteButtonTapEvent: inviteButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
         Observable
@@ -117,9 +118,16 @@ class NewQuestViewController: BaseViewController {
                         let roomVC = RoomViewController(viewModel: roomVM)
                         
                         guard let tabBarVC = self.navigationController?.presentingViewController as? BaseTabBarController,
-                              let homeNavVC = tabBarVC.viewControllers?.first as? BaseNavigationController else { return }
+                              let homeNavVC = tabBarVC.viewControllers?.first as? BaseNavigationController,
+                              let homeVC = homeNavVC.viewControllers.first as? HomeController else { return }
+                        homeVC.viewModel.requestRoomList()
+                        
+                        if homeVC.viewModel.roomModel.value.isEmpty == false {
+                            homeVC.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                        }
                         
                         homeNavVC.pushViewController(roomVC, animated: true)
+                        return
                     }
                 }
                 if type == .accountError {
@@ -132,7 +140,18 @@ class NewQuestViewController: BaseViewController {
                         self.navigationController?.dismissWithNavigationPopStyle()
                     }
                 }
+                
+                guard let tabBarVC = self.navigationController?.presentingViewController as? BaseTabBarController,
+                      let homeNavVC = tabBarVC.viewControllers?.first as? BaseNavigationController,
+                      let homeVC = homeNavVC.viewControllers.first as? HomeController else { return }
+                homeVC.viewModel.requestRoomList()
             })
+            .disposed(by: disposeBag)
+        
+        output.inviteButtonTap
+            .bind { [weak self] viewController in
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            }
             .disposed(by: disposeBag)
     }
     

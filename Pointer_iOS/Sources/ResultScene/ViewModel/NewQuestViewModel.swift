@@ -87,6 +87,7 @@ class NewQuestViewModel: ViewModelType{
     struct Input {
         let newQuestTextViewEditEvent: Observable<String>
         let newQuestButtonTapEvent: Observable<Void>
+        let inviteButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -94,6 +95,7 @@ class NewQuestViewModel: ViewModelType{
         let newQuestTextViewText = BehaviorRelay<String>(value: "")
         let buttonIsEnable = BehaviorRelay<NextQuestButtonStyle>(value: .disable)
         let backAlert = BehaviorRelay<NewQuestResponse?>(value: nil)
+        let inviteButtonTap = PublishRelay<UIViewController>()
     }
     
 //MARK: - Rxswift Transform
@@ -156,6 +158,15 @@ class NewQuestViewModel: ViewModelType{
             }
             .disposed(by: disposeBag)
         
+        input.inviteButtonTapEvent
+            .subscribe { [weak self] _ in
+                let inviteVM = FriendsListViewModel(listType: .select, roomId: self?.roomId)
+                let inviteVC = FriendsListViewController(viewModel: inviteVM)
+                inviteVC.delegate = self
+                output.inviteButtonTap.accept(inviteVC)
+            }
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -207,5 +218,12 @@ class NewQuestViewModel: ViewModelType{
                 self?.creatableQuestion.accept(model.result)
             }
         }
+    }
+}
+
+//MARK: - FriendsListViewControllerDelegate
+extension NewQuestViewModel: FriendsListViewControllerDelegate {
+    func dismissInviteView() {
+        self.checkCreatableQuestionRequest(roomId: self.roomId)
     }
 }

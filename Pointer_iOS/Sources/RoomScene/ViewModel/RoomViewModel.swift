@@ -142,8 +142,8 @@ final class RoomViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.inviteButtonTapEvent
-            .subscribe(onNext: { _ in
-                let inviteVM = FriendsListViewModel(listType: .select, roomId: self.roomId)
+            .subscribe(onNext: { [weak self] _ in
+                let inviteVM = FriendsListViewModel(listType: .select, roomId: self?.roomId)
                 let inviteVC = FriendsListViewController(viewModel: inviteVM)
                 inviteVC.delegate = self
                 output.inviteButtonTap.accept(inviteVC)

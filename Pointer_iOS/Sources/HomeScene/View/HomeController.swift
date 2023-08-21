@@ -24,7 +24,7 @@ class HomeController: BaseViewController {
         return view
     }()
     
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 18
         layout.minimumLineSpacing = 18
@@ -49,7 +49,7 @@ class HomeController: BaseViewController {
     
     private let emptyView = ListEmptyView()
     
-    private let viewModel = HomeViewModel()
+    let viewModel = HomeViewModel()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
