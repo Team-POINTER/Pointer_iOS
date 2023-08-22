@@ -18,6 +18,7 @@
 		47117CE629CD92D5001707C8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47117CE529CD92D5001707C8 /* LoginViewModel.swift */; };
 		47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 47117CF029CD9A1C001707C8 /* KakaoSDK */; };
 		47194E7D29D94DA900671360 /* NewQuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47194E7C29D94DA900671360 /* NewQuestViewController.swift */; };
+		47198F9E2A947A3000349181 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47198F9D2A947A3000349181 /* UIStackView.swift */; };
 		473B739429CEDC0F00B33C77 /* MyResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739329CEDC0F00B33C77 /* MyResultViewController.swift */; };
 		473B739629CEDCBE00B33C77 /* MyResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */; };
 		473B739829CEE3CC00B33C77 /* MyResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */; };
@@ -172,6 +173,7 @@
 		47117CE329CD92C9001707C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47117CE529CD92D5001707C8 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		47194E7C29D94DA900671360 /* NewQuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestViewController.swift; sourceTree = "<group>"; };
+		47198F9D2A947A3000349181 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		473B739329CEDC0F00B33C77 /* MyResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewController.swift; sourceTree = "<group>"; };
 		473B739529CEDCBE00B33C77 /* MyResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultTableViewCell.swift; sourceTree = "<group>"; };
 		473B739729CEE3CC00B33C77 /* MyResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResultViewModel.swift; sourceTree = "<group>"; };
@@ -811,6 +813,7 @@
 				F948AEFB2A86059E00DDC698 /* UIWindow.swift */,
 				F93C44AF2A8CBC92009B04F3 /* UIViewController.swift */,
 				F97A64DA2A92662C0095BECB /* VerticalAlignUILabel.swift */,
+				47198F9D2A947A3000349181 /* UIStackView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1297,6 +1300,7 @@
 				478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */,
 				CD2F79C92A0FDFC30094F81F /* FriendsListHeaderView.swift in Sources */,
 				F948AEFA2A86041D00DDC698 /* IndicatorManager.swift in Sources */,
+				47198F9E2A947A3000349181 /* UIStackView.swift in Sources */,
 				F948AF032A87787500DDC698 /* FriendRouter.swift in Sources */,
 				CD94B8C92A0BEF4300D0BC7F /* EditUserIDViewModel.swift in Sources */,
 				47CC89552A41D1C30020246E /* NextTestViewController.swift in Sources */,
@@ -1432,7 +1436,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
@@ -1451,7 +1455,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8;
+				MARKETING_VERSION = 0.92;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1470,7 +1474,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
@@ -1489,7 +1493,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8;
+				MARKETING_VERSION = 0.92;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
