@@ -23,7 +23,7 @@ class MyResultViewModel: ViewModelType{
     var questionId = 0
     
     enum PointResultType: String, CaseIterable {
-        case checkedPoint = "J014"
+        case checkedPoint = "P014"
         case lackedPoint = "N002"
         case usedPoint = "N001"
     }
