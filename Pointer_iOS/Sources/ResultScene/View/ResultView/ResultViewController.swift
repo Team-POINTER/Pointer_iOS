@@ -76,6 +76,8 @@ class ResultViewController: BaseViewController {
                 self.hintText.text = data.question
                 self.myNameLabel.text = "\(data.targetUser.userName) 님"
                 self.mySelectedPointLabel.text = "\(data.targetUser.votedMemberCnt) / \(data.targetUser.allVoteCnt)"
+                self.peopleStackView.removeAllArrangedSubviews()
+                self.peopleNumStackView.removeAllArrangedSubviews()
                 
                 for i in 0..<data.members.count {
                     let person: UILabel = {

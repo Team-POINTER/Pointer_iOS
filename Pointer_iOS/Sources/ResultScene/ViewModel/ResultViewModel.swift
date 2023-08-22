@@ -92,7 +92,11 @@ class ResultViewModel: ViewModelType{
         input.newQuestionButtonTap
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                output.newQuestionButtonTap.accept(NewQuestViewController(viewModel: NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId)))
+                let newQuestVM = NewQuestViewModel(limitedAt: self.limitedAt, roomName: self.roomName, roomId: self.roomId)
+                let newQuestVC = NewQuestViewController(viewModel: newQuestVM)
+                newQuestVC.delegate = self
+                
+                output.newQuestionButtonTap.accept(newQuestVC)
             }
             .disposed(by: disposeBag)
         
@@ -159,4 +163,10 @@ class ResultViewModel: ViewModelType{
             .disposed(by: disposeBag)
     }
     
+}
+
+extension ResultViewModel: NewQuestViewControllerDelegate {
+    func didChangedResultState() {
+        self.resultRequest(self.questionId)
+    }
 }

@@ -93,8 +93,8 @@ class FriendsListViewController: BaseViewController {
                 guard let self = self else { return }
                 //MARK: [FIX ME] delegate로 room으로 돌아가서 갱신 코드 추가해야함
                 self.dismissAlert(title: "돌아가기", description: "\(text)") {
-                    self.delegate?.dismissInviteView()
                     self.navigationController?.popViewController(animated: true)
+                    self.delegate?.dismissInviteView()
                 }
             }
             .disposed(by: disposeBag)
@@ -190,7 +190,6 @@ class FriendsListViewController: BaseViewController {
     
     func dismissAlert(title: String, description: String, completion: @escaping() -> Void) {
         let backAction = PointerAlertActionConfig(title: title, textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
-            self?.dismiss(animated: true)
             completion()
         })
     

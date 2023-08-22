@@ -14,10 +14,15 @@ import RxCocoa
 // 2. 시간 활성화 비활성화에 따른 enum
 // 3. enum 버튼 enable, backgroundColor, textColor, NSAttributedString, font,
 // 4. 아예 다른 output으로 String값 - 만료시간을 뷰모델에서 계산
+protocol NewQuestViewControllerDelegate: AnyObject {
+    func didChangedResultState()
+}
+
 class NewQuestViewController: BaseViewController {
     
     let viewModel: NewQuestViewModel
     let disposeBag = DisposeBag()
+    weak var delegate: NewQuestViewControllerDelegate?
 
 //MARK: - Init
     init(viewModel: NewQuestViewModel) {
@@ -186,7 +191,7 @@ class NewQuestViewController: BaseViewController {
     }(UIButton())
     
     private let inviteButton: UIButton = {
-        $0.setTitle("링크로 초대", for: .normal)
+        $0.setTitle("친구 초대하기", for: .normal)
         $0.titleLabel?.font = UIFont.notoSansBold(size: 16)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.white.cgColor
@@ -249,6 +254,7 @@ class NewQuestViewController: BaseViewController {
     
     @objc func backButtonTap() {
         self.navigationController?.popViewController(animated: true)
+        self.delegate?.didChangedResultState()
     }
     
     func dismissAlert(title: String, description: String, completion: @escaping() -> Void) {
