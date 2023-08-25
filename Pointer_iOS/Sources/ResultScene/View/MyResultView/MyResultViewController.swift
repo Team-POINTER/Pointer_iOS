@@ -53,7 +53,7 @@ class MyResultViewController: BaseViewController {
                 guard let self = self,
                       let model = model else { return }
                 
-                self.present(viewModel.usePointAlert(title: "포인트 \(model.point)개 사용",
+                self.present(self.viewModel.usePointAlert(title: "포인트 \(model.point)개 사용",
                                                      description: "포인트를 \(model.point)개 사용하여 나를 지목한 사람의 힌트를 확인하시겠어요?",
                                                      point: model.point), animated: true)
             }
@@ -63,7 +63,7 @@ class MyResultViewController: BaseViewController {
             .bind { [weak self] b in
                 guard let self = self else { return }
                 if b {
-                    self.present(viewModel.moveToAppStoreAlert(title: "포인트가 부족해요", description: "포인트를 샵으로 충전하러 가서 나를 지목한 사람을 확인할까요?"), animated: true)
+                    self.present(self.viewModel.moveToAppStoreAlert(title: "포인트가 부족해요", description: "포인트를 샵으로 충전하러 가서 나를 지목한 사람을 확인할까요?"), animated: true)
                 }
             }
             .disposed(by: disposeBag)

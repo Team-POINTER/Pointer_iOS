@@ -11,56 +11,44 @@ import RxSwift
 import RxCocoa
 
 class CreateUserIDViewController: BaseViewController {
-
+    //MARK: - Properties
     var disposeBag = DisposeBag()
-    let createUserIdViewModel: CreateUserIDViewModel
+    let viewModel: CreateUserIDViewModel
+    private lazy var validateIdView = ValidateIdView(ValidateIdViewModel(authResultModel: viewModel.authResultModel))
     
-    init(viewModel: CreateUserIDViewModel, nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
-        self.createUserIdViewModel = viewModel
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    private var nextButton: UIButton = {
+        $0.titleLabel?.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
+        $0.titleLabel?.textColor = UIColor.white
+        $0.layer.cornerRadius = 16
+        $0.setTitle("확인", for: .normal)
+        return $0
+    }(UIButton())
+    
+    init(viewModel: CreateUserIDViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+//MARK: - Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        bindViewModel()
+        configureBar()
+    }
+    
 //MARK: - RX
     func bindViewModel() {
         let input = CreateUserIDViewModel.Input(
-            idTextFieldEditEvent: inputUserIDTextfeild.rx.text.orEmpty.asObservable(),
-            idDoubleCheckButtonTapEvent: idDoubleCheckButton.rx.tap.asObservable(),
-            nextButtonTapEvent: nextButton.rx.tap.asObservable())
+            nextButtonTapEvent: nextButton.rx.tap.asObservable(),
+            validateIdViewModel: validateIdView.viewModel)
         
-        let output = createUserIdViewModel.transform(input: input)
-        
-        output.idTextFieldLimitedString
-            .bind(to: inputUserIDTextfeild.rx.text)
-            .disposed(by: disposeBag)
-        
-        output.idTextFieldCountString
-            .bind(to: checkCountValidLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        output.idTextFieldValidString
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] b in
-                if b {
-                    self?.idDoubleCheckButton.isEnabled = true
-                    self?.idDoubleCheckButton.setTitleColor(UIColor.pointerRed, for: .normal)
-                } else {
-                    self?.idDoubleCheckButton.isEnabled = false
-                    self?.idDoubleCheckButton.setTitleColor(UIColor.inactiveGray, for: .normal)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.userNoticeString
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] style in
-                self?.checkValueValidLabel.text = style.description
-                self?.checkValueValidLabel.textColor = style.fontColor
-            })
-            .disposed(by: disposeBag)
+        let output = viewModel.transform(input: input)
      
         output.nextButtonValid
             .observe(on: MainScheduler.instance)
@@ -75,126 +63,39 @@ class CreateUserIDViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output.nextButtonTap
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                
+        output.didProcessDone
+            .bind { [weak self] _ in
                 guard let self = self,
                       let tabBarVc = self.presentingViewController as? BaseTabBarController else { return }
                 self.dismiss(animated: true) {
                     tabBarVc.configureAuth()
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        output.errorAlert
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] alert in
+                self?.present(alert, animated: true)
             })
             .disposed(by: disposeBag)
     }
     
-    
-//MARK: - Properties
-    let inputUserIDTextfeild: UITextField = {
-        $0.attributedPlaceholder = NSAttributedString(
-            string: "입력하세요.",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.inactiveGray])
-        $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 14)
-        $0.backgroundColor = .clear
-        $0.textColor = UIColor.white
-        return $0
-    }(UITextField())
-    
-    let textfieldBottomLine: UIView = {
-        $0.backgroundColor = UIColor.inactiveGray
-        return $0
-    }(UIView())
-    
-    let idDoubleCheckButton: UIButton = {
-        $0.setTitle("중복확인", for: .normal)
-        $0.isEnabled = false
-        $0.titleLabel?.font = UIFont.notoSansBold(size: 14)
-        return $0
-    }(UIButton())
-    
-    var checkValueValidLabel: UILabel = {
-        $0.font = UIFont.notoSansRegular(size: 12)
-        $0.textColor = UIColor.inactiveGray
-        return $0
-    }(UILabel())
-    
-    var checkCountValidLabel: UILabel = {
-        $0.text = "0/30"
-        $0.font = UIFont.notoSansRegular(size: 12)
-        $0.textColor = UIColor.inactiveGray
-        return $0
-    }(UILabel())
-    
-    let noticeValidLabel: UILabel = {
-        $0.text = "・ 영문 숫자 및 특수문자 .과 _만 사용 가능합니다. \n・ 최대 30자까지 가능하며 띄어쓰기를 허용하지 않습니다."
-        $0.font = UIFont.notoSansRegular(size: 12.5)
-        $0.textColor = UIColor.white
-        $0.numberOfLines = 0
-        return $0
-    }(UILabel())
-    
-    var nextButton: UIButton = {
-        $0.titleLabel?.font = UIFont.notoSans(font: .notoSansKrMedium, size: 16)
-        $0.titleLabel?.textColor = UIColor.white
-        $0.layer.cornerRadius = 16
-        $0.setTitle("확인", for: .normal)
-        return $0
-    }(UIButton())
-    
 //MARK: - set UI
-    func setUI() {
-        view.addSubview(inputUserIDTextfeild)
-        view.addSubview(textfieldBottomLine)
-        view.addSubview(idDoubleCheckButton)
-        view.addSubview(checkValueValidLabel)
-        view.addSubview(checkCountValidLabel)
-        view.addSubview(noticeValidLabel)
+    func setupUI() {
         view.addSubview(nextButton)
-    }
-    
-    func setUIConstraints() {
-        idDoubleCheckButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.trailing.equalToSuperview().inset(17)
-        }
-        inputUserIDTextfeild.snp.makeConstraints { make in
-            make.centerY.equalTo(idDoubleCheckButton.snp.centerY)
-            make.leading.equalToSuperview().inset(17)
-            make.trailing.equalToSuperview().inset(85)
-        }
-        textfieldBottomLine.snp.makeConstraints { make in
-            make.top.equalTo(idDoubleCheckButton.snp.bottom).inset(-7)
-            make.leading.trailing.equalToSuperview().inset(15.5)
-            make.height.equalTo(1)
-        }
-        checkValueValidLabel.snp.makeConstraints { make in
-            make.top.equalTo(textfieldBottomLine.snp.bottom).inset(-7)
-            make.leading.equalToSuperview().inset(17)
-        }
-        checkCountValidLabel.snp.makeConstraints { make in
-            make.top.equalTo(textfieldBottomLine.snp.bottom).inset(-7)
-            make.trailing.equalToSuperview().inset(17)
-        }
-        noticeValidLabel.snp.makeConstraints { make in
-            make.top.equalTo(textfieldBottomLine.snp.bottom).inset(-45)
-            make.leading.equalToSuperview().inset(17)
-        }
         nextButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(33)
             make.leading.trailing.equalToSuperview().inset(8)
             make.centerX.equalToSuperview()
             make.height.equalTo(65)
         }
-    }
-    
-    
-//MARK: - Life Cycles
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setUI()
-        setUIConstraints()
-        bindViewModel()
-        configureBar()
+        
+        view.addSubview(validateIdView)
+        validateIdView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 
 //MARK: - NavigationBar

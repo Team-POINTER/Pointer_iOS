@@ -20,6 +20,7 @@ class FriendsListViewModel: ViewModelType {
     var disposeBag = DisposeBag()
     let listType: ListType
     let selectedUser = BehaviorRelay<[FriendsModel]>(value: [])
+    var targetUserName: String?
     
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
@@ -84,7 +85,7 @@ class FriendsListViewModel: ViewModelType {
                     self.nextViewController.accept(vc)
                 case .select:
                     self.processSelectedUser(selectedUser: item)
-                    print(selectedUser.value.count)
+                    print(self.selectedUser.value.count)
                 }
             }
             .disposed(by: disposeBag)

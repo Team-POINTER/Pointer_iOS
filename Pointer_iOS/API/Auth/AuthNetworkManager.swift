@@ -150,29 +150,28 @@ class AuthNetworkManager {
         }
     }
     
-    func idSavePost(_ parameter: AuthSaveIdInputModel, _ accessToken: String,
-                    _ completion: @escaping (PointerResultModel, LoginResultType) -> Void) {
+    /// ID Register API 함수
+    func requestRegisterId(idToSaveAccount id: String, accessToken: String,
+                    completion: @escaping (LoginResultType?) -> Void) {
         print("확인 버튼 함수 시작")
         let router = router.saveId(accessToken)
+        let param = ["id": id]
         
-        AF.request(router.url,
-                   method: router.method,
-                   parameters: parameter,
-                   encoder: JSONParameterEncoder.default,
-                   headers: router.headers)
-        .validate(statusCode: 200..<500)
-        .responseDecodable(of: PointerResultModel.self) { response in
-            switch response.result {
-            case .success(let result):
-                print("ID 저장 데이터 전송 성공 - \(result)")
-                // rawValue로 resultType 생성
-                let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
-                completion(result, loginResultType)
-            case .failure(let error):
-                print(error.localizedDescription)
-                print(response.error ?? "")
+        AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default, headers: router.headers)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: PointerResultModel.self) { response in
+                switch response.result {
+                case .success(let result):
+                    print("ID 저장 데이터 전송 성공 - \(result)")
+                    // rawValue로 resultType 생성
+                    let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
+                    completion(loginResultType)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    print(response.error ?? "")
+                    completion(nil)
+                }
             }
-        }
     }
     
     /// 리프레시 토큰으로 액세스 토큰 재발급

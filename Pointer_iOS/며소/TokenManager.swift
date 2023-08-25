@@ -35,6 +35,10 @@ struct TokenManager {
         UserDefaults.standard.set(userId, forKey: "userId")
     }
     
+    static func saveIntUserId(userId: Int) {
+        UserDefaults.standard.set(userId, forKey: "\(userId)")
+    }
+    
     static func resetUserToken() {
         UserDefaults.standard.removeObject(forKey: "accessToken")
         UserDefaults.standard.removeObject(forKey: "refreshToken")
