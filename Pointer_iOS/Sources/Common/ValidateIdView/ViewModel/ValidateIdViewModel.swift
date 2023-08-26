@@ -95,12 +95,12 @@ class ValidateIdViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         // 유효성검사 && Validation 완료시
-        Observable.combineLatest(output.idTextFieldValidString,
-                                 output.duplicatedIdCheck,
-                                 resultSelector: { $0 && $1 })
-            .subscribe(onNext: { [weak self] didValidated in
-                self?.didSuccessValidation.accept(didValidated)
-            })
+        Observable
+            .combineLatest(output.idTextFieldValidString, output.duplicatedIdCheck)
+            .map { $0 && $1 }
+            .subscribe { [weak self] validation in
+                self?.didSuccessValidation.accept(validation)
+            }
             .disposed(by: disposeBag)
         
         // 

@@ -45,7 +45,7 @@ class CreateUserIDViewController: BaseViewController {
 //MARK: - RX
     func bindViewModel() {
         let input = CreateUserIDViewModel.Input(
-            nextButtonTapEvent: nextButton.rx.tap.asObservable(),
+            nextButtonTapEvent: nextButton.rx.controlEvent(.touchUpInside).asObservable(),
             validateIdViewModel: validateIdView.viewModel)
         
         let output = viewModel.transform(input: input)
@@ -87,14 +87,14 @@ class CreateUserIDViewController: BaseViewController {
         nextButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(33)
             make.leading.trailing.equalToSuperview().inset(8)
-            make.centerX.equalToSuperview()
             make.height.equalTo(65)
         }
         
         view.addSubview(validateIdView)
         validateIdView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.bottom.equalTo(nextButton.snp.top)
         }
     }
 

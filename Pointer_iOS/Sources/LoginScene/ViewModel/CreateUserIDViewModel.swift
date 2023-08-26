@@ -39,9 +39,9 @@ class CreateUserIDViewModel: ViewModelType {
         let output = Output()
         
         input.nextButtonTapEvent
-            .withLatestFrom(input.validateIdViewModel.userEnteredId)
-            .subscribe(onNext: { [weak self] id in
-                guard let self = self else { return }
+            .bind(onNext: { [weak self] _ in
+                guard let self = self,
+                      let id = input.validateIdViewModel.userEnteredId.value else { return }
                 // API 호출
                 self.requestRegisterAccount(idToSaveAccount: id) { loginResultType in
                     if loginResultType == LoginResultType.saveId {

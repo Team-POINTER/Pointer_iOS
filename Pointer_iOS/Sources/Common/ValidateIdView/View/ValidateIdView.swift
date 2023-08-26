@@ -82,10 +82,6 @@ class ValidateIdView: UIView {
             .bind(to: inputUserIDTextfeild.rx.text)
             .disposed(by: disposeBag)
         
-//        output.idTextFieldLimitedString
-//            .bind(to: inputUserIDTextfeild.rx.text)
-//            .disposed(by: disposeBag)
-        
         output.idTextFieldCountString
             .bind(to: checkCountValidLabel.rx.text)
             .disposed(by: disposeBag)

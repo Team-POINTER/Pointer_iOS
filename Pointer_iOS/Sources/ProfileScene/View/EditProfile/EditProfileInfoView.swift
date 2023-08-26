@@ -25,9 +25,10 @@ class EditProfileInfoView: ProfileInfoParentView {
         let tf = UITextField()
         tf.text = editViewModel.profile.results?.userName
         tf.font = .notoSans(font: .notoSansKrMedium, size: 25)
+        tf.adjustsFontSizeToFitWidth = true
+        tf.minimumFontSize = 12
         tf.textColor = .inactiveGray
         tf.textAlignment = .center
-//        tf.delegate = self
         return tf
     }()
     

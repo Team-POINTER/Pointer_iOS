@@ -235,6 +235,20 @@ class AuthNetworkManager {
             }
     }
     
+    // 로그아웃 - 비동기 기다리지 않도록 처리
+    func requestLogout() {
+        let router = AuthRouter.logout
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .responseDecodable(of: PointerDefaultResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    print(data)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
     // 회원 탈퇴
     func resignUserAccount(completion: @escaping (Bool) -> Void) {
         let router = AuthRouter.resign
