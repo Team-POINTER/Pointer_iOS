@@ -221,6 +221,7 @@ class ProfileEditViewController: ProfileParentViewController {
 extension ProfileEditViewController: EditUserIdDelegate {
     func editUserIdSuccessed(id: String) {
         editProfileInfoView.userIdLabel.text = id
+        editViewModel.profile.results?.id = id
         editViewModel.isUserIdChanged = true
     }
 }

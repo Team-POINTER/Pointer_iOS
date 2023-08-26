@@ -18,7 +18,6 @@ class ValidateIdViewModel: ViewModelType {
     
     struct Output {
         let idTextFieldCountString = BehaviorRelay<String>(value: "0/20")
-        let idTextFieldLimitedString = PublishRelay<String>()
         let idTextFieldValidString = BehaviorRelay<Bool>(value: false)
         let duplicatedIdCheck = BehaviorRelay<Bool>(value: false)
         let validateIdResult = BehaviorRelay<ValidateIdStyle>(value: .none)
@@ -45,11 +44,11 @@ class ValidateIdViewModel: ViewModelType {
         // 텍스트필드 입력 이벤트
         input.idTextFieldEditEvent
             .subscribe { [weak self] text in
-                if let text = text.element,
+                if let text = text.element, text != "",
                    let self = self {
                     /// 글자수 30자 제한
                     let limitedString = self.hintTextFieldLimitedString(text: text)
-                    output.idTextFieldLimitedString.accept(limitedString)
+                    self.userEnteredId.accept(limitedString)
                     
                     /// 제한된 글자수 카운트
                     let textCountString = "\(limitedString.count)/30"
@@ -76,11 +75,11 @@ class ValidateIdViewModel: ViewModelType {
         
         // 중복확인 버튼 클릭
         input.idDoubleCheckButtonTapEvent
-            .withLatestFrom(output.idTextFieldLimitedString)
+            .withLatestFrom(self.userEnteredId)
             .subscribe(onNext: { [weak self] text in
                 guard let self = self else { return }
                 // API 호출
-                self.requestValidateId(text) { model, loginResultType in
+                self.requestValidateId(text ?? "") { model, loginResultType in
                     if loginResultType == LoginResultType.duplicatedId {
                         // ID 중복 시
                         output.duplicatedIdCheck.accept(false)

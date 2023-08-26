@@ -51,7 +51,7 @@ class EditUserIDViewModel: ViewModelType {
                 guard let self = self else { return }
                 // API 호출
                 self.requestSaveAccount(idToSaveAccount: id) { loginResultType in
-                    if loginResultType == LoginResultType.saveId {
+                    if loginResultType == LoginResultType.saveId || loginResultType == .haveToCheckId {
                         output.isSuccessSaveUserId.accept((true, id))
                     } else {
                         // 에러처리

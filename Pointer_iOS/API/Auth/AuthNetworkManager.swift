@@ -126,9 +126,8 @@ class AuthNetworkManager {
     
     func idCheckPost(_ parameter: AuthCheckIdInputModel, _ accessToken: String,
                      _ completion: @escaping (PointerResultModel, LoginResultType) -> Void) {
-        print("중복 확인 버튼 함수 시작")
         let router = router.checkId(accessToken)
-        
+        print("👉ID 중복확인 API 요청: url: \(router.url), body: \(parameter)")
         AF.request(router.url,
                    method: router.method,
                    parameters: parameter,
@@ -138,8 +137,8 @@ class AuthNetworkManager {
         .responseDecodable(of: PointerResultModel.self) { response in
             switch response.result {
             case .success(let result):
-                print("ID 중복 확인 데이터 전송 성공 - \(result)")
                 // rawValue로 resultType 생성
+                print("ID 중복확인 성공 - \(result)")
                 let loginResultType = LoginResultType(rawValue: result.code) ?? .unknownedError
                 // 핸들러로 전송
                 completion(result, loginResultType)
@@ -153,10 +152,9 @@ class AuthNetworkManager {
     /// ID Register API 함수
     func requestRegisterId(idToSaveAccount id: String, accessToken: String,
                     completion: @escaping (LoginResultType?) -> Void) {
-        print("확인 버튼 함수 시작")
         let router = router.saveId(accessToken)
         let param = ["id": id]
-        
+        print("👉ID 저장 API 요청: url: \(router.url), body: \(param)")
         AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: PointerResultModel.self) { response in

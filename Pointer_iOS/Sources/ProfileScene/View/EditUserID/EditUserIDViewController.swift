@@ -69,6 +69,13 @@ class EditUserIDViewController: BaseViewController {
                 self?.delegate?.editUserIdSuccessed(id: id)
             }
             .disposed(by: disposeBag)
+        
+        // 에러 Alert
+        output.errorAlert
+            .bind { [weak self] alert in
+                self?.present(alert, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Functions
