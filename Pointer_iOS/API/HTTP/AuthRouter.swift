@@ -17,6 +17,7 @@ enum AuthRouter {
     case reissue(_ refreshToken: String)
     case validate
     case resign
+    case logout
 }
 
 extension AuthRouter: HttpRouter {
@@ -47,6 +48,8 @@ extension AuthRouter: HttpRouter {
             return "/user/check"
         case .resign:
             return "/user/resign"
+        case .logout:
+            return "/user/logout"
         }
     }
     
@@ -68,6 +71,8 @@ extension AuthRouter: HttpRouter {
             return .get
         case .resign:
             return .delete
+        case .logout:
+            return .post
         }
     }
     
@@ -87,7 +92,7 @@ extension AuthRouter: HttpRouter {
         case .reissue(let refreshToken):
             return ["Content-Type" : "application/json",
                     "Authorization" : "Bearer \(refreshToken)"]
-        case .validate, .resign:
+        case .validate, .resign, .logout:
             return ["Content-Type" : "application/json",
                     "Authorization" : "Bearer \(TokenManager.getUserAccessToken() ?? "")"]
         }
@@ -98,6 +103,8 @@ extension AuthRouter: HttpRouter {
         switch self {
         case .resign:
             return "A007"
+        case .logout:
+            return "B003"
         default:
             return nil
         }

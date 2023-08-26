@@ -168,10 +168,11 @@ class PointerAlert: UIViewController {
         let titleLabel = makeAlertContentLabel(text: alertTitle,
                                                font: .notoSans(font: .notoSansKrMedium, size: 17))
         let descriptionLabel = makeAlertContentLabel(text: alertDescription,
-                                                     font: .notoSansRegular(size: 13))
+                                                     font: .notoSansRegular(size: 13),
+                                                     isDescription: true)
         
         // 임시 UIView Stack
-        var viewStacksArray: [UIView] = [titleLabel, descriptionLabel, makeSpacing(height: 9), makeSpacing(height: 9), actionContainerView]
+        var viewStacksArray: [UIView] = [titleLabel, descriptionLabel, makeSpacing(height: 9), actionContainerView]
         
         // 커스텀 뷰가 있다면 추가, 없다면 생략
         if let customView = customView {
@@ -293,13 +294,19 @@ class PointerAlert: UIViewController {
     }
     
     //MARK: - Alert Views
-    private func makeAlertContentLabel(text: String?, font: UIFont) -> UIView {
+    private func makeAlertContentLabel(text: String?, font: UIFont, isDescription: Bool? = false) -> UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 0
         label.text = text
         label.font = font
         label.textColor = .black
+        // 설명 란 이라면? - 최소 높이 30
+        if isDescription == true {
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        }
+        
         return label
     }
     

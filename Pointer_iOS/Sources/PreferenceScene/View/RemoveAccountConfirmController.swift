@@ -37,6 +37,7 @@ class RemoveAccountConfirmController: BaseViewController {
     
     //MARK: - Methods
     @objc private func actionButtonTapped() {
+        self.dismiss(animated: true)
         sceneDelegate?.appCoordinator?.logout()
     }
     
@@ -60,6 +61,6 @@ class RemoveAccountConfirmController: BaseViewController {
     
     private func setupNavigationBar() {
         self.navigationItem.title = "탈퇴하기"
-        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
     }
 }

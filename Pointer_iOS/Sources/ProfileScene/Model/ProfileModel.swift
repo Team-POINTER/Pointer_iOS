@@ -18,7 +18,7 @@ struct ProfileModel: Codable {
 // MARK: - Results
 struct ProfileResults: Codable {
     let userId: Int
-    let id: String
+    var id: String
     var userName: String
     let point: Int
     let relationship: Int?

@@ -72,6 +72,7 @@ class AppCoordinator {
     }
     
     func logout() {
+        authManager.network.requestLogout()
         // 유저 토큰들 다 지우기
         TokenManager.resetUserToken()
         DispatchQueue.main.async { [weak self] in
@@ -82,7 +83,7 @@ class AppCoordinator {
             }
             tabBar.viewControllers = []
         }
-        configureAuthGoToMain()
+        self.configureAuthGoToMain()
     }
     
     // 실행중에 푸시 알림을 탭 했을 경우

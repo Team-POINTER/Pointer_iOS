@@ -124,6 +124,7 @@ class ProfileViewModel: ViewModelType {
                 guard let self = self,
                       self.friendsArray.value.count > 0 else { return }
                 let viewModel = FriendsListViewModel(listType: .normal, roomId: nil, userId: self.userId)
+                viewModel.targetUserName = self.userName
                 let vc = FriendsListViewController(viewModel: viewModel)
                 self.nextViewController.accept(vc)
             })

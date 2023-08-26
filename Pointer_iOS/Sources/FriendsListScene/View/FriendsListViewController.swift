@@ -127,7 +127,10 @@ class FriendsListViewController: BaseViewController {
     }
     
     @objc private func plusButtonTapped() {
-        print("plus Button Tapped")
+        let viewModel = SearchViewModel()
+        let searchVc = SearchController(viewModel: viewModel)
+        searchVc.viewWillShowIndex = 1
+        self.navigationController?.pushViewController(searchVc, animated: true)
     }
     
     //MARK: - Functions
@@ -179,7 +182,7 @@ class FriendsListViewController: BaseViewController {
             let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: linkImage, target: self, handler: #selector(linkButtonTapped))
             navigationItem.rightBarButtonItem = rightBarButton
         case .normal:
-            navigationItem.title = "OOO님의 친구"
+            navigationItem.title = "\(viewModel.targetUserName ?? "")님의 친구"
             navigationItem.leftBarButtonItem = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(backButtonTapped))
             
             let plusImage = UIImage(systemName: "plus")
@@ -189,7 +192,7 @@ class FriendsListViewController: BaseViewController {
     }
     
     func dismissAlert(title: String, description: String, completion: @escaping() -> Void) {
-        let backAction = PointerAlertActionConfig(title: title, textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { [weak self] _ in
+        let backAction = PointerAlertActionConfig(title: title, textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { _ in
             completion()
         })
     
