@@ -53,7 +53,10 @@ extension PushType {
             let roomVc = RoomViewController(viewModel: viewModel)
             return roomVc
         case .friendRequest, .friendAccept:
-            return UIViewController()
+            guard let userId = id else { return nil }
+            let viewModel = ProfileViewModel(userId: userId)
+            let profileVc = ProfileViewController(viewModel: viewModel)
+            return profileVc
         default:
             return nil
         }
