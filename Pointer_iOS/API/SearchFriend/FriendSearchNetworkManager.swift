@@ -18,7 +18,7 @@ class FriendSearchNetworkManager {
     // 유저 검색
     func searchUserListRequest(keyword: String, lastPage: Int, _ completion: @escaping (SearchUserResultModel?, Error?) -> Void) {
         let router = friendSeachRouter.searchUser(keyword: keyword, lastPage: lastPage)
-        
+        print(router.url)
         AF.request(router.url, method: router.method, headers: router.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: SearchUserResultModel.self) { respose in

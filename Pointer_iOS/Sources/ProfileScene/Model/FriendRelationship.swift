@@ -96,7 +96,7 @@ enum Relationship: Int {
         let targetId = targetId ?? ""
         
         switch self {
-        case .block: return "\(targetName)(\(targetId))님과 친구를\n해제하시겠어요?"
+        case .block: return "\(targetName)(\(targetId))님의 차단을 해제하시겠어요??"
         case .friendRequested: return "친구 요청을\n취소하시겠어요?"
         case .friendRequestReceived: return "\(targetName)(\(targetId))님의 친구 요청을\n수락하시겠어요?"
         case .friend: return "\(targetName)(\(targetId))님과\n친구를 해제하시겠어요?"

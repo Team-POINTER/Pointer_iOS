@@ -14,7 +14,7 @@ enum ProfileRouter {
     case updateName // 유저 이름 업데이트
     case updateUserId // 유저 아이디 업데이트
     case getPoints
-    case getFriendsList(userId: Int, lastPage: Int)
+    case getFriendsList(userId: Int, keyword: String, lastPage: Int)
 }
 
 extension ProfileRouter: HttpRouter {
@@ -39,8 +39,8 @@ extension ProfileRouter: HttpRouter {
             return "/users/update/id"
         case .getPoints:
             return "/users/get/points"
-        case .getFriendsList(let userId, let lastPage):
-            return "/friend/search?userId=\(userId)&keyword=&lastPage=\(lastPage)"
+        case .getFriendsList(let userId, let keyword, let lastPage):
+            return "/friend/search?userId=\(userId)&keyword=\(keyword)&lastPage=\(lastPage)"
         }
     }
     
@@ -69,8 +69,8 @@ extension ProfileRouter: HttpRouter {
     
     var parameters: Parameters? {
         switch self {
-        case .getFriendsList(let userId, let lastPage):
-            return ["userId": userId, "keyword": "", "lastPage": lastPage]
+        case .getFriendsList(let userId, let keyword, let lastPage):
+            return ["userId": userId, "keyword": keyword, "lastPage": lastPage]
         default:
             return nil
         }

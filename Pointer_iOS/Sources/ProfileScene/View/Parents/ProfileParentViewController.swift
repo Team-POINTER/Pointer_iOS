@@ -104,18 +104,4 @@ class ProfileParentViewController: BaseViewController {
             $0.leading.equalToSuperview().inset(20)
         }
     }
-    
-    //MARK: - SetupNavigation Controller
-    func setupNavigation(viewModel: ProfileViewModel) {
-        if viewModel.isMyProfile {
-            let preferenceButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "gearshape"), target: self, handler: #selector(preferneceButtonTapped))
-            self.navigationItem.rightBarButtonItem = preferenceButton
-        }
-    }
-    
-    // 설정 버튼 눌렸을 때
-    @objc func preferneceButtonTapped() {
-        let preferenceVc = PreferenceController()
-        self.navigationController?.pushViewController(preferenceVc, animated: true)
-    }
 }

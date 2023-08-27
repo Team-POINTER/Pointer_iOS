@@ -26,6 +26,7 @@ class FriendsListViewModel: ViewModelType {
     let nextViewController = BehaviorRelay<UIViewController?>(value: nil)
     let dismiss = PublishRelay<String>()
     let inviteLink = PublishRelay<String>()
+    let searchTextFieldEditEvent = BehaviorRelay<String>(value: "")
     
     private lazy var profileNetwork = ProfileNetworkManager()
     
@@ -36,7 +37,6 @@ class FriendsListViewModel: ViewModelType {
     
     //MARK: - Rx
     struct Input {
-        let searchTextFieldEditEvent: Observable<String>
         let collectionViewItemSelected: Observable<IndexPath>
         let collectionViewModelSelected: Observable<FriendsModel>
         let confirmButtonTappedEvent: Observable<Void>
@@ -50,14 +50,15 @@ class FriendsListViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let output = Output()
         
-        input.searchTextFieldEditEvent
+        self.searchTextFieldEditEvent
             .subscribe { [weak self] text in
                 guard let self = self,
                       let text = text.element else { return }
                 print(text)
                 
-                //MARK: [FIX ME] lastPage 값이 어떤 값인가? - 무한 스크롤 시
+                // 검색어 입력에 따라 keyword 넣어서 리스트 다시 호출
                 self.inviteFriendsListRequest(keyword: text, lastPage: self.lastPage)
+                self.requestFriendList(keyword: text, lastPage: self.lastPage)
             }
             .disposed(by: disposeBag)
         
@@ -100,7 +101,8 @@ class FriendsListViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
         
-        requestFriendList()
+        // 첫 데이터 로드
+        requestFriendList(keyword: "", lastPage: lastPage)
         return output
     }
     
@@ -176,14 +178,13 @@ class FriendsListViewModel: ViewModelType {
     }
     
     // 친구 리스트 조회
-    func requestFriendList() {
+    func requestFriendList(keyword: String, lastPage: Int) {
         guard let userId = userId else { return }
-        profileNetwork.getUserFriendList(userId: userId, lastPage: 0) { [weak self] response in
+        profileNetwork.getUserFriendList(userId: userId, lastPage: 0, keyword: keyword) { [weak self] response in
             guard let response = response, response.code == "J013" else {
                 return
             }
             self?.userList.accept(response.friendInfoList)
-            print(response.friendInfoList)
         }
     }
     

@@ -48,6 +48,10 @@ class ProfileViewModel: ViewModelType {
     let friendsArray = BehaviorRelay<[FriendsModel]>(value: [])
     let friendsCount = BehaviorRelay<Int>(value: 0)
     
+    // 네비게이션 바 버튼
+    let preferenceButtonTapped = PublishRelay<()>()
+    let otherMenuActionButtonTapped = PublishRelay<()>()
+    
     var isMyProfile: Bool {
         return userId == TokenManager.getIntUserId()
     }
@@ -142,6 +146,23 @@ class ProfileViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
         
+        // 네비게이션바 메뉴 탭 이벤트 바인딩
+        preferenceButtonTapped
+            .bind { [weak self] _ in
+                let preferenceVc = PreferenceController()
+                self?.nextViewController.accept(preferenceVc)
+            }
+            .disposed(by: disposeBag)
+        
+        otherMenuActionButtonTapped
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let sheet = self.getOtherMenuActionSheet()
+                self.showAlertView.accept(sheet)
+            }
+            .disposed(by: disposeBag)
+        
+        
         return output
     }
     
@@ -187,11 +208,50 @@ class ProfileViewModel: ViewModelType {
         }
     }
     
+    // 친구 차단 API 호출
+    private func requestBlockFriend() {
+        IndicatorManager.shared.show()
+        friendNetwork.requestBlockFriend(targetId: userId) { [weak self] isSuccessed in
+            IndicatorManager.shared.hide()
+            if isSuccessed {
+                self?.requestUserProfile()
+            } else {
+                self?.showAlertView.accept(PointerAlert.getErrorAlert())
+            }
+        }
+    }
+    
     //MARK: - Functions
     // Cell의 사이즈를 계산해서 return합니다.
     func getCellSize() -> CGSize {
         let width = (Device.width - (cellItemSpacing * CGFloat(horizonItemCount))) / 5
         return CGSize(width: width + 5, height: width + 30)
+    }
+    
+    //MARK: - 유저 메뉴 버튼 이벤트(신고/차단)
+    // 메뉴 버튼 클릭
+    private func getOtherMenuActionSheet() -> PointerAlert {
+        // 신고하기 버튼
+        let reportAction = PointerAlertActionConfig(title: "신고하기", textColor: .pointerRed) { [weak self] _ in
+            self?.reportButtonTapped()
+        }
+        
+        // 차단하기 버튼
+        let blockAction = PointerAlertActionConfig(title: "사용자 차단하기", textColor: .black) { [weak self] _ in
+            // 한번 더 물어보기
+            let alert = PointerAlert.getActionAlert(title: "친구 차단", message: "\(self?.userName ?? "")님을 정말로 차단하시겠어요?", actionTitle: "차단") { _ in
+                self?.requestBlockFriend()
+            }
+            self?.showAlertView.accept(alert)
+        }
+        
+        // 시트
+        let sheet = PointerAlert(alertType: .actionSheet, configs: [reportAction, blockAction], title: "'\(userName ?? "")'님")
+        return sheet
+    }
+    
+    private func reportButtonTapped() {
+        // 이곳에 신고 기능을 입력하세요
     }
 }
 

@@ -180,6 +180,7 @@ class PointerAlert: UIViewController {
                 customTextfield.delegate = self
             }
             viewStacksArray.insert(customView, at: 3)
+            viewStacksArray.insert(makeSpacing(height: 9), at: 4)
         }
         
         // 최종 AlertStack 생성
@@ -301,10 +302,12 @@ class PointerAlert: UIViewController {
         label.text = text
         label.font = font
         label.textColor = .black
-        // 설명 란 이라면? - 최소 높이 30
+        label.translatesAutoresizingMaskIntoConstraints = false
+        // 설명이 늘어난도록
         if isDescription == true {
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+            label.setContentHuggingPriority(.defaultLow, for: .vertical)
+        } else {
+            label.setContentHuggingPriority(.defaultHigh, for: .vertical)
         }
         
         return label
@@ -319,6 +322,8 @@ class PointerAlert: UIViewController {
         alertStack.clipsToBounds = true
         alertStack.layoutMargins = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         alertStack.isLayoutMarginsRelativeArrangement = true
+        alertStack.translatesAutoresizingMaskIntoConstraints = false
+        alertStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 150).isActive = true
         return alertStack
     }
     
