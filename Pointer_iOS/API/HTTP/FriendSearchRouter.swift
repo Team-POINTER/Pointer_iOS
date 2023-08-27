@@ -11,13 +11,13 @@ import Alamofire
 enum FriendSearchRouter {
     case searchUser(keyword: String, lastPage: Int) // 유저 검색
     case searchfriend // 친구 검색
-    case searchBlockedFriend // 차단된 친구 검색
+    case searchBlockedFriend(keyword: String, lastPage: Int) // 차단된 친구 검색
 }
 
 extension FriendSearchRouter: HttpRouter {
 
     var url: String {
-        return baseUrlString + path
+        return (baseUrlString + path).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
     }
 
     var baseUrlString: String {
@@ -27,11 +27,11 @@ extension FriendSearchRouter: HttpRouter {
     var path: String {
         switch self {
         case .searchUser(let keyword, let lastPage):
-            return "/user/search?keyword=\(keyword)&lastPage=\(lastPage)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            return "/user/search?keyword=\(keyword)&lastPage=\(lastPage)"
         case .searchfriend:
             return "/friend/search"
-        case .searchBlockedFriend:
-            return "/friend/block/search"
+        case .searchBlockedFriend(let keyword, let lastPage):
+            return "/friend/block/search?keyword=\(keyword)&lastPage=\(lastPage)"
         }
     }
 
@@ -58,5 +58,14 @@ extension FriendSearchRouter: HttpRouter {
 
     func body() throws -> Data? {
         return nil
+    }
+    
+    var successCode: String? {
+        switch self {
+        case .searchBlockedFriend:
+            return "J014"
+        default:
+            return nil
+        }
     }
 }

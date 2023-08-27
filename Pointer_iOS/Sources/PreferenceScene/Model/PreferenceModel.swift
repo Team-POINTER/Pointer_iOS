@@ -144,7 +144,10 @@ enum PreferenceMenuType: Int, CaseIterable {
         case .openSourceLicense:
             return nil
         case .blockedUser:
-            return nil
+            let vc = BlockedFriendListController(viewModel: BlockedFriendListViewModel())
+            let nav = BaseNavigationController.templateNavigationController(nil, viewController: vc)
+            nav.modalPresentationStyle = .overFullScreen
+            return nav
         case .removeAccount:
             let vc = RemoveAccountController()
             let nav = BaseNavigationController.templateNavigationController(nil, viewController: vc)

@@ -55,6 +55,8 @@ class NotificationDetailViewController: UIViewController {
     let viewModel: NotiDetailViewModel
     let disposeBag = DisposeBag()
     
+    weak var containerViewController: NotificationViewController?
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
@@ -111,6 +113,26 @@ class NotificationDetailViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        // 다음 뷰
+        viewModel.nextViewController
+            .bind { [weak self] viewController in
+                guard let self = self,
+                      let vc = viewController,
+                      let homeNavi = sceneDelegate?.appCoordinator?.tabBarController.viewControllers?.first as? UINavigationController else { return }
+                self.containerViewController?.dismissWithNavigationPopStyle {
+                    homeNavi.pushViewController(vc, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.modelSelected(Any.self)
+            .bind { [weak self] item in
+                guard let self = self else { return }
+                self.viewModel.notificationItemTapped(type: self.notiType, item: item)
+            }
+            .disposed(by: disposeBag)
+        
         viewModel.requestData()
     }
     

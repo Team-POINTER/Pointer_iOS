@@ -13,7 +13,7 @@ class ProfileViewController: ProfileParentViewController {
     //MARK: - Properties
     let viewModel: ProfileViewModel
     
-    lazy var profileImageViewChild: UIView = {
+    private lazy var profileImageViewChild: UIView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "defaultProfile")
         imageView.contentMode = .scaleAspectFill
@@ -22,10 +22,13 @@ class ProfileViewController: ProfileParentViewController {
         return imageView
     }()
     
-    lazy var profileInfoViewChild: ProfileInfoView = {
+    private lazy var profileInfoViewChild: ProfileInfoView = {
         let view = ProfileInfoView(viewModel: viewModel)
         return view
     }()
+    
+    private lazy var preferenceButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "gearshape"), target: self, handler: #selector(preferneceButtonTapped))
+    private lazy var moreActionButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "text.justify"), target: self, handler: #selector(moreActionButtonTapped))
     
     //MARK: - Lifecycle
     init(viewModel: ProfileViewModel) {
@@ -40,8 +43,8 @@ class ProfileViewController: ProfileParentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupNavigationBar()
-        setupNavigation(viewModel: viewModel)
+        setupNavigationBarBackButton()
+        setupNavigationRightButton()
         bind()
     }
     
@@ -104,15 +107,34 @@ class ProfileViewController: ProfileParentViewController {
     }
     
     //MARK: - Selector
+    // 설정 버튼 눌렸을 때
+    @objc private func preferneceButtonTapped() {
+        viewModel.preferenceButtonTapped.accept(())
+    }
     
-    //MARK: - Functions
-    private func setupNavigationBar() {
-        // rootViewController가 아닌경우에만 backbutton활성화
+    // 상대 프로필 액션 버튼 클릭 이벤트
+    @objc private func moreActionButtonTapped() {
+        viewModel.otherMenuActionButtonTapped.accept(())
+    }
+    
+    //MARK: - SetupNavigation Controller
+    private func setupNavigationBarBackButton() {
         if navigationController?.viewControllers.first != self {
             super.setNavigationBarPointerBackButton()
         }
     }
     
+    private func setupNavigationRightButton() {
+        if viewModel.isMyProfile {
+            // 내 프로필 - 설정버튼 설정
+            self.navigationItem.rightBarButtonItem = preferenceButton
+        } else {
+            // 상대 프로필 - 옵션버튼 설정
+            self.navigationItem.rightBarButtonItem = moreActionButton
+        }
+    }
+    
+    //MARK: - Methods
     override func setupUI() {
         super.profileImageView = profileImageViewChild
         super.profileInfoView = profileInfoViewChild

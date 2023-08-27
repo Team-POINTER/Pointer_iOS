@@ -23,7 +23,8 @@ struct NotiDetailRoomResponse: Codable {
 // MARK: - AlarmList
 struct RoomAlarmList: Codable {
     let alarmId: Int
-    let sendUserId: Int?
+    let sendUserId: Int
+    let needId: Int?
     let sendUserName: String?
     let sendUserProfile: String?
     let content: String?

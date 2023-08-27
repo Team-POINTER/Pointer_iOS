@@ -98,6 +98,8 @@ class NotificationViewController: BaseViewController {
         if let firstVC = viewControllers.first {
             pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         }
+        roomNotiVC.containerViewController = self
+        friendsNotiVC.containerViewController = self
     }
     
     private func setupUI() {

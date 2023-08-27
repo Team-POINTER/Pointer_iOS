@@ -60,13 +60,17 @@ class FriendsListViewController: BaseViewController {
     //MARK: - bind
     func bind() {
         let input = FriendsListViewModel.Input(
-            searchTextFieldEditEvent: searchHeaderView.searchTextField.rx.text.orEmpty.asObservable(),
             collectionViewItemSelected: collectionView.collectionView.rx.itemSelected.asObservable(),
             collectionViewModelSelected: collectionView.collectionView.rx.modelSelected(FriendsModel.self).asObservable(),
             confirmButtonTappedEvent: confirmButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
         confirmButton.setAttributedTitle(viewModel.getInitialButtonAttributeString(), for: .normal)
+        
+        // 헤더 뷰 검색어 keyword 바인딩
+        searchHeaderView.searchTextField.rx.text.orEmpty.asObservable()
+            .bind(to: viewModel.searchTextFieldEditEvent)
+            .disposed(by: disposeBag)
         
         // 뷰모델에서 받은 유저 리스트를 커스텀 collectionView의 데이터소스로
         viewModel.userList
@@ -213,6 +217,6 @@ extension FriendsListViewController: RelationshipFriendActionDelegate {
     }
     
     func didFriendRelationshipChanged() {
-        viewModel.requestFriendList()
+        viewModel.requestFriendList(keyword: "", lastPage: 0)
     }
 }

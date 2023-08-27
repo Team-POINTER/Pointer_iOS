@@ -148,6 +148,9 @@
 		F98555272A72B08B00EB6247 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555262A72B08B00EB6247 /* ProfileRouter.swift */; };
 		F985552A2A72B24400EB6247 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98555292A72B24400EB6247 /* ProfileModel.swift */; };
 		F985552D2A72B77100EB6247 /* ProfileNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */; };
+		F9899A352A9B5B7C00B51200 /* BlockedFriendListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9899A342A9B5B7C00B51200 /* BlockedFriendListController.swift */; };
+		F9899A372A9B5BAB00B51200 /* BlockedFriendListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9899A362A9B5BAB00B51200 /* BlockedFriendListViewModel.swift */; };
+		F9899A392A9B618E00B51200 /* BlockedFriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9899A382A9B618E00B51200 /* BlockedFriendModel.swift */; };
 		F9AB8CF72A888E3000BA8309 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */; };
 		F9AB8CF92A88900A00BA8309 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CF82A88900A00BA8309 /* AuthManager.swift */; };
 		F9AB8CFB2A8891D300BA8309 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */; };
@@ -295,6 +298,9 @@
 		F98555262A72B08B00EB6247 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		F98555292A72B24400EB6247 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		F985552C2A72B77100EB6247 /* ProfileNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkManager.swift; sourceTree = "<group>"; };
+		F9899A342A9B5B7C00B51200 /* BlockedFriendListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedFriendListController.swift; sourceTree = "<group>"; };
+		F9899A362A9B5BAB00B51200 /* BlockedFriendListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedFriendListViewModel.swift; sourceTree = "<group>"; };
+		F9899A382A9B618E00B51200 /* BlockedFriendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedFriendModel.swift; sourceTree = "<group>"; };
 		F9AB8CF62A888E3000BA8309 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		F9AB8CF82A88900A00BA8309 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F9AB8CFA2A8891D300BA8309 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
@@ -892,6 +898,7 @@
 				CD5BCC6229F571D700DD44F7 /* PreferenceSectionBackgroundView.swift */,
 				F97A64D62A8FD35B0095BECB /* RemoveAccountController.swift */,
 				F97A64D82A8FD9840095BECB /* RemoveAccountConfirmController.swift */,
+				F9899A342A9B5B7C00B51200 /* BlockedFriendListController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -900,6 +907,7 @@
 			isa = PBXGroup;
 			children = (
 				CD5BCC5929F53B5E00DD44F7 /* PreferenceModel.swift */,
+				F9899A382A9B618E00B51200 /* BlockedFriendModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -908,6 +916,7 @@
 			isa = PBXGroup;
 			children = (
 				CD5BCC5C29F53B8500DD44F7 /* PreferenceViewModel.swift */,
+				F9899A362A9B5BAB00B51200 /* BlockedFriendListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1271,9 +1280,11 @@
 				CD0EE9232A074C210090BF48 /* ProfileInfoParentView.swift in Sources */,
 				CD06677F2A04E8870003C7B4 /* ProfileInfoView.swift in Sources */,
 				CD5BCC6129F546A500DD44F7 /* PreferenceItemHeader.swift in Sources */,
+				F9899A392A9B618E00B51200 /* BlockedFriendModel.swift in Sources */,
 				CD07E59F29CE1EEE00B52885 /* NotificationViewController.swift in Sources */,
 				CD2F79BE2A0FC7910094F81F /* FriendsListViewController.swift in Sources */,
 				CD2DBEC229C62234005E377C /* SearchResultController.swift in Sources */,
+				F9899A352A9B5B7C00B51200 /* BlockedFriendListController.swift in Sources */,
 				473B73A829D18A1700B33C77 /* TermsViewModel.swift in Sources */,
 				F9AB8CF72A888E3000BA8309 /* AppCoordinator.swift in Sources */,
 				478CA0042A623EC4000FA196 /* ResultNetworkManager.swift in Sources */,
@@ -1333,6 +1344,7 @@
 				47CC89602A46844F0020246E /* AuthRouter.swift in Sources */,
 				F9F4EFDB2A8BCE5400BB4D03 /* PushReceiver.swift in Sources */,
 				473B739D29CEE52500B33C77 /* MyResultModel.swift in Sources */,
+				F9899A372A9B5BAB00B51200 /* BlockedFriendListViewModel.swift in Sources */,
 				475B743B2A925FC900C8BB97 /* PointNetworkManager.swift in Sources */,
 				F93C449F2A87B8E5009B04F3 /* PointerFullScreenPhotoView.swift in Sources */,
 				F9F4EFE02A8BDAF700BB4D03 /* NotiDetailFriendsViewModel.swift in Sources */,
@@ -1499,7 +1511,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.92;
+				MARKETING_VERSION = 0.94;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1537,7 +1549,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.92;
+				MARKETING_VERSION = 0.94;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
