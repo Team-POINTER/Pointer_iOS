@@ -14,8 +14,6 @@ class TermsViewModel: ViewModelType {
     let disposeBag = DisposeBag()
     let authResultModel: AuthResultModel
     
-    var serviceAgree = 0
-    var serviceAge = 0
     var marketing = 0
     
     init(authResultModel: AuthResultModel) {
@@ -46,81 +44,75 @@ class TermsViewModel: ViewModelType {
         let output = Output()
         
         input.allAllowTapEvent
-            .scan(false) { lastValue, _ in
-                return !lastValue
-            }.bind(to: output.allAllow)
+            .withLatestFrom(output.allAllow)
+            .bind { b in
+                output.allAllow.accept(!b)
+                output.overAgeAllow.accept(!b)
+                output.serviceAllow.accept(!b)
+                output.privateInfoAllow.accept(!b)
+                output.marketingInfoAllow.accept(!b)
+            }
             .disposed(by: disposeBag)
         
         input.overAgeAllowTapEvent
-            .scan(false) { lastValue, _ in
-                return !lastValue
-            }.bind(to: output.overAgeAllow)
+            .withLatestFrom(output.overAgeAllow)
+            .bind { b in
+                output.overAgeAllow.accept(!b)
+            }
             .disposed(by: disposeBag)
         
         input.serviceAllowTapEvent
-            .scan(false) { lastValue, _ in
-                return !lastValue
-            }.bind(to: output.serviceAllow)
+            .withLatestFrom(output.serviceAllow)
+            .bind { b in
+                output.serviceAllow.accept(!b)
+            }
             .disposed(by: disposeBag)
         
         input.privateInfoAllowTapEvent
-            .scan(false) { lastValue, _ in
-                return !lastValue
-            }.bind(to: output.privateInfoAllow)
+            .withLatestFrom(output.privateInfoAllow)
+            .bind { b in
+                output.privateInfoAllow.accept(!b)
+            }
             .disposed(by: disposeBag)
         
         input.marketingInfoAllowTapEvent
-            .scan(false) { lastValue, _ in
-                return !lastValue
-            }.bind(to: output.marketingInfoAllow)
+            .withLatestFrom(output.marketingInfoAllow)
+            .bind { b in
+                output.marketingInfoAllow.accept(!b)
+            }
             .disposed(by: disposeBag)
         
-        output.allAllow
-            .subscribe(onNext: { b in
-                output.overAgeAllow.accept(b)
-                output.serviceAllow.accept(b)
-                output.privateInfoAllow.accept(b)
-                output.marketingInfoAllow.accept(b)
-                output.nextButtonValid.accept(b)
+        Observable.combineLatest(output.overAgeAllow, output.serviceAllow, output.privateInfoAllow, output.marketingInfoAllow)
+            .map({ (b1, b2, b3, b4) in
+                return (b1, b2, b3, b4)
             })
-            .disposed(by: disposeBag)
-        
-        output.marketingInfoAllow
-            .subscribe(onNext: { [weak self] b in
-                b ? (self?.marketing = 1) : (self?.marketing = 0)
-            })
-            .disposed(by: disposeBag)
-        
-        Observable.combineLatest(output.overAgeAllow, output.serviceAllow, output.privateInfoAllow, resultSelector: { $0 && $1 && $2 })
-            .subscribe(onNext: { [weak self] b in
-                if b {
-                    self?.serviceAgree = 1
-                    self?.serviceAge = 1
+            .subscribe(onNext: { b1, b2, b3, b4 in
+                if b1 && b2 && b3 && b4 {
+                    output.allAllow.accept(true)
                 } else {
-                    self?.serviceAgree = 0
-                    self?.serviceAge = 0
+                    output.allAllow.accept(false)
                 }
-                output.nextButtonValid.accept(b)
+                if b1 && b2 && b3 {
+                    output.nextButtonValid.accept(true)
+                } else {
+                    output.nextButtonValid.accept(false)
+                }
             })
             .disposed(by: disposeBag)
         
         input.nextButtonTapEvent
-            .subscribe(onNext: { [weak self] in
+            .withLatestFrom(output.marketingInfoAllow)
+            .subscribe(onNext: { [weak self] b in
                 guard let self = self,
                       let accessToken = self.authResultModel.tokenDto?.accessToken else { return }
-                let authAgreeInputModel = AuthAgreeInputModel(serviceAgree: self.serviceAgree,
-                                                              serviceAge: self.serviceAge,
-                                                              marketing: self.marketing)
-                print("동의 내용: \(authAgreeInputModel)")
+                let marketingBool = (b == true ? 1 : 0)
                 
-                AuthNetworkManager.shared.agreePost(authAgreeInputModel, accessToken) { authResultModel in
-                    if authResultModel.code == LoginResultType.serviceAgreeUser.rawValue {
-                        let createUserIdViewModel = CreateUserIDViewModel(authResultModel: self.authResultModel)
-                        let createUserIdViewController = CreateUserIDViewController(viewModel: createUserIdViewModel)
-                        output.nextButtonTap.accept(createUserIdViewController)
-                    } else {
-                        print("약관동의하지 않았습니다. 다시 확인해주세요.")
-                    }
+                let authAgreeInputModel = AuthAgreeInputModel(serviceAgree: 1,
+                                                              serviceAge: 1,
+                                                              marketing: marketingBool)
+                
+                self.requestNextViewController(model: authAgreeInputModel, accessToken: accessToken) { vc in
+                    output.nextButtonTap.accept(vc)
                 }
             })
             .disposed(by: disposeBag)
@@ -128,5 +120,15 @@ class TermsViewModel: ViewModelType {
         return output
     }
     
-    
+    func requestNextViewController(model: AuthAgreeInputModel, accessToken: String, completion: @escaping(UIViewController) -> Void) {
+        AuthNetworkManager.shared.agreePost(model, accessToken) { authResultModel in
+            if authResultModel.code == LoginResultType.serviceAgreeUser.rawValue {
+                let createUserIdViewModel = CreateUserIDViewModel(authResultModel: self.authResultModel)
+                let createUserIdViewController = CreateUserIDViewController(viewModel: createUserIdViewModel)
+                completion(createUserIdViewController)
+            } else {
+                print("약관동의하지 않았습니다. 다시 확인해주세요.")
+            }
+        }
+    }
 }
