@@ -84,7 +84,6 @@
 		CD0EE9302A0804C00090BF48 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CD0EE92F2A0804C00090BF48 /* RxRelay */; };
 		CD0EE9322A0804C00090BF48 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD0EE9312A0804C00090BF48 /* RxSwift */; };
 		CD0EE9352A08050B0090BF48 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = CD0EE9342A08050B0090BF48 /* RxGesture */; };
-		CD15E17A2A1BC13C00A8E643 /* SendbirdUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = CD15E1792A1BC13C00A8E643 /* SendbirdUIKit */; };
 		CD23207A29B8C6EB003D0B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207929B8C6EB003D0B84 /* AppDelegate.swift */; };
 		CD23207C29B8C6EB003D0B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD23207B29B8C6EB003D0B84 /* SceneDelegate.swift */; };
 		CD23208329B8C6EC003D0B84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD23208229B8C6EC003D0B84 /* Assets.xcassets */; };
@@ -338,7 +337,6 @@
 				F94CD6C22A85169E00A808B9 /* YPImagePicker in Frameworks */,
 				47117CAE29CB0367001707C8 /* FloatingPanel in Frameworks */,
 				CD0EE9322A0804C00090BF48 /* RxSwift in Frameworks */,
-				CD15E17A2A1BC13C00A8E643 /* SendbirdUIKit in Frameworks */,
 				CD2DBEBE29C61D28005E377C /* BetterSegmentedControl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1144,7 +1142,6 @@
 				CD0EE9342A08050B0090BF48 /* RxGesture */,
 				CDEC90502A0A80B100EA437D /* IQKeyboardManagerSwift */,
 				CD2F79C62A0FD34B0094F81F /* RxDataSources */,
-				CD15E1792A1BC13C00A8E643 /* SendbirdUIKit */,
 				F94CD6C12A85169E00A808B9 /* YPImagePicker */,
 				F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */,
 				F948AF002A860A7400DDC698 /* NVActivityIndicatorViewExtended */,
@@ -1188,7 +1185,6 @@
 				CD0EE9332A08050B0090BF48 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				CDEC904F2A0A80B100EA437D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				CD2F79C52A0FD34B0094F81F /* XCRemoteSwiftPackageReference "RxDataSources" */,
-				CD15E1782A1BC13C00A8E643 /* XCRemoteSwiftPackageReference "sendbird-uikit-ios-spm" */,
 				F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 				F948AEFD2A860A7400DDC698 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 				F97A64D12A8FC72E0095BECB /* XCRemoteSwiftPackageReference "Toast-Swift" */,
@@ -1617,14 +1613,6 @@
 				minimumVersion = 4.0.0;
 			};
 		};
-		CD15E1782A1BC13C00A8E643 /* XCRemoteSwiftPackageReference "sendbird-uikit-ios-spm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sendbird/sendbird-uikit-ios-spm.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		CD2DBEBC29C61D28005E377C /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gmarm/BetterSegmentedControl.git";
@@ -1721,11 +1709,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD0EE9332A08050B0090BF48 /* XCRemoteSwiftPackageReference "RxGesture" */;
 			productName = RxGesture;
-		};
-		CD15E1792A1BC13C00A8E643 /* SendbirdUIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD15E1782A1BC13C00A8E643 /* XCRemoteSwiftPackageReference "sendbird-uikit-ios-spm" */;
-			productName = SendbirdUIKit;
 		};
 		CD2DBEBD29C61D28005E377C /* BetterSegmentedControl */ = {
 			isa = XCSwiftPackageProductDependency;

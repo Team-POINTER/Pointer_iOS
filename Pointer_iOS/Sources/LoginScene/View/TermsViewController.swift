@@ -26,7 +26,12 @@ class TermsViewController: BaseViewController {
     
 //MARK: - RX
     func bindViewModel() {
-        let input = TermsViewModel.Input(allAllowTapEvent: checkBoxAll.rx.tap.asObservable(), overAgeAllowTapEvent: checkBox1.rx.tap.asObservable(), serviceAllowTapEvent: checkBox2.rx.tap.asObservable(), privateInfoAllowTapEvent: checkBox3.rx.tap.asObservable(), marketingInfoAllowTapEvent: checkBox4.rx.tap.asObservable(), nextButtonTapEvent: nextButton.rx.tap.asObservable())
+        let input = TermsViewModel.Input(allAllowTapEvent: checkBoxAll.rx.tap.asObservable(),
+                                         overAgeAllowTapEvent: checkBox1.rx.tap.asObservable(),
+                                         serviceAllowTapEvent: checkBox2.rx.tap.asObservable(),
+                                         privateInfoAllowTapEvent: checkBox3.rx.tap.asObservable(),
+                                         marketingInfoAllowTapEvent: checkBox4.rx.tap.asObservable(),
+                                         nextButtonTapEvent: nextButton.rx.tap.asObservable())
         
         let output = viewModel.transform(input: input)
         

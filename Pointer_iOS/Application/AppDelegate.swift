@@ -11,7 +11,6 @@ import IQKeyboardManagerSwift
 import KakaoSDKCommon
 import KakaoSDKUser
 import KakaoSDKAuth
-import SendbirdUIKit
 
 
 @main
