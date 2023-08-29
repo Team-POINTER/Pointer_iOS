@@ -20,7 +20,7 @@ class SearchController: BaseViewController {
     let searchBar: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.backgroundColor = .darkGray
+        tf.backgroundColor = UIColor.navBackColor
         tf.attributedPlaceholder = NSMutableAttributedString(string: "검색어를 입력하세요.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.pointerGray, NSAttributedString.Key.font: UIFont.notoSansRegular(size: 13)])
         tf.textColor = .white
         tf.heightAnchor.constraint(equalToConstant: Device.navigationBarHeight).isActive = true
@@ -92,7 +92,22 @@ class SearchController: BaseViewController {
                 }
             }.disposed(by: disposeBag)
         
+        output.tapedNextViewController
+            .bind { [weak self] viewController in
+                if let vc = viewController {
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
         
+        viewModel.presenter
+            .bind { [weak self] viewController in
+                if let vc = viewController {
+                    let nav = BaseNavigationController.templateNavigationController(nil, viewController: vc)
+                    self?.tabBarController?.presentWithNavigationPushStyle(nav)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Selector

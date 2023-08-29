@@ -207,8 +207,11 @@ extension HomeController: RoomPreviewCellDelegate {
             let alert = self.viewModel.getModifyRoomNameAlert(currentName, roomId: roomId)
             self.present(alert, animated: true)
         }
-        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
-            print("DEBUG - 링크로 룸 초대 눌림")
+        let inviteRoomWithLink = PointerAlertActionConfig(title: "친구 초대하기", textColor: .black) { [weak self] _ in
+            let viewModel = FriendsListViewModel(listType: .select, roomId: roomId)
+            let viewController = FriendsListViewController(viewModel: viewModel)
+            viewController.delegate = self
+            self?.navigationController?.pushViewController(viewController, animated: true)
         }
         let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
             self?.reportTap(roomId: roomId, currentName: currentName, questionId: questionId, questionCreatorId: questionCreatorId)
@@ -249,5 +252,12 @@ extension HomeController: RoomPreviewCellDelegate {
         fpc.set(contentViewController: reportVC)
         fpc.track(scrollView: reportVC.scrollView)
         self.present(fpc, animated: true)
+    }
+}
+
+//MARK: - FriendsListViewControllerDelegate
+extension HomeController: FriendsListViewControllerDelegate {
+    func dismissInviteView() {
+        self.viewModel.requestRoomList()
     }
 }

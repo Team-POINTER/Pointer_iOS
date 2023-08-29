@@ -284,7 +284,7 @@ final class RoomViewModel: ViewModelType {
         guard let roomName = changeTo else { return }
         let input = RoomNameChangeInput(privateRoomNm: roomName, roomId: roomId, userId: TokenManager.getIntUserId())
         HomeNetworkManager.shared.requestRoomNameChange(input: input) { [weak self] response in
-            if response.code == "J000" {
+            if response.code == "P000" {
                 // ToDo - 이녀석을 다시 부르는 방법은 .. ?
                 self?.dismissRoom.accept(true)
             }
