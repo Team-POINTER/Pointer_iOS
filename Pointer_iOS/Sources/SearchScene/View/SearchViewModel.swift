@@ -13,15 +13,17 @@ final class SearchViewModel: ViewModelType {
 //MARK: - Properties
     let disposeBag = DisposeBag()
     let searchRoomResult = PublishRelay<PointerRoomListModel>()
-    let searchAccountResult = PublishRelay<[SearchUserListModel]>()
+    let searchAccountResult = BehaviorRelay<[SearchUserListModel]>(value: [])
 
     let tapedRoomResult = PublishRelay<PointerRoomModel>()
     let tapedProfileResult = PublishRelay<SearchUserListModel>()
     
     let presenter = BehaviorRelay<UIViewController?>(value: nil)
     
-    private var currentPage = 0
+    let refetchUserResult = BehaviorRelay<Void?>(value: nil)
     
+    var lastIndex: Bool = false
+    var nextPage: Int?
     var lastSearchedKeyword = ""
  
 //MARK: - In/Out
@@ -42,7 +44,7 @@ final class SearchViewModel: ViewModelType {
                 guard let text = text.element,
                       let self = self else { return }
                 self.requestRoomList("\(text)")
-                self.requestAccountList(word: "\(text)", lastPage: self.currentPage)
+                self.requestAccountList(word: "\(text)", lastPage: self.nextPage)
                 self.lastSearchedKeyword = text
             }
             .disposed(by: disposeBag)
@@ -72,6 +74,19 @@ final class SearchViewModel: ViewModelType {
                 let viewModel = ProfileViewModel(userId: model.userId)
                 let profileVC = ProfileViewController(viewModel: viewModel)
                 output.tapedNextViewController.accept(profileVC)
+            }
+            .disposed(by: disposeBag)
+        
+        refetchUserResult
+            .subscribe { [weak self] _ in
+                guard let self = self,
+                      let nextPage = self.nextPage else { return }
+                if self.lastIndex == true {
+                    print("마지막 인덱스 입니다.")
+                } else {
+                    self.requestAccountList(word: self.lastSearchedKeyword, lastPage: nextPage)
+                }
+                
             }
             .disposed(by: disposeBag)
         
@@ -122,8 +137,8 @@ final class SearchViewModel: ViewModelType {
     }
     
     // 유저 검색
-    func requestAccountList(word: String, lastPage: Int) {
-        FriendSearchNetworkManager.shared.searchUserListRequest(keyword: word, lastPage: lastPage) { [weak self] (model, error) in
+    func requestAccountList(word: String, lastPage: Int?, completion: (() -> Void)? = nil) {
+        FriendSearchNetworkManager.shared.searchUserListRequest(keyword: word, lastPage: lastPage ?? 0) { [weak self] (model, error) in
             guard let self = self else { return }
             
             if let error = error {
@@ -132,9 +147,15 @@ final class SearchViewModel: ViewModelType {
             }
             
             if let model = model {
-                print(model.userList)
-                self.searchAccountResult.accept(model.userList)
-                self.currentPage = model.currentPage
+                
+                if model.userList.isEmpty {
+                    self.lastIndex = true
+                } else {
+                    var accountModels = self.searchAccountResult.value
+                    accountModels.append(contentsOf: model.userList)
+                    self.searchAccountResult.accept(accountModels)
+                    self.nextPage = model.currentPage + 1
+                }
             }
         }
     }
