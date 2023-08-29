@@ -14,6 +14,11 @@ final class SearchViewModel: ViewModelType {
     let disposeBag = DisposeBag()
     let searchRoomResult = PublishRelay<PointerRoomListModel>()
     let searchAccountResult = PublishRelay<[SearchUserListModel]>()
+
+    let tapedRoomResult = PublishRelay<PointerRoomModel>()
+    let tapedProfileResult = PublishRelay<SearchUserListModel>()
+    
+    let presenter = BehaviorRelay<UIViewController?>(value: nil)
     
     private var currentPage = 0
     
@@ -25,7 +30,7 @@ final class SearchViewModel: ViewModelType {
     }
     
     struct Output {
-        
+        let tapedNextViewController = BehaviorRelay<UIViewController?>(value: nil)
     }
     
 //MARK: - Rxswift Transform
@@ -39,6 +44,34 @@ final class SearchViewModel: ViewModelType {
                 self.requestRoomList("\(text)")
                 self.requestAccountList(word: "\(text)", lastPage: self.currentPage)
                 self.lastSearchedKeyword = text
+            }
+            .disposed(by: disposeBag)
+        
+        tapedRoomResult
+            .subscribe { [weak self] model in
+                guard let model = model.element else { return }
+                
+                if model.voted {
+                    let resultVM = ResultViewModel(model.roomId, model.questionId, model.limitedAt)
+                    let resultVC = ResultViewController(viewModel: resultVM)
+                    resultVC.delegate = self
+                    self?.presenter.accept(resultVC)
+                } else {
+                    let roomVM = RoomViewModel(roomId: model.roomId)
+                    let roomVC = RoomViewController(viewModel: roomVM)
+                    roomVC.delegate = self
+                    output.tapedNextViewController.accept(roomVC)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        tapedProfileResult
+            .subscribe { model in
+                guard let model = model.element else { return }
+                
+                let viewModel = ProfileViewModel(userId: model.userId)
+                let profileVC = ProfileViewController(viewModel: viewModel)
+                output.tapedNextViewController.accept(profileVC)
             }
             .disposed(by: disposeBag)
         
@@ -101,3 +134,19 @@ final class SearchViewModel: ViewModelType {
 //    }
 }
 
+extension SearchViewModel: ResultViewControllerDelegate {
+    func didChangedRoomStateFromResultVC() {
+        self.requestRoomList(lastSearchedKeyword)
+    }
+}
+
+
+extension SearchViewModel: RoomViewControllerDelegate {
+    func didChangedRoomStateFromRoomVC() {
+        self.requestRoomList(lastSearchedKeyword)
+    }
+    
+    func tapedPoint(viewController: UIViewController) {
+        self.presenter.accept(viewController)
+    }
+}

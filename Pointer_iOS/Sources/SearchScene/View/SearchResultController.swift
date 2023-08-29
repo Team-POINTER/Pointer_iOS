@@ -128,14 +128,11 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch resultType {
         case .room:
-            //
-            break
+            let model = roomData[indexPath.row]
+            viewModel.tapedRoomResult.accept(model)
         case .account:
             let model = accountData[indexPath.row]
-            let viewModel = ProfileViewModel(userId: model.userId)
-            let profileVC = ProfileViewController(viewModel: viewModel)
-            
-            self.navigationController?.pushViewController(profileVC, animated: true)
+            viewModel.tapedProfileResult.accept(model)
         }
     }
 }
