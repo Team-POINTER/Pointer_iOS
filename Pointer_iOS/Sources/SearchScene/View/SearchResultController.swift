@@ -139,20 +139,20 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) { // scrollView가 스크롤 되었을 때 실행 될 이벤트
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let height = scrollView.frame.height // 스크롤뷰의 전체 높이
         let contentSizeHeight = scrollView.contentSize.height // 전체 콘텐츠 영역의 높이
         let offset = scrollView.contentOffset.y // 클릭 위치
         let reachedBottom = (offset > contentSizeHeight - height) // (클릭 지점 + 스크롤뷰 높이 == 전체 컨텐츠 높이) -> Bool
 
         if resultType == .account {
-            if reachedBottom { // 스크롤이 바닥에 닿았다면 서버에 추가 데이터 요청
+            if reachedBottom { // 스크롤이 바닥에 닿았다면
               scrollViewDidReachBottom(scrollView)
             }
         }
     }
     
-    func scrollViewDidReachBottom(_ scrollView: UIScrollView) { // 서버에 데이터 요청 코드
+    func scrollViewDidReachBottom(_ scrollView: UIScrollView) {
         viewModel.refetchUserResult.accept(())
     }
 }

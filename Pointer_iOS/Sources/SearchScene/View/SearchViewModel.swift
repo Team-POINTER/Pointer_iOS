@@ -137,7 +137,7 @@ final class SearchViewModel: ViewModelType {
     }
     
     // 유저 검색
-    func requestAccountList(word: String, lastPage: Int?, completion: (() -> Void)? = nil) {
+    func requestAccountList(word: String, lastPage: Int?) {
         FriendSearchNetworkManager.shared.searchUserListRequest(keyword: word, lastPage: lastPage ?? 0) { [weak self] (model, error) in
             guard let self = self else { return }
             
@@ -185,22 +185,6 @@ final class SearchViewModel: ViewModelType {
             }
         }
     }
-    
-    // 친구 신청, 취소, 수락, 삭제, 거절, 차단, 차단 해제 - 지수님거로 변경 예정
-//    func requestChangingFriendRelation(relation: FriendRelation, memberId: Int) {
-//        FriendNetworkManager.shared.changeFriendRelationRequest(relation: relation, memberId: memberId) { [weak self] (model, error) in
-//            guard let self = self else { return }
-//
-//            if let error = error {
-//                print(error.localizedDescription)
-//                return
-//            }
-//
-//            if let model = model {
-//                print(model)
-//            }
-//        }
-//    }
 }
 
 extension SearchViewModel: ResultViewControllerDelegate {
