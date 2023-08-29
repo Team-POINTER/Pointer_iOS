@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import FloatingPanel
 
 private let roomCellReuseIdentifier = "RoomPreviewCell"
 private let accountCellReuseIdentifier = "AccountInfoCell"
@@ -29,7 +30,6 @@ class SearchResultController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private var roomData: [PointerRoomModel] = []
-    
     private var accountData: [SearchUserListModel] = []
     
     private let collectionView: UICollectionView = {
@@ -40,6 +40,7 @@ class SearchResultController: UIViewController {
         return cv
     }()
 
+    private lazy var fpc = FloatingPanelController.getFloatingPanelViewController(delegate: self)
     
     //MARK: - Lifecycle
     init(withResultType type: ResultType, viewModel: SearchViewModel) {
@@ -109,7 +110,7 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: roomCellReuseIdentifier, for: indexPath) as? RoomPreviewCell else { return UICollectionViewCell() }
             
             let model = RoomCellViewModel(roomModel: roomData[indexPath.row])
-            
+            cell.delegate = self
             cell.roomViewModel = model
             
             return cell
@@ -164,5 +165,58 @@ extension SearchResultController: RelationshipFriendActionDelegate {
     
     func didFriendRelationshipChanged() {
         viewModel.requestAccountList(word: viewModel.lastSearchedKeyword, lastPage: 0)
+    }
+}
+
+//MARK: - RoomCellDelegate
+extension SearchResultController: RoomPreviewCellDelegate {
+    func roomCellActionImageTapped(roomId: Int, currentName: String, questionId: Int, questionCreatorId: Int) {
+        let modifyRoomName = PointerAlertActionConfig(title: "룸 이름 편집", textColor: .black) { [weak self] _ in
+            guard let self = self else { return }
+            let alert = self.viewModel.getModifyRoomNameAlert(currentName, roomId: roomId)
+            self.present(alert, animated: true)
+        }
+        let inviteRoomWithLink = PointerAlertActionConfig(title: "링크로 룸 초대", textColor: .black) { _ in
+            print("DEBUG - 링크로 룸 초대 눌림")
+        }
+        let report = PointerAlertActionConfig(title: "질문 신고하기", textColor: .red) { [weak self] _ in
+            self?.reportTap(roomId: roomId, currentName: currentName, questionId: questionId, questionCreatorId: questionCreatorId)
+        }
+        let exitRoom = PointerAlertActionConfig(title: "룸 나가기", textColor: .pointerRed, font: .boldSystemFont(ofSize: 18)) { [weak self] _ in
+            guard let alert = self?.viewModel.getExitRoomAlert(roomId: roomId) else { return }
+            self?.present(alert, animated: true)
+        }
+        let actionSheet = PointerAlert(alertType: .actionSheet,
+                                       configs: [modifyRoomName, inviteRoomWithLink, report, exitRoom],
+                                       title: "룸 '\(currentName)'에 대해")
+        present(actionSheet, animated: true)
+    }
+    
+    func reportTap(roomId: Int, currentName: String, questionId: Int, questionCreatorId: Int) {
+        var sheetConfig = [PointerAlertActionConfig]()
+        
+        ReasonCode.allCases.forEach { type in
+            let config = PointerAlertActionConfig(title: type.reason, textColor: .black) { [weak self] _ in
+                self?.presentReportView(roomId: roomId, currentName: currentName, questionId: questionId, questionCreatorId: questionCreatorId, reasonCode: type.rawValue, presentingReason: type.reason)
+            }
+            sheetConfig.append(config)
+        }
+        
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: sheetConfig, title: "신고 사유")
+        present(actionSheet, animated: true)
+    }
+    
+    func presentReportView(roomId: Int, currentName: String, questionId: Int, questionCreatorId: Int, reasonCode: String, presentingReason: String) {
+        let reportVM = ReportViewModel(roomId: roomId,
+                                       questionId: questionId,
+                                       type: .question,
+                                       targetUserId: questionCreatorId,
+                                       presentingReason: presentingReason,
+                                       reasonCode: reasonCode)
+        
+        let reportVC = ReportViewController(viewModel: reportVM)
+        fpc.set(contentViewController: reportVC)
+        fpc.track(scrollView: reportVC.scrollView)
+        self.present(fpc, animated: true)
     }
 }
