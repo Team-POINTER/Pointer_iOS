@@ -86,6 +86,7 @@ class RelationshipFriendActionView: UIView {
     }
     
     @objc private func actionButtonTapped() {
+        guard relationship != .`self` else { return }
         // Alert 뷰 만들어서 확인
         let alert = PointerAlert.getActionAlert(
             title: relationship.alertTitle,
@@ -93,8 +94,9 @@ class RelationshipFriendActionView: UIView {
                                                        targetId: userStringId),
             actionTitle: relationship.alertActionTitle) { [weak self] _ in
                 // Alert 액션
-                guard let self = self else { return }
-                self.network.requestFriendAction(self.userId, router: self.relationship.router) { isSuccessed in
+                guard let self = self,
+                      let router = self.relationship.router else { return }
+                self.network.requestFriendAction(self.userId, router: router) { isSuccessed in
                     if isSuccessed {
                         self.delegate?.didFriendRelationshipChanged()
                     }

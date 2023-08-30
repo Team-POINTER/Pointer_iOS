@@ -1507,7 +1507,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.94;
+				MARKETING_VERSION = 0.95;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1545,7 +1545,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.94;
+				MARKETING_VERSION = 0.95;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pointerApp.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

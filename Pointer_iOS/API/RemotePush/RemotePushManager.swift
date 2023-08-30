@@ -84,7 +84,7 @@ class RemotePushManager {
     }
     
     // 알림 리스트 호출
-    func requestRoomNotiDetailList(completion: @escaping ([RoomAlarmList]) -> Void) {
+    func requestRoomNotiDetailList(completion: @escaping (NotiDetailRoomResponse?) -> Void) {
         let router = RemotePushRouter.getRoomPushList(lastPage: 0)
         AF.request(router.url, method: router.method, headers: router.headers)
             .validate(statusCode: 200..<500)
@@ -93,19 +93,17 @@ class RemotePushManager {
                 case .success(let result):
                     print(result)
                     if result.code == router.successCode {
-                        completion(result.result.alarmList)
-                    } else {
-                        completion([])
-                    }
+                        completion(result)
+                    } else { completion(nil) }
                 case .failure(let error):
                     print(error)
-                    completion([])
+                    completion(nil)
                 }
             }
     }
     
     // 친구 알림 리스트 호출
-    func requestFriendNotiDetailList(completion: @escaping ([FriendAlarmList]) -> Void) {
+    func requestFriendNotiDetailList(completion: @escaping (NotiDetailFriendResponse?) -> Void) {
         let router = RemotePushRouter.getFriendPushList(lastPage: 0)
         AF.request(router.url, method: router.method, headers: router.headers)
             .validate(statusCode: 200..<500)
@@ -114,13 +112,43 @@ class RemotePushManager {
                 case .success(let result):
                     print(result)
                     if result.code == router.successCode {
-                        completion(result.result)
+                        completion(result)
+                    } else { completion(nil) }
+                case .failure(let error):
+                    print(error)
+                    completion(nil)
+                }
+            }
+    }
+    
+    // 새로운 알림 갯수 조회
+    func requestNewAlarmCount(completion: @escaping (Int?) -> Void) {
+        
+        struct NewNotiCountResponse: Decodable {
+            let code: String
+            let message: String
+            let result: NewNotiCount
+        }
+
+        struct NewNotiCount: Decodable {
+            let newAlarmCnt: Int
+        }
+
+        
+        let router = RemotePushRouter.getNewNotiCount
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .responseDecodable(of: NewNotiCountResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    print(data)
+                    if data.code == router.successCode {
+                        completion(data.result.newAlarmCnt)
                     } else {
-                        completion([])
+                        completion(nil)
                     }
                 case .failure(let error):
                     print(error)
-                    completion([])
+                    completion(nil)
                 }
             }
     }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SendbirdUIKit
 
 class BaseTabBarController: UITabBarController {
     //MARK: - Properties

@@ -11,6 +11,7 @@ import RxCocoa
 import RxRelay
 
 protocol NotiDetailViewModel {
+    var delegate: NewNotiIconDelegate? { get set }
     var dataSources: BehaviorRelay<[Any]> { get set }
     var disposeBag: DisposeBag { get set }
     var nextViewController: PublishRelay<UIViewController?> { get set }

@@ -25,6 +25,8 @@ enum RemotePushRouter {
     case getRoomPushList(lastPage: Int)
     /// Friend 알림 리스트 조회
     case getFriendPushList(lastPage: Int)
+    /// 새로운 알림 개수 조회
+    case getNewNotiCount
 }
 
 extension RemotePushRouter: HttpRouter {
@@ -55,6 +57,8 @@ extension RemotePushRouter: HttpRouter {
             return "/alarm/\(lastPage)"
         case .getFriendPushList(let lastPage):
             return "/alarm/friend/\(lastPage)"
+        case .getNewNotiCount:
+            return "/alarm/unread"
         }
     }
     
@@ -66,7 +70,7 @@ extension RemotePushRouter: HttpRouter {
             return .get
         case .totalNotiEnable, .activityNotiEnable, .chatNotiEnable, .eventNotiEnable:
             return .post
-        case .getRoomPushList, .getFriendPushList:
+        case .getRoomPushList, .getFriendPushList, .getNewNotiCount:
             return .get
         }
     }

@@ -81,6 +81,11 @@ class AccountInfoCell: UICollectionViewCell {
         guard let model = accountModel else { return }
         userAccountLabel.text = model.id
         userNameLabel.text = model.userName
+        userProfilImageView.kf.indicatorType = .activity
+        if let file = model.file,
+           let url = URL(string: file) {
+            userProfilImageView.kf.setImage(with: url)
+        }
         
         // relationship에 따른 액션 버튼 뷰
         let relationShip = Relationship(rawValue: model.relationship) ?? .none

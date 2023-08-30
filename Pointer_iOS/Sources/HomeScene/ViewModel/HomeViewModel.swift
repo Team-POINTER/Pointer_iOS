@@ -13,12 +13,20 @@ import RxCocoa
 class HomeViewModel: ViewModelType {
     
 //MARK: - Properties
-    var disposeBag = DisposeBag()
+    /// 룸 정보의 배열
     let roomModel = BehaviorRelay<[PointerRoomModel]>(value: [])
+    /// push 해야하는 다음 뷰 컨트롤러
     let pusher = BehaviorRelay<UIViewController?>(value: nil)
+    /// present 해야 하는 다음 뷰 컨트롤러
     let presenter = BehaviorRelay<UIViewController?>(value: nil)
+    /// 만료된 토큰 Response
     let expiredToken = BehaviorRelay<Bool>(value: false)
-    let network = HomeNetworkManager()
+    /// 새로운 알림의 개수
+    let newNotiCount = BehaviorRelay<Int>(value: 0)
+    
+    private var disposeBag = DisposeBag()
+    private let network = HomeNetworkManager()
+    private lazy var notiNetwork = RemotePushManager()
 
     
 //MARK: - In/Out
@@ -145,6 +153,14 @@ class HomeViewModel: ViewModelType {
                 // ToDo - 이녀석을 다시 부르는 방법은 .. ?
                 self?.requestRoomList()
             }
+        }
+    }
+    
+    // 새로운 알림 갯수 조회
+    func requestNewNotiCount() {
+        notiNetwork.requestNewAlarmCount { [weak self] count in
+            guard let count = count else { return }
+            self?.newNotiCount.accept(count)
         }
     }
     
