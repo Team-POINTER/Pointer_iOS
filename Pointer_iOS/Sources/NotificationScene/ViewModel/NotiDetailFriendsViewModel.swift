@@ -13,6 +13,7 @@ import RxRelay
 class NotiDetailFriendsViewModel: NotiDetailViewModel {
     
     //MARK: - Properties
+    weak var delegate: NewNotiIconDelegate?
     var dataSources = BehaviorRelay<[Any]>(value: [])
     var nextViewController = PublishRelay<UIViewController?>()
     var disposeBag = DisposeBag()
@@ -42,8 +43,10 @@ class NotiDetailFriendsViewModel: NotiDetailViewModel {
     
     //MARK: - API
     func requestData() {
-        network.requestFriendNotiDetailList { [weak self] list in
-            self?.dataSources.accept(list)
+        network.requestFriendNotiDetailList { [weak self] response in
+            guard let response = response else { return }
+            self?.dataSources.accept(response.result)
+            self?.delegate?.friendNotiDidRead()
         }
     }
 }

@@ -14,6 +14,7 @@ enum Relationship: Int {
     case friend = 3
     case friendRejected = 4
     case none = 5
+    case `self` = 6
     case requestRejectConfig = 88
     
     // 버튼 배경색
@@ -21,7 +22,7 @@ enum Relationship: Int {
         switch self {
         case .friendRequestReceived, .block, .none, .friendRejected:
             return .pointerRed
-        case .friend, .requestRejectConfig, .friendRequested:
+        case .friend, .requestRejectConfig, .friendRequested, .`self`:
             return .darkGray
         }
     }
@@ -45,6 +46,8 @@ enum Relationship: Int {
             return getButtonTitle(title: "친구 신청")
         case .requestRejectConfig:
             return getButtonTitle(title: "거절")
+        case .`self`:
+            return getButtonTitle(title: "나")
         }
     }
     
@@ -62,6 +65,8 @@ enum Relationship: Int {
             return getButtonTitle(title: "친구 신청", size: 11)
         case .requestRejectConfig:
             return getButtonTitle(title: "거절", size: 11)
+        case .`self`:
+            return getButtonTitle(title: "나", size: 11)
         }
     }
     
@@ -74,6 +79,7 @@ enum Relationship: Int {
         case .friend: return "친구 해제"
         case .friendRejected, .none: return "친구 요청"
         case .requestRejectConfig: return "요청 거절"
+        case .`self`: return ""
         }
     }
     
@@ -86,6 +92,7 @@ enum Relationship: Int {
         case .friend: return "해제"
         case .friendRejected, .none: return "요청"
         case .requestRejectConfig: return "거절"
+        case .`self`: return ""
         }
     }
     
@@ -102,11 +109,12 @@ enum Relationship: Int {
         case .friend: return "\(targetName)(\(targetId))님과\n친구를 해제하시겠어요?"
         case .friendRejected, .none: return "\(targetName)(\(targetId))님에게 친구를 요청하시겠어요?"
         case .requestRejectConfig: return "\(targetName)(\(targetId))님의 요청을 거절하시겠어요?"
+        case .`self`: return ""
         }
     }
     
     // 네트워크 요청 라우터
-    var router: FriendRouter {
+    var router: FriendRouter? {
         switch self {
         case .block: return .cancelBlockFriend
         case .friendRequested: return .cancelRequestFriend
@@ -114,6 +122,7 @@ enum Relationship: Int {
         case .friend: return .breakFreind
         case .friendRejected, .none: return .requestFriend
         case .requestRejectConfig: return .rejectFriendRequest
+        case .`self`: return nil
         }
     }
     

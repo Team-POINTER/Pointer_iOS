@@ -10,11 +10,11 @@ import RxSwift
 import RxCocoa
 
 final class SearchViewModel: ViewModelType {
-//MARK: - Properties
+    //MARK: - Properties
     let disposeBag = DisposeBag()
     let searchRoomResult = PublishRelay<PointerRoomListModel>()
     let searchAccountResult = BehaviorRelay<[SearchUserListModel]>(value: [])
-
+    
     let tapedRoomResult = PublishRelay<PointerRoomModel>()
     let tapedProfileResult = PublishRelay<SearchUserListModel>()
     
@@ -25,8 +25,9 @@ final class SearchViewModel: ViewModelType {
     var lastIndex: Bool = false
     var nextPage: Int?
     var lastSearchedKeyword = ""
- 
-//MARK: - In/Out
+    var lastArrayCount: Int?
+    
+    //MARK: - In/Out
     struct Input {
         let searchBarTextEditEvent: Observable<String>
     }
@@ -35,7 +36,7 @@ final class SearchViewModel: ViewModelType {
         let tapedNextViewController = BehaviorRelay<UIViewController?>(value: nil)
     }
     
-//MARK: - Rxswift Transform
+    //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
         let output = Output()
         
@@ -93,7 +94,7 @@ final class SearchViewModel: ViewModelType {
         return output
     }
     
-//MARK: - Functions
+    //MARK: - Functions
     // ToDo - 알림 뷰 중복코드 정리
     func getModifyRoomNameAlert(_ currentName: String, roomId: Int) -> PointerAlert {
         // 0. 취소 Action
@@ -107,7 +108,7 @@ final class SearchViewModel: ViewModelType {
         let alert = PointerAlert(alertType: .alert, configs: [cancelAction, confirmAction], title: "방 이름 변경", description: "변경할 이름을 입력해주세요", customView: customView)
         return alert
     }
-
+    
     func getExitRoomAlert(roomId: Int) -> PointerAlert {
         let cancelAction = PointerAlertActionConfig(title: "취소", textColor: .black, backgroundColor: .clear, font: .notoSansRegular(size: 15), handler: nil)
         let confirmAction = PointerAlertActionConfig(title: "나가기", textColor: .pointerRed, backgroundColor: .clear, font: .notoSansRegular(size: 15)) { [weak self] _ in
@@ -119,7 +120,7 @@ final class SearchViewModel: ViewModelType {
     
     
     
-//MARK: - Network
+    //MARK: - Network
     // 룸 목록 조회
     func requestRoomList(_ word: String) {
         HomeNetworkManager.shared.requestRoomList(word) { [weak self] model, error in
@@ -155,6 +156,7 @@ final class SearchViewModel: ViewModelType {
                     accountModels.append(contentsOf: model.userList)
                     self.searchAccountResult.accept(accountModels)
                     self.nextPage = model.currentPage + 1
+                    self.lastArrayCount = model.userList.count
                 }
             }
         }
@@ -183,6 +185,21 @@ final class SearchViewModel: ViewModelType {
             } else {
                 print("실패")
             }
+        }
+    }
+    
+    func didFriendRelationChanged() {
+        guard let nextPage = nextPage,
+              let lastArrayCount = lastArrayCount else { return }
+        let currentPage = nextPage - 1
+        var resultArray = self.searchAccountResult.value
+        let removeStartIndex = resultArray.count - lastArrayCount
+        resultArray.removeSubrange(removeStartIndex...resultArray.count - 1)
+        
+        FriendSearchNetworkManager.shared.searchUserListRequest(keyword: lastSearchedKeyword, lastPage: currentPage) { [weak self] model, error in
+            guard let model = model else { return }
+            resultArray.append(contentsOf: model.userList)
+            self?.searchAccountResult.accept(resultArray)
         }
     }
 }

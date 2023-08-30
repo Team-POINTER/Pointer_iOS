@@ -13,11 +13,11 @@ extension UIBarButtonItem {
     
     static func getPointerBackBarButton(target: UIViewController, handler: Selector) -> UIBarButtonItem {
         let backButtonImage = UIImage(systemName: "chevron.backward")
-        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, size: Device.navigationBarHeight, target: target, handler: handler)
+        let backButton = UIBarButtonItem.getPointerBarButton(withIconimage: backButtonImage, target: target, handler: handler)
         return backButton
     }
     
-    static func getPointerBarButton(withIconimage image: UIImage?, size: CGFloat? = Device.navigationBarHeight, target: UIViewController? = nil, color: UIColor = UIColor.navBackColor, handler: Selector? = nil) -> UIBarButtonItem {
+    static func getPointerBarButton(withIconimage image: UIImage?, size: CGFloat = Device.navigationBarHeight * 0.95, target: UIViewController? = nil, color: UIColor = UIColor.navBackColor, hasBadge: Bool = false, handler: Selector? = nil) -> UIBarButtonItem {
         
         let containerView = UIView()
         let icon = UIButton(type: .system)
@@ -34,13 +34,16 @@ extension UIBarButtonItem {
             icon.addTarget(target, action: handler, for: .touchUpInside)
         }
         
-        if let size = size {
-            containerView.widthAnchor.constraint(equalToConstant: size).isActive = true
-            containerView.heightAnchor.constraint(equalToConstant: size).isActive = true
-            containerView.layer.cornerRadius = size / 2
-        }
+        containerView.widthAnchor.constraint(equalToConstant: size).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: size).isActive = true
+        containerView.layer.cornerRadius = size / 2
+        
         containerView.backgroundColor = color
-        containerView.clipsToBounds = true
+        containerView.clipsToBounds = false
+        
+        if hasBadge {
+            containerView.addNewBadgeIcon(scale: size * 0.27)
+        }
         
         let iconBarButton = UIBarButtonItem(customView: containerView)
         

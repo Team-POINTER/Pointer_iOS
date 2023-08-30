@@ -48,6 +48,9 @@ class HomeController: BaseViewController {
         return button
     }()
     
+    // 네비게이션 바 버튼
+    lazy var searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "magnifyingglass"), target: self, handler: #selector(handleSearchButtonTapped))
+    
     private let emptyView = ListEmptyView()
     
     private lazy var fpc = FloatingPanelController.getFloatingPanelViewController(delegate: self)
@@ -57,10 +60,14 @@ class HomeController: BaseViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupLogoView()
         setupUI()
-        setupNavigationController()
         bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.requestNewNotiCount()
     }
     
     //MARK: - Bind
@@ -105,6 +112,12 @@ class HomeController: BaseViewController {
                     let nav = BaseNavigationController.templateNavigationController(nil, viewController: vc)
                     self?.tabBarController?.presentWithNavigationPushStyle(nav)
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.newNotiCount
+            .bind { [weak self] count in
+                self?.configureNotiBarButton(count: count)
             }
             .disposed(by: disposeBag)
         
@@ -176,19 +189,16 @@ class HomeController: BaseViewController {
         emptyView.subtitleText = "질문을 만들고, 누가 나를 지목 할지 확인해보세요!"
     }
     
-    private func setupNavigationController() {
+    private func setupLogoView() {
         // 로고
         let imageItem = UIBarButtonItem.init(customView: logoImageView)
         navigationItem.leftBarButtonItem = imageItem
-        
-        // 우측 바버튼
-        let notiImage = UIImage(systemName: "bell")
-        let searchImage = UIImage(systemName: "magnifyingglass")
-
-        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: notiImage, size: 45, target: self, handler: #selector(handleNotiButtonTapped))
-        let searchButton = UIBarButtonItem.getPointerBarButton(withIconimage: searchImage, size: 45, target: self, handler: #selector(handleSearchButtonTapped))
-
-        navigationItem.rightBarButtonItems = [notiButton, searchButton]
+    }
+    
+    private func configureNotiBarButton(count: Int) {
+        let isNewIcon = count > 0 ? true : false
+        let notiButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "bell"), target: self, hasBadge: isNewIcon, handler: #selector(handleNotiButtonTapped))
+        self.navigationItem.rightBarButtonItems = [searchButton, notiButton]
     }
 }
 

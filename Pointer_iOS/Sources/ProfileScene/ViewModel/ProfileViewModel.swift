@@ -184,7 +184,8 @@ class ProfileViewModel: ViewModelType {
     }
     
     func requestFriendAction() {
-        friendNetwork.requestFriendAction(userId, router: relationShip.router) { [weak self] isSuccess in
+        guard let router = relationShip.router else { return }
+        friendNetwork.requestFriendAction(userId, router: router) { [weak self] isSuccess in
             guard let self = self else { return }
             if isSuccess {
                 self.requestUserProfile()

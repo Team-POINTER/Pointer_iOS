@@ -19,4 +19,23 @@ extension UIView{
         gradient.frame = bounds
         layer.addSublayer(gradient)
     }
+    
+    
+    func addNewBadgeIcon(scale: CGFloat) {
+        let circleIcon: UIView = {
+            let view = UIView()
+            view.backgroundColor = .pointerRed
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.widthAnchor.constraint(equalToConstant: scale).isActive = true
+            view.heightAnchor.constraint(equalToConstant: scale).isActive = true
+            view.layer.cornerRadius = scale / 2
+            view.clipsToBounds = true
+            return view
+        }()
+        
+        self.addSubview(circleIcon)
+        
+        self.topAnchor.constraint(equalTo: circleIcon.topAnchor).isActive = true
+        self.trailingAnchor.constraint(equalTo: circleIcon.trailingAnchor).isActive = true
+    }
 }

@@ -24,8 +24,8 @@ class NotificationViewController: BaseViewController {
     }()
     
     // 뷰컨트롤러s
-    lazy var roomNotiVC = NotificationDetailViewController(withNotificationType: .room(viewModel: NotiDetailRoomViewModel()))
-    lazy var friendsNotiVC = NotificationDetailViewController(withNotificationType: .friends(viewModel: NotiDetailFriendsViewModel()))
+    lazy var roomNotiVC = NotificationDetailViewController(withNotificationType: .room(viewModel: NotiDetailRoomViewModel()), delegate: self)
+    lazy var friendsNotiVC = NotificationDetailViewController(withNotificationType: .friends(viewModel: NotiDetailFriendsViewModel()), delegate: self)
     
     lazy var viewControllers = [roomNotiVC, friendsNotiVC]
     lazy var pageViewController: UIPageViewController = {
@@ -39,6 +39,8 @@ class NotificationViewController: BaseViewController {
             configurePage(previousPage: oldValue, currentPage: currentPage)
         }
     }
+    
+    var newFriendNotiIcon: UIView?
     
     //MARK: - Lifecycle
     init() {
@@ -148,5 +150,27 @@ extension NotificationViewController: UIPageViewControllerDelegate, UIPageViewCo
         guard let currentVC = pageViewController.viewControllers?.first as? NotificationDetailViewController,
               let currentIndex = viewControllers.firstIndex(of: currentVC) else { return }
         currentPage = currentIndex
+    }
+}
+
+extension NotificationViewController: NewNotiIconDelegate {
+    func newNotiStatus(room: Bool, friend: Bool) {
+        guard self.newFriendNotiIcon == nil else { return }
+        let scale = CGFloat(10)
+        let xPoint = notiTypeSegmentControl.frame.origin.x + notiTypeSegmentControl.frame.width - scale
+        let yPoint = notiTypeSegmentControl.frame.origin.y
+        let rect = CGRect(x: xPoint, y: yPoint, width: scale, height: scale)
+        let newNotiIcon = UIView(frame: rect)
+        newNotiIcon.backgroundColor = .pointerRed
+        newNotiIcon.layer.cornerRadius = scale / 2
+        newNotiIcon.clipsToBounds = true
+        self.view.addSubview(newNotiIcon)
+        self.newFriendNotiIcon = newNotiIcon
+    }
+    
+    func friendNotiDidRead() {
+        if let icon = self.newFriendNotiIcon {
+            icon.removeFromSuperview()
+        }
     }
 }

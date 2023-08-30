@@ -183,7 +183,7 @@ extension SearchResultController: RelationshipFriendActionDelegate {
     }
     
     func didFriendRelationshipChanged() {
-        viewModel.requestAccountList(word: viewModel.lastSearchedKeyword, lastPage: 0)
+        viewModel.didFriendRelationChanged()
     }
 }
 

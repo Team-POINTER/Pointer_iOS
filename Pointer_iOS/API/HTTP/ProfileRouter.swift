@@ -20,7 +20,7 @@ enum ProfileRouter {
 extension ProfileRouter: HttpRouter {
     
     var url: String {
-        return baseUrlString + path
+        return (baseUrlString + path).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
     }
  
     var baseUrlString: String {
