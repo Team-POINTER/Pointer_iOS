@@ -10,7 +10,6 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import FloatingPanel
-import SendbirdUIKit
 
 protocol ResultViewControllerDelegate: AnyObject {
     func didChangedRoomStateFromResultVC()
