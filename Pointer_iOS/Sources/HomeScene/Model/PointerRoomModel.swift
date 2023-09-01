@@ -67,7 +67,7 @@ struct CreateRoomResponse: Codable {
     }
     
     enum Status: String {
-        case success = "J002" // 성공
+        case success = "P002" // 성공
         case userNotFound = "C001" // 회원정보 없음
         case roomCreateOverLimit = "J005" // 생성 가능 개수 초과
         case roomCreateFail = "J003" // 룸 생성 실패
