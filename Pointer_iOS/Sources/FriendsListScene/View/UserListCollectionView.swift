@@ -17,6 +17,7 @@ class UserListCollectionView: UIView {
     
     /// weak View Model
     weak var viewModel: FriendsListViewModel?
+    weak var blockedFriendViewModel: BlockedFriendListViewModel?
     /// to accept datasource
     let userList = BehaviorRelay<[FriendsModel]>(value: [])
     /// 친구 count Label을 사용할건지?
@@ -129,6 +130,8 @@ extension UserListCollectionView: UICollectionViewDelegate {
         
         if reachedBottom && (contentSizeHeight > height) { // 스크롤이 바닥에 닿았다면 & 컨텐츠가 스크롤 가능한 높이일 때
             scrollViewDidReachBottom(viewType, scrollView)
+            blockedScrollViewDidReachBottom(scrollView)
+            
         }
     }
     
@@ -139,6 +142,10 @@ extension UserListCollectionView: UICollectionViewDelegate {
         case .select:
             viewModel?.reFetchRoomInvitedFriendList.accept(())
         }
+    }
+    
+    private func blockedScrollViewDidReachBottom(_ scrollView: UIScrollView) {
+        blockedFriendViewModel?.reFetchBlockedFriendList.accept(())
     }
     
 }

@@ -186,7 +186,7 @@ class FriendsListViewModel: ViewModelType {
         return attribute
     }
     
-    func didFriendRelationChanged(listType: ListType) {
+    func didFriendRelationChanged() {
         guard let lastArrayCount = lastArrayCount else { return }
         var resultArray = self.userList.value
         let removeStartIndex = resultArray.count - lastArrayCount
@@ -200,27 +200,6 @@ class FriendsListViewModel: ViewModelType {
                       let self = self else { return }
                 print("새로 삭제후 ")
                 resultArray.append(contentsOf: response.friendInfoList)
-                self.userList.accept(resultArray)
-            }
-        }
-        // 불 필요 - 아마?
-        if listType == .select {
-            guard let roomId = roomId else { return }
-            
-            RoomNetworkManager.shared.inviteFriendListRequest(roomId: roomId, keyword: self.searchText, lastPage: self.nextPage ?? 0) { [weak self] (error, model) in
-                guard let self = self,
-                      let model = model else { return }
-                
-                let userList = model.friendList.map {
-                    FriendsModel(friendId: $0.friendId,
-                                 id: $0.id,
-                                 friendName: $0.friendName,
-                                 file: $0.file,
-                                 relationship: 3,
-                                 status: $0.status)
-                }
-                
-                resultArray.append(contentsOf: userList)
                 self.userList.accept(resultArray)
             }
         }
@@ -257,7 +236,7 @@ class FriendsListViewModel: ViewModelType {
     
     func reFetchInviteFriendsListRequest(keyword: String, lastPage: Int?) {
         guard let roomId = roomId else { return }
-        RoomNetworkManager.shared.inviteFriendListRequest(roomId: roomId, keyword: keyword, lastPage: lastPage ?? 0) { [weak self] (error, model) in
+        RoomNetworkManager.shared.inviteFriendListRequest(roomId: roomId, keyword: keyword, lastPage: lastPage ?? 1) { [weak self] (error, model) in
             guard let self = self else { return }
             
             if let error = error {
@@ -278,7 +257,6 @@ class FriendsListViewModel: ViewModelType {
                                      status: $0.status)
                     }
 
-                    // 상태 변화가 있으면 스택이 그대로 쌓이는 이슈
                     var userListModel = self.userList.value
                     userListModel.append(contentsOf: userList)
                     self.userList.accept(userListModel)
@@ -305,7 +283,7 @@ class FriendsListViewModel: ViewModelType {
     
     func reFetchRequestFriendList(keyword: String, lastPage: Int?) {
         guard let userId = userId else { return }
-        profileNetwork.getUserFriendList(userId: userId, lastPage: lastPage ?? 0, keyword: keyword) { [weak self] response in
+        profileNetwork.getUserFriendList(userId: userId, lastPage: lastPage ?? 1, keyword: keyword) { [weak self] response in
             guard let response = response, response.code == "J013",
                   let self = self else { return }
             

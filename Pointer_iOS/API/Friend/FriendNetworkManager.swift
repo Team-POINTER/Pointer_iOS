@@ -49,7 +49,7 @@ class FriendNetworkManager {
     }
     
     // 차단 친구 조회
-    func requestBlockedFriendsList(keyword: String?, lastPage: Int, completion: @escaping ([FriendsModel]?) -> Void) {
+    func requestBlockedFriendsList(keyword: String?, lastPage: Int, completion: @escaping (BlockedFriendResponse?) -> Void) {
         
         let router = FriendSearchRouter.searchBlockedFriend(keyword: keyword ?? "", lastPage: lastPage)
         AF.request(router.url, method: router.method, headers: router.headers)
@@ -58,7 +58,7 @@ class FriendNetworkManager {
                 case .success(let data):
                     print(data)
                     if data.code == router.successCode {
-                        completion(data.friendInfoList)
+                        completion(data)
                     } else {
                         completion(nil)
                     }
