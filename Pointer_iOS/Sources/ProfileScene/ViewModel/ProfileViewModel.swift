@@ -48,6 +48,9 @@ class ProfileViewModel: ViewModelType {
     let friendsArray = BehaviorRelay<[FriendsModel]>(value: [])
     let friendsCount = BehaviorRelay<Int>(value: 0)
     
+    // 신고하기 뷰
+    let reportViewModel = BehaviorRelay<ReportViewModel?>(value: nil)
+    
     // 네비게이션 바 버튼
     let preferenceButtonTapped = PublishRelay<()>()
     let otherMenuActionButtonTapped = PublishRelay<()>()
@@ -234,7 +237,10 @@ class ProfileViewModel: ViewModelType {
     private func getOtherMenuActionSheet() -> PointerAlert {
         // 신고하기 버튼
         let reportAction = PointerAlertActionConfig(title: "신고하기", textColor: .pointerRed) { [weak self] _ in
-            self?.reportButtonTapped()
+            guard let userId = self?.userId,
+                  let reortAlert = self?.reportButtonTapped(userId: userId) else { return }
+            
+            self?.showAlertView.accept(reortAlert)
         }
         
         // 차단하기 버튼
@@ -251,8 +257,29 @@ class ProfileViewModel: ViewModelType {
         return sheet
     }
     
-    private func reportButtonTapped() {
-        // 이곳에 신고 기능을 입력하세요
+    private func reportButtonTapped(userId: Int) -> PointerAlert {
+        var sheetConfig = [PointerAlertActionConfig]()
+        
+        UserReasonCode.allCases.forEach { type in
+            let config = PointerAlertActionConfig(title: type.reason, textColor: .black) { [weak self] _ in
+                self?.bindReportView(userId: userId, reasonCode: type.rawValue, presentingReason: type.reason)
+            }
+            sheetConfig.append(config)
+        }
+        
+        let actionSheet = PointerAlert(alertType: .actionSheet, configs: sheetConfig, title: "신고 사유")
+        return actionSheet
+        
+    }
+    
+    func bindReportView(userId: Int, reasonCode: String, presentingReason: String) {
+        let reportVM = ReportViewModel(
+                                        type: .user,
+                                       targetUserId: userId,
+                                        presentingReason: presentingReason,
+                                       reasonCode: reasonCode)
+        
+        self.reportViewModel.accept(reportVM)
     }
 }
 
