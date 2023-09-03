@@ -40,7 +40,7 @@ enum ReasonCode: String, CaseIterable {
 
 enum UserReasonCode: String, CaseIterable {
     case spam = "SPAM"
-    case idontLikeIt = "수정필요"
+    case idontLikeIt = "JUST_HATE"
     case custom = "CUSTOM"
     
     var reason: String {
