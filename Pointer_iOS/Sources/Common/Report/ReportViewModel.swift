@@ -40,14 +40,14 @@ enum ReasonCode: String, CaseIterable {
 
 enum UserReasonCode: String, CaseIterable {
     case spam = "SPAM"
-    case idontLikeIt = "JUST_HATE"
+    case justHate = "JUST_HATE"
     case custom = "CUSTOM"
     
     var reason: String {
         switch self {
         case .spam:
             return "스팸"
-        case .idontLikeIt:
+        case .justHate:
             return "마음에 들지 않음"
         case .custom:
             return "기타 사유"
@@ -144,7 +144,6 @@ class ReportViewModel: ViewModelType {
                 }
                 
                 if type == ReportType.user.rawValue {
-                    print("DEBUG: 제출 버튼 Tap")
                     let model = UserReportRequestModel(targetUserId: targetUserId, reason: self.reason, reasonCode: reasonCode)
                     
                     self.userReportRequest(model: model)
@@ -175,7 +174,6 @@ class ReportViewModel: ViewModelType {
             }
             
             if let model = model {
-                // 일단 신고 생성되면 dismiss -> 추후 신고 기능에 따라 변경
                 print("🔥DEBUG: 신고 완료 - \(model)")
                 self?.dismissReportView.accept(true)
             }
@@ -189,7 +187,6 @@ class ReportViewModel: ViewModelType {
             }
             
             if let model = model {
-                // 일단 신고 생성되면 dismiss -> 추후 신고 기능에 따라 변경
                 print("🔥DEBUG: 유저 신고 완료 - \(model)")
                 self?.dismissReportView.accept(true)
             }
