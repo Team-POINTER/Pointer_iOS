@@ -55,25 +55,7 @@ class RoomNetworkManager {
             return Disposables.create()
         }
     }
-    
-    func inviteFriendListRequest(_ roomId: Int, _ keyword: String, _ lastPage: Int) -> Observable<[FriendsListResultData]> {
-        return Observable.create { (observer) -> Disposable in
-            
-            self.inviteFriendListRequest(roomId: roomId, keyword: keyword, lastPage: lastPage) { error, friendsListResultData in
-                if let error = error {
-                    observer.onError(error)
-                }
-                
-                if let data = friendsListResultData {
-                    observer.onNext(data)
-                }
-                
-                observer.onCompleted()
-            }
-            
-            return Disposables.create()
-        }
-    }
+
     
 //MARK: - Function
     // 룸 하나 조회 - 이거 적용 중
@@ -200,8 +182,8 @@ class RoomNetworkManager {
     }
     
     // 초대 가능한 친구 목록
-    private func inviteFriendListRequest(roomId: Int, keyword: String, lastPage: Int,
-                                 completion: @escaping (Error?, [FriendsListResultData]?) -> Void) {
+    func inviteFriendListRequest(roomId: Int, keyword: String, lastPage: Int,
+                                 completion: @escaping (Error?, FriendsListResultModel?) -> Void) {
         let inviteFriendsList = roomRouter.friendsListToAttend(roomId: roomId, keyword: keyword, lastPage: lastPage)
         
         AF.request(inviteFriendsList.url,
@@ -213,9 +195,7 @@ class RoomNetworkManager {
                 // 성공인 경우
                 case .success(let result):
                     // completion 전송
-                    print(result)
-                    let data = result.friendList
-                    completion(nil, data)
+                    completion(nil, result)
                 // 실패인 경우
                 case .failure(let error):
                     print("친구 목록 조회 데이터 전송 실패 - \(error.localizedDescription)")

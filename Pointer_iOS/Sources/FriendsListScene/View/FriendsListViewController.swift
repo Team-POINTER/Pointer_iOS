@@ -217,6 +217,6 @@ extension FriendsListViewController: RelationshipFriendActionDelegate {
     }
     
     func didFriendRelationshipChanged() {
-        viewModel.requestFriendList(keyword: "", lastPage: 0)
+        viewModel.didFriendRelationChanged(listType: .normal)
     }
 }
