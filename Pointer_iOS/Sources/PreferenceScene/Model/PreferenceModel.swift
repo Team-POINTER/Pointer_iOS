@@ -31,18 +31,17 @@ enum PreferenceMenuType: Int, CaseIterable {
     case chattingNotification = 1
     case activityNotification = 2
     case eventNotification = 3
-    case viewMode = 4
 
-    case appVersion = 5
-    case inquire = 6
-    case notice = 7
-    case serviceTerms = 8
-    case privacyTerms = 9
-    case openSourceLicense = 10
+    case appVersion = 4
+    case inquire = 5
+    case notice = 6
+    case serviceTerms = 7
+    case privacyTerms = 8
+    case openSourceLicense = 9
 
-    case blockedUser = 11
-    case removeAccount = 12
-    case signOut = 13
+    case blockedUser = 10
+    case removeAccount = 11
+    case signOut = 12
     
     var title: String {
         switch self {
@@ -54,8 +53,6 @@ enum PreferenceMenuType: Int, CaseIterable {
             return "활동 알림"
         case .eventNotification:
             return "이벤트 알림"
-        case .viewMode:
-            return "모드 변경"
         case .appVersion:
             return "앱 버전"
         case .inquire:
@@ -80,7 +77,7 @@ enum PreferenceMenuType: Int, CaseIterable {
     // 각 타입별 섹션
     var section: PreferenceSectionType {
         switch self {
-        case .totalNotification, .chattingNotification, .activityNotification, .eventNotification, .viewMode:
+        case .totalNotification, .chattingNotification, .activityNotification, .eventNotification:
             return .personal
         case .appVersion, .inquire, .notice, .serviceTerms, .privacyTerms, .openSourceLicense:
             return .information
@@ -91,7 +88,12 @@ enum PreferenceMenuType: Int, CaseIterable {
     
     // SubTitle
     var subTitle: String? {
-        return nil
+        switch self {
+        case .appVersion:
+            return "1.0.0"
+        default:
+            return nil
+        }
     }
     
     // 각 토글 메뉴 사용 여부
@@ -125,14 +127,14 @@ enum PreferenceMenuType: Int, CaseIterable {
     
     var nextViewController: UIViewController? {
         switch self {
-        case .viewMode:
-            return nil
         case .appVersion:
             return nil
         case .inquire:
             return nil
         case .notice:
-            return nil
+            guard let url = URL(string: "https://pointer2024.notion.site/pointer2024/POINTER-a690c831dc524434946b0e16239ce593") else { return nil }
+            let vc = SFSafariViewController(url: url)
+            return vc
         case .serviceTerms:
             guard let url = URL(string: "https://pointer2024.notion.site/d55d0a2334d549e9a17477bc6ade3bb0?pvs=4") else { return nil }
             let vc = SFSafariViewController(url: url)
@@ -142,7 +144,9 @@ enum PreferenceMenuType: Int, CaseIterable {
             let vc = SFSafariViewController(url: url)
             return vc
         case .openSourceLicense:
-            return nil
+            guard let url = URL(string: "https://github.com/Team-POINTER/Pointer_iOS") else { return nil }
+            let vc = SFSafariViewController(url: url)
+            return vc
         case .blockedUser:
             let vc = BlockedFriendListController(viewModel: BlockedFriendListViewModel())
             let nav = BaseNavigationController.templateNavigationController(nil, viewController: vc)
