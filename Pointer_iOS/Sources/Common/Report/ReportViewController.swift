@@ -124,7 +124,6 @@ final class ReportViewController: UIViewController {
     }(UIButton())
     
     lazy var reasonLabel: UILabel = {
-        $0.text = "사유 : \(viewModel.presentingReason)"
         $0.font = UIFont.notoSans(font: .notoSansKrRegular, size: 12)
         $0.textColor = UIColor.rgb(red: 87, green: 90, blue: 107)
         $0.textAlignment = .left
@@ -152,6 +151,8 @@ final class ReportViewController: UIViewController {
     init(viewModel: ReportViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        guard let presentingReason = viewModel.presentingReason else { return }
+        reasonLabel.text = "사유 : \(presentingReason)"
         setUpView()
     }
     

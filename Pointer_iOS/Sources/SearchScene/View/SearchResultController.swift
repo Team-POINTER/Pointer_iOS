@@ -146,7 +146,7 @@ extension SearchResultController: UICollectionViewDelegate, UICollectionViewData
         let reachedBottom = (offset > contentSizeHeight - height) // (클릭 지점 + 스크롤뷰 높이 == 전체 컨텐츠 높이) -> Bool
 
         if resultType == .account {
-            if reachedBottom { // 스크롤이 바닥에 닿았다면
+            if reachedBottom && (contentSizeHeight > height) { // 스크롤이 바닥에 닿았다면 & 컨텐츠가 스크롤 가능한 높이일 때
               scrollViewDidReachBottom(scrollView)
             }
         }

@@ -12,6 +12,7 @@ import RxCocoa
 enum ReportType: String, CaseIterable {
     case question = "QUESTION"
     case hint = "HINT"
+    case user = "USER"
 }
 
 enum ReasonCode: String, CaseIterable {
@@ -37,6 +38,23 @@ enum ReasonCode: String, CaseIterable {
     }
 }
 
+enum UserReasonCode: String, CaseIterable {
+    case spam = "SPAM"
+    case idontLikeIt = "수정필요"
+    case custom = "CUSTOM"
+    
+    var reason: String {
+        switch self {
+        case .spam:
+            return "스팸"
+        case .idontLikeIt:
+            return "마음에 들지 않음"
+        case .custom:
+            return "기타 사유"
+        }
+    }
+}
+
 class ReportViewModel: ViewModelType {
     
 //MARK: - Properties
@@ -45,18 +63,18 @@ class ReportViewModel: ViewModelType {
     
     var reason = ""
     
-    let roomId: Int
-    let questionId: Int
-    let type: String
-    let targetUserId: Int
-    let presentingReason: String
-    let reasonCode: String
+    let roomId: Int?
+    let questionId: Int?
+    let type: String?
+    let targetUserId: Int?
+    let presentingReason: String?
+    let reasonCode: String?
     
 //MARK: - Life Cycles
-    init(roomId: Int, questionId:Int, type: ReportType, targetUserId: Int, presentingReason: String, reasonCode: String) {
+    init(roomId: Int? = nil, questionId: Int? = nil, type: ReportType? = nil, targetUserId: Int? = nil, presentingReason: String? = nil, reasonCode: String? = nil) {
         self.roomId = roomId
         self.questionId = questionId
-        self.type = type.rawValue
+        self.type = type?.rawValue
         self.targetUserId = targetUserId
         self.presentingReason = presentingReason
         self.reasonCode = reasonCode
@@ -108,15 +126,30 @@ class ReportViewModel: ViewModelType {
         
         input.submitButtonTapedEvent
             .subscribe { [weak self] _ in
-                guard let self = self else { return }
-                let model = ReportRequestModel(roomId: self.roomId,
-                                               dataId: self.questionId,
-                                               type: self.type,
-                                               targetUserId: self.targetUserId,
-                                               reason: self.reason,
-                                               reasonCode: self.reasonCode)
+                guard let self = self,
+                      let type = self.type, let targetUserId = self.targetUserId, let reasonCode = self.reasonCode else { return }
                 
-                self.reportRequest(model: model)
+                if type == ReportType.question.rawValue || type == ReportType.hint.rawValue {
+                    guard let roomId = self.roomId,
+                          let questionId = self.questionId else { return }
+                    
+                    let model = ReportRequestModel(roomId: roomId,
+                                                   dataId: questionId,
+                                                   type: type,
+                                                   targetUserId: targetUserId,
+                                                   reason: self.reason,
+                                                   reasonCode: reasonCode)
+                    
+                    self.reportRequest(model: model)
+                }
+                
+                if type == ReportType.user.rawValue {
+                    print("DEBUG: 제출 버튼 Tap")
+                    let model = UserReportRequestModel(targetUserId: targetUserId, reason: self.reason, reasonCode: reasonCode)
+                    
+                    self.userReportRequest(model: model)
+                }
+                
             }
             .disposed(by: disposeBag)
         
@@ -144,6 +177,20 @@ class ReportViewModel: ViewModelType {
             if let model = model {
                 // 일단 신고 생성되면 dismiss -> 추후 신고 기능에 따라 변경
                 print("🔥DEBUG: 신고 완료 - \(model)")
+                self?.dismissReportView.accept(true)
+            }
+        }
+    }
+    
+    func userReportRequest(model: UserReportRequestModel) {
+        ReportNetworkManager.shared.userReportRequest(parameter: model) { [weak self] (error, model) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+            if let model = model {
+                // 일단 신고 생성되면 dismiss -> 추후 신고 기능에 따라 변경
+                print("🔥DEBUG: 유저 신고 완료 - \(model)")
                 self?.dismissReportView.accept(true)
             }
         }

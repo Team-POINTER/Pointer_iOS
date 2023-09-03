@@ -45,7 +45,7 @@ final class SearchViewModel: ViewModelType {
                 guard let text = text.element,
                       let self = self else { return }
                 self.requestRoomList("\(text)")
-                self.requestAccountList(word: "\(text)", lastPage: self.nextPage)
+                self.requestAccountList(word: "\(text)")
                 self.lastSearchedKeyword = text
             }
             .disposed(by: disposeBag)
@@ -80,12 +80,11 @@ final class SearchViewModel: ViewModelType {
         
         refetchUserResult
             .subscribe { [weak self] _ in
-                guard let self = self,
-                      let nextPage = self.nextPage else { return }
+                guard let self = self else { return }
                 if self.lastIndex == true {
                     print("마지막 인덱스 입니다.")
                 } else {
-                    self.requestAccountList(word: self.lastSearchedKeyword, lastPage: nextPage)
+                    self.reFetchRequestAccountList(word: self.lastSearchedKeyword, lastPage: self.nextPage)
                 }
                 
             }
@@ -138,8 +137,25 @@ final class SearchViewModel: ViewModelType {
     }
     
     // 유저 검색
-    func requestAccountList(word: String, lastPage: Int?) {
-        FriendSearchNetworkManager.shared.searchUserListRequest(keyword: word, lastPage: lastPage ?? 0) { [weak self] (model, error) in
+    func requestAccountList(word: String) {
+        FriendSearchNetworkManager.shared.searchUserListRequest(keyword: word, lastPage: 0) { [weak self] (model, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            if let model = model {
+                self.searchAccountResult.accept(model.userList)
+                self.nextPage = model.currentPage + 1
+                self.lastArrayCount = model.userList.count
+            }
+        }
+    }
+    
+    func reFetchRequestAccountList(word: String, lastPage: Int?) {
+        FriendSearchNetworkManager.shared.searchUserListRequest(keyword: word, lastPage: lastPage ?? 1) { [weak self] (model, error) in
             guard let self = self else { return }
             
             if let error = error {

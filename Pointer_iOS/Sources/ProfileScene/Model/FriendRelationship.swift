@@ -23,7 +23,7 @@ enum Relationship: Int {
         case .friendRequestReceived, .block, .none, .friendRejected:
             return .pointerRed
         case .friend, .requestRejectConfig, .friendRequested, .`self`:
-            return .darkGray
+            return .navBackColor
         }
     }
     

@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import RxSwift
+import FloatingPanel
 
 class ProfileViewController: ProfileParentViewController {
     //MARK: - Properties
@@ -29,6 +30,8 @@ class ProfileViewController: ProfileParentViewController {
     
     private lazy var preferenceButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "gearshape"), target: self, handler: #selector(preferneceButtonTapped))
     private lazy var moreActionButton = UIBarButtonItem.getPointerBarButton(withIconimage: UIImage(systemName: "text.justify"), target: self, handler: #selector(moreActionButtonTapped))
+    
+    private lazy var fpc = FloatingPanelController.getFloatingPanelViewController(delegate: self)
     
     //MARK: - Lifecycle
     init(viewModel: ProfileViewModel) {
@@ -103,6 +106,19 @@ class ProfileViewController: ProfileParentViewController {
                 let photoView = PointerFullScreenPhotoView(image: profileImageView.image)
                 self.present(photoView, animated: true)
             })
+            .disposed(by: disposeBag)
+        
+        viewModel.reportViewModel
+            .bind { [weak self] viewModel in
+                guard let self = self,
+                      let reportVM = viewModel else { return }
+                let reportVC = ReportViewController(viewModel: reportVM)
+                
+                self.fpc.set(contentViewController: reportVC)
+                self.fpc.track(scrollView: reportVC.scrollView)
+                self.present(self.fpc, animated: true)
+                
+            }
             .disposed(by: disposeBag)
     }
     

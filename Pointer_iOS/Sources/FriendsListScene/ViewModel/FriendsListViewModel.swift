@@ -28,11 +28,18 @@ class FriendsListViewModel: ViewModelType {
     let inviteLink = PublishRelay<String>()
     let searchTextFieldEditEvent = BehaviorRelay<String>(value: "")
     
+    // 컬렉션 뷰 스크롤 밑에 닿았을 시
+    let reFetchRoomInvitedFriendList = BehaviorRelay<Void?>(value: nil)
+    let reFetchProfileInvitedFriendList = BehaviorRelay<Void?>(value: nil)
+    
     private lazy var profileNetwork = ProfileNetworkManager()
     
     private var roomId: Int?
     private var userId: Int?
-    private var lastPage: Int = 0
+    private var lastArrayCount: Int?
+    private var lastIndex: Bool = false
+    private var nextPage: Int?
+    private var searchText = ""
     private var inviteFriendIdList: [Int] = []
     
     //MARK: - Rx
@@ -54,11 +61,10 @@ class FriendsListViewModel: ViewModelType {
             .subscribe { [weak self] text in
                 guard let self = self,
                       let text = text.element else { return }
-                print(text)
-                
                 // 검색어 입력에 따라 keyword 넣어서 리스트 다시 호출
-                self.inviteFriendsListRequest(keyword: text, lastPage: self.lastPage)
-                self.requestFriendList(keyword: text, lastPage: self.lastPage)
+                self.searchText = text
+                self.inviteFriendsListRequest(keyword: text)
+                self.requestFriendList(keyword: text)
             }
             .disposed(by: disposeBag)
         
@@ -101,8 +107,30 @@ class FriendsListViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
         
-        // 첫 데이터 로드
-        requestFriendList(keyword: "", lastPage: lastPage)
+        reFetchRoomInvitedFriendList
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                
+                if self.lastIndex {
+                    print("마지막 인덱스입니다.")
+                } else {
+                    self.reFetchInviteFriendsListRequest(keyword: self.searchText, lastPage: self.nextPage)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        reFetchProfileInvitedFriendList
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                
+                if self.lastIndex {
+                    print("마지막 인덱스입니다.")
+                } else {
+                    self.reFetchRequestFriendList(keyword: self.searchText, lastPage: self.nextPage)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -158,33 +186,116 @@ class FriendsListViewModel: ViewModelType {
         return attribute
     }
     
+    func didFriendRelationChanged() {
+        guard let lastArrayCount = lastArrayCount else { return }
+        var resultArray = self.userList.value
+        let removeStartIndex = resultArray.count - lastArrayCount
+        resultArray.removeSubrange(removeStartIndex...resultArray.count - 1)
+        
+        if listType == .normal {
+            guard let userId = userId else { return }
+            
+            profileNetwork.getUserFriendList(userId: userId, lastPage: self.nextPage ?? 0, keyword: self.searchText) { [weak self] response in
+                guard let response = response, response.code == "J013",
+                      let self = self else { return }
+                print("새로 삭제후 ")
+                resultArray.append(contentsOf: response.friendInfoList)
+                self.userList.accept(resultArray)
+            }
+        }
+    }
+    
 //MARK: - API
     // 초대 가능한 친구 목록 조회
-    func inviteFriendsListRequest(keyword: String, lastPage: Int) {
+    func inviteFriendsListRequest(keyword: String) {
         guard let roomId = roomId else { return }
-        RoomNetworkManager.shared.inviteFriendListRequest(roomId, keyword, lastPage)
-            .subscribe(onNext: { [weak self] model in
+        RoomNetworkManager.shared.inviteFriendListRequest(roomId: roomId, keyword: keyword, lastPage: 0) { [weak self] (error, model) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+            if let model = model {
                 // FriendsModel로 변경
-                let userList = model.map {
-                    FriendsModel(friendId: $0.friendId, id: $0.id, friendName: $0.friendName, file: $0.file, relationship: 3, status: $0.status)
+                let userList = model.friendList.map {
+                    FriendsModel(friendId: $0.friendId,
+                                 id: $0.id,
+                                 friendName: $0.friendName,
+                                 file: $0.file,
+                                 relationship: 3,
+                                 status: $0.status)
                 }
-                // accept
-                self?.userList.accept(userList)
-            },
-            onError: { error in
-                print("초대 가능한 친구 목록 조회 - error = \(error.localizedDescription)")
-            })
-            .disposed(by: disposeBag)
+                
+                self.userList.accept(userList)
+                self.nextPage = model.currentPage + 1
+                self.lastArrayCount = model.friendList.count
+            }
+        }
+    }
+    
+    func reFetchInviteFriendsListRequest(keyword: String, lastPage: Int?) {
+        guard let roomId = roomId else { return }
+        RoomNetworkManager.shared.inviteFriendListRequest(roomId: roomId, keyword: keyword, lastPage: lastPage ?? 1) { [weak self] (error, model) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+            if let model = model {
+                if model.friendList.isEmpty {
+                    self.lastIndex = true
+                } else {
+                    // FriendsModel로 변경
+                    let userList = model.friendList.map {
+                        FriendsModel(friendId: $0.friendId,
+                                     id: $0.id,
+                                     friendName: $0.friendName,
+                                     file: $0.file,
+                                     relationship: 3,
+                                     status: $0.status)
+                    }
+
+                    var userListModel = self.userList.value
+                    userListModel.append(contentsOf: userList)
+                    self.userList.accept(userListModel)
+
+                    self.nextPage = model.currentPage + 1
+                    self.lastArrayCount = model.friendList.count
+                }
+            }
+        }
     }
     
     // 친구 리스트 조회
-    func requestFriendList(keyword: String, lastPage: Int) {
+    func requestFriendList(keyword: String) {
         guard let userId = userId else { return }
         profileNetwork.getUserFriendList(userId: userId, lastPage: 0, keyword: keyword) { [weak self] response in
-            guard let response = response, response.code == "J013" else {
-                return
+            guard let response = response, response.code == "J013",
+                  let self = self else { return }
+            
+            self.userList.accept(response.friendInfoList)
+            self.nextPage = response.currentPage + 1
+            self.lastArrayCount = response.friendInfoList.count
+        }
+    }
+    
+    func reFetchRequestFriendList(keyword: String, lastPage: Int?) {
+        guard let userId = userId else { return }
+        profileNetwork.getUserFriendList(userId: userId, lastPage: lastPage ?? 1, keyword: keyword) { [weak self] response in
+            guard let response = response, response.code == "J013",
+                  let self = self else { return }
+            
+            if response.friendInfoList.isEmpty {
+                self.lastIndex = true
+            } else {
+                var userListModel = self.userList.value
+                userListModel.append(contentsOf: response.friendInfoList)
+                self.userList.accept(userListModel)
+                self.nextPage = response.currentPage + 1
+                self.lastArrayCount = response.friendInfoList.count
             }
-            self?.userList.accept(response.friendInfoList)
         }
     }
     
