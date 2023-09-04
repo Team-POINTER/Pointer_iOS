@@ -150,6 +150,7 @@ class ResultViewModel: ViewModelType{
     
 //MARK: - Network
     func resultRequest(_ questionId: Int) {
+        IndicatorManager.shared.show()
         ResultNetworkManager.shared.votedResultRequest(questionId)
             .subscribe(onNext: { [weak self] data in
                 self?.votedResultObservable.accept(data)
@@ -157,8 +158,10 @@ class ResultViewModel: ViewModelType{
                 self?.userName = data.targetUser.userName
                 self?.roomName = data.roomName
                 self?.question = data.question
+                IndicatorManager.shared.hide()
             }, onError: { error in
                 print("DEBUG: ResultViewModel - resultRequest Error: \(error.localizedDescription)")
+                IndicatorManager.shared.hide()
             } )
             .disposed(by: disposeBag)
     }

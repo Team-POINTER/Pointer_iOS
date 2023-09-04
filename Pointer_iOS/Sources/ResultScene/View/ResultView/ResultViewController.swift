@@ -17,10 +17,6 @@ protocol ResultViewControllerDelegate: AnyObject {
 
 class ResultViewController: BaseViewController {
 //MARK: - properties
-    private lazy var refreshControl = PointerRefreshControl(target: self) {
-        
-    }
-    
     var viewModel: ResultViewModel
     let disposeBag = DisposeBag()
     weak var delegate: ResultViewControllerDelegate?
@@ -72,9 +68,6 @@ class ResultViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.votedResultObservable
-            .do(onNext: { [weak self] list in
-                self?.refreshControl.endRefreshing()
-            })
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
@@ -266,7 +259,6 @@ class ResultViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(5)
         }
         
-        refreshControl.refreshAction()
     }
 
 //MARK: - Selector

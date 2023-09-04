@@ -118,13 +118,17 @@ class MyResultViewModel: ViewModelType{
     
 //MARK: - Network
     func totalQuestionRequest(_ roomId: Int) {
+        IndicatorManager.shared.show()
         ResultNetworkManager.shared.totalQuestionRequest(roomId)
             .subscribe(onNext: { data in
                 self.myResultObservable.accept(data)
+                IndicatorManager.shared.hide()
             }, onError: { error in
                 print("MyResultViewModel - totalQuestionRequest Error: \(error.localizedDescription)")
+                IndicatorManager.shared.hide()
             })
             .disposed(by: disposeBag)
+        
     }
     
     func checkPointAlertRequest() {
