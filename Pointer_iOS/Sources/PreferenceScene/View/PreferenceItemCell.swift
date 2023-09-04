@@ -30,6 +30,13 @@ class PreferenceItemCell: UICollectionViewCell {
     
     var toggleView: PointerToggleView?
     
+    var subTitle: UILabel = {
+        let label = UILabel()
+        label.font = .notoSansRegular(size: 16)
+        label.textColor = UIColor(red: 0.7, green: 0.716, blue: 0.804, alpha: 1)
+        return label
+    }()
+    
     //MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -48,10 +55,22 @@ class PreferenceItemCell: UICollectionViewCell {
             $0.leading.equalToSuperview().inset(22)
             $0.centerY.equalToSuperview()
         }
+        
+        addSubview(subTitle)
+        subTitle.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(22)
+            $0.centerY.equalToSuperview()
+        }
     }
     
     private func configure() {
         guard let item = item else { return }
+        
+        if let subtitle = item.menu.subTitle {
+            self.subTitle.text = subtitle
+        } else {
+            self.subTitle.text = ""
+        }
         
         // 토글을 사용하는 item 이라면 toggle 생성
         if item.menu.toggleIsAvailable == true {
