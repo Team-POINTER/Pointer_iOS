@@ -58,12 +58,12 @@ class BaseTabBarController: UITabBarController {
         
         // 두번째 탭
         let secondVC = HomeController()
-        let nav2 = BaseNavigationController.templateNavigationController(UIImage(systemName: "house"), title: "홈", viewController: secondVC)
+        let nav2 = BaseNavigationController.templateNavigationController(UIImage(named: "home"), title: "홈", viewController: secondVC)
         
         // 세번째 탭
         let viewModel = ProfileViewModel(userId: TokenManager.getIntUserId())
         let thirdVC = ProfileViewController(viewModel: viewModel)
-        let nav3 = BaseNavigationController.templateNavigationController(UIImage(systemName: "person.circle"), title: "프로필", viewController: thirdVC)
+        let nav3 = BaseNavigationController.templateNavigationController(UIImage(named: "account"), title: "프로필", viewController: thirdVC)
         
         // 탭들 Setup
         viewControllers = [nav2, nav3]
