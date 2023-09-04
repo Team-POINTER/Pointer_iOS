@@ -32,6 +32,10 @@ protocol RoomViewControllerDelegate: AnyObject {
 class RoomViewController: BaseViewController {
     
 //MARK: - properties
+    private lazy var refreshControl = PointerRefreshControl(target: self) {
+        
+    }
+    
     var roomTopView = RoomTopView(frame: CGRect(x: 0, y: 0, width: Device.width, height: 500))
     
     private let peopleTableView : UITableView = {
@@ -69,6 +73,9 @@ class RoomViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         
         viewModel.roomResultObservable
+            .do(onNext: { [weak self] list in
+                self?.refreshControl.endRefreshing()
+            })
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 self?.title = data.privateRoomNm
@@ -199,6 +206,7 @@ class RoomViewController: BaseViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.bottom.equalToSuperview()
         }
+        refreshControl.refreshAction()
     }
     
     func tableViewSetting() {

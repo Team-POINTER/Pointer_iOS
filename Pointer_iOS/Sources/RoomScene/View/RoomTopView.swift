@@ -44,7 +44,6 @@ class RoomTopView: UIView {
     }(UILabel())
     
     let questLabel : UILabel = {
-        $0.text = "한 20년 뒤 미래에 가장 돈을 잘 벌 것 같은 사람은 누구인가?최대 공백포함45"
         $0.font = UIFont.notoSansBold(size: 18.5)
         $0.textColor = UIColor.white
         $0.numberOfLines = 0
