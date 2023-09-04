@@ -152,6 +152,26 @@ class RemotePushManager {
                 }
             }
     }
+    
+    // 콕 찌르기
+    func kokPushRequest(questionId: Int, completion: @escaping (Bool) -> Void) {
+        let router = RemotePushRouter.kokPush(questionId: questionId)
+        AF.request(router.url, method: router.method, headers: router.headers)
+            .responseDecodable(of: PointerDefaultResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    print(data)
+                    if data.code == router.successCode {
+                        completion(true)
+                    } else {
+                        completion(false)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+                }
+            }
+    }
 }
 
 struct RemotePushResponse: Decodable {

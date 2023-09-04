@@ -38,7 +38,8 @@ class ResultViewController: BaseViewController {
     func bindViewModel() {
         
         let input = ResultViewModel.Input(myResultButtonTap: myResultButton.rx.tap.asObservable(),
-                                          newQuestionButtonTap: newQuestionButton.rx.tap.asObservable())
+                                          newQuestionButtonTap: newQuestionButton.rx.tap.asObservable(),
+                                          kokButtonTap: kokButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input)
         
         output.myResultButtonTap
@@ -107,7 +108,15 @@ class ResultViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        
+        viewModel.kokPushedReturnString
+            .bind { [weak self] str in
+                guard let str = str else { return }
+                
+                self?.dismissAlert(title: "확인", description: str) {
+                    
+                }
+            }
+            .disposed(by: disposeBag)
         
         viewModel.startTimer()
         
@@ -259,6 +268,16 @@ class ResultViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(5)
         }
         
+    }
+    
+//MARK: - Functions
+    private func dismissAlert(title: String, description: String, completion: @escaping() -> Void) {
+        let backAction = PointerAlertActionConfig(title: title, textColor: .black, backgroundColor: .clear, font: .notoSansBold(size: 16), handler: { _ in
+            completion()
+        })
+    
+        let alert = PointerAlert(alertType: .alert, configs: [backAction], description: description)
+        present(alert, animated: true)
     }
 
 //MARK: - Selector

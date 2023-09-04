@@ -52,6 +52,9 @@ class ResultViewModel: ViewModelType{
     
     let remainingTime = BehaviorSubject<Int>(value: 0)
     let votedResultObservable = PublishRelay<VotedResultData>()
+    let kokPushedReturnString = BehaviorRelay<String?>(value: nil)
+    
+    let remotePushManager = RemotePushManager()
     private var timer: Timer?
     
     
@@ -69,6 +72,7 @@ class ResultViewModel: ViewModelType{
     struct Input {
         let myResultButtonTap: Observable<Void>
         let newQuestionButtonTap: Observable<Void>
+        let kokButtonTap: Observable<Void>
     }
     
     struct Output {
@@ -97,6 +101,20 @@ class ResultViewModel: ViewModelType{
                 newQuestVC.delegate = self
                 
                 output.newQuestionButtonTap.accept(newQuestVC)
+            }
+            .disposed(by: disposeBag)
+        
+        input.kokButtonTap
+            .withLatestFrom(votedResultObservable)
+            .subscribe { [weak self] model in
+                guard let model = model.element,
+                      let self = self else { return }
+                
+                if model.notNotedMemberCnt == 0 {
+                    self.kokPushedReturnString.accept("지목하지 않은 사람이 없습니다.")
+                } else {
+                    self.kokPushRequest(questionId: self.questionId)
+                }
             }
             .disposed(by: disposeBag)
         
@@ -164,6 +182,16 @@ class ResultViewModel: ViewModelType{
                 IndicatorManager.shared.hide()
             } )
             .disposed(by: disposeBag)
+    }
+    
+    private func kokPushRequest(questionId: Int) {
+        remotePushManager.kokPushRequest(questionId: questionId) { [weak self] b in
+            if b {
+                self?.kokPushedReturnString.accept("콕 찌르기에 성공했습니다.")
+            } else {
+                self?.kokPushedReturnString.accept("콕 찌르기에 성공했습니다.")
+            }
+        }
     }
     
 }
