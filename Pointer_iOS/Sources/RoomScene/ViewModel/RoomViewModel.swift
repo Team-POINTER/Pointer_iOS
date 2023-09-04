@@ -235,8 +235,8 @@ final class RoomViewModel: ViewModelType {
     //MARK: - Network
     func searchRoomRequest() {
         let roomId = self.roomId
-        
         // 룸 조회 API
+        IndicatorManager.shared.show()
         RoomNetworkManager.shared.searchRoomRequest(roomId)
             .subscribe(onNext: { [weak self] result in
                 self?.roomResultObservable.accept(result)
@@ -245,8 +245,10 @@ final class RoomViewModel: ViewModelType {
                 self?.limitedAt = result.limitedAt
                 self?.targetUserId = result.questionCreatorId
                 print("🔥 RoomViewModel - searchRoomRequest 데이터: \(result)")
+                IndicatorManager.shared.hide()
             }, onError: { error in
                 print("RoomViewModel - searchRoomRequest 에러: \(error.localizedDescription)")
+                IndicatorManager.shared.hide()
             })
             .disposed(by: disposeBag)
     }
