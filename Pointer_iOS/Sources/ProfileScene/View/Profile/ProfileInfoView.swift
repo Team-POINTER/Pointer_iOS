@@ -70,7 +70,17 @@ class ProfileInfoView: ProfileInfoParentView {
         return cv
     }()
     
-    private let emptyView = FriendListEmptyView()
+    private lazy var emptyView: FriendListEmptyView = {
+        let view = FriendListEmptyView()
+        if viewModel?.isMyProfile == true {
+            view.titleText = "아직 친구를 찾지 못하셨나요?"
+            view.buttonText = "친구할 사람 찾기"
+            view.buttonAction = viewModel?.pushToSearchFriendView
+        } else {
+            view.titleText = "친구 목록이 비어있어요"
+        }
+        return view
+    }()
     
     // 자기 자신일 때
     lazy var editMyProfileButton = getActionButton("프로필 편집")
@@ -92,7 +102,6 @@ class ProfileInfoView: ProfileInfoParentView {
     override init(viewModel: ProfileViewModel?, delegate: ProfileInfoViewDelegate? = nil) {
         super.init(viewModel: viewModel, delegate: delegate)
         setupCollectionView()
-        setupEmptyView()
         bind()
         setupUI()
     }
@@ -129,6 +138,7 @@ class ProfileInfoView: ProfileInfoParentView {
         viewModel.friendsArray
             .do(onNext: { [weak self] list in
                 self?.emptyView.isHidden = !list.isEmpty
+                self?.configureMoreButtonText(list: list)
             })
             .bind(to: collectionView.rx.items) { collectionView, indexPath, item in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserFriendCell.cellIdentifier, for: IndexPath(row: indexPath, section: 0)) as? UserFriendCell else { return UICollectionViewCell() }
@@ -154,13 +164,11 @@ class ProfileInfoView: ProfileInfoParentView {
     }
     
     // EmptyView 세팅
-    private func setupEmptyView() {
-        if viewModel?.isMyProfile == true {
-            emptyView.titleText = "아직 친구를 찾지 못하셨나요?"
-            emptyView.buttonText = "친구할 사람 찾기"
-            emptyView.buttonAction = viewModel?.pushToSearchFriendView
+    private func configureMoreButtonText(list: [FriendsModel]) {
+        if list.isEmpty {
+            self.moreFriendsLabel.text = ""
         } else {
-            emptyView.titleText = "친구 목록이 비어있어요"
+            self.moreFriendsLabel.text = "더보기"
         }
     }
     
