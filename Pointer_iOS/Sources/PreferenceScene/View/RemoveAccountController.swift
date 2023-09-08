@@ -127,7 +127,11 @@ class RemoveAccountController: BaseViewController {
     
     private func setupNavigationBar() {
         self.navigationItem.title = "탈퇴하기"
-        let dismissButton = UIBarButtonItem(systemItem: .close)
-        self.navigationItem.leftBarButtonItem = dismissButton
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissButtonTapped))
+    }
+    
+    //MARK: - Handler
+    @objc func dismissButtonTapped() {
+        self.dismiss(animated: true)
     }
 }
