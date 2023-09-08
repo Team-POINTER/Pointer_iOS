@@ -27,6 +27,7 @@ class BlockedFriendListViewModel: ViewModelType {
     private let network = FriendNetworkManager()
     
     let reFetchBlockedFriendList = BehaviorRelay<Void?>(value: nil)
+    private var hasCalledAPI = false
     
     private var lastArrayCount: Int?
     private var lastIndex: Bool = false
@@ -45,11 +46,13 @@ class BlockedFriendListViewModel: ViewModelType {
         reFetchBlockedFriendList
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                
-                if self.lastIndex {
-                    print("마지막 인덱스입니다.")
-                } else {
-                    self.reFetchrequestBlockedFriendList(keyword: self.searchText, lastPage: self.nextPage)
+                if self.hasCalledAPI == false {
+                    self.hasCalledAPI = true
+                    if self.lastIndex {
+                        print("마지막 인덱스입니다.")
+                    } else {
+                        self.reFetchrequestBlockedFriendList(keyword: self.searchText, lastPage: self.nextPage)
+                    }
                 }
             }
             .disposed(by: disposeBag)
@@ -83,6 +86,7 @@ class BlockedFriendListViewModel: ViewModelType {
                     self.nextPage = model.currentPage + 1
                     self.lastArrayCount = model.friendInfoList.count
                 }
+                self.hasCalledAPI = false
             } else {
                 print("에러발생")
             }

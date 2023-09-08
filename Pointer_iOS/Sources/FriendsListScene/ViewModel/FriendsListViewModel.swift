@@ -31,6 +31,7 @@ class FriendsListViewModel: ViewModelType {
     // 컬렉션 뷰 스크롤 밑에 닿았을 시
     let reFetchRoomInvitedFriendList = BehaviorRelay<Void?>(value: nil)
     let reFetchProfileInvitedFriendList = BehaviorRelay<Void?>(value: nil)
+    private var hasCalledAPI = false
     
     private lazy var profileNetwork = ProfileNetworkManager()
     
@@ -110,11 +111,14 @@ class FriendsListViewModel: ViewModelType {
         reFetchRoomInvitedFriendList
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                
-                if self.lastIndex {
-                    print("마지막 인덱스입니다.")
-                } else {
-                    self.reFetchInviteFriendsListRequest(keyword: self.searchText, lastPage: self.nextPage)
+                // API 요청중에 재요청 제한
+                if self.hasCalledAPI == false {
+                    self.hasCalledAPI = true
+                    if self.lastIndex {
+                        print("마지막 인덱스입니다.")
+                    } else {
+                        self.reFetchInviteFriendsListRequest(keyword: self.searchText, lastPage: self.nextPage)
+                    }
                 }
             }
             .disposed(by: disposeBag)
@@ -122,11 +126,14 @@ class FriendsListViewModel: ViewModelType {
         reFetchProfileInvitedFriendList
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                
-                if self.lastIndex {
-                    print("마지막 인덱스입니다.")
-                } else {
-                    self.reFetchRequestFriendList(keyword: self.searchText, lastPage: self.nextPage)
+                // API 요청중에 재요청 제한
+                if self.hasCalledAPI == false {
+                    self.hasCalledAPI = true
+                    if self.lastIndex {
+                        print("마지막 인덱스입니다.")
+                    } else {
+                        self.reFetchRequestFriendList(keyword: self.searchText, lastPage: self.nextPage)
+                    }
                 }
             }
             .disposed(by: disposeBag)
@@ -264,6 +271,7 @@ class FriendsListViewModel: ViewModelType {
                     self.nextPage = model.currentPage + 1
                     self.lastArrayCount = model.friendList.count
                 }
+                self.hasCalledAPI = false
             }
         }
     }
@@ -296,6 +304,7 @@ class FriendsListViewModel: ViewModelType {
                 self.nextPage = response.currentPage + 1
                 self.lastArrayCount = response.friendInfoList.count
             }
+            self.hasCalledAPI = false
         }
     }
     

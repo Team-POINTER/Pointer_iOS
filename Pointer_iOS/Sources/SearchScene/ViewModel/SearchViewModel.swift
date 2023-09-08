@@ -21,6 +21,7 @@ final class SearchViewModel: ViewModelType {
     let presenter = BehaviorRelay<UIViewController?>(value: nil)
     
     let refetchUserResult = BehaviorRelay<Void?>(value: nil)
+    private var hasCalledAPI = false
     
     var lastIndex: Bool = false
     var nextPage: Int?
@@ -81,12 +82,16 @@ final class SearchViewModel: ViewModelType {
         refetchUserResult
             .subscribe { [weak self] _ in
                 guard let self = self else { return }
-                if self.lastIndex == true {
-                    print("마지막 인덱스 입니다.")
-                } else {
-                    self.reFetchRequestAccountList(word: self.lastSearchedKeyword, lastPage: self.nextPage)
+                // API 요청중에 재요청 제한
+                if self.hasCalledAPI == false {
+                    self.hasCalledAPI = true
+                    print("hasCalledAPI = true")
+                    if self.lastIndex == true {
+                        print("마지막 인덱스 입니다.")
+                    } else {
+                        self.reFetchRequestAccountList(word: self.lastSearchedKeyword, lastPage: self.nextPage)
+                    }
                 }
-                
             }
             .disposed(by: disposeBag)
         
@@ -164,7 +169,6 @@ final class SearchViewModel: ViewModelType {
             }
             
             if let model = model {
-                
                 if model.userList.isEmpty {
                     self.lastIndex = true
                 } else {
@@ -174,6 +178,8 @@ final class SearchViewModel: ViewModelType {
                     self.nextPage = model.currentPage + 1
                     self.lastArrayCount = model.userList.count
                 }
+                self.hasCalledAPI = false
+                print("hasCalledAPI = false")
             }
         }
     }
