@@ -20,9 +20,9 @@ class ResultNetworkManager {
     
     //MARK: - Observable 변환
     func votedResultRequest(_ questionId: Int) -> Observable<VotedResultData> {
-        return Observable.create { (observer) -> Disposable in
+        return Observable.create { [weak self] (observer) -> Disposable in
             
-            self.votedResultRequest(questionId) { error, votedResultData in
+            self?.votedResultRequest(questionId) { error, votedResultData in
                 if let error = error {
                     observer.onError(error)
                 }
@@ -37,10 +37,10 @@ class ResultNetworkManager {
         }
     }
     
-    func totalQuestionRequest(_ roomId: Int) -> Observable<[TotalQuestionResultData]> {
-        return Observable.create { (observer) -> Disposable in
+    func totalQuestionRequest(_ roomId: Int, _ lastQuestionId: Int) -> Observable<[TotalQuestionResultData]> {
+        return Observable.create { [weak self] (observer) -> Disposable in
             
-            self.totalQuestionRequest(roomId) { error, totalQuestionResultData in
+            self?.totalQuestionRequest(roomId: roomId, lastQuestionId: lastQuestionId) { error, totalQuestionResultData in
                 if let error = error {
                     observer.onError(error)
                 }
@@ -56,9 +56,9 @@ class ResultNetworkManager {
     }
     
     func showHintRequest(_ questionId: Int) -> Observable<ShowHintResultData> {
-        return Observable.create { (observer) -> Disposable in
+        return Observable.create { [weak self] (observer) -> Disposable in
             
-            self.showHintRequest(questionId) { error, showHintResultData in
+            self?.showHintRequest(questionId) { error, showHintResultData in
                 if let error = error {
                     observer.onError(error)
                 }
@@ -98,10 +98,12 @@ class ResultNetworkManager {
         }
     }
     
-    private func totalQuestionRequest(_ roomId: Int, completion: @escaping (Error?, [TotalQuestionResultData]?) -> Void) {
-        AF.request(questionRouter.totalSearchQuestion(roomId).url,
-                   method:questionRouter.totalSearchQuestion(roomId).method,
-                   headers: questionRouter.totalSearchQuestion(roomId).headers)
+    private func totalQuestionRequest(roomId: Int, lastQuestionId: Int, completion: @escaping (Error?, [TotalQuestionResultData]?) -> Void) {
+        let router = questionRouter.totalSearchQuestion(roomId, lastQuestionId)
+        
+        AF.request(router.url,
+                   method:router.method,
+                   headers: router.headers)
         .validate(statusCode: 200..<500)
         .responseDecodable(of: TotalQuestionResultModel.self) { response in
             switch response.result {

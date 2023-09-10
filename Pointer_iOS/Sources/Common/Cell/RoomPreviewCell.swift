@@ -30,6 +30,7 @@ class RoomPreviewCell: UICollectionViewCell {
         label.text = "우리 반"
         label.font = .notoSansRegular(size: 16)
         label.textColor = .roomCellNameColor
+        label.numberOfLines = 0
         return label
     }()
     
@@ -38,6 +39,7 @@ class RoomPreviewCell: UICollectionViewCell {
         label.text = "첫 인상이 가장 좋은 사람"
         label.font = .notoSansBold(size: 18)
         label.textColor = .white
+        label.numberOfLines = 0
         return label
     }()
     
@@ -119,12 +121,13 @@ class RoomPreviewCell: UICollectionViewCell {
         
         roomNameLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(13)
-            $0.leading.equalToSuperview().inset(21.5)
+            $0.leading.trailing.equalToSuperview().inset(21.5)
             $0.height.equalTo(27)
         }
         roomBodyLabel.snp.makeConstraints {
             $0.top.equalTo(roomNameLabel.snp.bottom)
             $0.leading.equalTo(roomNameLabel.snp.leading)
+            $0.trailing.equalToSuperview().inset(15)
         }
         memberCountLabel.snp.makeConstraints {
             $0.leading.equalTo(roomBodyLabel.snp.leading)

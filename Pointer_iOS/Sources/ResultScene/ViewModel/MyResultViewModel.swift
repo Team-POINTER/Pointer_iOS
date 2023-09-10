@@ -12,13 +12,15 @@ import RxCocoa
 class MyResultViewModel: ViewModelType{
 //MARK: - Properties
     let disposeBag = DisposeBag()
-    let myResultObservable = PublishRelay<[TotalQuestionResultData]>()
+    let myResultObservable = BehaviorRelay<[TotalQuestionResultData]>(value: [])
     let pointResult = PublishRelay<PointResultModel>()
     
     let userName: String
     let roomName: String
     let roomId: Int
     
+    private var hasCalledAPI = false
+    private var lastIndex = false
     var question = ""
     var questionId = 0
     
@@ -119,8 +121,9 @@ class MyResultViewModel: ViewModelType{
 //MARK: - Network
     func totalQuestionRequest(_ roomId: Int) {
         IndicatorManager.shared.show()
-        ResultNetworkManager.shared.totalQuestionRequest(roomId)
+        ResultNetworkManager.shared.totalQuestionRequest(roomId, 0)
             .subscribe(onNext: { data in
+                print("데이터 들어감")
                 self.myResultObservable.accept(data)
                 IndicatorManager.shared.hide()
             }, onError: { error in
@@ -129,6 +132,40 @@ class MyResultViewModel: ViewModelType{
             })
             .disposed(by: disposeBag)
         
+    }
+    
+    func reFetchtotalQuestionRequest() {
+        guard let result = myResultObservable.value.last else { return }
+        
+        if hasCalledAPI {
+            print("DEBUG: API 요청중")
+        } else {
+            self.hasCalledAPI = true
+            
+            if lastIndex {
+                print("마지막 페이지 입니다.")
+                self.hasCalledAPI = false
+            } else {
+                ResultNetworkManager.shared.totalQuestionRequest(self.roomId, result.questionId)
+                    .subscribe(onNext: { [weak self] data in
+                        guard let self = self else { return }
+                        
+                        if  data.isEmpty {
+                            self.lastIndex = true
+                            self.hasCalledAPI = false
+                        } else {
+                            var resultArray = self.myResultObservable.value
+                            resultArray.append(contentsOf: data)
+                            self.myResultObservable.accept(resultArray)
+                            self.hasCalledAPI = false
+                        }
+                    }, onError: { error in
+                        print("DEBUG: 페이지네이션 MyResult data Error - \(error.localizedDescription)")
+                    })
+                    .disposed(by: disposeBag)
+            }
+            
+        }
     }
     
     func checkPointAlertRequest() {
