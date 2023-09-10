@@ -60,6 +60,7 @@
 		47CC89602A46844F0020246E /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC895F2A46844F0020246E /* AuthRouter.swift */; };
 		47CC89712A5015E10020246E /* CreateUserIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89702A5015E10020246E /* CreateUserIDViewController.swift */; };
 		47CC89732A5016D40020246E /* CreateUserIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */; };
+		47D1584C2AADCFB2002D8448 /* HintBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1584B2AADCFB2002D8448 /* HintBackgroundView.swift */; };
 		47E049A32A8A50A4000A789D /* ReportNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E049A22A8A50A3000A789D /* ReportNetworkManager.swift */; };
 		47E049A52A8A50E8000A789D /* ReportRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E049A42A8A50E8000A789D /* ReportRouter.swift */; };
 		47FD24A52A83705600529342 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD24A42A83705600529342 /* SearchViewModel.swift */; };
@@ -220,6 +221,7 @@
 		47CC89672A4ED46E0020246E /* Pointer_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pointer_iOS.entitlements; sourceTree = "<group>"; };
 		47CC89702A5015E10020246E /* CreateUserIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewController.swift; sourceTree = "<group>"; };
 		47CC89722A5016D40020246E /* CreateUserIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserIDViewModel.swift; sourceTree = "<group>"; };
+		47D1584B2AADCFB2002D8448 /* HintBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintBackgroundView.swift; sourceTree = "<group>"; };
 		47E049A22A8A50A3000A789D /* ReportNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportNetworkManager.swift; sourceTree = "<group>"; };
 		47E049A42A8A50E8000A789D /* ReportRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRouter.swift; sourceTree = "<group>"; };
 		47FD24A42A83705600529342 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 			isa = PBXGroup;
 			children = (
 				473B73A029CEF15D00B33C77 /* HintViewController.swift */,
+				47D1584B2AADCFB2002D8448 /* HintBackgroundView.swift */,
 			);
 			path = HintView;
 			sourceTree = "<group>";
@@ -1324,6 +1327,7 @@
 				F97A64D52A8FC8180095BECB /* Util.swift in Sources */,
 				4749D48929BEEE0E00011E06 /* RoomViewModel.swift in Sources */,
 				CD23209A29B8D8F4003D0B84 /* UIView.swift in Sources */,
+				47D1584C2AADCFB2002D8448 /* HintBackgroundView.swift in Sources */,
 				CD5BCC5629F5384300DD44F7 /* PreferenceController.swift in Sources */,
 				CD23209529B8D2CC003D0B84 /* Constant.swift in Sources */,
 				CD5BCC6329F571D700DD44F7 /* PreferenceSectionBackgroundView.swift in Sources */,
@@ -1484,7 +1488,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
@@ -1522,7 +1526,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;

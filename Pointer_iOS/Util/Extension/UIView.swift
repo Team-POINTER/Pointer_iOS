@@ -38,4 +38,22 @@ extension UIView{
         self.topAnchor.constraint(equalTo: circleIcon.topAnchor).isActive = true
         self.trailingAnchor.constraint(equalTo: circleIcon.trailingAnchor).isActive = true
     }
+    
+    func addGradientBorder(startColor: UIColor, endColor: UIColor, width: CGFloat = 1.5) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bounds
+        gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
+        
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
+        
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
+        maskLayer.fillColor = UIColor.clear.cgColor
+        maskLayer.strokeColor = UIColor.black.cgColor
+        maskLayer.lineWidth = width
+        
+        gradientLayer.mask = maskLayer
+        layer.addSublayer(gradientLayer)
+    }
 }

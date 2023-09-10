@@ -98,6 +98,8 @@ class MyResultViewController: BaseViewController {
     func setUI() {
         view.addSubview(hintAlertLabel)
         view.addSubview(hintTableView)
+        
+        hintTableView.delegate = self
     }
 
     
@@ -107,10 +109,9 @@ class MyResultViewController: BaseViewController {
             make.centerX.equalToSuperview()
         }
         hintTableView.snp.makeConstraints { make in
-            make.top.equalTo(hintAlertLabel.snp.bottom).inset(-2.6)
-            make.leading.trailing.equalToSuperview().inset(12.5)
+            make.top.equalTo(hintAlertLabel.snp.bottom).inset(-3)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.width.equalTo(Device.width - 25)
         }
     }
     
@@ -120,7 +121,6 @@ class MyResultViewController: BaseViewController {
         setUI()
         setUIConstraints()
         configureBar()
-        hintTableView.delegate = self
         bindViewModel()
     }
     
@@ -143,6 +143,6 @@ class MyResultViewController: BaseViewController {
 
 extension MyResultViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 180
+        return 160
     }
 }

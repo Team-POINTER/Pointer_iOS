@@ -45,7 +45,7 @@ class HintViewController: BaseViewController {
                     let label: UILabel = {
                         $0.text = "\(i+1). \(data.voters[i].hint)"
                         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 17)
-                        $0.textColor = UIColor.black
+                        $0.textColor = UIColor.white
                         return $0
                     }(UILabel())
                     
@@ -108,16 +108,11 @@ class HintViewController: BaseViewController {
         return $0
     }(UILabel())
     
-    private let hintBackgroundView: UIView = {
-        $0.backgroundColor = UIColor.white
-        $0.layer.cornerRadius = 28
-        $0.clipsToBounds = false
-        return $0
-    }(UIView())
+    private let hintBackgroundView = HintBackgroundView()
     
     var selectMeLabel: UILabel = {
         $0.font = UIFont.notoSansBold(size: 19)
-        $0.textColor = UIColor.black
+        $0.textColor = UIColor.white
         $0.textAlignment = .center
         $0.numberOfLines = 0
         return $0
@@ -137,7 +132,7 @@ class HintViewController: BaseViewController {
     
     var hintDate: UILabel = {
         $0.font = UIFont.notoSansRegular(size: 13)
-        $0.textColor = UIColor.black
+        $0.textColor = UIColor.white
         return $0
     }(UILabel())
     
