@@ -29,8 +29,11 @@ class TermsViewController: BaseViewController {
         let input = TermsViewModel.Input(allAllowTapEvent: checkBoxAll.rx.tap.asObservable(),
                                          overAgeAllowTapEvent: checkBox1.rx.tap.asObservable(),
                                          serviceAllowTapEvent: checkBox2.rx.tap.asObservable(),
+                                         showServiceTermTapEvent: termBtn1.rx.tap.asObservable(),
                                          privateInfoAllowTapEvent: checkBox3.rx.tap.asObservable(),
+                                         showPrivateInfoTermTapEvent: termBtn2.rx.tap.asObservable(),
                                          marketingInfoAllowTapEvent: checkBox4.rx.tap.asObservable(),
+                                         showMarketingInfoTermTapEvent: termBtn3.rx.tap.asObservable(),
                                          nextButtonTapEvent: nextButton.rx.tap.asObservable())
         
         let output = viewModel.transform(input: input)
@@ -101,6 +104,12 @@ class TermsViewController: BaseViewController {
                     self?.nextButton.backgroundColor = UIColor.rgb(red: 87, green: 90, blue: 107)
                 }
             })
+            .disposed(by: disposeBag)
+        
+        output.presentNextViewController
+            .bind { [weak self] vc in
+                self?.present(vc, animated: true)
+            }
             .disposed(by: disposeBag)
         
         output.nextButtonTap

@@ -184,7 +184,8 @@ class FriendsListViewController: BaseViewController {
             
             let linkImage = UIImage(systemName: "link")
             let rightBarButton = UIBarButtonItem.getPointerBarButton(withIconimage: linkImage, target: self, handler: #selector(linkButtonTapped))
-            navigationItem.rightBarButtonItem = rightBarButton
+            //MARK: - [FIX ME] 웹 까지 배포가 된다면 수정
+//            navigationItem.rightBarButtonItem = rightBarButton
         case .normal:
             navigationItem.title = "\(viewModel.targetUserName ?? "")님의 친구"
             navigationItem.leftBarButtonItem = UIBarButtonItem.getPointerBackBarButton(target: self, handler: #selector(backButtonTapped))
