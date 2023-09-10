@@ -18,6 +18,7 @@ class LoginViewModel: NSObject, ViewModelType {
 //MARK: - Properties
     var disposeBag = DisposeBag()
     var loginView = PublishRelay<UIViewController?>()
+    let showAlert = BehaviorRelay<PointerAlert?>(value: nil)
     
 //MARK: - In/Out
     struct Input {
@@ -26,8 +27,8 @@ class LoginViewModel: NSObject, ViewModelType {
     }
     
     struct Output {
-        var nextViewController = PublishRelay<UIViewController>()
-        var dissMiss = BehaviorRelay<Bool>(value: false)
+        let nextViewController = PublishRelay<UIViewController>()
+        let dissMiss = BehaviorRelay<Bool>(value: false)
     }
 //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
@@ -48,6 +49,9 @@ class LoginViewModel: NSObject, ViewModelType {
                         TokenManager.saveUserRefreshToken(refreshToken: refreshToken)
                         TokenManager.saveUserId(userId: String(userId))
                         output.dissMiss.accept(true)
+                    case .duplicatedEmail:
+                        let alert = PointerAlert.getSimpleAlert(title: "로그인 실패", message: "중복된 이메일 입니다.")
+                        self?.showAlert.accept(alert)
                     default:
                         print(loginResultType.message)
                         return
@@ -203,7 +207,9 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                         TokenManager.saveUserRefreshToken(refreshToken: refreshToken)
                         TokenManager.saveUserId(userId: String(userId))
                         self?.loginView.accept(nil)
-//                        output.dissMiss.accept(true)
+                    case .duplicatedEmail:
+                        let alert = PointerAlert.getSimpleAlert(title: "로그인 실패", message: "중복된 이메일 입니다.")
+                        self?.showAlert.accept(alert)
                     default:
                         print(loginResultType.message)
                         return
