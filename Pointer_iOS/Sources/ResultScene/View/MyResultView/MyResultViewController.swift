@@ -109,7 +109,7 @@ class MyResultViewController: BaseViewController {
         }
         hintTableView.snp.makeConstraints { make in
             make.top.equalTo(hintAlertLabel.snp.bottom).inset(-3)
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
@@ -142,7 +142,7 @@ class MyResultViewController: BaseViewController {
 
 extension MyResultViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        return 170
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

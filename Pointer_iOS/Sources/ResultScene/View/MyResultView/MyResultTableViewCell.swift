@@ -19,6 +19,11 @@ class MyResultTableViewCell: UITableViewCell {
     }
     
     //MARK: - Properties
+    private var backView: HintBackgroundView = {
+        $0.layer.cornerRadius = 16
+        return $0
+    }(HintBackgroundView())
+    
     private var questionLabel: UILabel = {
         $0.text = "가장 친해지고 싶은 사람은?"
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 18)
@@ -47,24 +52,23 @@ class MyResultTableViewCell: UITableViewCell {
         setUIandConstraints()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.addGradientBorder(startColor: .white, endColor: .roomCellGradientEndColor)
-    }
-    
     required init?(coder: NSCoder) {
         fatalError()
     }
     
     //MARK: - set UI
     private func setUIandConstraints() {
-        backgroundColor = .roomCellBackgroundColor
-        layer.cornerRadius = 16
+        backgroundColor = .clear
         
-        contentView.addSubview(questionLabel)
-        contentView.addSubview(selectedMeNumber)
-        contentView.addSubview(hintDate)
+        contentView.addSubview(backView)
+        backView.addSubview(questionLabel)
+        backView.addSubview(selectedMeNumber)
+        backView.addSubview(hintDate)
         
+        backView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.bottom.equalToSuperview().inset(9)
+        }
         questionLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(24.47)
             make.leading.trailing.equalToSuperview().inset(21.61)
