@@ -8,6 +8,7 @@
 import RxSwift
 import RxCocoa
 import UIKit
+import SafariServices
 
 class TermsViewModel: ViewModelType {
     
@@ -24,19 +25,23 @@ class TermsViewModel: ViewModelType {
         let allAllowTapEvent: Observable<Void>
         let overAgeAllowTapEvent: Observable<Void>
         let serviceAllowTapEvent: Observable<Void>
+        let showServiceTermTapEvent: Observable<Void>
         let privateInfoAllowTapEvent: Observable<Void>
+        let showPrivateInfoTermTapEvent: Observable<Void>
         let marketingInfoAllowTapEvent: Observable<Void>
+        let showMarketingInfoTermTapEvent: Observable<Void>
         let nextButtonTapEvent: Observable<Void>
     }
     
     struct Output {
-        var allAllow = BehaviorRelay<Bool>(value: false)
-        var overAgeAllow = BehaviorRelay<Bool>(value: false)
-        var serviceAllow = BehaviorRelay<Bool>(value: false)
-        var privateInfoAllow = BehaviorRelay<Bool>(value: false)
-        var marketingInfoAllow = BehaviorRelay<Bool>(value: false)
-        var nextButtonValid = BehaviorRelay<Bool>(value: false)
-        var nextButtonTap = PublishRelay<UIViewController>()
+        let allAllow = BehaviorRelay<Bool>(value: false)
+        let overAgeAllow = BehaviorRelay<Bool>(value: false)
+        let serviceAllow = BehaviorRelay<Bool>(value: false)
+        let privateInfoAllow = BehaviorRelay<Bool>(value: false)
+        let marketingInfoAllow = BehaviorRelay<Bool>(value: false)
+        let nextButtonValid = BehaviorRelay<Bool>(value: false)
+        let presentNextViewController = PublishRelay<UIViewController>()
+        let nextButtonTap = PublishRelay<UIViewController>()
 
     }
     
@@ -98,6 +103,30 @@ class TermsViewModel: ViewModelType {
                     output.nextButtonValid.accept(false)
                 }
             })
+            .disposed(by: disposeBag)
+        
+        input.showServiceTermTapEvent
+            .subscribe { _ in
+                guard let url = URL(string: "https://pointer2024.notion.site/d55d0a2334d549e9a17477bc6ade3bb0?pvs=4") else { return }
+                let vc = SFSafariViewController(url: url)
+                output.presentNextViewController.accept(vc)
+            }
+            .disposed(by: disposeBag)
+        
+        input.showPrivateInfoTermTapEvent
+            .subscribe { _ in
+                guard let url = URL(string: "https://pointer2024.notion.site/4936ea14737f44018b2d798db4e64d0a?pvs=4") else { return }
+                let vc = SFSafariViewController(url: url)
+                output.presentNextViewController.accept(vc)
+            }
+            .disposed(by: disposeBag)
+        
+        input.showMarketingInfoTermTapEvent
+            .subscribe { _ in
+                guard let url = URL(string: "https://pointer2024.notion.site/b041b9004cb94648b1c3f1f9adc4ef67") else { return }
+                let vc = SFSafariViewController(url: url)
+                output.presentNextViewController.accept(vc)
+            }
             .disposed(by: disposeBag)
         
         input.nextButtonTapEvent

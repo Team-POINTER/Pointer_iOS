@@ -156,9 +156,14 @@ class RoomViewController: BaseViewController {
         output.pointButtonTap
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] viewController in
-                self?.navigationController?.popViewController(animated: false)
-                self?.delegate?.didChangedRoomStateFromRoomVC()
-                self?.delegate?.tapedPoint(viewController: viewController)
+                guard let homeVC = self?.navigationController?.viewControllers.first as? HomeController,
+                      let self = self else { return }
+                
+                self.navigationController?.popViewController(animated: false)
+                // 뒤로 돌아갈 떄 홈 재갱신
+                homeVC.viewModel.didChangedRoomStateFromRoomVC()
+                // 포인트 버튼을 눌렀을 때 결과보기
+                homeVC.viewModel.tapedPoint(viewController: viewController)
             })
             .disposed(by: disposeBag)
         

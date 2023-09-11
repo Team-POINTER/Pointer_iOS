@@ -41,6 +41,13 @@ class LoginViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        loginViewModel.showAlert
+            .bind { [weak self] alert in
+                guard let alert = alert else { return }
+                self?.present(alert, animated: true)
+            }
+            .disposed(by: disposeBag)
     
         output.dissMiss
             .observe(on: MainScheduler.instance)

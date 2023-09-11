@@ -29,7 +29,8 @@ class RoomPreviewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "우리 반"
         label.font = .notoSansRegular(size: 16)
-        label.textColor = .rgb(red: 102, green: 102, blue: 102)
+        label.textColor = .roomCellNameColor
+        label.numberOfLines = 0
         return label
     }()
     
@@ -37,7 +38,8 @@ class RoomPreviewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "첫 인상이 가장 좋은 사람"
         label.font = .notoSansBold(size: 18)
-        label.textColor = .black
+        label.textColor = .white
+        label.numberOfLines = 0
         return label
     }()
     
@@ -60,7 +62,7 @@ class RoomPreviewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "포인터 님"
         label.font = .notoSansRegular(size: 13)
-        label.textColor = .black
+        label.textColor = .white
         return label
     }()
     
@@ -75,7 +77,7 @@ class RoomPreviewCell: UICollectionViewCell {
         let image = UIImageView()
         image.image = UIImage(systemName: "ellipsis")
         image.transform = image.transform.rotated(by: .pi/2)
-        image.tintColor = .black
+        image.tintColor = .white
         image.contentMode = .scaleAspectFit
         image.isUserInteractionEnabled = true
         return image
@@ -105,8 +107,9 @@ class RoomPreviewCell: UICollectionViewCell {
     
     //MARK: - Functions
     private func setupUI() {
-        backgroundColor = .white
-        layer.cornerRadius = 10
+        backgroundColor = .roomCellBackgroundColor
+        layer.cornerRadius = 16
+        addGradientBorder(startColor: .white, endColor: .roomCellGradientEndColor)
         clipsToBounds = false
         
         addSubview(roomNameLabel)
@@ -117,12 +120,14 @@ class RoomPreviewCell: UICollectionViewCell {
         addSubview(actionContainerView)
         
         roomNameLabel.snp.makeConstraints {
-            $0.leading.top.equalToSuperview().inset(21.5)
+            $0.top.equalToSuperview().inset(13)
+            $0.leading.trailing.equalToSuperview().inset(21.5)
             $0.height.equalTo(27)
         }
         roomBodyLabel.snp.makeConstraints {
             $0.top.equalTo(roomNameLabel.snp.bottom)
             $0.leading.equalTo(roomNameLabel.snp.leading)
+            $0.trailing.equalToSuperview().inset(15)
         }
         memberCountLabel.snp.makeConstraints {
             $0.leading.equalTo(roomBodyLabel.snp.leading)
