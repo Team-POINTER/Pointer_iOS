@@ -130,7 +130,9 @@ enum PreferenceMenuType: Int, CaseIterable {
         case .appVersion:
             return nil
         case .inquire:
-            return nil
+            guard let url = URL(string: "https://forms.gle/vYhdBbQ8Pea6oi2Q6") else { return nil }
+            let vc = SFSafariViewController(url: url)
+            return vc
         case .notice:
             guard let url = URL(string: "https://pointer2024.notion.site/pointer2024/POINTER-a690c831dc524434946b0e16239ce593") else { return nil }
             let vc = SFSafariViewController(url: url)
