@@ -54,8 +54,8 @@ class NotiDetailRoomViewModel: NotiDetailViewModel {
         network.requestRoomNotiDetailList { [weak self] response in
             guard let response = response else { return }
             self?.dataSources.accept(response.result.alarmList)
-            self?.delegate?.newNotiStatus(room: false, friend: true)
-            if response.result.newFriendAlarm {
+//            self?.delegate?.newNotiStatus(room: false, friend: true)
+            if response.result.newAlarm {
                 self?.delegate?.newNotiStatus(room: false, friend: true)
             }
         }

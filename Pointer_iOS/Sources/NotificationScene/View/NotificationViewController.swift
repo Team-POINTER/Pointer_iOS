@@ -155,7 +155,8 @@ extension NotificationViewController: UIPageViewControllerDelegate, UIPageViewCo
 
 extension NotificationViewController: NewNotiIconDelegate {
     func newNotiStatus(room: Bool, friend: Bool) {
-        guard self.newFriendNotiIcon == nil else { return }
+        guard self.newFriendNotiIcon == nil,
+              friend == true else { return }
         let scale = CGFloat(10)
         let xPoint = notiTypeSegmentControl.frame.origin.x + notiTypeSegmentControl.frame.width - scale
         let yPoint = notiTypeSegmentControl.frame.origin.y
