@@ -124,7 +124,7 @@ class TermsViewController: BaseViewController {
     private let serviceLabel: UILabel = {
         $0.text = "서비스 이용동의"
         $0.textColor = .white
-        $0.font = UIFont.notoSansBold(size: 20)
+        $0.font = UIFont.notoSansBold(size: 21)
         return $0
     }(UILabel())
     
@@ -137,7 +137,7 @@ class TermsViewController: BaseViewController {
     private let TermAllLabel: UILabel = {
         $0.text = "약관 전체동의"
         $0.textColor = .white
-        $0.font = UIFont.notoSansBold(size: 16)
+        $0.font = UIFont.notoSansBold(size: 17)
         return $0
     }(UILabel())
     
@@ -251,24 +251,24 @@ class TermsViewController: BaseViewController {
     
     func setUIConstraints() {
         serviceLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(25)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(45)
             make.leading.equalToSuperview().inset(32)
         }
         checkBoxAll.snp.makeConstraints { make in
             make.width.height.equalTo(32)
-            make.top.equalTo(serviceLabel.snp.bottom).offset(30)
+            make.top.equalTo(serviceLabel.snp.bottom).offset(32)
             make.leading.equalToSuperview().inset(35)
         }
         TermAllLabel.snp.makeConstraints { make in
             make.leading.equalTo(checkBoxAll.snp.trailing).offset(12)
-            make.top.equalTo(serviceLabel.snp.bottom).offset(30)
+            make.top.equalTo(serviceLabel.snp.bottom).offset(32)
             make.centerY.equalTo(checkBoxAll.snp.centerY)
         }
         sectionLine.snp.makeConstraints { make in
             make.top.equalTo(TermAllLabel.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(18)
             make.trailing.equalToSuperview().offset(-18)
-            make.height.equalTo(1)
+            make.height.equalTo(0.5)
         }
         checkBox1.snp.makeConstraints { make in
             make.width.height.equalTo(32)
@@ -281,7 +281,7 @@ class TermsViewController: BaseViewController {
             make.centerY.equalTo(checkBox1.snp.centerY)
         }
         checkBox2.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(32)
             make.top.equalTo(checkBox1.snp.bottom).offset(30)
             make.leading.equalToSuperview().inset(35)
         }
