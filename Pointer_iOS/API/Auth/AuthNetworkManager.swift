@@ -48,13 +48,14 @@ class AuthNetworkManager {
     
     //MARK: - Function
     func posts(_ parameter: AuthInputModel, _ completion: @escaping (AuthResultModel, LoginResultType) -> Void){
-        print("Login URL = \(AuthRouter.login.url)")
+        let router = router.login
+        print("Login URL = \(router.url)")
         
-        AF.request(router.login.url,
-                   method: router.login.method,
+        AF.request(router.url,
+                   method: router.method,
                    parameters: parameter,
                    encoder: JSONParameterEncoder.default,
-                   headers: router.login.headers)
+                   headers: router.headers)
         .validate(statusCode: 200..<500)
         .responseDecodable(of: AuthResultModel.self) { response in
             switch response.result {
@@ -75,18 +76,10 @@ class AuthNetworkManager {
     }
     
     func appleLogin(appleToken: String, completion: @escaping (AuthResultModel, LoginResultType) -> Void) {
-        let router = AuthRouter.appleLogin
+        let router = router.appleLogin
         let param: [String: String] = ["identityToken": appleToken]
         
-        AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default)
-        //            .response { response in
-        //                switch response.result {
-        //                case .success(let data):
-        //                    print("Image uploaded successfully: \(String(data: data!, encoding: .utf8) ?? "")")
-        //                case .failure(let error):
-        //                    print("Error uploading image: \(error)")
-        //                }
-        //            }
+        AF.request(router.url, method: router.method, parameters: param, encoding: JSONEncoding.default, headers: router.headers)
             .responseDecodable(of: AuthResultModel.self) { response in
                 switch response.result {
                     // 성공인 경우
@@ -214,7 +207,7 @@ class AuthNetworkManager {
     
     // 액세스토큰 유효성 검사
     func validateAccessToken(completion: @escaping (Bool) -> Void) {
-        let router = AuthRouter.validate
+        let router = router.validate
         
         AF.request(router.url, method: router.method, headers: router.headers)
             .responseDecodable(of: PointerDefaultResponse.self) { [weak self] response in
@@ -239,7 +232,7 @@ class AuthNetworkManager {
     
     // 로그아웃 - 비동기 기다리지 않도록 처리
     func requestLogout() {
-        let router = AuthRouter.logout
+        let router = router.logout
         AF.request(router.url, method: router.method, headers: router.headers)
             .responseDecodable(of: PointerDefaultResponse.self) { response in
                 switch response.result {
@@ -253,7 +246,7 @@ class AuthNetworkManager {
     
     // 회원 탈퇴
     func resignUserAccount(completion: @escaping (Bool) -> Void) {
-        let router = AuthRouter.resign
+        let router = router.resign
         
         AF.request(router.url, method: router.method, headers: router.headers)
             .responseDecodable(of: PointerDefaultResponse.self) { response in
