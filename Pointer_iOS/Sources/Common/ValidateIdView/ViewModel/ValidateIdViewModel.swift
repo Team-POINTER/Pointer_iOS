@@ -36,6 +36,7 @@ class ValidateIdViewModel: ViewModelType {
     //MARK: - Public Properties
     public let didSuccessValidation = BehaviorRelay<Bool>(value: false)
     public let userEnteredId: BehaviorRelay<String?>
+    var varUserEnteredId = ""
     
     //MARK: - Rxswift Transform
     func transform(input: Input) -> Output {
@@ -49,6 +50,7 @@ class ValidateIdViewModel: ViewModelType {
                     /// 글자수 30자 제한
                     let limitedString = self.hintTextFieldLimitedString(text: text)
                     self.userEnteredId.accept(limitedString)
+                    self.varUserEnteredId = limitedString
                     
                     /// 제한된 글자수 카운트
                     let textCountString = "\(limitedString.count)/30"
@@ -58,7 +60,10 @@ class ValidateIdViewModel: ViewModelType {
                     let validString = self.isValidInputString(limitedString)
                     output.idTextFieldValidString.accept(validString)
                     
-                    if validString {
+                    if output.duplicatedIdCheck.value && validString {
+                        // 중복 확인 O & 유효성 O
+                        output.validateIdResult.accept(.avaliable)
+                    } else if validString {
                         // 유효성 O
                         output.validateIdResult.accept(.check)
                     } else {
@@ -103,10 +108,12 @@ class ValidateIdViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
         
-        // 
-        output.idTextFieldCountString
-            .subscribe { _ in
-                output.duplicatedIdCheck.accept(false)
+        //
+        userEnteredId
+            .subscribe { [weak self] text in
+                if text != self?.varUserEnteredId {
+                    output.duplicatedIdCheck.accept(false)
+                }
             }
             .disposed(by: disposeBag)
         

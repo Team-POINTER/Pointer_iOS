@@ -9,11 +9,13 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxKeyboard
 
 class CreateUserIDViewController: BaseViewController {
     //MARK: - Properties
     var disposeBag = DisposeBag()
     let viewModel: CreateUserIDViewModel
+    private let extra = UIApplication.shared.windows.first!.safeAreaInsets.bottom
     private lazy var validateIdView = ValidateIdView(ValidateIdViewModel(authResultModel: viewModel.authResultModel))
     
     private var nextButton: UIButton = {
@@ -79,13 +81,36 @@ class CreateUserIDViewController: BaseViewController {
                 self?.present(alert, animated: true)
             })
             .disposed(by: disposeBag)
+
+        RxKeyboard.instance.visibleHeight
+            .skip(1)    // 초기 값 버리기
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+                // 키보드가 바닥일 때
+                if keyboardVisibleHeight == 0 {
+                    UIView.animate(withDuration: 0) {
+                        self.nextButton.snp.updateConstraints {
+                            $0.bottom.equalTo(self.view.safeAreaLayoutGuide)
+                        }
+                    }
+                // 키보드가 올라왔을 때
+                } else {
+                    UIView.animate(withDuration: 0) {
+                        self.nextButton.snp.updateConstraints {
+                            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardVisibleHeight - self.extra)
+                        }
+                    }
+                }
+                self.view.layoutIfNeeded()
+            })
+            .disposed(by: disposeBag)
     }
     
 //MARK: - set UI
     func setupUI() {
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(33)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview().inset(8)
             make.height.equalTo(65)
         }
@@ -110,3 +135,6 @@ class CreateUserIDViewController: BaseViewController {
         self.navigationController?.popViewController(animated: true)
     }
 }
+
+
+

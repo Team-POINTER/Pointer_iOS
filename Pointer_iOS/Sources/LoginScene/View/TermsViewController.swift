@@ -326,7 +326,7 @@ class TermsViewController: BaseViewController {
             make.centerY.equalTo(Label4.snp.centerY)
         }
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(33)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview().inset(8)
             make.centerX.equalToSuperview()
             make.height.equalTo(65)
