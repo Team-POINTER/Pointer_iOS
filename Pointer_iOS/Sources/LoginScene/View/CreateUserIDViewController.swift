@@ -15,6 +15,7 @@ class CreateUserIDViewController: BaseViewController {
     //MARK: - Properties
     var disposeBag = DisposeBag()
     let viewModel: CreateUserIDViewModel
+    private let extra = UIApplication.shared.windows.first!.safeAreaInsets.bottom
     private lazy var validateIdView = ValidateIdView(ValidateIdViewModel(authResultModel: viewModel.authResultModel))
     
     private var nextButton: UIButton = {
@@ -85,9 +86,22 @@ class CreateUserIDViewController: BaseViewController {
             .skip(1)    // 초기 값 버리기
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                self.nextButton.snp.updateConstraints {
-                    $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardVisibleHeight)
+                // 키보드가 바닥일 때
+                if keyboardVisibleHeight == 0 {
+                    UIView.animate(withDuration: 0) {
+                        self.nextButton.snp.updateConstraints {
+                            $0.bottom.equalTo(self.view.safeAreaLayoutGuide)
+                        }
+                    }
+                // 키보드가 올라왔을 때
+                } else {
+                    UIView.animate(withDuration: 0) {
+                        self.nextButton.snp.updateConstraints {
+                            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardVisibleHeight - self.extra)
+                        }
+                    }
                 }
+                self.view.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
     }
