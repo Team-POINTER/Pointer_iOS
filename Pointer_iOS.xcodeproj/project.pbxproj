@@ -43,6 +43,7 @@
 		475B74382A925EFF00C8BB97 /* PointRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B74372A925EFF00C8BB97 /* PointRouter.swift */; };
 		475B743B2A925FC900C8BB97 /* PointNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B743A2A925FC900C8BB97 /* PointNetworkManager.swift */; };
 		47665AD62A1C889D00A95154 /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47665AD52A1C889D00A95154 /* ChattingRoomViewController.swift */; };
+		477A51A02AB87E9000C01E10 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 477A519F2AB87E9000C01E10 /* RxKeyboard */; };
 		478C9FEF2A5EC295000FA196 /* HomeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FEE2A5EC295000FA196 /* HomeNetworkManager.swift */; };
 		478C9FF22A5EDA9E000FA196 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FF12A5EDA9E000FA196 /* HomeViewModel.swift */; };
 		478C9FF92A603882000FA196 /* RoomNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478C9FF82A603882000FA196 /* RoomNetworkManager.swift */; };
@@ -328,6 +329,7 @@
 				CD0EE9352A08050B0090BF48 /* RxGesture in Frameworks */,
 				F948AEFF2A860A7400DDC698 /* NVActivityIndicatorView in Frameworks */,
 				47117CF129CD9A1C001707C8 /* KakaoSDK in Frameworks */,
+				477A51A02AB87E9000C01E10 /* RxKeyboard in Frameworks */,
 				CD0EE9302A0804C00090BF48 /* RxRelay in Frameworks */,
 				CDD1DEE029B9FE2600B03973 /* SnapKit in Frameworks */,
 				CD2F79C72A0FD34B0094F81F /* RxDataSources in Frameworks */,
@@ -1146,6 +1148,7 @@
 				F948AEFE2A860A7400DDC698 /* NVActivityIndicatorView */,
 				F948AF002A860A7400DDC698 /* NVActivityIndicatorViewExtended */,
 				F97A64D22A8FC72E0095BECB /* Toast */,
+				477A519F2AB87E9000C01E10 /* RxKeyboard */,
 			);
 			productName = Pointer_iOS;
 			productReference = CD23207629B8C6EB003D0B84 /* Pointer_iOS.app */;
@@ -1188,6 +1191,7 @@
 				F94CD6C02A85169E00A808B9 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 				F948AEFD2A860A7400DDC698 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 				F97A64D12A8FC72E0095BECB /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				477A519E2AB87E8F00C01E10 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 			);
 			productRefGroup = CD23207729B8C6EB003D0B84 /* Products */;
 			projectDirPath = "";
@@ -1597,6 +1601,14 @@
 				kind = branch;
 			};
 		};
+		477A519E2AB87E8F00C01E10 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		CD0EE92C2A0804C00090BF48 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -1689,6 +1701,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 47117CEF29CD9A1C001707C8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDK;
+		};
+		477A519F2AB87E9000C01E10 /* RxKeyboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 477A519E2AB87E8F00C01E10 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
+			productName = RxKeyboard;
 		};
 		CD0EE92D2A0804C00090BF48 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;

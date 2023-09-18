@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxKeyboard
 
 class CreateUserIDViewController: BaseViewController {
     //MARK: - Properties
@@ -79,13 +80,23 @@ class CreateUserIDViewController: BaseViewController {
                 self?.present(alert, animated: true)
             })
             .disposed(by: disposeBag)
+
+        RxKeyboard.instance.visibleHeight
+            .skip(1)    // 초기 값 버리기
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+                self.nextButton.snp.updateConstraints {
+                    $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardVisibleHeight)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
 //MARK: - set UI
     func setupUI() {
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(33)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview().inset(8)
             make.height.equalTo(65)
         }
@@ -110,3 +121,6 @@ class CreateUserIDViewController: BaseViewController {
         self.navigationController?.popViewController(animated: true)
     }
 }
+
+
+
