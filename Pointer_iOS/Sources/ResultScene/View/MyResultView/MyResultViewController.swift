@@ -88,6 +88,7 @@ class MyResultViewController: BaseViewController {
     
     let hintTableView : UITableView = {
         $0.backgroundColor = .clear
+        $0.separatorStyle = .none
         $0.register(MyResultTableViewCell.self, forCellReuseIdentifier: MyResultTableViewCell.identifier)
         $0.showsVerticalScrollIndicator = false
         return $0
