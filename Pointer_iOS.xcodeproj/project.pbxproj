@@ -1488,7 +1488,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
@@ -1497,7 +1497,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "라이브러리에서 사진을 가져오기 위해 권한을 허용합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 이미지, 배경 이미지 변경을 위해 라이브러리 권한을 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1526,7 +1526,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pointer_iOS/Pointer_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2W8MRY52UN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pointer_iOS/Info.plist;
@@ -1535,7 +1535,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 및 동영상 첨부를 위한 카메라 사용 권한";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "동영상 촬영 및 음성인식을 위한 권한 필요";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "사진 및 동영상 추가를 위한 앨범 사용 권한";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "라이브러리에서 사진을 가져오기 위해 권한을 허용합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 이미지, 배경 이미지 변경을 위해 라이브러리 권한을 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
