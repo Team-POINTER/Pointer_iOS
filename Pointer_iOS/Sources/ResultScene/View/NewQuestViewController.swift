@@ -272,6 +272,7 @@ class NewQuestViewController: BaseViewController {
 extension NewQuestViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if text == "\n" {
+                textView.resignFirstResponder() // 키보드 내리기
                 return false // 엔터 키 입력 시 동작 X - 줄바꿈 기능 제거
             }
             return true
