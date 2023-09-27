@@ -176,6 +176,7 @@ class NewQuestViewController: BaseViewController {
         $0.textColor = UIColor.rgb(red: 121, green: 125, blue: 148)
         $0.font = UIFont.notoSans(font: .notoSansKrMedium, size: 20)
         $0.isScrollEnabled = false
+        $0.isSelectable = false
         $0.delegate = self
         return $0
     }(UITextView())
@@ -271,10 +272,10 @@ class NewQuestViewController: BaseViewController {
 //MARK: - UITextViewDelegate
 extension NewQuestViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            if text == "\n" {
-                textView.resignFirstResponder() // 키보드 내리기
-                return false // 엔터 키 입력 시 동작 X - 줄바꿈 기능 제거
-            }
-            return true
+        if text == "\n" {
+            textView.resignFirstResponder() // 키보드 내리기
+            return false // 엔터 키 입력 시 동작 X - 줄바꿈 기능 제거
         }
+        return true
+    }
 }
