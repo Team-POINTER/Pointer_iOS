@@ -90,7 +90,7 @@ enum PreferenceMenuType: Int, CaseIterable {
     var subTitle: String? {
         switch self {
         case .appVersion:
-            return "1.0.0"
+            return Util.appVersion
         default:
             return nil
         }

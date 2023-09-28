@@ -8,6 +8,16 @@ import UIKit
 import Toast
 
 struct Util {
+    static var appVersion: String? {
+        if let info = Bundle.main.infoDictionary {
+            let currentVersion = info["CFBundleShortVersionString"] as? String
+            return currentVersion
+        } else {
+            return nil
+        }
+    }
+    
+    /// 토스트 메시지
     static func showToast(_ message: String, position: ToastPosition = .center, isClearToastQueue: Bool = true, duration: TimeInterval = 2) {
         ToastManager.shared.isQueueEnabled = true
         ToastManager.shared.duration = duration
