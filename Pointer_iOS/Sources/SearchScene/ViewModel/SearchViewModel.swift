@@ -12,7 +12,7 @@ import RxCocoa
 final class SearchViewModel: ViewModelType {
     //MARK: - Properties
     let disposeBag = DisposeBag()
-    let searchRoomResult = PublishRelay<PointerRoomListModel>()
+    let searchRoomResult = BehaviorRelay<[PointerRoomModel]>(value: [])
     let searchAccountResult = BehaviorRelay<[SearchUserListModel]>(value: [])
     
     let tapedRoomResult = PublishRelay<PointerRoomModel>()
@@ -45,9 +45,14 @@ final class SearchViewModel: ViewModelType {
             .subscribe { [weak self] text in
                 guard let text = text.element,
                       let self = self else { return }
-                self.requestRoomList("\(text)")
-                self.requestAccountList(word: "\(text)")
-                self.lastSearchedKeyword = text
+                if text.isEmpty {
+                    self.searchRoomResult.accept([])
+                    self.searchAccountResult.accept([])
+                } else {
+                    self.requestRoomList("\(text)")
+                    self.requestAccountList(word: "\(text)")
+                    self.lastSearchedKeyword = text
+                }
             }
             .disposed(by: disposeBag)
         
@@ -135,7 +140,7 @@ final class SearchViewModel: ViewModelType {
                 return
             }
             
-            if let data = model?.data {
+            if let data = model?.data?.roomList {
                 self.searchRoomResult.accept(data)
             }
         }

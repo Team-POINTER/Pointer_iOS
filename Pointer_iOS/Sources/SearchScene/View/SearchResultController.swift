@@ -64,7 +64,7 @@ class SearchResultController: UIViewController {
     func bind() {
         viewModel.searchRoomResult
             .subscribe(onNext: { [weak self] data in
-                self?.roomData = data.roomList
+                self?.roomData = data
                 self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
